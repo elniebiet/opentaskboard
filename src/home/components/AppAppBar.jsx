@@ -13,6 +13,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import _opentaskboard_icon from './opentaskboard_icon';
 import ColorModeIconDropdown from '../../shared-theme/ColorModeIconDropdown';
+import _template_select_dropdown from './DropDown';
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: 'flex',
@@ -53,14 +54,14 @@ export default function AppAppBar() {
           <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0 }}>
             <_opentaskboard_icon />
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+              <Box sx={{ minWidth: 120 }}>
+                <_template_select_dropdown />
+              </Box>
               <Button variant="text" color="info" size="small">
                 Features
               </Button>
               <Button variant="text" color="info" size="small">
-                Testimonials
-              </Button>
-              <Button variant="text" color="info" size="small">
-                Highlights
+                Templates
               </Button>
               <Button variant="text" color="info" size="small">
                 Pricing
@@ -69,7 +70,7 @@ export default function AppAppBar() {
                 FAQ
               </Button>
               <Button variant="text" color="info" size="small" sx={{ minWidth: 0 }}>
-                Blog
+                About
               </Button>
             </Box>
           </Box>
