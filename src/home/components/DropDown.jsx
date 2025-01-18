@@ -4,6 +4,7 @@ import { InputLabel } from '@mui/material';
 import { FormControl } from '@mui/material';
 import { Select } from '@mui/material';
 import { MenuItem } from '@mui/material';
+import URL_MAIN from '../../globals';
 
 const _template_select_dropdown = () => {
     
@@ -17,7 +18,7 @@ const _template_select_dropdown = () => {
     
         switch (event.target.value) {
             case SPRINT_PLANNING:
-                //TODO: go to sprint planning taskboard
+                window.location.href = URL_MAIN + "templates/sprint_planning/";
                 break;
             
             default:
