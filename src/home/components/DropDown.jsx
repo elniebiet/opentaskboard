@@ -1,16 +1,14 @@
-import * as React from 'react';
+import React from 'react';
 import { Box } from '@mui/material';
 import { InputLabel } from '@mui/material';
 import { FormControl } from '@mui/material';
 import { Select } from '@mui/material';
 import { MenuItem } from '@mui/material';
-import URL_MAIN from '../../globals';
+import { SPRINT_PLANNING, URL_MAIN } from '../../common/globals';
 
 const _template_select_dropdown = () => {
     
     /* Task boards */
-    const SPRINT_PLANNING = 1;
-
     const [template_type, _set_template_type] = React.useState('');
 
     const _template_type_change = (event) => {
@@ -18,7 +16,7 @@ const _template_select_dropdown = () => {
     
         switch (event.target.value) {
             case SPRINT_PLANNING:
-                window.location.href = URL_MAIN + "templates/sprint_planning/";
+                // _set_current_route("templates/sprint_planning");
                 break;
             
             default:
