@@ -31,7 +31,7 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   padding: '8px 12px',
 }));
 
-export default function AppAppBar() {
+export default function AppAppBar(props) {
   const [open, setOpen] = React.useState(false);
 
   const toggleDrawer = (newOpen) => () => {
@@ -55,7 +55,7 @@ export default function AppAppBar() {
             <_opentaskboard_icon />
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
               <Box sx={{ minWidth: 120 }}>
-                <_template_select_dropdown />
+                <_template_select_dropdown _on_update_route={props._on_update_route} />
               </Box>
               <Button variant="text" color="info" size="small">
                 Features

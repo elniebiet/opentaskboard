@@ -6,7 +6,7 @@ import { Select } from '@mui/material';
 import { MenuItem } from '@mui/material';
 import { SPRINT_PLANNING, URL_MAIN } from '../../common/globals';
 
-const _template_select_dropdown = () => {
+const _template_select_dropdown = (props) => {
     
     /* Task boards */
     const [template_type, _set_template_type] = React.useState('');
@@ -16,7 +16,7 @@ const _template_select_dropdown = () => {
     
         switch (event.target.value) {
             case SPRINT_PLANNING:
-                // _set_current_route("templates/sprint_planning");
+                props._on_update_route("templates/sprint_planning");
                 break;
             
             default:

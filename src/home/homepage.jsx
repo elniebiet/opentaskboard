@@ -16,7 +16,7 @@ export default function _homepage(props) {
   return (
     <AppTheme {...props}>
       <CssBaseline enableColorScheme />
-      <AppAppBar />
+      <AppAppBar _on_update_route={props._on_update_route}/>
       <Hero />
       <div>
         {/* <LogoCollection /> */}
