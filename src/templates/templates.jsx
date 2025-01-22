@@ -17,11 +17,10 @@ const _get_template = (template_code) =>
     }
 }
 const _template = (props) => {
-    return
-    (
-      <div id="template_root">
-        {_get_template(props.template_code)}
-      </div>  
+    return (
+        <div>
+            { _get_template(props.template_code) }
+        </div>
     );
 };
 
