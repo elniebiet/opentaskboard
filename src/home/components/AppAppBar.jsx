@@ -13,7 +13,11 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import _opentaskboard_icon from './opentaskboard_icon';
 import ColorModeIconDropdown from '../../shared-theme/ColorModeIconDropdown';
-import _template_select_dropdown from './DropDown';
+import _template_menu from './MenuTemplate';
+import _features_menu from './MenuFeatures';
+import _pricing_menu from './MenuPricing';
+import _FAQ_menu from './MenuFAQ';
+import _about_menu from './MenuAbout';
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: 'flex',
@@ -54,24 +58,21 @@ export default function AppAppBar(props) {
           <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0 }}>
             <_opentaskboard_icon />
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-              <Box sx={{ minWidth: 120 }}>
-                <_template_select_dropdown _on_update_route={props._on_update_route} />
-              </Box>
-              <Button variant="text" color="info" size="small">
-                Features
-              </Button>
-              <Button variant="text" color="info" size="small">
-                Templates
-              </Button>
-              <Button variant="text" color="info" size="small">
-                Pricing
-              </Button>
-              <Button variant="text" color="info" size="small" sx={{ minWidth: 0 }}>
-                FAQ
-              </Button>
-              <Button variant="text" color="info" size="small" sx={{ minWidth: 0 }}>
-                About
-              </Button>
+            <Box sx={{ minWidth: 120 }}>
+              <_template_menu _on_update_route={props._on_update_route} />
+            </Box>
+            <Box sx={{ minWidth: 120 }}>
+              <_features_menu _on_update_route={props._on_update_route} />
+            </Box>
+            <Box sx={{ minWidth: 120 }}>
+              <_pricing_menu _on_update_route={props._on_update_route} />
+            </Box>
+            <Box sx={{ minWidth: 120 }}>
+              <_FAQ_menu _on_update_route={props._on_update_route} />
+            </Box>
+            <Box sx={{ minWidth: 120 }}>
+              <_about_menu _on_update_route={props._on_update_route} />
+            </Box>
             </Box>
           </Box>
           <Box
