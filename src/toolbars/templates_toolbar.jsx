@@ -151,7 +151,7 @@ const _templates_toolbar = (props) => {
         flex_dir = "column";
         toolbar_styling = toolbar_styling_left;
     }
-
+    
     const [is_dragging_tb_item, _set_is_dragging_tb_item] = useState({item_index: 0, is_dragging: false, x: 0, y: 0 });
 
     const update_dragged_item_info = (item_idx, item_is_dragging, pos_x, pos_y) => 
