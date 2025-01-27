@@ -2,8 +2,6 @@ import * as React from 'react';
 import _templates_toolbar from '../toolbars/templates_toolbar';
 import { useState, useEffect } from 'react';
 
-import _drag_clone from '../common/sample_dragging';
-
 const _use_window_size = () => {
     const [window_size, _set_window_size] = useState({
       width: window.innerWidth,
@@ -46,7 +44,6 @@ const _sprint_planning_template = () => {
         >
             <_templates_toolbar pos={"top"} win_width={width} win_height={height} />
             <_templates_toolbar pos={"left"} win_width={width} win_height={height} />
-            {/* <_drag_clone /> */}
         </div>
     );
 };
