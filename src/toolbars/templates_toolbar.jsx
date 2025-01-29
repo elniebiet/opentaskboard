@@ -2,13 +2,13 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Fab from '@mui/material/Fab';
 import { styled } from '@mui/system';
-import pointer_img from '../../res/imgs/img_pointer.png';
+import pointer_img from '../../res/imgs/img_pointer100x100.png';
 import sticky_notes_img from '../../res/imgs/img_stk_100x100.png';
 import comment_img from '../../res/imgs/img_comment_100x100.png'; 
 import board_marker_img from '../../res/imgs/img_board_marker_100x100.png'; 
 import eraser_img from '../../res/imgs/img_eraser_100x100.png'; 
 import shapes_img from '../../res/imgs/img_shapes_100x100.png'; 
-import fill_img from '../../res/imgs/img_fill_100x100.png'; 
+import fill_img from '../../res/imgs/img_fill2_100x100.png'; 
 import { useState, useEffect } from 'react';
 import { TOOLBAR_ITEMS } from '../common/globals';
 import { TOOLBAR_ITEM_TYPE } from '../common/globals';
@@ -19,7 +19,7 @@ const _add_toolbar_item = (props) =>
     let h = props.tb_root_height + 'px';
 
     const _square_fab = styled(Fab)({
-        borderRadius: '8px', 
+        borderRadius: props.tb_item_br + 'px', 
         width: w,       
         height: h,      
         backgroundColor: '#ffffff', 
@@ -85,7 +85,8 @@ const _add_toolbar_item = (props) =>
                         onDragStart={_handle_drag_start}
                         src={props.img_src}
                         alt={props.img_alt_txt} 
-                        style={{ width: props.tb_item_width, height: props.tb_item_height }} 
+                        style={{ width: props.tb_item_width, height: props.tb_item_height }}
+                        onClick={props.on_click_func} 
                     />
                 </_square_fab>
             </div>
@@ -127,9 +128,11 @@ const _templates_toolbar = (props) => {
 
     const ITEM_PERCENTAGE = 0.03; // toolbar item res percentage rtive to window size (2 percent of orig win)
     const ROOT_PERCENTAGE = 0.03; // toolbar container res percentage rtive to window size (3 percent of orig win)
+    const ITEM_BR_PERCENTAGE = 0.006; // toolbar item img border radius percentage
 
     let item_width = (ITEM_PERCENTAGE * props.win_width);
     let item_height = item_width;
+    let item_br = (ITEM_BR_PERCENTAGE * props.win_width);
 
     let root_width = (ROOT_PERCENTAGE * props.win_width);
     let root_height = root_width;
@@ -171,7 +174,7 @@ const _templates_toolbar = (props) => {
                     alt="" 
                     style={hoover_tb_styling}
                 /> 
-                <h2 style={hoover_tb_styling}>{props.tb_title}</h2>
+                <h4 style={hoover_tb_styling}>{props.tb_title}</h4>
             </div>
         );
     };
@@ -180,13 +183,15 @@ const _templates_toolbar = (props) => {
         <div>
             <div id="sprint_planning_template_root" style={toolbar_styling}>
                 <Box sx={{ '& > :not(style)': { m: 0.5 } }} display="flex" flexDirection={flex_dir}>
-                    <_add_toolbar_item item_index={TOOLBAR_ITEMS.TBI_CURSOR} tbi_type={TOOLBAR_ITEM_TYPE.CLICKABLE} img_src={pointer_img} img_alt_txt={"Cursor"} tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} drag_update_func={update_dragged_item_info} />
-                    <_add_toolbar_item item_index={TOOLBAR_ITEMS.TBI_STKNOTE} tbi_type={TOOLBAR_ITEM_TYPE.DRAGGABLE_CLICKABLE} img_src={sticky_notes_img} img_alt_txt={"Sticky Note"} tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} drag_update_func={update_dragged_item_info} />
-                    <_add_toolbar_item item_index={TOOLBAR_ITEMS.TBI_COMMENT} tbi_type={TOOLBAR_ITEMS.DRAGGABLE_CLICKABLE} img_src={comment_img} img_alt_txt={"Comment"} tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} drag_update_func={update_dragged_item_info} />
-                    <_add_toolbar_item item_index={TOOLBAR_ITEMS.TBI_MARKER} tbi_type={TOOLBAR_ITEM_TYPE.DRAGGABLE_CLICKABLE} img_src={board_marker_img} img_alt_txt={"Marker"} tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} drag_update_func={update_dragged_item_info} />
-                    <_add_toolbar_item item_index={TOOLBAR_ITEMS.TBI_SHAPE} tbi_type={TOOLBAR_ITEM_TYPE.CLICKABLE} img_src={shapes_img} img_alt_txt={"Shape"} tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} drag_update_func={update_dragged_item_info} />
-                    <_add_toolbar_item item_index={TOOLBAR_ITEMS.TBI_FILL} tbi_type={TOOLBAR_ITEM_TYPE.DRAGGABLE_CLICKABLE} img_src={fill_img} img_alt_txt={"Fill"} tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} drag_update_func={update_dragged_item_info} />
-                    <_add_toolbar_item item_index={TOOLBAR_ITEMS.TBI_ERASER} tbi_type={TOOLBAR_ITEM_TYPE.DRAGGABLE_CLICKABLE} img_src={eraser_img} img_alt_txt={"Eraser"} tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} drag_update_func={update_dragged_item_info} />
+                    <_add_toolbar_item item_index={TOOLBAR_ITEMS.TBI_CURSOR} tbi_type={TOOLBAR_ITEM_TYPE.CLICKABLE} img_src={pointer_img} img_alt_txt={"Cursor"} tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} />
+                    <_add_toolbar_item item_index={TOOLBAR_ITEMS.TBI_STKNOTE} tbi_type={TOOLBAR_ITEM_TYPE.DRAGGABLE_CLICKABLE} img_src={sticky_notes_img} img_alt_txt={"Sticky Note"} 
+                    tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} 
+                    on_click_func={props.add_note_func} />
+                    <_add_toolbar_item item_index={TOOLBAR_ITEMS.TBI_COMMENT} tbi_type={TOOLBAR_ITEMS.DRAGGABLE_CLICKABLE} img_src={comment_img} img_alt_txt={"Comment"} tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} />
+                    <_add_toolbar_item item_index={TOOLBAR_ITEMS.TBI_MARKER} tbi_type={TOOLBAR_ITEM_TYPE.CLICKABLE} img_src={board_marker_img} img_alt_txt={"Marker"} tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} />
+                    <_add_toolbar_item item_index={TOOLBAR_ITEMS.TBI_SHAPE} tbi_type={TOOLBAR_ITEM_TYPE.CLICKABLE} img_src={shapes_img} img_alt_txt={"Shape"} tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} />
+                    <_add_toolbar_item item_index={TOOLBAR_ITEMS.TBI_FILL} tbi_type={TOOLBAR_ITEM_TYPE.DRAGGABLE_CLICKABLE} img_src={fill_img} img_alt_txt={"Fill"} tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} />
+                    <_add_toolbar_item item_index={TOOLBAR_ITEMS.TBI_ERASER} tbi_type={TOOLBAR_ITEM_TYPE.DRAGGABLE_CLICKABLE} img_src={eraser_img} img_alt_txt={"Eraser"} tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} />
                 </Box>
             </div>
             
@@ -198,10 +203,6 @@ const _templates_toolbar = (props) => {
 
             { (is_dragging_tb_item.is_dragging) && (is_dragging_tb_item.item_index === TOOLBAR_ITEMS.TBI_COMMENT) && (
                 <_on_drag_hover_display tb_img={comment_img} tb_title={"Comment"} tb_hover_w={item_width} tb_hover_h={item_height} x_pos={is_dragging_tb_item.x} y_pos={is_dragging_tb_item.y} />
-            )}
-
-            { (is_dragging_tb_item.is_dragging) && (is_dragging_tb_item.item_index === TOOLBAR_ITEMS.TBI_MARKER) && (
-                <_on_drag_hover_display tb_img={board_marker_img} tb_title={"Marker"} tb_hover_w={item_width} tb_hover_h={item_height} x_pos={is_dragging_tb_item.x} y_pos={is_dragging_tb_item.y} />
             )}
 
             { (is_dragging_tb_item.is_dragging) && (is_dragging_tb_item.item_index === TOOLBAR_ITEMS.TBI_FILL) && (
