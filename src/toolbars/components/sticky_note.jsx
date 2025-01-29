@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import Draggable from "react-draggable";
 
-const _sticky_note = ({ id, text, onDelete: on_delete }) => {
-  const [noteText, _set_note_text] = useState(text);
-  const [isEditing, _set_is_editing] = useState(false);
+const _sticky_note = ({ id, text, on_delete: on_delete_func, x_pos, y_pos }) => {
+  const [note_text, _set_note_text] = useState(text);
+  const [is_editing, _set_is_editing] = useState(false);
 
   return (
     <Draggable>
@@ -17,13 +17,14 @@ const _sticky_note = ({ id, text, onDelete: on_delete }) => {
           boxShadow: "2px 2px 10px rgba(0,0,0,0.2)",
           cursor: "grab",
           position: "absolute",
-          top: '100px',
+          left: x_pos + 'px',
+          top: y_pos + 'px',
         }}
       >
-        {isEditing ? (
+        {is_editing ? (
           <textarea
             autoFocus
-            value={noteText}
+            value={note_text}
             onChange={(e) => _set_note_text(e.target.value)}
             onBlur={() => _set_is_editing(false)}
             style={{
@@ -36,10 +37,10 @@ const _sticky_note = ({ id, text, onDelete: on_delete }) => {
             }}
           />
         ) : (
-          <p onClick={() => _set_is_editing(true)}>{noteText}</p>
+          <p onClick={() => _set_is_editing(true)}>{note_text}</p>
         )}
         <button
-          onClick={() => on_delete(id)}
+          onClick={() => on_delete_func(id)}
           style={{
             position: "absolute",
             top: "5px",

@@ -37,6 +37,7 @@ const _sprint_planning_template = () => {
     
     /* sticky note begins */
     const [notes, _set_notes] = useState([]);
+    const [note_location, _set_note_location] = useState({loc_x: 100, loc_y: 100});
 
     const _add_note = () => {
       const new_note = { id: Date.now(), text: "New Note" };
@@ -46,6 +47,14 @@ const _sprint_planning_template = () => {
     const _delete_note = (id) => {
       _set_notes(notes.filter((note) => note.id !== id));
     };
+
+    const _set_note_loc_func = (x, y) => {
+      console.log("updating loc: " + x, " ", y );
+      _set_note_location({loc_x: x, loc_y: y});
+      console.log("note loc " + note_location.loc_x + " " + note_location.loc_y);
+    };
+
+    
     /* sticky note ends */
 
     return (
@@ -59,8 +68,8 @@ const _sprint_planning_template = () => {
           }}
         >
             <_gridlines_normal grid_size={100} line_color="#E6E6E6" z_index={0} />
-            <_templates_toolbar pos={"top"} win_width={width} win_height={height} z_index={50} add_note_func={_add_note} />
-            <_templates_toolbar pos={"left"} win_width={width} win_height={height} z_index={50} add_note_func={_add_note} />
+            <_templates_toolbar pos={"top"} win_width={width} win_height={height} z_index={50} add_note_func={_add_note} set_note_loc_func={_set_note_loc_func} />
+            <_templates_toolbar pos={"left"} win_width={width} win_height={height} z_index={50} add_note_func={_add_note} set_note_loc_func={_set_note_loc_func} />
 
             <div>
               <div
@@ -74,7 +83,7 @@ const _sprint_planning_template = () => {
               </div>
               <div>
                 {notes.map((note) => (
-                  <_sticky_note key={note.id} id={note.id} text={note.text} onDelete={_delete_note} />
+                  <_sticky_note key={note.id} id={note.id} text={note.text} on_delete={_delete_note} x_pos={note_location.loc_x} y_pos={note_location.loc_y} />
                 ))}
               </div>
             </div>
