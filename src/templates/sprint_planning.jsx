@@ -39,9 +39,23 @@ const _sprint_planning_template = () => {
     const [notes, _set_notes] = useState([]);
     const [note_location, _set_note_location] = useState({loc_x: 100, loc_y: 100});
 
-    const _add_note = () => {
-      const new_note = { id: Date.now(), text: "New Note" };
-      _set_notes([...notes, new_note]);
+    const _add_note = (clicked = true, pos_x = 100, pos_y = 100) => {
+      if(clicked)
+      {
+        // get last add/drag location
+        const {loc_x, loc_y} = note_location;  
+        let new_loc_x = loc_x + 20;
+        let new_loc_y = loc_y + 20;
+        const new_note = { id: Date.now(), text: "New Note", x_pos: new_loc_x, y_pos: new_loc_y };
+        _set_note_location({loc_x: new_loc_x, loc_y: new_loc_y}); // update last added location
+        _set_notes([...notes, new_note]);
+      }
+      else
+      {
+        // dragged
+        const new_note = { id: Date.now(), text: "New Note", x_pos: pos_x, y_pos: pos_y };
+        _set_notes([...notes, new_note]);
+      }
     };
 
     const _delete_note = (id) => {
@@ -49,9 +63,7 @@ const _sprint_planning_template = () => {
     };
 
     const _set_note_loc_func = (x, y) => {
-      console.log("updating loc: " + x, " ", y );
       _set_note_location({loc_x: x, loc_y: y});
-      console.log("note loc " + note_location.loc_x + " " + note_location.loc_y);
     };
 
     
@@ -83,7 +95,7 @@ const _sprint_planning_template = () => {
               </div>
               <div>
                 {notes.map((note) => (
-                  <_sticky_note key={note.id} id={note.id} text={note.text} on_delete={_delete_note} x_pos={note_location.loc_x} y_pos={note_location.loc_y} />
+                  <_sticky_note key={note.id} id={note.id} text={note.text} on_delete={_delete_note} x_pos={note.x_pos} y_pos={note.y_pos} />
                 ))}
               </div>
             </div>

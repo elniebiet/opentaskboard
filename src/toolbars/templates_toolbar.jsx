@@ -54,10 +54,19 @@ const _add_toolbar_item = (props) =>
         const { clientX, clientY } = e;
         props.drag_update_func(props.item_index, false, clientX, clientY); 
         
-        if(props.item_index === TOOLBAR_ITEMS.TBI_STKNOTE)
+        // toolbar-item specific actions
+        switch(props.item_index)
         {
-            props.item_loc_update_func(clientX, clientY);
-            props.on_click_func();
+            case TOOLBAR_ITEMS.TBI_STKNOTE:
+            {
+                props.item_loc_update_func(clientX, clientY);
+                props.on_click_func(false, clientX, clientY);
+                break;
+            }
+            default:
+            {
+                break;
+            }
         }
     };
     
@@ -96,7 +105,7 @@ const _add_toolbar_item = (props) =>
                         src={props.img_src}
                         alt={props.img_alt_txt} 
                         style={{ width: props.tb_item_width, height: props.tb_item_height }}
-                        onClick={props.on_click_func} 
+                        onClick={() => props.on_click_func(true)} 
                     />
                 </_square_fab>
             </div>
