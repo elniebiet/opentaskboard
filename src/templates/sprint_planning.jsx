@@ -35,9 +35,9 @@ const _sprint_planning_template = () => {
       e.preventDefault(); // prevent the default "red stop circle" cursor
     };
     
-    /* sticky note begins */
+    /****************** sticky note begins ************************/
     const [notes, _set_notes] = useState([]);
-    const [note_location, _set_note_location] = useState({loc_x: 100, loc_y: 100});
+    const [note_location, _set_note_location] = useState({loc_x: 100, loc_y: 100}); // last location a note was added
 
     const _add_note = (clicked = true, pos_x = 100, pos_y = 100) => {
       if(clicked)
@@ -65,9 +65,8 @@ const _sprint_planning_template = () => {
     const _set_note_loc_func = (x, y) => {
       _set_note_location({loc_x: x, loc_y: y});
     };
-
     
-    /* sticky note ends */
+    /************** sticky note ends ******************************/
 
     return (
         <div 
@@ -95,7 +94,7 @@ const _sprint_planning_template = () => {
               </div>
               <div>
                 {notes.map((note) => (
-                  <_sticky_note key={note.id} id={note.id} text={note.text} on_delete={_delete_note} x_pos={note.x_pos} y_pos={note.y_pos} />
+                  <_sticky_note key={note.id} id={note.id} text={note.text} on_delete={_delete_note} note_update_func={_set_note_loc_func} x_pos={note.x_pos} y_pos={note.y_pos} />
                 ))}
               </div>
             </div>
