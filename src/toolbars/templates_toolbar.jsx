@@ -12,6 +12,7 @@ import fill_img from '../../res/imgs/img_fill2_100x100.png';
 import { useState, useEffect } from 'react';
 import { TOOLBAR_ITEMS } from '../common/globals';
 import { TOOLBAR_ITEM_TYPE } from '../common/globals';
+import zIndex from '@mui/material/styles/zIndex';
 
 const _add_toolbar_item = (props) => 
 {
@@ -175,25 +176,26 @@ const _templates_toolbar = (props) => {
         console.log("called " + is_dragging_tb_item.item_index, is_dragging_tb_item.is_dragging, is_dragging_tb_item.x, is_dragging_tb_item.y);
     };
     
-    const _on_drag_hover_display = (props) =>
+    const _on_drag_hover_display = (props_1) =>
     {
         let hoover_tb_styling = {
             position: 'fixed', 
-            top: props.y_pos, 
-            left: props.x_pos, 
-            width: props.tb_hover_w * 2,
-            height: props.tb_hover_h * 2,
+            top: props_1.y_pos, 
+            left: props_1.x_pos, 
+            width: props_1.tb_hover_w * 2,
+            height: props_1.tb_hover_h * 2,
             opacity: 0.5, // Makes it slightly transparent
+            zIndex: props.z_index,
         };
 
         return (
-            <div> 
+            <div > 
                 <img 
-                    src={props.tb_img} 
+                    src={props_1.tb_img} 
                     alt="" 
                     style={hoover_tb_styling}
                 /> 
-                <h4 style={hoover_tb_styling}>{props.tb_title}</h4>
+                <h4 style={hoover_tb_styling}>{props_1.tb_title}</h4>
             </div>
         );
     };

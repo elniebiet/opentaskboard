@@ -94,7 +94,8 @@ const _sprint_planning_template = () => {
               </div>
               <div>
                 {notes.map((note) => (
-                  <_sticky_note key={note.id} id={note.id} text={note.text} on_delete={_delete_note} note_update_func={_set_note_loc_func} x_pos={note.x_pos} y_pos={note.y_pos} />
+                  <_sticky_note key={note.id} id={note.id} text={note.text} on_delete={_delete_note} note_update_func={_set_note_loc_func} 
+                    x_pos={note.x_pos} y_pos={note.y_pos} win_width={width} win_height={height}/>
                 ))}
               </div>
             </div>
