@@ -22,7 +22,7 @@ const TOOLBAR_ITEM_TYPE = {
 };
 
 /* Color Theme */
-let COLOR_THEMES = {white: '#ffffff', black:'#000000', blue_1: '#1976d2'}
+let COLOR_THEMES = {white: '#ffffff', white_compliment: '#000000', black:'#000000', black_compliment: '#ffffff', blue_1: '#1976d2'};
 let SELECTED_COLOR_THEME = COLOR_THEMES.white;
 
 export { SPRINT_PLANNING, URL_MAIN, TOOLBAR_ITEMS, TOOLBAR_ITEM_TYPE, COLOR_THEMES, SELECTED_COLOR_THEME };
