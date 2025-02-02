@@ -13,6 +13,7 @@ import { useState, useEffect } from 'react';
 import { TOOLBAR_ITEMS } from '../common/globals';
 import { TOOLBAR_ITEM_TYPE } from '../common/globals';
 import zIndex from '@mui/material/styles/zIndex';
+import { SELECTED_COLOR_THEME } from '../common/globals';
 
 const _add_toolbar_item = (props) => 
 {
@@ -119,7 +120,7 @@ let toolbar_styling_top = {
     top: '10px', 
     left: '50%', 
     transform: 'translateX(-50%)', // Offset the div by half its width
-    backgroundColor: '#1976d2',
+    backgroundColor: SELECTED_COLOR_THEME,
     color: 'white',
     padding: '5px 10px',
     borderRadius: '0 0 8px 8px',
@@ -131,7 +132,7 @@ let toolbar_styling_left = {
     top: '50%', 
     left: '10px', 
     transform: 'translateY(-50%)',
-    backgroundColor: '#1976d2', 
+    backgroundColor: SELECTED_COLOR_THEME, 
     color: 'white',
     padding: '5px 10px',
     borderRadius: '0 8px 8px 0',

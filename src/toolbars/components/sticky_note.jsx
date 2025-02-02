@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Draggable from "react-draggable";
+import { SELECTED_COLOR_THEME } from "../../common/globals";
 
 const _sticky_note = (props) => {
     const [note_text, _set_note_text] = useState(props.text);
@@ -24,7 +25,7 @@ const _sticky_note = (props) => {
                 style={{
                 width: stknote_width,
                 minHeight: stknote_width,
-                backgroundColor: "#FFEB3B",
+                backgroundColor: SELECTED_COLOR_THEME,
                 padding: "10px",
                 borderRadius: "8px",
                 boxShadow: "2px 2px 10px rgba(0,0,0,0.2)",
