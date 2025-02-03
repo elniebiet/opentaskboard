@@ -11,26 +11,35 @@ import Testimonials from './components/Testimonials';
 import FAQ from './components/FAQ';
 import Footer from './components/Footer';
 import AppTheme from '../shared-theme/AppTheme';
+import { SELECTED_COLOR_THEME } from '../common/globals';
 
 export default function _homepage(props) {
   return (
     <AppTheme {...props}>
-      <CssBaseline enableColorScheme />
-      <AppAppBar _on_update_route={props._on_update_route}/>
-      <Hero />
-      <div>
-        {/* <LogoCollection /> */}
-        {/* <Features /> */}
-        <Divider />
-        {/* <Testimonials /> */}
-        <Divider />
-        <Highlights />
-        <Divider />
-        {/* <Pricing /> */}
-        <Divider />
-        {/* <FAQ /> */}
-        <Divider />
-        <Footer />
+      <div 
+        style={{ 
+          height: "100vh",
+          width: "100vw",
+          backgroundColor: SELECTED_COLOR_THEME,
+        }}
+      >
+        <CssBaseline enableColorScheme />
+        <AppAppBar _on_update_route={props._on_update_route}/>
+        <Hero />
+        <div>
+          {/* <LogoCollection /> */}
+          {/* <Features /> */}
+          <Divider />
+          {/* <Testimonials /> */}
+          <Divider />
+          <Highlights />
+          <Divider />
+          {/* <Pricing /> */}
+          <Divider />
+          {/* <FAQ /> */}
+          <Divider />
+          <Footer />
+        </div>
       </div>
     </AppTheme>
   );
