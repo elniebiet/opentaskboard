@@ -22,19 +22,19 @@ const _sticky_note = (props) => {
     };
 
     return (
-        <Draggable onDrag={_handle_note_drag}>
+        <Draggable onStop={_handle_note_drag}>
             <div
                 style={{
-                width: stknote_width + 'px',
-                minHeight: stknote_width + 'px',
-                backgroundColor: SELECTED_COLOR_THEME,
-                padding: "10px",
-                borderRadius: "8px",
-                boxShadow: "2px 2px 10px rgba(0,0,0,0.2)",
-                cursor: "grab",
-                position: "absolute",
-                left: props.x_pos + 'px',
-                top: props.y_pos + 'px',
+                    width: stknote_width + 'px',
+                    minHeight: stknote_width + 'px',
+                    backgroundColor: SELECTED_COLOR_THEME,
+                    padding: "10px",
+                    borderRadius: "8px",
+                    boxShadow: "2px 2px 10px rgba(0,0,0,0.2)",
+                    cursor: "grab",
+                    position: "absolute",
+                    left: props.x_pos + 'px',
+                    top: props.y_pos + 'px',
                 }}
             >
                 {is_editing ? (
