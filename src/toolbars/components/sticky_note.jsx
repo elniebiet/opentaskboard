@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import Draggable from "react-draggable";
 import { SELECTED_COLOR_THEME } from "../../common/globals";
+import { IconButton } from "@mui/material";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const _sticky_note = (props) => {
     const [note_text, _set_note_text] = useState(props.text);
@@ -11,9 +13,9 @@ const _sticky_note = (props) => {
 
     let stknote_width = STKNOTE_PERCENTAGE * props.win_width;
     stknote_width = ( stknote_width < STKNOTE_MIN_WIDTH ) ? STKNOTE_MIN_WIDTH : stknote_width;
-    stknote_width += 'px';
+    const font_size = 0.08 * stknote_width;
 
-    const _handle_note_drag = (e) => 
+    const _handle_note_drag = (e) =>   
     {
         const {clientX, clientY} = e;
         props.note_update_func(clientX, clientY);
@@ -23,8 +25,8 @@ const _sticky_note = (props) => {
         <Draggable onDrag={_handle_note_drag}>
             <div
                 style={{
-                width: stknote_width,
-                minHeight: stknote_width,
+                width: stknote_width + 'px',
+                minHeight: stknote_width + 'px',
                 backgroundColor: SELECTED_COLOR_THEME,
                 padding: "10px",
                 borderRadius: "8px",
@@ -36,40 +38,53 @@ const _sticky_note = (props) => {
                 }}
             >
                 {is_editing ? (
-                <textarea
-                    autoFocus
-                    value={note_text}
-                    onChange={(e) => _set_note_text(e.target.value)}
-                    onBlur={() => _set_is_editing(false)}
-                    style={{
-                    width: "100%",
-                    height: "100px",
-                    border: "none",
-                    background: "transparent",
-                    resize: "none",
-                    fontSize: "16px",
-                    }}
-                />
+                    <textarea
+                        autoFocus
+                        value={note_text}
+                        onChange={(e) => _set_note_text(e.target.value)}
+                        onBlur={() => _set_is_editing(false)}
+                        style={{
+                            marginTop: (0.15 * stknote_width) + 'px',
+                            width: stknote_width + 'px',
+                            height: (stknote_width - (0.15 * stknote_width)) + 'px',
+                            border: "none",
+                            background: "transparent",
+                            resize: "none",
+                            fontSize: font_size + 'px',
+                        }}
+                    />
                 ) : (
-                <p onClick={() => _set_is_editing(true)}>{note_text}</p>
+                    <p 
+                        style={{
+                            marginTop: (0.15 * stknote_width) + 'px',
+                            width: stknote_width + 'px',
+                            height: (stknote_width - (0.15 * stknote_width)) + 'px',
+                            border: "none",
+                            background: "transparent",
+                            resize: "none",
+                            fontSize: font_size + 'px',
+                        }}
+                        onClick={() => _set_is_editing(true)}
+                    >
+                            {note_text}
+                    </p>
                 )}
-                <button
-                    onClick={() => props.on_delete(props.id)}
+                <div
                     style={{
                         position: "absolute",
-                        top: "5px",
-                        right: "5px",
-                        background: "red",
+                        top: (0.01 * stknote_width) + 'px',
+                        right: (0.02 * stknote_width) + 'px',
+                        background: SELECTED_COLOR_THEME,
                         color: "white",
                         border: "none",
                         borderRadius: "50%",
-                        width: "20px",
-                        height: "20px",
                         cursor: "pointer",
                     }}
                 >
-                ×
-                </button>
+                    <IconButton aria-label="delete" size="small" onClick={() => props.on_delete(props.id)}>
+                        <DeleteIcon fontSize="small" />
+                    </IconButton>
+                </div>
             </div>
         </Draggable>
     );

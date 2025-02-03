@@ -3,7 +3,6 @@ import _templates_toolbar from '../toolbars/templates_toolbar';
 import { useState, useEffect } from 'react';
 import _gridlines_normal from '../gridlines/normal';
 import _sticky_note from '../toolbars/components/sticky_note';
-import { Button } from '@mui/material';
 
 const _use_window_size = () => {
     const [window_size, _set_window_size] = useState({
@@ -46,14 +45,14 @@ const _sprint_planning_template = () => {
         const {loc_x, loc_y} = note_location;  
         let new_loc_x = loc_x + 20;
         let new_loc_y = loc_y + 20;
-        const new_note = { id: Date.now(), text: "New Note", x_pos: new_loc_x, y_pos: new_loc_y };
+        const new_note = { id: Date.now(), text: "", x_pos: new_loc_x, y_pos: new_loc_y };
         _set_note_location({loc_x: new_loc_x, loc_y: new_loc_y}); // update last added location
         _set_notes([...notes, new_note]);
       }
       else
       {
         // dragged
-        const new_note = { id: Date.now(), text: "New Note", x_pos: pos_x, y_pos: pos_y };
+        const new_note = { id: Date.now(), text: "", x_pos: pos_x, y_pos: pos_y };
         _set_notes([...notes, new_note]);
       }
     };
