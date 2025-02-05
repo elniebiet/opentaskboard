@@ -3,6 +3,8 @@ import _templates_toolbar from '../toolbars/templates_toolbar';
 import { useState, useEffect } from 'react';
 import _gridlines_normal from '../gridlines/normal';
 import _sticky_note from '../toolbars/components/sticky_note';
+import board_marker_img_32 from '../../res/imgs/img_board_marker_32x32.png'; 
+import fill_img_32 from '../../res/imgs/img_fill2_32x32.png'; 
 
 const _use_window_size = () => {
     const [window_size, _set_window_size] = useState({
@@ -72,9 +74,29 @@ const _sprint_planning_template = () => {
     const _select_cursor_type = (cursor_type = 'default') => 
     {
       _set_cursor_type(cursor_type);
-    }
+    };
     /************** Pointer selection ends ****************************/
 
+    /************** Marker drawing begins ************************/
+    const _draw_with_marker = () => 
+    {
+      let cursor_type = `url(${board_marker_img_32}) 10 10, auto`;
+      _set_cursor_type(cursor_type);
+
+      // TODO: draw
+    };
+
+    /************** Marker drawing ends ************************/
+
+    /************** Add fill begins **********************************/
+    const _add_fill = () => 
+    {
+      let cursor_type = `url(${fill_img_32}) 10 10, auto`;
+      _set_cursor_type(cursor_type);
+
+      // TODO: fill
+    };
+    /************** Add fill ends **********************************/
     return (
         <div 
           id="sprint_planning_template_root"
@@ -88,9 +110,9 @@ const _sprint_planning_template = () => {
         >
             <_gridlines_normal grid_size={100} line_color="#E6E6E6" z_index={0} />
             <_templates_toolbar pos={"top"} win_width={width} win_height={height} z_index={50} add_note_func={_add_note} set_note_loc_func={_set_note_loc_func} 
-              select_cursor_func={_select_cursor_type} />
+              select_cursor_func={_select_cursor_type} marker_draw_func={_draw_with_marker} add_fill_func={_add_fill} />
             <_templates_toolbar pos={"left"} win_width={width} win_height={height} z_index={50} add_note_func={_add_note} set_note_loc_func={_set_note_loc_func} 
-              select_cursor_func={_select_cursor_type} />
+              select_cursor_func={_select_cursor_type} marker_draw_func={_draw_with_marker} add_fill_func={_add_fill} />
 
             <div>
               <div

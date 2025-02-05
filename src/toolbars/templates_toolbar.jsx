@@ -109,8 +109,7 @@ const _add_toolbar_item = (props) =>
             }
             case TOOLBAR_ITEMS.TBI_MARKER:
             {
-                let cursor_type = `url(${board_marker_img_32}) 10 10, auto`;
-                props.on_marker_click(cursor_type);
+                props.on_marker_click();
                 break;    
             }
             case TOOLBAR_ITEMS.TBI_CURSOR:
@@ -119,6 +118,11 @@ const _add_toolbar_item = (props) =>
                 props.on_pointer_click(cursor_type);
                 break;   
             }          
+            case TOOLBAR_ITEMS.TBI_FILL:  
+            {
+                props.on_fill_click();
+                break;
+            }
             case TOOLBAR_ITEMS.TBI_ERASER:             
             {
                 let cursor_type = `url(${eraser_img_32}) 10 10, auto`;
@@ -127,8 +131,7 @@ const _add_toolbar_item = (props) =>
             }
 
             case TOOLBAR_ITEMS.TBI_COMMENT:            
-            case TOOLBAR_ITEMS.TBI_SHAPE:              
-            case TOOLBAR_ITEMS.TBI_FILL:               
+            case TOOLBAR_ITEMS.TBI_SHAPE:                           
             default:
             {
                 break;
@@ -257,11 +260,11 @@ const _templates_toolbar = (props) => {
                     <_add_toolbar_item item_index={TOOLBAR_ITEMS.TBI_COMMENT} tbi_type={TOOLBAR_ITEMS.DRAGGABLE_CLICKABLE} img_src={comment_img} img_alt_txt={"Comment"} 
                     on_comment_click={_do_nothing} tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} />
                     <_add_toolbar_item item_index={TOOLBAR_ITEMS.TBI_MARKER} tbi_type={TOOLBAR_ITEM_TYPE.CLICKABLE} img_src={board_marker_img} img_alt_txt={"Marker"} 
-                    on_marker_click={props.select_cursor_func} tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} />
+                    on_marker_click={props.marker_draw_func} tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} />
                     <_add_toolbar_item item_index={TOOLBAR_ITEMS.TBI_SHAPE} tbi_type={TOOLBAR_ITEM_TYPE.CLICKABLE} img_src={shapes_img} img_alt_txt={"Shape"} 
                     on_shapes_click={_do_nothing} tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} />
                     <_add_toolbar_item item_index={TOOLBAR_ITEMS.TBI_FILL} tbi_type={TOOLBAR_ITEM_TYPE.DRAGGABLE_CLICKABLE} img_src={fill_img} img_alt_txt={"Fill"} 
-                    on_fill_click={_do_nothing} tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} />
+                    on_fill_click={props.add_fill_func} tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} />
                     <_add_toolbar_item item_index={TOOLBAR_ITEMS.TBI_ERASER} tbi_type={TOOLBAR_ITEM_TYPE.CLICKABLE} img_src={eraser_img} img_alt_txt={"Eraser"} 
                     on_eraser_click={props.select_cursor_func} tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} />
                 </Box>
@@ -275,10 +278,6 @@ const _templates_toolbar = (props) => {
 
             { (is_dragging_tb_item.is_dragging) && (is_dragging_tb_item.item_index === TOOLBAR_ITEMS.TBI_COMMENT) && (
                 <_on_drag_hover_display tb_img={comment_img} tb_title={"Comment"} tb_hover_w={item_width} tb_hover_h={item_height} x_pos={is_dragging_tb_item.x} y_pos={is_dragging_tb_item.y} />
-            )}
-
-            { (is_dragging_tb_item.is_dragging) && (is_dragging_tb_item.item_index === TOOLBAR_ITEMS.TBI_FILL) && (
-                <_on_drag_hover_display tb_img={fill_img} tb_title={"Fill"} tb_hover_w={item_width} tb_hover_h={item_height} x_pos={is_dragging_tb_item.x} y_pos={is_dragging_tb_item.y} />
             )}
             
         </div>
