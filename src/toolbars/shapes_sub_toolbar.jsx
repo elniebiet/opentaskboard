@@ -2,21 +2,29 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Fab from '@mui/material/Fab';
 import { styled } from '@mui/system';
-import pointer_img from '../../res/imgs/img_pointer100x100.png';
-import sticky_notes_img from '../../res/imgs/img_stk_100x100.png';
-import comment_img from '../../res/imgs/img_comment_100x100.png'; 
-import board_marker_img from '../../res/imgs/img_board_marker_100x100.png'; 
-import board_marker_img_32 from '../../res/imgs/img_board_marker_32x32.png'; 
-import eraser_img from '../../res/imgs/img_eraser_100x100.png'; 
-import eraser_img_32 from '../../res/imgs/img_eraser_32x32.png'; 
-import shapes_img from '../../res/imgs/img_shapes_100x100.png'; 
-import fill_img from '../../res/imgs/img_fill2_100x100.png'; 
 import { useState, useEffect } from 'react';
 import { TOOLBAR_ITEMS } from '../common/globals';
 import { TOOLBAR_ITEM_TYPE } from '../common/globals';
-import zIndex from '@mui/material/styles/zIndex';
+import { SHAPES_TOOLBAR_ITEM_TYPE } from '../common/globals';
 import { SELECTED_COLOR_THEME } from '../common/globals';
+import { SPRINT_TEMPLATE_SHAPES_TB_LOC } from './toolbar_defines';
 
+import line_img from '../../res/imgs/shapes_sub_toolbar/img_line_100x100.png';
+import line_img32 from '../../res/imgs/shapes_sub_toolbar/img_line_32x32.png';
+import circle_img from '../../res/imgs/shapes_sub_toolbar/img_circle_100x100.png';
+import circle_img32 from '../../res/imgs/shapes_sub_toolbar/img_circle_32x32.png';
+import rect_img from '../../res/imgs/shapes_sub_toolbar/img_rect_100x100.png';
+import rect_img32 from '../../res/imgs/shapes_sub_toolbar/img_rect_32x32.png';
+import filleted_rect_img from '../../res/imgs/shapes_sub_toolbar/img_filleted_rect_100x100.png';
+import filleted_rect_img32 from '../../res/imgs/shapes_sub_toolbar/img_filleted_rect_32x32.png';
+import triangle_img from '../../res/imgs/shapes_sub_toolbar/img_triangle_100x100.png';
+import triangle_img32 from '../../res/imgs/shapes_sub_toolbar/img_triangle_32x32.png';
+import right_angle_img from '../../res/imgs/shapes_sub_toolbar/img_right_angle_100x100.png';
+import right_angle_img32 from '../../res/imgs/shapes_sub_toolbar/img_right_angle_32x32.png';
+
+
+//////////////////////////////////////// TEMPORARY SUB TOOLBAR FOR SHAPES  ////////////
+////////////////////// REMOVE THIS COMMENT WHEN COMPLETED //////////////////////////////////
 const _add_toolbar_item = (props) => 
 {
     let w = props.tb_root_width + 'px';
@@ -46,10 +54,6 @@ const _add_toolbar_item = (props) =>
         if (is_dragging) {
             const { clientX, clientY } = e; // update ghost element's position
             props.drag_update_func(props.item_index, true, clientX, clientY);
-            if(props.item_index === TOOLBAR_ITEMS.TBI_STKNOTE)
-            {
-                props.item_loc_update_func(clientX, clientY);
-            } 
         }
     };
 
@@ -57,14 +61,12 @@ const _add_toolbar_item = (props) =>
         _set_is_dragging(false);
         const { clientX, clientY } = e;
         props.drag_update_func(props.item_index, false, clientX, clientY); 
-        
+        props.deactivate_sub_tb();
         // toolbar-item specific actions
         switch(props.item_index)
         {
-            case TOOLBAR_ITEMS.TBI_STKNOTE:
+            case SHAPES_TOOLBAR_ITEM_TYPE.STBI_LINE:
             {
-                props.item_loc_update_func(clientX, clientY);
-                props.on_stk_click(false, clientX, clientY);
                 break;
             }
             default:
@@ -101,47 +103,38 @@ const _add_toolbar_item = (props) =>
     /*************************** dragging block ends *********************************/
     const _handle_tb_item_click = (e) =>
     {
-        props.tb_item_clicked_func(); // tb item clicked
+        props.shapes_tb_item_clicked(e, props.item_index); // tb item clicked
         _on_tb_item_click(e, props.item_index);
+        props.deactivate_sub_tb();
     };
 
     const _on_tb_item_click = (e, tb_item_idx) => {
         switch(tb_item_idx)
         {
-            case TOOLBAR_ITEMS.TBI_STKNOTE:
+            case SHAPES_TOOLBAR_ITEM_TYPE.STBI_LINE:
             {
-                props.on_stk_click(true);
                 break;
             }
-            case TOOLBAR_ITEMS.TBI_MARKER:
+            case SHAPES_TOOLBAR_ITEM_TYPE.STBI_CIRCLE:
             {
-                props.on_marker_click();
                 break;    
             }
-            case TOOLBAR_ITEMS.TBI_CURSOR:
+            case SHAPES_TOOLBAR_ITEM_TYPE.STBI_RECT:
             {
-                let cursor_type = 'default';
-                props.on_pointer_click(cursor_type);
                 break;   
             }          
-            case TOOLBAR_ITEMS.TBI_FILL:  
+            case SHAPES_TOOLBAR_ITEM_TYPE.STBI_FILLETED_RECT:  
             {
-                props.on_fill_click();
                 break;
             }
-            case TOOLBAR_ITEMS.TBI_ERASER:             
+            case SHAPES_TOOLBAR_ITEM_TYPE.STBI_TRIANGLE:             
             {
-                let cursor_type = `url(${eraser_img_32}) 10 10, auto`;
-                props.on_eraser_click(cursor_type);
                 break;    
             }            
-            case TOOLBAR_ITEMS.TBI_SHAPE:    
+            case SHAPES_TOOLBAR_ITEM_TYPE.STBI_RIGHT_TRIANGLE:    
             {
-                const { clientX, clientY } = e;
-                props.on_shapes_click(clientX, clientY);
                 break;
-            }
-            case TOOLBAR_ITEMS.TBI_COMMENT:                       
+            }                       
             default:
             {
                 break;
@@ -168,8 +161,8 @@ const _add_toolbar_item = (props) =>
 /**************************** Toolbar Stylings begin ***************************/
 let toolbar_styling_top = {
     position: 'fixed', 
-    top: '7%', 
-    left: '60%', 
+    top: SPRINT_TEMPLATE_SHAPES_TB_LOC.top + '%', 
+    left: SPRINT_TEMPLATE_SHAPES_TB_LOC.left + '%', 
     transform: 'translateX(-50%)', // Offset the div by half its width
     backgroundColor: SELECTED_COLOR_THEME,
     color: 'white',
@@ -180,8 +173,8 @@ let toolbar_styling_top = {
 
 let toolbar_styling_left = {
     position: 'fixed',
-    top: '50%', 
-    left: '1%', 
+    top: (SPRINT_TEMPLATE_SHAPES_TB_LOC.left - 10 + '%'), 
+    left: SPRINT_TEMPLATE_SHAPES_TB_LOC.top + '%', 
     transform: 'translateY(-50%)',
     backgroundColor: SELECTED_COLOR_THEME, 
     color: 'white',
@@ -261,33 +254,58 @@ const _shapes_sub_toolbar = (props) => {
         <div>
             <div id="sprint_planning_template_root" style={toolbar_styling}>
                 <Box sx={{ '& > :not(style)': { m: 0.5 } }} display="flex" flexDirection={flex_dir}>
-                    <_add_toolbar_item tb_item_clicked_func={props.tb_item_clicked_func} item_index={TOOLBAR_ITEMS.TBI_CURSOR} tbi_type={TOOLBAR_ITEM_TYPE.CLICKABLE} img_src={pointer_img} img_alt_txt={"Cursor"} 
-                    on_pointer_click={props.select_cursor_func}  tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} />
-                    <_add_toolbar_item tb_item_clicked_func={props.tb_item_clicked_func} item_index={TOOLBAR_ITEMS.TBI_STKNOTE} tbi_type={TOOLBAR_ITEM_TYPE.DRAGGABLE_CLICKABLE} img_src={sticky_notes_img} img_alt_txt={"Sticky Note"} 
+                    <_add_toolbar_item shapes_tb_item_clicked={props.shapes_tb_item_clicked_func} item_index={SHAPES_TOOLBAR_ITEM_TYPE.STBI_LINE} tbi_type={TOOLBAR_ITEM_TYPE.DRAGGABLE_CLICKABLE} img_src={line_img} img_alt_txt={"Line"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} 
-                    on_stk_click={props.add_note_func} item_loc_update_func={props.set_note_loc_func} />
-                    <_add_toolbar_item tb_item_clicked_func={props.tb_item_clicked_func} item_index={TOOLBAR_ITEMS.TBI_COMMENT} tbi_type={TOOLBAR_ITEMS.DRAGGABLE_CLICKABLE} img_src={comment_img} img_alt_txt={"Comment"} 
-                    on_comment_click={_do_nothing} tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} />
-                    <_add_toolbar_item tb_item_clicked_func={props.tb_item_clicked_func} item_index={TOOLBAR_ITEMS.TBI_MARKER} tbi_type={TOOLBAR_ITEM_TYPE.CLICKABLE} img_src={board_marker_img} img_alt_txt={"Marker"} 
-                    on_marker_click={props.marker_draw_func} tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} />
-                    <_add_toolbar_item tb_item_clicked_func={props.tb_item_clicked_func} item_index={TOOLBAR_ITEMS.TBI_SHAPE} tbi_type={TOOLBAR_ITEM_TYPE.CLICKABLE} img_src={shapes_img} img_alt_txt={"Shape"} 
-                    on_shapes_click={props.shapes_selected_func} tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} />
-                    <_add_toolbar_item tb_item_clicked_func={props.tb_item_clicked_func} item_index={TOOLBAR_ITEMS.TBI_FILL} tbi_type={TOOLBAR_ITEM_TYPE.DRAGGABLE_CLICKABLE} img_src={fill_img} img_alt_txt={"Fill"} 
-                    on_fill_click={props.add_fill_func} tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} />
-                    <_add_toolbar_item tb_item_clicked_func={props.tb_item_clicked_func} item_index={TOOLBAR_ITEMS.TBI_ERASER} tbi_type={TOOLBAR_ITEM_TYPE.CLICKABLE} img_src={eraser_img} img_alt_txt={"Eraser"} 
-                    on_eraser_click={props.select_cursor_func} tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} />
+                    deactivate_sub_tb={props.deactivate_shapes_sub_tb}
+                    />
+                    <_add_toolbar_item shapes_tb_item_clicked={props.shapes_tb_item_clicked_func} item_index={SHAPES_TOOLBAR_ITEM_TYPE.STBI_CIRCLE} tbi_type={TOOLBAR_ITEM_TYPE.DRAGGABLE_CLICKABLE} img_src={circle_img} img_alt_txt={"Circle"} 
+                    tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} 
+                    deactivate_sub_tb={props.deactivate_shapes_sub_tb}
+                    />
+                    <_add_toolbar_item shapes_tb_item_clicked={props.shapes_tb_item_clicked_func} item_index={SHAPES_TOOLBAR_ITEM_TYPE.STBI_RECT} tbi_type={TOOLBAR_ITEMS.DRAGGABLE_CLICKABLE} img_src={rect_img} img_alt_txt={"Rectangle"} 
+                    tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} 
+                    deactivate_sub_tb={props.deactivate_shapes_sub_tb}
+                    />
+                    <_add_toolbar_item shapes_tb_item_clicked={props.shapes_tb_item_clicked_func} item_index={SHAPES_TOOLBAR_ITEM_TYPE.STBI_FILLETED_RECT} tbi_type={TOOLBAR_ITEM_TYPE.DRAGGABLE_CLICKABLE} img_src={filleted_rect_img} img_alt_txt={"Filleted Rectangle"} 
+                    tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} 
+                    deactivate_sub_tb={props.deactivate_shapes_sub_tb}
+                    />
+                    <_add_toolbar_item shapes_tb_item_clicked={props.shapes_tb_item_clicked_func} item_index={SHAPES_TOOLBAR_ITEM_TYPE.STBI_TRIANGLE} tbi_type={TOOLBAR_ITEM_TYPE.DRAGGABLE_CLICKABLE} img_src={triangle_img} img_alt_txt={"Triangle"} 
+                    tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} 
+                    deactivate_sub_tb={props.deactivate_shapes_sub_tb}
+                    />
+                    <_add_toolbar_item shapes_tb_item_clicked={props.shapes_tb_item_clicked_func} item_index={SHAPES_TOOLBAR_ITEM_TYPE.STBI_RIGHT_TRIANGLE} tbi_type={TOOLBAR_ITEM_TYPE.DRAGGABLE_CLICKABLE} img_src={right_angle_img} img_alt_txt={"Right angle triangle"} 
+                    tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} 
+                    deactivate_sub_tb={props.deactivate_shapes_sub_tb}
+                    />
                 </Box>
             </div>
             
             
             {/* Draggable Items begin */}
             
-            { (is_dragging_tb_item.is_dragging) && (is_dragging_tb_item.item_index === TOOLBAR_ITEMS.TBI_STKNOTE) && (
-                <_on_drag_hover_display tb_img={sticky_notes_img} tb_title={"Sticky Note"} tb_hover_w={item_width} tb_hover_h={item_height} x_pos={is_dragging_tb_item.x} y_pos={is_dragging_tb_item.y} />
+            { (is_dragging_tb_item.is_dragging) && (is_dragging_tb_item.item_index === SHAPES_TOOLBAR_ITEM_TYPE.STBI_LINE) && (
+                <_on_drag_hover_display tb_img={line_img32} tb_title={"Line"} tb_hover_w={item_width} tb_hover_h={item_height} x_pos={is_dragging_tb_item.x} y_pos={is_dragging_tb_item.y} />
             )}
 
-            { (is_dragging_tb_item.is_dragging) && (is_dragging_tb_item.item_index === TOOLBAR_ITEMS.TBI_COMMENT) && (
-                <_on_drag_hover_display tb_img={comment_img} tb_title={"Comment"} tb_hover_w={item_width} tb_hover_h={item_height} x_pos={is_dragging_tb_item.x} y_pos={is_dragging_tb_item.y} />
+            { (is_dragging_tb_item.is_dragging) && (is_dragging_tb_item.item_index === SHAPES_TOOLBAR_ITEM_TYPE.STBI_CIRCLE) && (
+                <_on_drag_hover_display tb_img={circle_img32} tb_title={"Circle"} tb_hover_w={item_width} tb_hover_h={item_height} x_pos={is_dragging_tb_item.x} y_pos={is_dragging_tb_item.y} />
+            )}
+
+            { (is_dragging_tb_item.is_dragging) && (is_dragging_tb_item.item_index === SHAPES_TOOLBAR_ITEM_TYPE.STBI_RECT) && (
+                <_on_drag_hover_display tb_img={rect_img32} tb_title={"Rectangle"} tb_hover_w={item_width} tb_hover_h={item_height} x_pos={is_dragging_tb_item.x} y_pos={is_dragging_tb_item.y} />
+            )}
+
+            { (is_dragging_tb_item.is_dragging) && (is_dragging_tb_item.item_index === SHAPES_TOOLBAR_ITEM_TYPE.STBI_FILLETED_RECT) && (
+                <_on_drag_hover_display tb_img={filleted_rect_img32} tb_title={"Filleted Rectangle"} tb_hover_w={item_width} tb_hover_h={item_height} x_pos={is_dragging_tb_item.x} y_pos={is_dragging_tb_item.y} />
+            )}
+
+            { (is_dragging_tb_item.is_dragging) && (is_dragging_tb_item.item_index === SHAPES_TOOLBAR_ITEM_TYPE.STBI_TRIANGLE) && (
+                <_on_drag_hover_display tb_img={triangle_img32} tb_title={"Triangle"} tb_hover_w={item_width} tb_hover_h={item_height} x_pos={is_dragging_tb_item.x} y_pos={is_dragging_tb_item.y} />
+            )}
+
+            { (is_dragging_tb_item.is_dragging) && (is_dragging_tb_item.item_index === SHAPES_TOOLBAR_ITEM_TYPE.STBI_RIGHT_TRIANGLE) && (
+                <_on_drag_hover_display tb_img={right_angle_img32} tb_title={"Right Triangle"} tb_hover_w={item_width} tb_hover_h={item_height} x_pos={is_dragging_tb_item.x} y_pos={is_dragging_tb_item.y} />
             )}
 
             {/* Draggable Items end */}

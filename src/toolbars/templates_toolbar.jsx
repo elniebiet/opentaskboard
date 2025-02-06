@@ -16,9 +16,8 @@ import { TOOLBAR_ITEMS } from '../common/globals';
 import { TOOLBAR_ITEM_TYPE } from '../common/globals';
 import zIndex from '@mui/material/styles/zIndex';
 import { SELECTED_COLOR_THEME } from '../common/globals';
-
-//////////////////////////////////////// TEMPORARY SUB TOOLBAR FOR SHAPES  ////////////
-////////////////////// REMOVE COMMENT WHEN COMPLETED ////////////////////////////////// 
+import { SPRINT_TEMPLATE_TB_LOC } from './toolbar_defines';
+ 
 const _add_toolbar_item = (props) => 
 {
     let w = props.tb_root_width + 'px';
@@ -169,8 +168,8 @@ const _add_toolbar_item = (props) =>
 /**************************** Toolbar Stylings begin ***************************/
 let toolbar_styling_top = {
     position: 'fixed', 
-    top: '1%', 
-    left: '50%', 
+    top: SPRINT_TEMPLATE_TB_LOC.top + '%', 
+    left: SPRINT_TEMPLATE_TB_LOC.left + '%', 
     transform: 'translateX(-50%)', // Offset the div by half its width
     backgroundColor: SELECTED_COLOR_THEME,
     color: 'white',
@@ -181,8 +180,8 @@ let toolbar_styling_top = {
 
 let toolbar_styling_left = {
     position: 'fixed',
-    top: '50%', 
-    left: '1%', 
+    top: SPRINT_TEMPLATE_TB_LOC.left + '%', 
+    left: SPRINT_TEMPLATE_TB_LOC.top + '%', 
     transform: 'translateY(-50%)',
     backgroundColor: SELECTED_COLOR_THEME, 
     color: 'white',

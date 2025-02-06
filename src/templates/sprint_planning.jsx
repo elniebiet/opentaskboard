@@ -6,6 +6,7 @@ import _gridlines_normal from '../gridlines/normal';
 import _sticky_note from '../toolbars/components/sticky_note';
 import board_marker_img_32 from '../../res/imgs/img_board_marker_32x32.png'; 
 import fill_img_32 from '../../res/imgs/img_fill2_32x32.png'; 
+import { SHAPES_TOOLBAR_ITEM_TYPE } from '../common/globals';
 
 const _use_window_size = () => {
     const [window_size, _set_window_size] = useState({
@@ -111,11 +112,17 @@ const _sprint_planning_template = () => {
       _set_sub_tb_item_clicked(false);
     };
 
-    const _sub_tb_item_clicked_notif = () =>
+    const _shape_clicked = (e, shape_type) => 
     {
       // sub toolbar_item was clicked
       _set_sub_tb_item_clicked(true);
     };
+
+    const _deactivate_shapes_sub_tb = () => 
+    {
+      _set_shapes_sub_toolbar_active(false);
+    };
+
     /************** Shapes selection ends *********************/
 
     /************** Page listener begins **********************/
@@ -153,7 +160,7 @@ const _sprint_planning_template = () => {
       );
     };
     /**************** Page listener ends **************************/
-    
+
     return (
         <div 
           id="sprint_planning_template_root"
@@ -176,8 +183,11 @@ const _sprint_planning_template = () => {
               select_cursor_func={_select_cursor_type} marker_draw_func={_draw_with_marker} add_fill_func={_add_fill} shapes_selected_func={_show_shape_options} />
             
             {(shapes_sub_toolbar_active === true) && (
-              <_shapes_sub_toolbar tb_item_clicked_func={_sub_tb_item_clicked_notif} pos={"top"} win_width={width} win_height={height} z_index={50} add_note_func={_add_note} set_note_loc_func={_set_note_loc_func} 
-                select_cursor_func={_select_cursor_type} marker_draw_func={_draw_with_marker} add_fill_func={_add_fill} shapes_selected_func={_show_shape_options} />
+              <_shapes_sub_toolbar shapes_tb_item_clicked_func={_shape_clicked} pos={"top"} win_width={width} win_height={height} z_index={50} deactivate_shapes_sub_tb={_deactivate_shapes_sub_tb} />
+            )}
+
+            {(shapes_sub_toolbar_active === true) && (
+              <_shapes_sub_toolbar shapes_tb_item_clicked_func={_shape_clicked} pos={"left"} win_width={width} win_height={height} z_index={50} deactivate_shapes_sub_tb={_deactivate_shapes_sub_tb} />
             )}
 
             <div>
