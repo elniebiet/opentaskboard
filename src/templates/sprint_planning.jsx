@@ -116,12 +116,15 @@ const _sprint_planning_template = () => {
       // sub toolbar_item was clicked
       _set_sub_tb_item_clicked(true);
     };
+    /************** Shapes selection ends *********************/
 
-    // listen to page clicks when sub-toolbar is active, incase non of it's buttons were selected
+    /************** Page listener begins **********************/
     const _page_click_listener = () => {
       useEffect(() => {
           const _handle_page_click = (e) => {
           console.log("page clicked at:", e.clientX, e.clientY);
+          
+          // listen to page clicks when sub-toolbar is active, incase non of it's buttons were selected
           if((shapes_sub_toolbar_active === true) && (sub_tb_item_clicked === false))
           {
             // sub-toolbar is active, toolbar item not clicked 
@@ -139,7 +142,7 @@ const _sprint_planning_template = () => {
     
         document.addEventListener("click", _handle_page_click);
     
-        // Cleanup function to remove the listener on unmount
+        // cleanup function to remove the listener on unmount
         return () => {
           document.removeEventListener("click", _handle_page_click);
         };
@@ -149,9 +152,8 @@ const _sprint_planning_template = () => {
         null
       );
     };
+    /**************** Page listener ends **************************/
     
-    /************** Shapes selection ends *********************/
-
     return (
         <div 
           id="sprint_planning_template_root"
