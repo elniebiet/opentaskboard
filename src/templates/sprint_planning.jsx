@@ -45,6 +45,9 @@ const _sprint_planning_template = () => {
     const _add_note = (clicked = true, pos_x = 100, pos_y = 100) => {
       if(clicked)
       {
+        // set cursor type
+        _set_cursor_type('default');
+
         // get last add/drag location
         const {loc_x, loc_y} = note_location;  
         let new_loc_x = loc_x + 20;
