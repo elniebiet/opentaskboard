@@ -82,7 +82,7 @@ const _sticky_note = (props) => {
                     }}
                 >
                     <IconButton aria-label="delete" size="small" onClick={() => props.on_delete(props.id)}>
-                        <DeleteIcon fontSize="small" />
+                        <DeleteIcon fontSize="small" color="success" />
                     </IconButton>
                 </div>
             </div>

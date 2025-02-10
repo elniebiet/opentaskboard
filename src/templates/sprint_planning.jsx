@@ -4,6 +4,7 @@ import _shapes_sub_toolbar from '../toolbars/shapes_sub_toolbar';
 import { useState, useEffect } from 'react';
 import _gridlines_normal from '../gridlines/normal';
 import _sticky_note from '../toolbars/components/sticky_note';
+import _comment from '../toolbars/components/comment';
 import board_marker_img_32 from '../../res/imgs/img_board_marker_32x32.png'; 
 import fill_img_32 from '../../res/imgs/img_fill2_32x32.png'; 
 import { SHAPES_TOOLBAR_ITEM_TYPE } from '../common/globals';
@@ -32,15 +33,21 @@ const _use_window_size = () => {
 };
 
 const _sprint_planning_template = () => {
+  /***************** Misc block begins *************************/
   const { width, height } = _use_window_size();
+  const [last_item_add_or_move_loc, _set_last_item_add_or_move_loc] = useState({loc_x: 100, loc_y: 100}); // last location a toolbar item was added or moved
+
+  const _set_tb_item_loc_func = (x, y) => {
+    _set_last_item_add_or_move_loc({loc_x: x, loc_y: y});
+  };
 
   const _handle_drag_over = (e) => {
     e.preventDefault(); // prevent the default "red stop circle" cursor
   };
-  
+  /***************** Misc block ends *************************/
+
   /****************** sticky note begins ************************/
-  const [notes, _set_notes] = useState([]);
-  const [note_location, _set_note_location] = useState({loc_x: 100, loc_y: 100}); // last location a note was added
+  const [notes, _set_notes] = useState([]); // TODO: temporary notes storage
 
   const _add_note = (clicked = true, pos_x = 100, pos_y = 100) => {
     if(clicked)
@@ -49,11 +56,11 @@ const _sprint_planning_template = () => {
       _set_cursor_type('default');
 
       // get last add/drag location
-      const {loc_x, loc_y} = note_location;  
+      const {loc_x, loc_y} = last_item_add_or_move_loc;  
       let new_loc_x = loc_x + 20;
       let new_loc_y = loc_y + 20;
       const new_note = { id: Date.now(), text: "", x_pos: new_loc_x, y_pos: new_loc_y };
-      _set_note_location({loc_x: new_loc_x, loc_y: new_loc_y}); // update last added location
+      _set_last_item_add_or_move_loc({loc_x: new_loc_x, loc_y: new_loc_y}); // update last added location
       _set_notes([...notes, new_note]);
     }
     else
@@ -66,10 +73,6 @@ const _sprint_planning_template = () => {
 
   const _delete_note = (id) => {
     _set_notes(notes.filter((note) => note.id !== id));
-  };
-
-  const _set_note_loc_func = (x, y) => {
-    _set_note_location({loc_x: x, loc_y: y});
   };
   /************** sticky note ends ******************************/
 
@@ -132,11 +135,35 @@ const _sprint_planning_template = () => {
   /************** Shapes selection ends *********************/
   
   /************** Add Comment Begins ************************/
-  const _add_comment = () => {
+  const [comments, _set_comments] = useState([]); // TODO: temporary comments storage
+
+  const _add_comment = (clicked = true, pos_x = 100, pos_y = 100) => {
     // select cursor
     _set_cursor_type('default');
-    // TODO: Add comment
-    console.log("added comment");
+    
+    if(clicked)
+    {
+      // set cursor type
+      _set_cursor_type('default');
+
+      // get last add/drag location
+      const {loc_x, loc_y} = last_item_add_or_move_loc;  
+      let new_loc_x = loc_x + 20;
+      let new_loc_y = loc_y + 20;
+      const new_comment = { id: Date.now(), text: "", x_pos: new_loc_x, y_pos: new_loc_y };
+      _set_last_item_add_or_move_loc({loc_x: new_loc_x, loc_y: new_loc_y}); // update last added location
+      _set_comments([...comments, new_comment]);
+    }
+    else
+    {
+      // dragged
+      const new_comment = { id: Date.now(), text: "", x_pos: pos_x, y_pos: pos_y };
+      _set_comments([...comments, new_comment]);
+    }
+  };
+
+  const _delete_comment = (id) => {
+    _set_comments(comments.filter((comment) => comment.id !== id));
   };
   /************** Add Comment Ends **************************/  
 
@@ -191,11 +218,11 @@ const _sprint_planning_template = () => {
 
           <_gridlines_normal grid_size={100} line_color="#E6E6E6" z_index={0} />
           
-          <_templates_toolbar pos={"top"} win_width={width} win_height={height} z_index={50} add_note_func={_add_note} set_note_loc_func={_set_note_loc_func} 
+          <_templates_toolbar pos={"top"} win_width={width} win_height={height} z_index={50} add_note_func={_add_note} set_tb_item_loc_func={_set_tb_item_loc_func} 
             select_cursor_func={_select_cursor_type} marker_draw_func={_draw_with_marker} add_fill_func={_add_fill} shapes_selected_func={_show_shape_options} 
             add_comment_func={_add_comment} />
           
-          <_templates_toolbar pos={"left"} win_width={width} win_height={height} z_index={50} add_note_func={_add_note} set_note_loc_func={_set_note_loc_func} 
+          <_templates_toolbar pos={"left"} win_width={width} win_height={height} z_index={50} add_note_func={_add_note} set_tb_item_loc_func={_set_tb_item_loc_func} 
             select_cursor_func={_select_cursor_type} marker_draw_func={_draw_with_marker} add_fill_func={_add_fill} shapes_selected_func={_show_shape_options} 
             add_comment_func={_add_comment} />
           
@@ -219,8 +246,15 @@ const _sprint_planning_template = () => {
             </div>
             <div>
               {notes.map((note) => (
-                <_sticky_note key={note.id} id={note.id} text={note.text} on_delete={_delete_note} note_update_func={_set_note_loc_func} 
+                <_sticky_note key={note.id} id={note.id} text={note.text} on_delete={_delete_note} note_update_func={_set_tb_item_loc_func} 
                   x_pos={note.x_pos} y_pos={note.y_pos} win_width={width} win_height={height}/>
+              ))}
+            </div>
+
+            <div>
+              {comments.map((comment) => (
+                <_comment key={comment.id} id={comment.id} text={comment.text} on_delete={_delete_comment} comment_update_func={_set_tb_item_loc_func} 
+                  x_pos={comment.x_pos} y_pos={comment.y_pos} win_width={width} win_height={height}/>
               ))}
             </div>
           </div>
