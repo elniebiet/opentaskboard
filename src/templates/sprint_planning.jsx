@@ -216,7 +216,7 @@ const _sprint_planning_template = () => {
       >
           <_page_click_listener />
 
-          <_gridlines_normal grid_size={100} line_color="#E6E6E6" z_index={0} />
+          <_gridlines_normal grid_size={50} line_color="#E6E6E6" z_index={0} />
           
           <_templates_toolbar pos={"top"} win_width={width} win_height={height} z_index={50} add_note_func={_add_note} set_tb_item_loc_func={_set_tb_item_loc_func} 
             select_cursor_func={_select_cursor_type} marker_draw_func={_draw_with_marker} add_fill_func={_add_fill} shapes_selected_func={_show_shape_options} 
