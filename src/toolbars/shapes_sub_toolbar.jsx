@@ -8,6 +8,7 @@ import { TOOLBAR_ITEM_TYPE } from '../common/globals';
 import { SHAPES_TOOLBAR_ITEM_TYPE } from '../common/globals';
 import { SELECTED_COLOR_THEME } from '../common/globals';
 import { SPRINT_TEMPLATE_SHAPES_TB_LOC } from './toolbar_defines';
+import { SPRINT_TEMPLATE_TB_SIZE } from './toolbar_defines';
 
 import line_img from '../../res/imgs/shapes_sub_toolbar/img_line_100x100.png';
 import line_img32 from '../../res/imgs/shapes_sub_toolbar/img_line_32x32.png';
@@ -190,8 +191,8 @@ const _shapes_sub_toolbar = (props) => {
     let flex_dir = "column";
     let toolbar_styling = toolbar_styling_left;
 
-    const ITEM_PERCENTAGE = 0.03; // toolbar item res percentage rtive to window size (2 percent of orig win)
-    const ROOT_PERCENTAGE = 0.03; // toolbar container res percentage rtive to window size (3 percent of orig win)
+    const ITEM_PERCENTAGE = SPRINT_TEMPLATE_TB_SIZE; // toolbar item res percentage rtive to window size (2 percent of orig win)
+    const ROOT_PERCENTAGE = SPRINT_TEMPLATE_TB_SIZE; // toolbar container res percentage rtive to window size (3 percent of orig win)
     const ITEM_BR_PERCENTAGE = 0.006; // toolbar item img border radius percentage
 
     let item_width = (ITEM_PERCENTAGE * props.win_width);
