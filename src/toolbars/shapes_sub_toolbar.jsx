@@ -9,6 +9,7 @@ import { SHAPES_TOOLBAR_ITEM_TYPE } from '../common/globals';
 import { SELECTED_COLOR_THEME } from '../common/globals';
 import { SPRINT_TEMPLATE_SHAPES_TB_LOC } from './toolbar_defines';
 import { SPRINT_TEMPLATE_TB_SIZE } from './toolbar_defines';
+import { _get_max_z_index } from '../common/globals';
 
 import line_img from '../../res/imgs/shapes_sub_toolbar/img_line_100x100.png';
 import line_img32 from '../../res/imgs/shapes_sub_toolbar/img_line_32x32.png';
@@ -230,7 +231,7 @@ const _shapes_sub_toolbar = (props) => {
             width: props_1.tb_hover_w * 2,
             height: props_1.tb_hover_h * 2,
             opacity: 0.5, // Makes it slightly transparent
-            zIndex: props.z_index,
+            zIndex: _get_max_z_index(),
             cursor: 'pointer',
         };
 

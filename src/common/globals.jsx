@@ -41,9 +41,40 @@ const SHAPES_TOOLBAR_ITEM_TYPE = {
     STBI_SIX_POINT_STAR:    16,
 };
 
+/*********** ZINDEX block begins ***************/
+const ZINDEX = 
+{
+    CURRENT_HIGHEST: 1000,
+    LOWEST: 0
+}
+
+const _get_max_z_index = () => {
+    return ZINDEX.CURRENT_HIGHEST;
+};
+
+const _get_lowest_z_index = () => {
+    return ZINDEX.LOWEST;
+};
+
+const _use_max_z_index = () => {
+    ZINDEX.CURRENT_HIGHEST += 1;
+};
+/*********** ZINDEX block ends ***************/
+
 /* Color Theme */
 let COLOR_THEMES = {white: '#ffffff', white_compliment: '#000000', black:'#000000', black_compliment: '#ffffff', blue_1: '#1976d2'};
 let SELECTED_COLOR_THEME = COLOR_THEMES.white;
 
-export { SPRINT_PLANNING, URL_MAIN, TOOLBAR_ITEMS, TOOLBAR_ITEM_TYPE, SHAPES_TOOLBAR_ITEM_TYPE, COLOR_THEMES, SELECTED_COLOR_THEME };
+export { 
+    SPRINT_PLANNING, 
+    URL_MAIN, 
+    TOOLBAR_ITEMS, 
+    TOOLBAR_ITEM_TYPE, 
+    SHAPES_TOOLBAR_ITEM_TYPE, 
+    COLOR_THEMES, 
+    SELECTED_COLOR_THEME, 
+    _get_max_z_index,
+    _get_lowest_z_index,
+    _use_max_z_index,
+};
 

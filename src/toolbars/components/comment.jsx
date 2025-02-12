@@ -6,12 +6,16 @@ import Draggable from "react-draggable";
 import { SELECTED_COLOR_THEME } from "../../common/globals";
 import { IconButton } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
+import { _get_max_z_index, _use_max_z_index } from "../../common/globals";
 
 const _comment = (props) => {
     const [comment_text, _set_comment_text] = useState(props.text);
     const _add_emoji = (emoji) => () => _set_comment_text(`${comment_text}${emoji}`);
     const [is_editing, _set_is_editing] = useState(true);
     
+    const [z_index, _set_z_index] = useState(_get_max_z_index());
+    _use_max_z_index();
+
     const COMMENT_PERCENTAGE    = 0.15;
     const COMMENT_MIN_WIDTH     = 150; //pixels
 
@@ -19,14 +23,31 @@ const _comment = (props) => {
     comment_width = ( comment_width < COMMENT_MIN_WIDTH ) ? COMMENT_MIN_WIDTH : comment_width;
     const font_size = 0.08 * comment_width;
 
-    const _handle_comment_drag = (e) =>   
+    const _handle_comment_drag_over = (e) =>   
     {
         const {clientX, clientY} = e;
         props.comment_update_func(clientX, clientY);
     };
 
+    const _handle_comment_drag_start = () => {
+        _activate_comment(true);
+    }
+
+    const _activate_comment = (editing_comment) => {
+        _set_is_editing(editing_comment);
+        _set_z_index(_get_max_z_index());
+        _use_max_z_index();
+        console.log("editing comment " + editing_comment);
+    };
+    
+    const _deactivate_comment = () => {
+        console.log("deactivating comment");
+        _set_is_editing(false);
+        _set_z_index(z_index - 1);
+    };
+    
     return (
-        <Draggable onStop={_handle_comment_drag}>
+        <Draggable onStart={_handle_comment_drag_start} onStop={_handle_comment_drag_over}>
             <div
                 style={{
                     width: comment_width + 'px',
@@ -39,14 +60,16 @@ const _comment = (props) => {
                     position: "absolute",
                     left: props.x_pos + 'px',
                     top: props.y_pos + 'px',
+                    zIndex: z_index,
                 }}
+                onClick={() => _activate_comment(true)}
+                onBlur={_deactivate_comment}
             >
                 {is_editing ? (
                     <Textarea
                         placeholder="Type in here…"
                         value={comment_text}
                         onChange={(event) => _set_comment_text(event.target.value)}
-                        // onBlur={() => _set_is_editing(false)}
                         minRows={2}
                         maxRows={4}
                         startDecorator={
@@ -89,7 +112,7 @@ const _comment = (props) => {
                             resize: "none",
                             fontSize: font_size + 'px',
                         }}
-                        onClick={() => _set_is_editing(true)}
+                        onClick={() => _activate_comment(true)}
                     >
                             {comment_text}
                     </p>
