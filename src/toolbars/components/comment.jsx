@@ -10,7 +10,7 @@ import { _get_max_z_index, _use_max_z_index } from "../../common/globals";
 
 const _comment = (props) => {
     const [comment_text, _set_comment_text] = useState(props.text);
-    const _add_emoji = (emoji) => () => _set_comment_text(`${comment_text}${emoji}`);
+    
     const [is_editing, _set_is_editing] = useState(true);
     
     const [z_index, _set_z_index] = useState(_get_max_z_index());
@@ -45,6 +45,16 @@ const _comment = (props) => {
         _set_is_editing(false);
         _set_z_index(z_index - 1);
     };
+
+    // const _add_emoji = (emoji) => () => _set_comment_text(`${comment_text}${emoji}`);
+
+    const _add_emoji = (emoji) => {
+        console.log("emoji clicked");
+        // let txt = comment_text + emoji;
+        // console.log("current text: " + txt);
+        // _set_comment_text(txt)
+        // _set_is_editing(true);
+    };
     
     return (
         <Draggable onStart={_handle_comment_drag_start} onStop={_handle_comment_drag_over}>
@@ -62,8 +72,7 @@ const _comment = (props) => {
                     top: props.y_pos + 'px',
                     zIndex: z_index,
                 }}
-                onClick={() => _activate_comment(true)}
-                onBlur={_deactivate_comment}
+                
             >
                 {is_editing ? (
                     <Textarea
@@ -74,13 +83,13 @@ const _comment = (props) => {
                         maxRows={4}
                         startDecorator={
                         <Box sx={{ display: 'flex', gap: 0.5, flex: 1 }}>
-                            <IconButton variant="outlined" color="neutral" onClick={_add_emoji('👍')}>
+                            <IconButton variant="outlined" color="neutral" onClick={() => _add_emoji('👍')}>
                             👍
                             </IconButton>
-                            <IconButton variant="outlined" color="neutral" onClick={_add_emoji('🏖')}>
+                            <IconButton variant="outlined" color="neutral" onClick={() => _add_emoji('🏖')}>
                             🏖
                             </IconButton>
-                            <IconButton variant="outlined" color="neutral" onClick={_add_emoji('😍')}>
+                            <IconButton variant="outlined" color="neutral" onClick={() => _add_emoji('😍')}>
                             😍
                             </IconButton>
                         </Box>
@@ -90,15 +99,17 @@ const _comment = (props) => {
                             {comment_text.length} char(s)
                         </Typography>
                         }
+
+                        onBlur={_deactivate_comment}
                         
                         style={{
-                        marginTop: (0.15 * comment_width) + 'px',
-                        width: comment_width + 'px',
-                        height: (comment_width - (0.15 * comment_width)) + 'px',
-                        border: "none",
-                        background: "transparent",
-                        resize: "none",
-                        fontSize: font_size + 'px',
+                            marginTop: (0.15 * comment_width) + 'px',
+                            width: comment_width + 'px',
+                            height: (comment_width - (0.15 * comment_width)) + 'px',
+                            border: "none",
+                            background: "transparent",
+                            resize: "none",
+                            fontSize: font_size + 'px',
                         }}
                     />
                 ) : (

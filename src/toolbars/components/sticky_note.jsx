@@ -12,8 +12,8 @@ const _sticky_note = (props) => {
     const [z_index, _set_z_index] = useState(_get_max_z_index());
     _use_max_z_index();
         
-    const STKNOTE_PERCENTAGE = 0.15;
-    const STKNOTE_MIN_WIDTH = 150; //pixels
+    const STKNOTE_PERCENTAGE    = 0.15;
+    const STKNOTE_MIN_WIDTH     = 150; //pixels
 
     let stknote_width = STKNOTE_PERCENTAGE * props.win_width;
     stknote_width = ( stknote_width < STKNOTE_MIN_WIDTH ) ? STKNOTE_MIN_WIDTH : stknote_width;
@@ -33,12 +33,9 @@ const _sticky_note = (props) => {
         _set_is_editing(editing_note);
         _set_z_index(_get_max_z_index());
         _use_max_z_index();
-        console.log("editing note " + editing_note);
     };
 
     const _deactivate_note = (e) => {
-        console.log("deactivating note: relatedTarget ");
-        console.log(e);
         _set_is_editing(false);
         _set_z_index(z_index - 1);
     };
@@ -59,11 +56,9 @@ const _sticky_note = (props) => {
                     top: props.y_pos + 'px',
                     zIndex: z_index,
                 }}
-                // onClick={() => _activate_note(true)}
             >
                 {is_editing ? (
                     <textarea
-                        autoFocus
                         value={note_text}
                         onChange={(e) => _set_note_text(e.target.value)}
                         style={{
@@ -75,7 +70,8 @@ const _sticky_note = (props) => {
                             resize: "none",
                             fontSize: font_size + 'px',
                         }}
-                        // onBlur={_deactivate_note}
+                        onBlur={_deactivate_note}
+                        placeholder="Enter note here..."
                     />
                 ) : (
                     <p 
@@ -90,7 +86,7 @@ const _sticky_note = (props) => {
                         }}
                         onClick={() => _activate_note(true)}
                     >
-                           label {note_text}
+                        {note_text}
                     </p>
                 )}
                 <div
