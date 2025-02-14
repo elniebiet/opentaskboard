@@ -37,23 +37,16 @@ const _comment = (props) => {
         _set_is_editing(editing_comment);
         _set_z_index(_get_max_z_index());
         _use_max_z_index();
-        console.log("editing comment " + editing_comment);
     };
     
     const _deactivate_comment = () => {
-        console.log("deactivating comment");
         _set_is_editing(false);
         _set_z_index(z_index - 1);
     };
 
-    // const _add_emoji = (emoji) => () => _set_comment_text(`${comment_text}${emoji}`);
-
     const _add_emoji = (emoji) => {
-        console.log("emoji clicked");
-        // let txt = comment_text + emoji;
-        // console.log("current text: " + txt);
-        // _set_comment_text(txt)
-        // _set_is_editing(true);
+        let txt = comment_text + emoji;
+        _set_comment_text(txt)
     };
     
     return (
@@ -72,8 +65,40 @@ const _comment = (props) => {
                     top: props.y_pos + 'px',
                     zIndex: z_index,
                 }}
-                
             >
+                <Box sx={{ display: 'flex', gap: 0.5, flex: 1 }}>
+                    <IconButton  
+                        style={{
+                            fontSize: font_size + 'px',
+                        }}
+                        variant="outlined" 
+                        color="neutral" 
+                        onClick={() => _add_emoji('👍')}
+                    >
+                    👍
+                    </IconButton>
+                    <IconButton 
+                        style={{
+                            fontSize: font_size + 'px',
+                        }}
+                        variant="outlined" 
+                        color="neutral" 
+                        onClick={() => _add_emoji('🏖')}
+                    >
+                    🏖
+                    </IconButton>
+                    <IconButton 
+                        style={{
+                            fontSize: font_size + 'px',
+                        }}
+                        variant="outlined" 
+                        color="neutral" 
+                        onClick={() => _add_emoji('😍')}
+                    >
+                    😍
+                    </IconButton>
+                </Box>
+
                 {is_editing ? (
                     <Textarea
                         placeholder="Type in here…"
@@ -81,25 +106,6 @@ const _comment = (props) => {
                         onChange={(event) => _set_comment_text(event.target.value)}
                         minRows={2}
                         maxRows={4}
-                        startDecorator={
-                        <Box sx={{ display: 'flex', gap: 0.5, flex: 1 }}>
-                            <IconButton variant="outlined" color="neutral" onClick={() => _add_emoji('👍')}>
-                            👍
-                            </IconButton>
-                            <IconButton variant="outlined" color="neutral" onClick={() => _add_emoji('🏖')}>
-                            🏖
-                            </IconButton>
-                            <IconButton variant="outlined" color="neutral" onClick={() => _add_emoji('😍')}>
-                            😍
-                            </IconButton>
-                        </Box>
-                        }
-                        endDecorator={
-                        <Typography level="body-xs" sx={{ ml: 'auto' }}>
-                            {comment_text.length} char(s)
-                        </Typography>
-                        }
-
                         onBlur={_deactivate_comment}
                         
                         style={{
