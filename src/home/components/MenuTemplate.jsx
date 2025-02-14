@@ -29,7 +29,7 @@ const _template_menu = (props) =>
             {(popupState) => (
             <React.Fragment>
                 <Button variant="text" {...bindTrigger(popupState)}>
-                Templates
+                Project Templates
                 </Button>
                 <Menu {...bindMenu(popupState)}>
                     <MenuItem onClick={_template_type_selected} value={SPRINT_PLANNING}>Sprint Planning</MenuItem>
