@@ -234,15 +234,7 @@ const _taskboard_default = () => {
           )}
 
           <div>
-            <div
-              style={{
-                top: "20px",
-                fontSize: "16px",
-                cursor: "pointer",
-                position: 'absolute',
-              }}
-            >
-            </div>
+            {/* display notes and comments */}
             <div>
               {notes.map((note) => (
                 <_sticky_note key={note.id} id={note.id} text={note.text} on_delete={_delete_note} note_update_func={_set_tb_item_loc_func} 
