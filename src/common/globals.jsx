@@ -1,9 +1,14 @@
 const URL_MAIN = "http://localhost:5173/";
 
-/* Template codes */
-const SPRINT_PLANNING = 1;
+/* TaskBoard codes begin */
+const TASKBOARD_DEFAULT = 1;
+/* TaskBoard codes end */
 
-/* Toolbar item indices */
+/* Template codes begin */
+const SPRINT_PLANNING = 1;
+/* Template codes end */
+
+/* Toolbar item indices begin */
 const TOOLBAR_ITEMS = {
     TBI_CURSOR:             1,
     TBI_STKNOTE:            2,
@@ -13,15 +18,17 @@ const TOOLBAR_ITEMS = {
     TBI_FILL:               6,
     TBI_ERASER:             7
 };
+/* Toolbar item indices end */
 
-/* Toolbar item type */
+/* Toolbar item types begin */
 const TOOLBAR_ITEM_TYPE = {
     DRAGGABLE: 0,
     CLICKABLE: 1,
     DRAGGABLE_CLICKABLE: 2
 };
+/* Toolbar item types end */
 
-/* Shapes Toolbar sub-item list */
+/* Shapes Toolbar sub-item list begin */
 const SHAPES_TOOLBAR_ITEM_TYPE = {
     STBI_LINE:              1,
     STBI_CIRCLE:            2,
@@ -40,6 +47,7 @@ const SHAPES_TOOLBAR_ITEM_TYPE = {
     STBI_FIVE_POINT_STAR:   15,
     STBI_SIX_POINT_STAR:    16,
 };
+/* Shapes Toolbar sub-item list end */
 
 /*********** ZINDEX block begins ***************/
 const ZINDEX = 
@@ -65,14 +73,30 @@ const _use_max_z_index = () => {
 let COLOR_THEMES = {white: '#ffffff', white_compliment: '#000000', black:'#000000', black_compliment: '#ffffff', blue_1: '#1976d2'};
 let SELECTED_COLOR_THEME = COLOR_THEMES.white;
 
-export { 
-    SPRINT_PLANNING, 
+
+
+/************************************************************/
+/******************** EXPORT *******************************/
+/************************************************************/
+export {
     URL_MAIN, 
+
+    /* TaskBoard code exports */
+    TASKBOARD_DEFAULT,
+
+    /* Template code exports  */
+    SPRINT_PLANNING,
+
+    /* Toolbar item exports */
     TOOLBAR_ITEMS, 
     TOOLBAR_ITEM_TYPE, 
     SHAPES_TOOLBAR_ITEM_TYPE, 
+
+    /* Color Theme exports */
     COLOR_THEMES, 
-    SELECTED_COLOR_THEME, 
+    SELECTED_COLOR_THEME,
+    
+    /* ZINDEX exports */
     _get_max_z_index,
     _get_lowest_z_index,
     _use_max_z_index,

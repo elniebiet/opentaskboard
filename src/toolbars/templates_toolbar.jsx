@@ -16,8 +16,8 @@ import { TOOLBAR_ITEMS } from '../common/globals';
 import { TOOLBAR_ITEM_TYPE } from '../common/globals';
 import zIndex from '@mui/material/styles/zIndex';
 import { SELECTED_COLOR_THEME } from '../common/globals';
-import { SPRINT_TEMPLATE_TB_LOC } from './toolbar_defines';
-import { SPRINT_TEMPLATE_TB_SIZE } from './toolbar_defines';
+import { TASKBOARD_DEFAULT_TB_LOC } from './toolbar_defines';
+import { TASKBOARD_DEFAULT_TB_SIZE } from './toolbar_defines';
 import { _get_max_z_index } from '../common/globals';
 
 const _add_toolbar_item = (props) => 
@@ -180,8 +180,8 @@ const _add_toolbar_item = (props) =>
 /**************************** Toolbar Stylings begin ***************************/
 let toolbar_styling_top = {
     position: 'fixed', 
-    top: SPRINT_TEMPLATE_TB_LOC.top + '%', 
-    left: SPRINT_TEMPLATE_TB_LOC.left + '%', 
+    top: TASKBOARD_DEFAULT_TB_LOC.top + '%', 
+    left: TASKBOARD_DEFAULT_TB_LOC.left + '%', 
     transform: 'translateX(-50%)', // Offset the div by half its width
     backgroundColor: SELECTED_COLOR_THEME,
     color: 'white',
@@ -192,8 +192,8 @@ let toolbar_styling_top = {
 
 let toolbar_styling_left = {
     position: 'fixed',
-    top: SPRINT_TEMPLATE_TB_LOC.left + '%', 
-    left: SPRINT_TEMPLATE_TB_LOC.top + '%', 
+    top: TASKBOARD_DEFAULT_TB_LOC.left + '%', 
+    left: TASKBOARD_DEFAULT_TB_LOC.top + '%', 
     transform: 'translateY(-50%)',
     backgroundColor: SELECTED_COLOR_THEME, 
     color: 'white',
@@ -210,8 +210,8 @@ const _templates_toolbar = (props) => {
     let flex_dir = "column";
     let toolbar_styling = toolbar_styling_left;
 
-    const ITEM_PERCENTAGE = SPRINT_TEMPLATE_TB_SIZE; // toolbar item res percentage rtive to window size (2 percent of orig win)
-    const ROOT_PERCENTAGE = SPRINT_TEMPLATE_TB_SIZE; // toolbar container res percentage rtive to window size (3 percent of orig win)
+    const ITEM_PERCENTAGE = TASKBOARD_DEFAULT_TB_SIZE; // toolbar item res percentage rtive to window size (2 percent of orig win)
+    const ROOT_PERCENTAGE = TASKBOARD_DEFAULT_TB_SIZE; // toolbar container res percentage rtive to window size (3 percent of orig win)
     const ITEM_BR_PERCENTAGE = 0.006; // toolbar item img border radius percentage
 
     let item_width = (ITEM_PERCENTAGE * props.win_width);

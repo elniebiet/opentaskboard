@@ -14,7 +14,7 @@ import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import _opentaskboard_icon from './opentaskboard_icon';
 import ColorModeIconDropdown from '../../shared-theme/ColorModeIconDropdown';
 import _template_menu from './MenuTemplate';
-import _features_menu from './MenuFeatures';
+import _taskboard_menu from './MenuTaskBoard';
 import _pricing_menu from './MenuPricing';
 import _FAQ_menu from './MenuFAQ';
 import _about_menu from './MenuAbout';
@@ -59,10 +59,10 @@ export default function AppAppBar(props) {
             <_opentaskboard_icon />
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <Box sx={{ minWidth: 120 }}>
-              <_template_menu _on_update_route={props._on_update_route} />
+              <_taskboard_menu _on_update_route={props._on_update_route} />
             </Box>
             <Box sx={{ minWidth: 120 }}>
-              <_features_menu _on_update_route={props._on_update_route} />
+              <_template_menu _on_update_route={props._on_update_route} />
             </Box>
             <Box sx={{ minWidth: 120 }}>
               <_pricing_menu _on_update_route={props._on_update_route} />

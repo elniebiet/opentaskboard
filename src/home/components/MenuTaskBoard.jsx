@@ -3,19 +3,19 @@ import Button from '@mui/material/Button';
 import { Menu } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
-import { SPRINT_PLANNING, URL_MAIN } from '../../common/globals';
+import { TASKBOARD_DEFAULT, URL_MAIN } from '../../common/globals';
 
-const _template_menu = (props) => 
+const _taskboard_menu = (props) => 
 {
     /* Task boards */
-    const [template_type, _set_template_type] = React.useState('');
+    const [template_type, _set_taskboard_type] = React.useState('');
 
-    const _template_type_selected = (event) => {
-        _set_template_type(event.target.value);
+    const _taskboard_type_selected = (event) => {
+        _set_taskboard_type(event.target.value);
     
         switch (event.target.value) {
-            case SPRINT_PLANNING:
-                props._on_update_route("templates/sprint_planning");
+            case TASKBOARD_DEFAULT:
+                props._on_update_route("taskboard/default");
                 break;
             
             default:
@@ -29,11 +29,11 @@ const _template_menu = (props) =>
             {(popupState) => (
             <React.Fragment>
                 <Button variant="text" {...bindTrigger(popupState)}>
-                Templates
+                TaskBoards
                 </Button>
                 <Menu {...bindMenu(popupState)}>
-                    <MenuItem onClick={_template_type_selected} value={SPRINT_PLANNING}>Sprint Planning</MenuItem>
-                    <MenuItem onClick={_template_type_selected} value={0}>Sample Template</MenuItem>
+                    <MenuItem onClick={_taskboard_type_selected} value={TASKBOARD_DEFAULT}>Default</MenuItem>
+                    <MenuItem onClick={_taskboard_type_selected} value={0}>Sample Taskboard</MenuItem>
                 </Menu>
             </React.Fragment>
             )}
@@ -41,4 +41,4 @@ const _template_menu = (props) =>
     );
 };
 
-export default _template_menu;
+export default _taskboard_menu;

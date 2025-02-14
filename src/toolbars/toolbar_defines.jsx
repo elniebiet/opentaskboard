@@ -1,19 +1,19 @@
-// sprint template tb location (percentage)
-const SPRINT_TEMPLATE_TB_LOC =
+// default taskboard tb location (percentage)
+const TASKBOARD_DEFAULT_TB_LOC =
 {
     top:    1,
     left:   50,
 };
 
-// sprint template shapes tb location (percentage)
-const SPRINT_TEMPLATE_SHAPES_TB_LOC =
+// default taskboard shapes tb location (percentage)
+const TASKBOARD_DEFAULT_SHAPES_TB_LOC =
 {
     top:    6,
     left:   60,
 };
 
-// Sprint template toolbar size (percentage)
-const SPRINT_TEMPLATE_TB_SIZE = 0.02;
+// default taskboard toolbar size (percentage)
+const TASKBOARD_DEFAULT_TB_SIZE = 0.02;
 
-export { SPRINT_TEMPLATE_TB_LOC, SPRINT_TEMPLATE_SHAPES_TB_LOC, SPRINT_TEMPLATE_TB_SIZE };
+export { TASKBOARD_DEFAULT_TB_LOC, TASKBOARD_DEFAULT_SHAPES_TB_LOC, TASKBOARD_DEFAULT_TB_SIZE };
 
