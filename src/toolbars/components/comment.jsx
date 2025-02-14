@@ -101,7 +101,7 @@ const _comment = (props) => {
 
                 {is_editing ? (
                     <Textarea
-                        placeholder="Type in here…"
+                        placeholder="comment…"
                         value={comment_text}
                         onChange={(event) => _set_comment_text(event.target.value)}
                         minRows={2}

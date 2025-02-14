@@ -71,7 +71,7 @@ const _sticky_note = (props) => {
                             fontSize: font_size + 'px',
                         }}
                         onBlur={_deactivate_note}
-                        placeholder="Enter note here..."
+                        placeholder="note..."
                     />
                 ) : (
                     <p 
