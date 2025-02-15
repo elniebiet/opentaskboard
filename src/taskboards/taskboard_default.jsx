@@ -3,8 +3,8 @@ import _templates_toolbar from '../toolbars/templates_toolbar';
 import _shapes_sub_toolbar from '../toolbars/shapes_sub_toolbar';
 import { useState, useEffect } from 'react';
 import _gridlines_normal from '../gridlines/normal';
-import _sticky_note from '../toolbars/components/sticky_note';
-import _comment from '../toolbars/components/comment';
+import _sticky_note from './components/sticky_note';
+import _comment from './components/comment';
 import board_marker_img_32 from '../../res/imgs/img_board_marker_32x32.png'; 
 import fill_img_32 from '../../res/imgs/img_fill2_32x32.png'; 
 
