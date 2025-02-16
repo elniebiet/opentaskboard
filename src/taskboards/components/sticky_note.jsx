@@ -6,7 +6,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { _get_max_z_index, _use_max_z_index } from "../../common/globals";
 import { _colour_picker_round } from "../../common/components/colour_picker";
 
-//TODO: FIX BUG WITH NOTE COLOURS, REMOVE THIS COMMENT WHEN DONE
 const _sticky_note = (props) => {
     const [is_editing, _set_is_editing] = useState(true);
 
@@ -46,8 +45,11 @@ const _sticky_note = (props) => {
     };
 
     const _update_note_colour = (updated_hex_colour_val) => {
-        console.log("updating colour : " + updated_hex_colour_val);
         props.note_update_func(props.id, props.text, updated_hex_colour_val);
+    };
+
+    const _colour_picker_btn_clicked = () => { 
+        _set_is_editing(false);
     };
 
     return (
@@ -108,7 +110,8 @@ const _sticky_note = (props) => {
                             right: (0.02 * stknote_width * 10) + 'px',
                         }}
                     >
-                        <_colour_picker_round id={props.id} width={20} height={20} colour={"#ff0000"} update_colour_func={_update_note_colour}/>
+                        <_colour_picker_round id={props.id} width={20} height={20} colour={"#ff0000"} x_pos={props.x_pos - stknote_width} y_pos={props.y_pos - stknote_width} 
+                            update_colour_func={_update_note_colour} onclick_func={_colour_picker_btn_clicked}/>
                     </div>
 
                     <div

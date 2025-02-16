@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import Box from '@mui/joy/Box';
 import Textarea from '@mui/joy/Textarea';
-import Typography from '@mui/joy/Typography';
 import Draggable from "react-draggable";
 import { SELECTED_COLOR_THEME } from "../../common/globals";
 import { IconButton } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { _get_max_z_index, _use_max_z_index } from "../../common/globals";
+import { _colour_picker_round } from "../../common/components/colour_picker";
 
 const _comment = (props) => {    
     const [is_editing, _set_is_editing] = useState(true);
@@ -44,11 +44,19 @@ const _comment = (props) => {
 
     const _add_emoji = (emoji) => {
         let txt = props.text + emoji;
-        _update_comment(props.id, txt)
+        _update_comment(txt);
     };
     
-    const _update_comment = (id, updated_text) => {
-        props.comment_update_func(props.id, updated_text);
+    const _update_comment = (updated_text) => {
+        props.comment_update_func(props.id, updated_text, props.colour);
+    };
+
+    const _update_comment_colour = (updated_hex_colour_val) => {
+        props.comment_update_func(props.id, props.text, updated_hex_colour_val);
+    };
+
+    const _colour_picker_btn_clicked = () => { 
+        _set_is_editing(false);
     };
 
     return (
@@ -57,7 +65,7 @@ const _comment = (props) => {
                 style={{
                     width: comment_width + 'px',
                     minHeight: comment_width + 'px',
-                    backgroundColor: SELECTED_COLOR_THEME,
+                    backgroundColor: props.colour,
                     padding: "10px",
                     borderRadius: "8px",
                     boxShadow: "2px 2px 10px rgba(0,0,0,0.2)",
@@ -68,7 +76,7 @@ const _comment = (props) => {
                     zIndex: z_index,
                 }}
             >
-                <Box sx={{ display: 'flex', gap: 0.5, flex: 1 }}>
+                <Box sx={{ display: 'flex', gap: 0.5, flex: 1, marginTop: font_size + 'px' }}>
                     <IconButton  
                         style={{
                             fontSize: font_size + 'px',
@@ -105,7 +113,7 @@ const _comment = (props) => {
                     <Textarea
                         placeholder="comment…"
                         value={props.text}
-                        onChange={(event) => _update_comment(props.id, event.target.value)}
+                        onChange={(event) => _update_comment(event.target.value)}
                         minRows={2}
                         maxRows={4}
                         onBlur={_deactivate_comment}
@@ -136,21 +144,33 @@ const _comment = (props) => {
                             {props.text}
                     </p>
                 )}
-                <div
-                    style={{
-                        position: "absolute",
-                        top: (0.01 * comment_width) + 'px',
-                        right: (0.02 * comment_width) + 'px',
-                        background: SELECTED_COLOR_THEME,
-                        color: "white",
-                        border: "none",
-                        borderRadius: "50%",
-                        cursor: "pointer",
-                    }}
-                >
-                    <IconButton aria-label="delete" size="small" onClick={() => props.on_delete(props.id)}>
-                        <DeleteIcon fontSize="small" color="success" />
-                    </IconButton>
+                <div>
+                    <div
+                        style={{
+                            position: "absolute",
+                            top: (0.01 * comment_width * 4) + 'px',
+                            right: (0.02 * comment_width * 10) + 'px',
+                        }}
+                    >
+                        <_colour_picker_round id={props.id} width={20} height={20} colour={"#ff0000"} x_pos={props.x_pos - comment_width} y_pos={props.y_pos - comment_width} 
+                            update_colour_func={_update_comment_colour} onclick_func={_colour_picker_btn_clicked}/>
+                    </div>
+                    <div
+                        style={{
+                            position: "absolute",
+                            top: (0.01 * comment_width) + 'px',
+                            right: (0.02 * comment_width) + 'px',
+                            background: SELECTED_COLOR_THEME,
+                            color: "white",
+                            border: "none",
+                            borderRadius: "50%",
+                            cursor: "pointer",
+                        }}
+                    >
+                        <IconButton aria-label="delete" size="small" onClick={() => props.on_delete(props.id)}>
+                            <DeleteIcon fontSize="small" color="success" />
+                        </IconButton>
+                    </div>
                 </div>
             </div>
         </Draggable>
