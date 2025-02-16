@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Draggable from "react-draggable";
 import { SELECTED_COLOR_THEME } from "../../common/globals";
 import { IconButton } from "@mui/material";
@@ -29,7 +29,7 @@ const _sticky_note = (props) => {
     };
 
     const _handle_note_drag_start = () => {
-        _activate_note(true);
+        ;
     }
 
     const _activate_note = (editing_note) => {
@@ -55,6 +55,16 @@ const _sticky_note = (props) => {
     const _colour_picker_btn_clicked = () => { 
         _set_is_editing(false);
     };
+
+
+    // Effects
+    const textarea_ref = useRef(null);
+    useEffect(() => {
+        if (is_editing && textarea_ref.current) {
+            textarea_ref.current.focus();
+        }
+    }, [is_editing]);
+
 
     return (
         <Draggable onStart={_handle_note_drag_start} onStop={_handle_note_drag_over}>
@@ -85,10 +95,11 @@ const _sticky_note = (props) => {
                             background: "transparent",
                             resize: "none",
                             fontSize: font_size + 'px',
-                            color: complement_colour
+                            color: complement_colour,
                         }}
                         onBlur={_deactivate_note}
                         placeholder="note..."
+                        ref={textarea_ref}
                     />
                 ) : (
                     <p 

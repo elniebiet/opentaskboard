@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Box from '@mui/joy/Box';
 import Textarea from '@mui/joy/Textarea';
 import Draggable from "react-draggable";
@@ -31,7 +31,7 @@ const _comment = (props) => {
     };
 
     const _handle_comment_drag_start = () => {
-        _activate_comment(true);
+        ;
     }
 
     const _activate_comment = (editing_comment) => {
@@ -63,6 +63,14 @@ const _comment = (props) => {
         _set_is_editing(false);
     };
 
+    // Effects
+    const textarea_ref = useRef(null);
+    useEffect(() => {
+        if (is_editing && textarea_ref.current) {
+            textarea_ref.current.focus();
+        }
+    }, [is_editing]);
+
     return (
         <Draggable onStart={_handle_comment_drag_start} onStop={_handle_comment_drag_over}>
             <div
@@ -84,9 +92,9 @@ const _comment = (props) => {
                     <IconButton  
                         style={{
                             fontSize: font_size + 'px',
+                            color: complement_colour,
                         }}
                         variant="outlined" 
-                        color="neutral" 
                         onClick={() => _add_emoji('👍')}
                     >
                     👍
@@ -94,9 +102,9 @@ const _comment = (props) => {
                     <IconButton 
                         style={{
                             fontSize: font_size + 'px',
+                            color: complement_colour,
                         }}
-                        variant="outlined" 
-                        color="neutral" 
+                        variant="outlined"  
                         onClick={() => _add_emoji('🏖')}
                     >
                     🏖
@@ -104,9 +112,9 @@ const _comment = (props) => {
                     <IconButton 
                         style={{
                             fontSize: font_size + 'px',
+                            color: complement_colour,
                         }}
                         variant="outlined" 
-                        color="neutral" 
                         onClick={() => _add_emoji('😍')}
                     >
                     😍
@@ -114,14 +122,13 @@ const _comment = (props) => {
                 </Box>
 
                 {is_editing ? (
-                    <Textarea
+                    <textarea
                         placeholder="comment…"
                         value={props.text}
                         onChange={(event) => _update_comment(event.target.value)}
-                        minRows={2}
-                        maxRows={4}
+                        minrows={2}
+                        maxrows={4}
                         onBlur={_deactivate_comment}
-                        
                         style={{
                             marginTop: (0.15 * comment_width) + 'px',
                             width: comment_width + 'px',
@@ -132,6 +139,7 @@ const _comment = (props) => {
                             fontSize: font_size + 'px',
                             color: complement_colour,
                         }}
+                        ref={textarea_ref}
                     />
                 ) : (
                     <p 
