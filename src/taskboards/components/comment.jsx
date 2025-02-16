@@ -7,6 +7,7 @@ import { IconButton } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { _get_max_z_index, _use_max_z_index } from "../../common/globals";
 import { _colour_picker_round } from "../../common/components/colour_picker";
+import { _get_complement_colour } from "../../common/utils";
 
 const _comment = (props) => {    
     const [is_editing, _set_is_editing] = useState(true);
@@ -14,6 +15,8 @@ const _comment = (props) => {
     const [z_index, _set_z_index] = useState(_get_max_z_index());
     _use_max_z_index();
 
+    const [complement_colour, _set_complement_colour] = useState(_get_complement_colour(props.colour));
+    
     const COMMENT_PERCENTAGE    = 0.15;
     const COMMENT_MIN_WIDTH     = 150; //pixels
 
@@ -53,6 +56,7 @@ const _comment = (props) => {
 
     const _update_comment_colour = (updated_hex_colour_val) => {
         props.comment_update_func(props.id, props.text, updated_hex_colour_val);
+        _set_complement_colour(_get_complement_colour(updated_hex_colour_val));
     };
 
     const _colour_picker_btn_clicked = () => { 
@@ -126,6 +130,7 @@ const _comment = (props) => {
                             background: "transparent",
                             resize: "none",
                             fontSize: font_size + 'px',
+                            color: complement_colour,
                         }}
                     />
                 ) : (
@@ -138,6 +143,7 @@ const _comment = (props) => {
                             background: "transparent",
                             resize: "none",
                             fontSize: font_size + 'px',
+                            color: complement_colour,
                         }}
                         onClick={() => _activate_comment(true)}
                     >
@@ -152,7 +158,7 @@ const _comment = (props) => {
                             right: (0.02 * comment_width * 10) + 'px',
                         }}
                     >
-                        <_colour_picker_round id={props.id} width={20} height={20} colour={"#ff0000"} x_pos={props.x_pos - comment_width} y_pos={props.y_pos - comment_width} 
+                        <_colour_picker_round id={props.id} width={20} height={20} colour={complement_colour} x_pos={props.x_pos - comment_width} y_pos={props.y_pos - comment_width} 
                             update_colour_func={_update_comment_colour} onclick_func={_colour_picker_btn_clicked}/>
                     </div>
                     <div

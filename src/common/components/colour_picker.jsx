@@ -29,7 +29,7 @@ const _colour_picker_round = (props) => {
                 height: props.height + 'px',
                 padding: "0",
                 borderRadius: "50%",
-                backgroundColor: color,
+                backgroundColor: props.colour,
                 border: "2px solid " + SELECTED_COLOR_THEME,
                 cursor: "pointer",
             }}

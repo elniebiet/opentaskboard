@@ -5,13 +5,16 @@ import { IconButton } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { _get_max_z_index, _use_max_z_index } from "../../common/globals";
 import { _colour_picker_round } from "../../common/components/colour_picker";
+import { _get_complement_colour } from "../../common/utils";
 
 const _sticky_note = (props) => {
     const [is_editing, _set_is_editing] = useState(true);
 
     const [z_index, _set_z_index] = useState(_get_max_z_index());
     _use_max_z_index();
-        
+    
+    const [complement_colour, _set_complement_colour] = useState(_get_complement_colour(props.colour));
+
     const STKNOTE_PERCENTAGE    = 0.15;
     const STKNOTE_MIN_WIDTH     = 150; //pixels
 
@@ -46,6 +49,7 @@ const _sticky_note = (props) => {
 
     const _update_note_colour = (updated_hex_colour_val) => {
         props.note_update_func(props.id, props.text, updated_hex_colour_val);
+        _set_complement_colour(_get_complement_colour(updated_hex_colour_val));
     };
 
     const _colour_picker_btn_clicked = () => { 
@@ -81,6 +85,7 @@ const _sticky_note = (props) => {
                             background: "transparent",
                             resize: "none",
                             fontSize: font_size + 'px',
+                            color: complement_colour
                         }}
                         onBlur={_deactivate_note}
                         placeholder="note..."
@@ -95,6 +100,7 @@ const _sticky_note = (props) => {
                             background: "transparent",
                             resize: "none",
                             fontSize: font_size + 'px',
+                            color: complement_colour
                         }}
                         onClick={() => _activate_note(true)}
                     >
@@ -110,7 +116,7 @@ const _sticky_note = (props) => {
                             right: (0.02 * stknote_width * 10) + 'px',
                         }}
                     >
-                        <_colour_picker_round id={props.id} width={20} height={20} colour={"#ff0000"} x_pos={props.x_pos - stknote_width} y_pos={props.y_pos - stknote_width} 
+                        <_colour_picker_round id={props.id} width={20} height={20} colour={complement_colour} x_pos={props.x_pos - stknote_width} y_pos={props.y_pos - stknote_width} 
                             update_colour_func={_update_note_colour} onclick_func={_colour_picker_btn_clicked}/>
                     </div>
 
