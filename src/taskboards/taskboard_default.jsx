@@ -7,6 +7,7 @@ import _sticky_note from './components/sticky_note';
 import _comment from './components/comment';
 import board_marker_img_32 from '../../res/imgs/img_board_marker_32x32.png'; 
 import fill_img_32 from '../../res/imgs/img_fill2_32x32.png'; 
+import { SELECTED_COLOR_THEME } from '../common/globals';
 
 const _use_window_size = () => {
     const [window_size, _set_window_size] = useState({
@@ -58,20 +59,29 @@ const _taskboard_default = () => {
       const {loc_x, loc_y} = last_item_add_or_move_loc;  
       let new_loc_x = loc_x + 20;
       let new_loc_y = loc_y + 20;
-      const new_note = { id: Date.now(), text: "", x_pos: new_loc_x, y_pos: new_loc_y };
+      const new_note = { id: Date.now(), text: "", x_pos: new_loc_x, y_pos: new_loc_y, colour: SELECTED_COLOR_THEME };
       _set_last_item_add_or_move_loc({loc_x: new_loc_x, loc_y: new_loc_y}); // update last added location
       _set_notes([...notes, new_note]);
     }
     else
     {
       // dragged
-      const new_note = { id: Date.now(), text: "", x_pos: pos_x, y_pos: pos_y };
+      const new_note = { id: Date.now(), text: "", x_pos: pos_x, y_pos: pos_y, colour: SELECTED_COLOR_THEME };
       _set_notes([...notes, new_note]);
     }
   };
 
   const _delete_note = (id) => {
     _set_notes(notes.filter((note) => note.id !== id));
+  };
+
+  const _update_note = (id, text, colour) => {
+    console.log("updating note: " + id + " with text: " + text + " and colour: " + colour);
+    _set_notes((prev_notes) =>
+      prev_notes.map((note) =>
+        note.id === id ? { ...note, text: text, colour: colour } : note
+      )
+    );
   };
   /************** sticky note ends ******************************/
 
@@ -164,6 +174,15 @@ const _taskboard_default = () => {
   const _delete_comment = (id) => {
     _set_comments(comments.filter((comment) => comment.id !== id));
   };
+
+  const _update_comment = (id, updated_text) => {
+    console.log("updating comment: " + id + " with text: " + updated_text);
+    _set_comments((prev_comments) =>
+      prev_comments.map((comment) =>
+        comment.id === id ? { ...comment, text: updated_text } : comment
+      )
+    );
+  };
   /************** Add Comment Ends **************************/  
 
   /************** Page listener begins **********************/
@@ -237,15 +256,15 @@ const _taskboard_default = () => {
             {/* display notes and comments */}
             <div>
               {notes.map((note) => (
-                <_sticky_note key={note.id} id={note.id} text={note.text} on_delete={_delete_note} note_update_func={_set_tb_item_loc_func} 
-                  x_pos={note.x_pos} y_pos={note.y_pos} win_width={width} win_height={height}/>
+                <_sticky_note key={note.id} id={note.id} text={note.text} on_delete={_delete_note} tb_item_loc_update_func={_set_tb_item_loc_func} 
+                  note_update_func={_update_note} x_pos={note.x_pos} y_pos={note.y_pos} win_width={width} win_height={height} colour={note.colour}/>
               ))}
             </div>
 
             <div>
               {comments.map((comment) => (
-                <_comment key={comment.id} id={comment.id} text={comment.text} on_delete={_delete_comment} comment_update_func={_set_tb_item_loc_func} 
-                  x_pos={comment.x_pos} y_pos={comment.y_pos} win_width={width} win_height={height}/>
+                <_comment key={comment.id} id={comment.id} text={comment.text} on_delete={_delete_comment} tb_item_loc_update_func={_set_tb_item_loc_func} 
+                comment_update_func={_update_comment}  x_pos={comment.x_pos} y_pos={comment.y_pos} win_width={width} win_height={height}/>
               ))}
             </div>
           </div>

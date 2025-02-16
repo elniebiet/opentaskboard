@@ -162,7 +162,7 @@ const _add_toolbar_item = (props) =>
     };
 
     return (
-            <div id="main_tb_item">
+            <div id="main_tb_item" onClick={_handle_tb_item_click}>
                 <_square_fab>
                     <img 
                         draggable

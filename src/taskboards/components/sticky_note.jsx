@@ -8,14 +8,11 @@ import { _colour_picker_round } from "../../common/components/colour_picker";
 
 //TODO: FIX BUG WITH NOTE COLOURS, REMOVE THIS COMMENT WHEN DONE
 const _sticky_note = (props) => {
-    const [note_text, _set_note_text] = useState(props.text);
     const [is_editing, _set_is_editing] = useState(true);
 
     const [z_index, _set_z_index] = useState(_get_max_z_index());
     _use_max_z_index();
-    
-    const [selected_color, _set_selected_colour] = useState(SELECTED_COLOR_THEME);
-    
+        
     const STKNOTE_PERCENTAGE    = 0.15;
     const STKNOTE_MIN_WIDTH     = 150; //pixels
 
@@ -26,7 +23,7 @@ const _sticky_note = (props) => {
     const _handle_note_drag_over = (e) =>   
     {
         const {clientX, clientY} = e;
-        props.note_update_func(clientX, clientY);
+        props.tb_item_loc_update_func(clientX, clientY);
     };
 
     const _handle_note_drag_start = () => {
@@ -44,8 +41,13 @@ const _sticky_note = (props) => {
         _set_z_index(z_index - 1);
     };
 
-    const _update_note_colour = (hex_colour_val) => {
-        _set_selected_colour(hex_colour_val);
+    const _update_note_text = (updated_text) => { 
+        props.note_update_func(props.id, updated_text, props.colour);
+    };
+
+    const _update_note_colour = (updated_hex_colour_val) => {
+        console.log("updating colour : " + updated_hex_colour_val);
+        props.note_update_func(props.id, props.text, updated_hex_colour_val);
     };
 
     return (
@@ -54,7 +56,7 @@ const _sticky_note = (props) => {
                 style={{
                     width: stknote_width + 'px',
                     minHeight: stknote_width + 'px',
-                    backgroundColor: selected_color,
+                    backgroundColor: props.colour,
                     padding: "10px",
                     borderRadius: "8px",
                     boxShadow: "2px 2px 10px rgba(0,0,0,0.2)",
@@ -67,8 +69,8 @@ const _sticky_note = (props) => {
             >
                 {is_editing ? (
                     <textarea
-                        value={note_text}
-                        onChange={(e) => _set_note_text(e.target.value)}
+                        value={props.text}
+                        onChange={(e) => _update_note_text(e.target.value)}
                         style={{
                             marginTop: (0.15 * stknote_width) + 'px',
                             width: stknote_width + 'px',
@@ -94,7 +96,7 @@ const _sticky_note = (props) => {
                         }}
                         onClick={() => _activate_note(true)}
                     >
-                        {note_text}
+                        {props.text}
                     </p>
                 )}
 
@@ -106,7 +108,7 @@ const _sticky_note = (props) => {
                             right: (0.02 * stknote_width * 10) + 'px',
                         }}
                     >
-                        <_colour_picker_round width={20} height={20} colour={"#ff0000"} update_colour_func={_update_note_colour}/>
+                        <_colour_picker_round id={props.id} width={20} height={20} colour={"#ff0000"} update_colour_func={_update_note_colour}/>
                     </div>
 
                     <div
@@ -114,7 +116,7 @@ const _sticky_note = (props) => {
                             position: "absolute",
                             top: (0.01 * stknote_width) + 'px',
                             right: (0.02 * stknote_width) + 'px',
-                            background: selected_color,
+                            background: props.colour,
                             color: "white",
                             border: "none",
                             borderRadius: "50%",

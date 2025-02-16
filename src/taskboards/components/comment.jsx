@@ -8,9 +8,7 @@ import { IconButton } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { _get_max_z_index, _use_max_z_index } from "../../common/globals";
 
-const _comment = (props) => {
-    const [comment_text, _set_comment_text] = useState(props.text);
-    
+const _comment = (props) => {    
     const [is_editing, _set_is_editing] = useState(true);
     
     const [z_index, _set_z_index] = useState(_get_max_z_index());
@@ -26,7 +24,7 @@ const _comment = (props) => {
     const _handle_comment_drag_over = (e) =>   
     {
         const {clientX, clientY} = e;
-        props.comment_update_func(clientX, clientY);
+        props.tb_item_loc_update_func(clientX, clientY);
     };
 
     const _handle_comment_drag_start = () => {
@@ -45,10 +43,14 @@ const _comment = (props) => {
     };
 
     const _add_emoji = (emoji) => {
-        let txt = comment_text + emoji;
-        _set_comment_text(txt)
+        let txt = props.text + emoji;
+        _update_comment(props.id, txt)
     };
     
+    const _update_comment = (id, updated_text) => {
+        props.comment_update_func(props.id, updated_text);
+    };
+
     return (
         <Draggable onStart={_handle_comment_drag_start} onStop={_handle_comment_drag_over}>
             <div
@@ -102,8 +104,8 @@ const _comment = (props) => {
                 {is_editing ? (
                     <Textarea
                         placeholder="comment…"
-                        value={comment_text}
-                        onChange={(event) => _set_comment_text(event.target.value)}
+                        value={props.text}
+                        onChange={(event) => _update_comment(props.id, event.target.value)}
                         minRows={2}
                         maxRows={4}
                         onBlur={_deactivate_comment}
@@ -131,7 +133,7 @@ const _comment = (props) => {
                         }}
                         onClick={() => _activate_comment(true)}
                     >
-                            {comment_text}
+                            {props.text}
                     </p>
                 )}
                 <div
