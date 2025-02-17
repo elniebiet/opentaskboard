@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { SELECTED_COLOR_THEME } from "../globals";
+import { _get_complement_colour } from "../utils";
 
 const _colour_picker_round = (props) => {
     const [color, _set_colour] = useState(props.colour);
@@ -29,8 +30,8 @@ const _colour_picker_round = (props) => {
                 height: props.height + 'px',
                 padding: "0",
                 borderRadius: "50%",
-                backgroundColor: props.colour,
-                border: "2px solid " + SELECTED_COLOR_THEME,
+                backgroundColor: color,
+                border: "2px solid " + _get_complement_colour(color),
                 cursor: "pointer",
             }}
             onClick={() => _cp_btn_clicked()}

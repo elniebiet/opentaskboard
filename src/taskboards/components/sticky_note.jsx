@@ -113,6 +113,7 @@ const _sticky_note = (props) => {
                             flexBasis: menubar_item_width + 'px', 
                             height: MENUBAR_HGT_PERC * stknote_width + 'px',
                             width: menubar_item_width + 'px',
+                            color: complement_colour
                         }}
                     >
                         <_colour_picker_round id={props.id} width={menubar_item_width} height={menubar_item_width} colour={complement_colour} x_pos={props.x_pos - stknote_width} y_pos={props.y_pos - stknote_width} 
@@ -123,7 +124,6 @@ const _sticky_note = (props) => {
                         style={{ 
                             flexBasis: menubar_item_width + 'px',
                             background: props.colour,
-                            color: "white",
                             borderRadius: "50%",
                             cursor: "pointer",
                             height: MENUBAR_HGT_PERC * stknote_width + 'px',
@@ -139,6 +139,7 @@ const _sticky_note = (props) => {
                                 margin: "0",
                                 textAlign: "center",
                                 fontWeight: "bold",
+                                backgroundColor: props.colour,
                                 color: complement_colour,
                                 display: "flex",
                                 alignItems: "center",
