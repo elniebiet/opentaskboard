@@ -111,6 +111,8 @@ const _sticky_note = (props) => {
                         id="btn_stknote_colour"
                         style={{ 
                             flexBasis: menubar_item_width + 'px', 
+                            height: MENUBAR_HGT_PERC * stknote_width + 'px',
+                            width: menubar_item_width + 'px',
                         }}
                     >
                         <_colour_picker_round id={props.id} width={menubar_item_width} height={menubar_item_width} colour={complement_colour} x_pos={props.x_pos - stknote_width} y_pos={props.y_pos - stknote_width} 
@@ -124,11 +126,29 @@ const _sticky_note = (props) => {
                             color: "white",
                             borderRadius: "50%",
                             cursor: "pointer",
+                            height: MENUBAR_HGT_PERC * stknote_width + 'px',
+                            width: menubar_item_width + 'px',
                         }}
                     >
-                        <IconButton aria-label="delete" size="small" onClick={() => props.on_delete(props.id)}>
-                            <DeleteIcon fontSize="small" color="success" />
-                        </IconButton>
+                        <button 
+                            style={{
+                                height: "100%",
+                                width: "100%",
+                                fontSize: font_size + "px",
+                                padding: "0",
+                                margin: "0",
+                                textAlign: "center",
+                                fontWeight: "bold",
+                                color: complement_colour,
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center", 
+                                lineHeight: "1",
+                            }}
+                            onClick={() => props.on_delete(props.id)}
+                        >
+                            X
+                        </button>
                     </div>
                 </div>
                 <div
