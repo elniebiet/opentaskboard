@@ -2,6 +2,18 @@ import { useState } from "react";
 import { SELECTED_COLOR_THEME } from "../globals";
 import { _get_complement_colour } from "../utils";
 
+/**
+ * round colour picker component.
+ * required parameters (supplied with props): 
+ *  - props.colour  (default colour)
+ *  - props.update_colour_func (colour update function)
+ *  - props.id  (colour picker id)
+ *  - props.onclick_func (colour picker button clicked handler)
+ *  - props.width ( colour picker button width)
+ *  - props.height ( colour picker button height )
+ *  - props.x_pos (colour picker x location)
+ *  - props.y_pos (colour picker y location)
+ */
 const _colour_picker_round = (props) => {
     const [color, _set_colour] = useState(props.colour);
 

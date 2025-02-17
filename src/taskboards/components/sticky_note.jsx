@@ -7,6 +7,9 @@ import { _get_max_z_index, _use_max_z_index } from "../../common/globals";
 import { _colour_picker_round } from "../../common/components/colour_picker";
 import { _get_complement_colour } from "../../common/utils";
 
+/**
+ * Sticky note component
+ */
 const _sticky_note = (props) => {
     const [is_editing, _set_is_editing] = useState(true);
 

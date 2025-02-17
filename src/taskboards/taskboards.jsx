@@ -2,6 +2,10 @@ import * as React from 'react';
 import _taskboard_default from './taskboard_default';
 import { TASKBOARD_DEFAULT } from '../common/globals';
 
+/**
+ * Taskboard base component
+ *  
+ */
 const _get_taskboard = (taskboard_code) => 
 {
     switch(taskboard_code)

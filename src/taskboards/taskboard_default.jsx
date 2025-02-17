@@ -9,6 +9,9 @@ import board_marker_img_32 from '../../res/imgs/img_board_marker_32x32.png';
 import fill_img_32 from '../../res/imgs/img_fill2_32x32.png'; 
 import { SELECTED_COLOR_THEME } from '../common/globals';
 
+/**
+ * Default taskboard component
+ */
 const _use_window_size = () => {
     const [window_size, _set_window_size] = useState({
       width: window.innerWidth,
