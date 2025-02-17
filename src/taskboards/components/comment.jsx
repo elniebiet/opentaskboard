@@ -17,17 +17,17 @@ const _comment = (props) => {
 
     const [complement_colour, _set_complement_colour] = useState(_get_complement_colour(props.colour));
     
-    const COMMENT_PERCENTAGE            = 0.15;
+    const COMMENT_PERC            = 0.15;
     const COMMENT_MIN_WIDTH             = 150;  //pixels
-    const FLEXBOX_GAP_PERCENTAGE        = 0.02; // 2% of comment height
-    const MENU_BAR_HGT_PERCENTAGE       = 0.10; // 10% of comment height
-    const EMOJIS_BAR_HGT_PERCENTAGE     = 0.10; // 10% of comment height
+    const FLEXBOX_GAP_PERC        = 0.02; // 2% of comment height
+    const MENUBAR_HGT_PERC       = 0.10; // 10% of comment height
+    const EMOJIS_BAR_HGT_PERC     = 0.10; // 10% of comment height
     const FONT_SIZE_PERC                = 0.08; // 8% of comment width
     const MENUBAR_ITEM_WIDTH_PERC       = 0.10; // 10% of comment width
     const STKNOTE_TXTAREA_PADDG_PERC    = 0.05; // 5% of comment width
     const STKNOTE_PARAGR_PADDG_PERC     = 0.15; // 15% of comment width
 
-    let comment_width = COMMENT_PERCENTAGE * props.win_width;
+    let comment_width = COMMENT_PERC * props.win_width;
     comment_width = ( comment_width < COMMENT_MIN_WIDTH ) ? COMMENT_MIN_WIDTH : comment_width;
 
     const font_size = FONT_SIZE_PERC * comment_width;
@@ -99,16 +99,16 @@ const _comment = (props) => {
                     zIndex: z_index,
                     display: "flex",
                     flexDirection: "column",
-                    gap: (FLEXBOX_GAP_PERCENTAGE * comment_width) + 'px',
+                    gap: (FLEXBOX_GAP_PERC * comment_width) + 'px',
                 }}
             >
                 <div 
                     id="comment_menubar"
                     style={{
-                        flexBasis: MENU_BAR_HGT_PERCENTAGE * comment_width + 'px',
+                        flexBasis: MENUBAR_HGT_PERC * comment_width + 'px',
                         display: "flex",
                         flexDirection: "row",
-                        gap: (FLEXBOX_GAP_PERCENTAGE * comment_width) + 'px',
+                        gap: (FLEXBOX_GAP_PERC * comment_width) + 'px',
                         justifyContent: "flex-end",
                         background: props.colour,
                     }}
@@ -116,30 +116,58 @@ const _comment = (props) => {
                     <div
                         id="btn_comment_colour"
                         style={{
-                            flexBasis: menubar_item_width + 'px', 
+                            flexBasis: menubar_item_width + 'px',
+                            height: MENUBAR_HGT_PERC * comment_width + 'px',
+                            width: menubar_item_width + 'px', 
                         }}
                     >
                         <_colour_picker_round id={props.id} width={menubar_item_width} height={menubar_item_width} colour={complement_colour} x_pos={props.x_pos - comment_width} y_pos={props.y_pos - comment_width} 
                             update_colour_func={_update_comment_colour} onclick_func={_colour_picker_btn_clicked}/>
                     </div>
                     <div
+                        id="btn_comment_delete"
                         style={{
-                            flexBasis: menubar_item_width + 'px', 
+                            flexBasis: menubar_item_width + 'px',
+                            background: props.colour,
+                            color: "white",
+                            borderRadius: "50%",
+                            cursor: "pointer",
+                            height: MENUBAR_HGT_PERC * comment_width + 'px',
+                            width: menubar_item_width + 'px', 
                         }}
                     >
-                        <IconButton aria-label="delete" size="small" onClick={() => props.on_delete(props.id)}>
+                        <button 
+                            style={{
+                                height: "100%",
+                                width: "100%",
+                                fontSize: font_size + "px",
+                                padding: "0",
+                                margin: "0",
+                                textAlign: "center",
+                                fontWeight: "bold",
+                                color: complement_colour,
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center", 
+                                lineHeight: "1",
+                            }}
+                            onClick={() => props.on_delete(props.id)}
+                        >
+                            X
+                        </button>
+                        {/* <IconButton aria-label="delete" size="small" onClick={() => props.on_delete(props.id)}>
                             <DeleteIcon fontSize="small" color="success" />
-                        </IconButton>
+                        </IconButton> */}
                     </div>
                 </div>
                 
                 <div
                     id="comment_emojis"
                     style={{
-                        flexBasis: EMOJIS_BAR_HGT_PERCENTAGE * comment_width + 'px',
+                        flexBasis: EMOJIS_BAR_HGT_PERC * comment_width + 'px',
                         display: "flex",
                         flexDirection: "row",
-                        gap: (FLEXBOX_GAP_PERCENTAGE * comment_width) + 'px',
+                        gap: (FLEXBOX_GAP_PERC * comment_width) + 'px',
                         background: props.colour,
                     }}
                 >
@@ -186,7 +214,7 @@ const _comment = (props) => {
                             maxrows={4}
                             onBlur={_deactivate_comment}
                             style={{
-                                marginTop: (FLEXBOX_GAP_PERCENTAGE * comment_width) + 'px',
+                                marginTop: (FLEXBOX_GAP_PERC * comment_width) + 'px',
                                 width: (comment_width - (STKNOTE_TXTAREA_PADDG_PERC * comment_width)) + 'px',
                                 height: comment_width + 'px',
                                 border: "none",
