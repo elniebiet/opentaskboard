@@ -4,6 +4,13 @@ import _template from '../templates/templates';
 import _taskboard from '../taskboards/taskboards';
 import { URL_MAIN } from "./globals";
 
+/**
+ * Manages routing for the application
+ *  renders the right component based on 
+ * 
+ * Note: the update route function (props._on_update_route ) should be passed from 
+ * the App component down to the component requesting the route change
+ */
 const _router = (props) => {
     switch(props._route)
     {

@@ -17,12 +17,21 @@ const _comment = (props) => {
 
     const [complement_colour, _set_complement_colour] = useState(_get_complement_colour(props.colour));
     
-    const COMMENT_PERCENTAGE    = 0.15;
-    const COMMENT_MIN_WIDTH     = 150; //pixels
+    const COMMENT_PERCENTAGE            = 0.15;
+    const COMMENT_MIN_WIDTH             = 150;  //pixels
+    const FLEXBOX_GAP_PERCENTAGE        = 0.02; // 2% of comment height
+    const MENU_BAR_HGT_PERCENTAGE       = 0.10; // 10% of comment height
+    const EMOJIS_BAR_HGT_PERCENTAGE     = 0.10; // 10% of comment height
+    const FONT_SIZE_PERC                = 0.08; // 8% of comment width
+    const MENUBAR_ITEM_WIDTH_PERC       = 0.10; // 10% of comment width
+    const STKNOTE_TXTAREA_PADDG_PERC    = 0.05; // 5% of comment width
+    const STKNOTE_PARAGR_PADDG_PERC     = 0.15; // 15% of comment width
 
     let comment_width = COMMENT_PERCENTAGE * props.win_width;
     comment_width = ( comment_width < COMMENT_MIN_WIDTH ) ? COMMENT_MIN_WIDTH : comment_width;
-    const font_size = 0.08 * comment_width;
+
+    const font_size = FONT_SIZE_PERC * comment_width;
+    let menubar_item_width   = MENUBAR_ITEM_WIDTH_PERC * comment_width;
 
     const _handle_comment_drag_over = (e) =>   
     {
@@ -31,8 +40,8 @@ const _comment = (props) => {
     };
 
     const _handle_comment_drag_start = () => {
-        _set_is_editing(false);
-        _set_z_index(z_index - 1);
+        _set_z_index(_get_max_z_index());
+        _use_max_z_index();
     }
 
     const _activate_comment = (editing_comment) => {
@@ -75,6 +84,7 @@ const _comment = (props) => {
     return (
         <Draggable onStart={_handle_comment_drag_start} onStop={_handle_comment_drag_over}>
             <div
+                id="comment_root"
                 style={{
                     width: comment_width + 'px',
                     minHeight: comment_width + 'px',
@@ -87,107 +97,125 @@ const _comment = (props) => {
                     left: props.x_pos + 'px',
                     top: props.y_pos + 'px',
                     zIndex: z_index,
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: (FLEXBOX_GAP_PERCENTAGE * comment_width) + 'px',
                 }}
             >
-                <Box sx={{ display: 'flex', gap: 0.5, flex: 1, marginTop: font_size + 'px' }}>
-                    <IconButton  
-                        style={{
-                            fontSize: font_size + 'px',
-                            color: complement_colour,
-                        }}
-                        variant="outlined" 
-                        onClick={() => _add_emoji('👍')}
-                    >
-                    👍
-                    </IconButton>
-                    <IconButton 
-                        style={{
-                            fontSize: font_size + 'px',
-                            color: complement_colour,
-                        }}
-                        variant="outlined"  
-                        onClick={() => _add_emoji('🏖')}
-                    >
-                    🏖
-                    </IconButton>
-                    <IconButton 
-                        style={{
-                            fontSize: font_size + 'px',
-                            color: complement_colour,
-                        }}
-                        variant="outlined" 
-                        onClick={() => _add_emoji('😍')}
-                    >
-                    😍
-                    </IconButton>
-                </Box>
-
-                {is_editing ? (
-                    <textarea
-                        placeholder="comment…"
-                        value={props.text}
-                        onChange={(event) => _update_comment(event.target.value)}
-                        minrows={2}
-                        maxrows={4}
-                        onBlur={_deactivate_comment}
-                        style={{
-                            marginTop: (0.15 * comment_width) + 'px',
-                            width: comment_width + 'px',
-                            height: (comment_width - (0.15 * comment_width)) + 'px',
-                            border: "none",
-                            outline: "none",
-                            background: "transparent",
-                            resize: "none",
-                            fontSize: font_size + 'px',
-                            color: complement_colour,
-                        }}
-                        ref={textarea_ref}
-                    />
-                ) : (
-                    <p 
-                        style={{
-                            marginTop: (0.15 * comment_width) + 'px',
-                            width: comment_width + 'px',
-                            height: (comment_width - (0.15 * comment_width)) + 'px',
-                            border: "none",
-                            outline: "none",
-                            background: "transparent",
-                            resize: "none",
-                            fontSize: font_size + 'px',
-                            color: complement_colour,
-                        }}
-                        onClick={() => _activate_comment(true)}
-                    >
-                            {props.text}
-                    </p>
-                )}
-                <div>
+                <div 
+                    id="comment_menubar"
+                    style={{
+                        flexBasis: MENU_BAR_HGT_PERCENTAGE * comment_width + 'px',
+                        display: "flex",
+                        flexDirection: "row",
+                        gap: (FLEXBOX_GAP_PERCENTAGE * comment_width) + 'px',
+                        justifyContent: "flex-end",
+                        background: props.colour,
+                    }}
+                >
                     <div
+                        id="btn_comment_colour"
                         style={{
-                            position: "absolute",
-                            top: (0.01 * comment_width * 4) + 'px',
-                            right: (0.02 * comment_width * 10) + 'px',
+                            flexBasis: menubar_item_width + 'px', 
                         }}
                     >
-                        <_colour_picker_round id={props.id} width={20} height={20} colour={complement_colour} x_pos={props.x_pos - comment_width} y_pos={props.y_pos - comment_width} 
+                        <_colour_picker_round id={props.id} width={menubar_item_width} height={menubar_item_width} colour={complement_colour} x_pos={props.x_pos - comment_width} y_pos={props.y_pos - comment_width} 
                             update_colour_func={_update_comment_colour} onclick_func={_colour_picker_btn_clicked}/>
                     </div>
                     <div
                         style={{
-                            position: "absolute",
-                            top: (0.01 * comment_width) + 'px',
-                            right: (0.02 * comment_width) + 'px',
-                            background: SELECTED_COLOR_THEME,
-                            color: "white",
-                            border: "none",
-                            borderRadius: "50%",
-                            cursor: "pointer",
+                            flexBasis: menubar_item_width + 'px', 
                         }}
                     >
                         <IconButton aria-label="delete" size="small" onClick={() => props.on_delete(props.id)}>
                             <DeleteIcon fontSize="small" color="success" />
                         </IconButton>
                     </div>
+                </div>
+                
+                <div
+                    id="comment_emojis"
+                    style={{
+                        flexBasis: EMOJIS_BAR_HGT_PERCENTAGE * comment_width + 'px',
+                        display: "flex",
+                        flexDirection: "row",
+                        gap: (FLEXBOX_GAP_PERCENTAGE * comment_width) + 'px',
+                        background: props.colour,
+                    }}
+                >
+                    <Box sx={{ display: 'flex', gap: 0.5, flex: 1 }}>
+                        <IconButton  
+                            style={{
+                                fontSize: font_size + 'px',
+                                color: complement_colour,
+                            }}
+                            variant="outlined" 
+                            onClick={() => _add_emoji('👍')}
+                        >
+                        👍
+                        </IconButton>
+                        <IconButton 
+                            style={{
+                                fontSize: font_size + 'px',
+                                color: complement_colour,
+                            }}
+                            variant="outlined"  
+                            onClick={() => _add_emoji('🏖')}
+                        >
+                        🏖
+                        </IconButton>
+                        <IconButton 
+                            style={{
+                                fontSize: font_size + 'px',
+                                color: complement_colour,
+                            }}
+                            variant="outlined" 
+                            onClick={() => _add_emoji('😍')}
+                        >
+                        😍
+                        </IconButton>
+                    </Box>
+                </div>
+                <div id="comment_text_area">
+                    {is_editing ? (
+                        <textarea
+                            placeholder="comment…"
+                            value={props.text}
+                            onChange={(event) => _update_comment(event.target.value)}
+                            minrows={2}
+                            maxrows={4}
+                            onBlur={_deactivate_comment}
+                            style={{
+                                marginTop: (FLEXBOX_GAP_PERCENTAGE * comment_width) + 'px',
+                                width: (comment_width - (STKNOTE_TXTAREA_PADDG_PERC * comment_width)) + 'px',
+                                height: comment_width + 'px',
+                                border: "none",
+                                outline: "none",
+                                background: "transparent",
+                                resize: "none",
+                                fontSize: font_size + 'px',
+                                color: complement_colour,
+                            }}
+                            ref={textarea_ref}
+                        />
+                    ) : (
+                        <p 
+                            style={{
+                                marginTop: (0.15 * comment_width) + 'px',
+                                width: comment_width + 'px',
+                                height: (comment_width - (STKNOTE_PARAGR_PADDG_PERC * comment_width)) + 'px',
+                                border: "none",
+                                outline: "none",
+                                background: "transparent",
+                                resize: "none",
+                                fontSize: font_size + 'px',
+                                color: complement_colour,
+                            }}
+                            onClick={() => _activate_comment(true)}
+                        >
+                                {props.text}
+                        </p>
+                    )}
                 </div>
             </div>
         </Draggable>
