@@ -17,11 +17,11 @@ const _comment = (props) => {
 
     const [complement_colour, _set_complement_colour] = useState(_get_complement_colour(props.colour));
     
-    const COMMENT_PERC            = 0.15;
+    const COMMENT_PERC                  = 0.15;
     const COMMENT_MIN_WIDTH             = 150;  //pixels
-    const FLEXBOX_GAP_PERC        = 0.02; // 2% of comment height
-    const MENUBAR_HGT_PERC       = 0.10; // 10% of comment height
-    const EMOJIS_BAR_HGT_PERC     = 0.10; // 10% of comment height
+    const FLEXBOX_GAP_PERC              = 0.02; // 2% of comment height
+    const MENUBAR_HGT_PERC              = 0.10; // 10% of comment height
+    const EMOJIS_BAR_HGT_PERC           = 0.10; // 10% of comment height
     const FONT_SIZE_PERC                = 0.08; // 8% of comment width
     const MENUBAR_ITEM_WIDTH_PERC       = 0.10; // 10% of comment width
     const STKNOTE_TXTAREA_PADDG_PERC    = 0.05; // 5% of comment width
@@ -156,9 +156,6 @@ const _comment = (props) => {
                         >
                             X
                         </button>
-                        {/* <IconButton aria-label="delete" size="small" onClick={() => props.on_delete(props.id)}>
-                            <DeleteIcon fontSize="small" color="success" />
-                        </IconButton> */}
                     </div>
                 </div>
                 
