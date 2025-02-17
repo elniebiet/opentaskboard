@@ -99,6 +99,7 @@ const _sticky_note = (props) => {
                         flexDirection: "row",
                         gap: (FLEXBOX_GAP_PERCENTAGE * stknote_width) + 'px',
                         justifyContent: "flex-end",
+                        background: props.colour,
                     }}
                 >
                     <div
@@ -139,6 +140,7 @@ const _sticky_note = (props) => {
                                 width: (stknote_width - (0.05 * stknote_width)) + 'px',
                                 height: stknote_width + 'px',
                                 border: "none",
+                                outline: "none",
                                 background: "transparent",
                                 resize: "none",
                                 fontSize: font_size + 'px',
@@ -155,6 +157,7 @@ const _sticky_note = (props) => {
                                 width: stknote_width + 'px',
                                 height: (stknote_width - (0.15 * stknote_width)) + 'px',
                                 border: "none",
+                                outline: "none",
                                 background: "transparent",
                                 resize: "none",
                                 fontSize: font_size + 'px',
