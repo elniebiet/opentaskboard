@@ -31,7 +31,8 @@ const _comment = (props) => {
     };
 
     const _handle_comment_drag_start = () => {
-        ;
+        _set_is_editing(false);
+        _set_z_index(z_index - 1);
     }
 
     const _activate_comment = (editing_comment) => {

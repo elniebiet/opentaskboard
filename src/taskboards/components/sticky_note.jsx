@@ -33,7 +33,8 @@ const _sticky_note = (props) => {
     };
 
     const _handle_note_drag_start = () => {
-        ;
+        _set_z_index(_get_max_z_index());
+        _use_max_z_index();
     }
 
     const _activate_note = (editing_note) => {
