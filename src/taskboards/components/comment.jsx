@@ -8,6 +8,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { _get_max_z_index, _use_max_z_index } from "../../common/globals";
 import { _colour_picker_round } from "../../common/components/colour_picker";
 import { _get_complement_colour } from "../../common/utils";
+import { Bold } from "lucide-react";
 
 /**
  * Comment component
@@ -25,6 +26,7 @@ const _comment = (props) => {
     const FLEXBOX_GAP_PERC              = 0.02; // 2% of comment height
     const MENUBAR_HGT_PERC              = 0.10; // 10% of comment height
     const EMOJIS_BAR_HGT_PERC           = 0.10; // 10% of comment height
+    const EMOJI_GAP                     = 0.01; // 1% of comment width
     const FONT_SIZE_PERC                = 0.08; // 8% of comment width
     const MENUBAR_ITEM_WIDTH_PERC       = 0.10; // 10% of comment width
     const STKNOTE_TXTAREA_PADDG_PERC    = 0.05; // 5% of comment width
@@ -74,6 +76,11 @@ const _comment = (props) => {
 
     const _colour_picker_btn_clicked = () => { 
         _set_is_editing(false);
+    };
+
+    const _show_extended_emoji_list = () => {
+        // TODO: Show emoji list
+        console.log("display extended emoji list.");
     };
 
     // Effects
@@ -172,7 +179,7 @@ const _comment = (props) => {
                         background: props.colour,
                     }}
                 >
-                    <Box sx={{ display: 'flex', gap: 0.5, flex: 1 }}>
+                    <Box sx={{ display: 'flex', gap: 0, flex: 1 }}>
                         <IconButton  
                             style={{
                                 fontSize: font_size + 'px',
@@ -202,6 +209,17 @@ const _comment = (props) => {
                             onClick={() => _add_emoji('😍')}
                         >
                         😍
+                        </IconButton>
+                        <IconButton 
+                            style={{
+                                fontSize: font_size * 1.5 + 'px',
+                                color: complement_colour,
+                                fontWeight: Bold,
+                            }}
+                            variant="outlined" 
+                            onClick={() => _show_extended_emoji_list()}
+                        >
+                        +
                         </IconButton>
                     </Box>
                 </div>
