@@ -8,10 +8,13 @@ import _comment from './components/comment';
 import board_marker_img_32 from '../../res/imgs/img_board_marker_32x32.png'; 
 import fill_img_32 from '../../res/imgs/img_fill2_32x32.png'; 
 import { SELECTED_COLOR_THEME } from '../common/globals';
+import { STKNOTE_WIDTH_PERC_DEFAULT } from './components/taskboard_definitions';
+import { COMMENT_WIDTH_PERC_DEFAULT } from './components/taskboard_definitions';
 
 /**
  * Default taskboard component
  */
+/****************** Effects block begin ***************************/
 const _use_window_size = () => {
     const [window_size, _set_window_size] = useState({
       width: window.innerWidth,
@@ -34,6 +37,7 @@ const _use_window_size = () => {
   
     return window_size;
 };
+/****************** Effects block ends ***************************/
 
 const _taskboard_default = () => {
   /***************** Misc block begins *************************/
@@ -62,14 +66,28 @@ const _taskboard_default = () => {
       const {loc_x, loc_y} = last_item_add_or_move_loc;  
       let new_loc_x = loc_x + 20;
       let new_loc_y = loc_y + 20;
-      const new_note = { id: Date.now(), text: "", x_pos: new_loc_x, y_pos: new_loc_y, colour: SELECTED_COLOR_THEME };
+      const new_note = { 
+        id: Date.now(),
+        text: "",
+        x_pos: new_loc_x,
+        y_pos: new_loc_y,
+        colour: SELECTED_COLOR_THEME,
+        win_width_perc: STKNOTE_WIDTH_PERC_DEFAULT 
+      };
       _set_last_item_add_or_move_loc({loc_x: new_loc_x, loc_y: new_loc_y}); // update last added location
       _set_notes([...notes, new_note]);
     }
     else
     {
       // dragged
-      const new_note = { id: Date.now(), text: "", x_pos: pos_x, y_pos: pos_y, colour: SELECTED_COLOR_THEME };
+      const new_note = { 
+        id: Date.now(), 
+        text: "", 
+        x_pos: pos_x, 
+        y_pos: pos_y, 
+        colour: SELECTED_COLOR_THEME, 
+        win_width_perc: STKNOTE_WIDTH_PERC_DEFAULT 
+      };
       _set_notes([...notes, new_note]);
     }
   };
@@ -78,10 +96,10 @@ const _taskboard_default = () => {
     _set_notes(notes.filter((note) => note.id !== id));
   };
 
-  const _update_note = (id, text, colour) => {
+  const _update_note = (id, text, colour, win_width_perc) => {
     _set_notes((prev_notes) =>
       prev_notes.map((note) =>
-        note.id === id ? { ...note, text: text, colour: colour } : note
+        note.id === id ? { ...note, text: text, colour: colour, win_width_perc: win_width_perc } : note
       )
     );
   };
@@ -161,14 +179,28 @@ const _taskboard_default = () => {
       const {loc_x, loc_y} = last_item_add_or_move_loc;  
       let new_loc_x = loc_x + 20;
       let new_loc_y = loc_y + 20;
-      const new_comment = { id: Date.now(), text: "", x_pos: new_loc_x, y_pos: new_loc_y, colour: SELECTED_COLOR_THEME };
+      const new_comment = { 
+        id: Date.now(), 
+        text: "", 
+        x_pos: new_loc_x, 
+        y_pos: new_loc_y, 
+        colour: SELECTED_COLOR_THEME,
+        win_width_perc: COMMENT_WIDTH_PERC_DEFAULT, 
+      };
       _set_last_item_add_or_move_loc({loc_x: new_loc_x, loc_y: new_loc_y}); // update last added location
       _set_comments([...comments, new_comment]);
     }
     else
     {
       // dragged
-      const new_comment = { id: Date.now(), text: "", x_pos: pos_x, y_pos: pos_y, colour: SELECTED_COLOR_THEME };
+      const new_comment = { 
+        id: Date.now(), 
+        text: "", 
+        x_pos: pos_x, 
+        y_pos: pos_y, 
+        colour: SELECTED_COLOR_THEME,
+        win_width_perc: COMMENT_WIDTH_PERC_DEFAULT, 
+      };
       _set_comments([...comments, new_comment]);
     }
   };
@@ -177,10 +209,10 @@ const _taskboard_default = () => {
     _set_comments(comments.filter((comment) => comment.id !== id));
   };
 
-  const _update_comment = (id, text, colour) => {
+  const _update_comment = (id, text, colour, win_width_perc) => {
     _set_comments((prev_comments) =>
       prev_comments.map((comment) =>
-        comment.id === id ? { ...comment, text: text, colour: colour } : comment
+        comment.id === id ? { ...comment, text: text, colour: colour, win_width_perc: win_width_perc } : comment
       )
     );
   };
@@ -257,14 +289,14 @@ const _taskboard_default = () => {
             {/* display notes and comments */}
             <div>
               {notes.map((note) => (
-                <_sticky_note key={note.id} id={note.id} text={note.text} on_delete={_delete_note} tb_item_loc_update_func={_set_tb_item_loc_func} 
+                <_sticky_note key={note.id} id={note.id} text={note.text} win_width_perc={note.win_width_perc} on_delete={_delete_note} tb_item_loc_update_func={_set_tb_item_loc_func} 
                   note_update_func={_update_note} x_pos={note.x_pos} y_pos={note.y_pos} win_width={width} win_height={height} colour={note.colour}/>
               ))}
             </div>
 
             <div>
               {comments.map((comment) => (
-                <_comment key={comment.id} id={comment.id} text={comment.text} on_delete={_delete_comment} tb_item_loc_update_func={_set_tb_item_loc_func} 
+                <_comment key={comment.id} id={comment.id} text={comment.text} win_width_perc={comment.win_width_perc} on_delete={_delete_comment} tb_item_loc_update_func={_set_tb_item_loc_func} 
                 comment_update_func={_update_comment}  x_pos={comment.x_pos} y_pos={comment.y_pos} win_width={width} win_height={height} colour={comment.colour}/>
               ))}
             </div>

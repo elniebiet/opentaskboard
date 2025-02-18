@@ -1,8 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
 import Draggable from "react-draggable";
-import { SELECTED_COLOR_THEME } from "../../common/globals";
-import { Button, IconButton } from "@mui/material";
-import DeleteIcon from '@mui/icons-material/Delete';
 import { _get_max_z_index, _use_max_z_index } from "../../common/globals";
 import { _colour_picker_round } from "../../common/components/colour_picker";
 import { _get_complement_colour } from "../../common/utils";
@@ -18,7 +15,10 @@ const _sticky_note = (props) => {
     
     const [complement_colour, _set_complement_colour] = useState(_get_complement_colour(props.colour));
 
-    const STKNOTE_PERC                      = 0.15;
+    const [is_resizing, _set_is_resizing] = useState(false);
+
+    const [start_resize_loc, _set_start_resize_loc] = useState({ x: 0, y: 0 });
+
     const STKNOTE_MIN_WIDTH                 = 150;  //pixels
     const MENUBAR_HGT_PERC                  = 0.10; // 10% of stknote height 
     const FLEXBOX_GAP_PERC                  = 0.02; // 2% of stknote height
@@ -28,7 +28,7 @@ const _sticky_note = (props) => {
     const STKNOTE_TXTAREA_PADDG_PERC        = 0.05; // 5% of stknote width
     const STKNOTE_PARAGR_PADDG_PERC         = 0.15; // 15% of stknote width
 
-    let stknote_width = STKNOTE_PERC * props.win_width;
+    let stknote_width = props.win_width_perc * props.win_width;
     stknote_width = ( stknote_width < STKNOTE_MIN_WIDTH ) ? STKNOTE_MIN_WIDTH : stknote_width;
     const font_size = FONT_SIZE_PERC * stknote_width;
     let menubar_item_width   = MENUBAR_ITEM_WIDTH_PERC * stknote_width;
@@ -56,30 +56,73 @@ const _sticky_note = (props) => {
     };
 
     const _update_note_text = (updated_text) => { 
-        props.note_update_func(props.id, updated_text, props.colour);
+        props.note_update_func(props.id, updated_text, props.colour, props.win_width_perc);
     };
 
     const _update_note_colour = (updated_hex_colour_val) => {
-        props.note_update_func(props.id, props.text, updated_hex_colour_val);
+        props.note_update_func(props.id, props.text, updated_hex_colour_val, props.win_width_perc);
         _set_complement_colour(_get_complement_colour(updated_hex_colour_val));
+    };
+
+    const _update_note_win_width_perc = (updated_win_width_perc) => {
+        props.note_update_func(props.id, props.text, props.colour, updated_win_width_perc);
     };
 
     const _colour_picker_btn_clicked = () => { 
         _set_is_editing(false);
     };
 
+    const _resizing_note_started = (e) => {
+        _set_start_resize_loc({x: e.clientX, y: e.clientY});
+        _set_is_editing(true);
+        _set_is_resizing(true);
+    };
 
-    // Effects
+    const _resizing_note_ended = (e) => {
+        _set_is_resizing(false);
+        const new_x = e.clientX;
+        let new_width = stknote_width + (new_x - start_resize_loc.x);
+        let new_win_width_perc =  new_width/props.win_width;
+        _update_note_win_width_perc(new_win_width_perc);
+    };
+
+    /********************* Effects block begin ***********************/
+    // text area focus on editing
     const textarea_ref = useRef(null);
     useEffect(() => {
-        if (is_editing && textarea_ref.current) {
-            textarea_ref.current.focus();
-        }
-    }, [is_editing]);
+            if (is_editing && textarea_ref.current) {
+                textarea_ref.current.focus();
+            }
+        }, [is_editing]
+    );
+
+    // mouse up resizing
+    useEffect(() => {
+        const _mouse_up_resizing = (e) => {
+            console.log("mouse up");
+            if(is_resizing)
+            {
+                _set_is_resizing(false);
+                _resizing_note_ended(e);
+            }
+        };
+    
+        window.addEventListener('mouseup', _mouse_up_resizing);
+        return () => {
+          window.removeEventListener('mouseup', _mouse_up_resizing);
+        };
+      }, [is_resizing]
+    );
+    /********************* Effects block ends ***********************/
 
 
     return (
-        <Draggable onStart={_handle_note_drag_start} onStop={_handle_note_drag_over}>
+        <Draggable 
+            onStart={_handle_note_drag_start} 
+            onStop={_handle_note_drag_over} 
+            cancel=".resizer" // Prevent dragging when clicking on the resizer 
+        >
+            
             <div 
                 id="stknote_root"
                 style={{
@@ -99,6 +142,21 @@ const _sticky_note = (props) => {
                     gap: (FLEXBOX_GAP_PERC * stknote_width) + 'px',
                 }}
             >
+                {/* Resizer Handle */}
+                <div 
+                    className="resizer"
+                    onMouseDown={_resizing_note_started}
+                    style={{
+                        width: "10px",
+                        height: "10px",
+                        background: complement_colour,
+                        position: "absolute",
+                        bottom: "0",
+                        right: "0",
+                        cursor: "nwse-resize",
+                    }}
+                />
+
                 <div
                     id="stknote_menu_bar" 
                     style={{ 

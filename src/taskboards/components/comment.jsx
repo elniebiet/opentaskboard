@@ -20,19 +20,21 @@ const _comment = (props) => {
     _use_max_z_index();
 
     const [complement_colour, _set_complement_colour] = useState(_get_complement_colour(props.colour));
+
+    const [is_resizing, _set_is_resizing] = useState(false);
     
-    const COMMENT_PERC                  = 0.15;
+    const [start_resize_loc, _set_start_resize_loc] = useState({ x: 0, y: 0 });
+    
     const COMMENT_MIN_WIDTH             = 150;  //pixels
     const FLEXBOX_GAP_PERC              = 0.02; // 2% of comment height
     const MENUBAR_HGT_PERC              = 0.10; // 10% of comment height
     const EMOJIS_BAR_HGT_PERC           = 0.10; // 10% of comment height
-    const EMOJI_GAP                     = 0.01; // 1% of comment width
     const FONT_SIZE_PERC                = 0.08; // 8% of comment width
     const MENUBAR_ITEM_WIDTH_PERC       = 0.10; // 10% of comment width
     const STKNOTE_TXTAREA_PADDG_PERC    = 0.05; // 5% of comment width
     const STKNOTE_PARAGR_PADDG_PERC     = 0.15; // 15% of comment width
 
-    let comment_width = COMMENT_PERC * props.win_width;
+    let comment_width = props.win_width_perc * props.win_width;
     comment_width = ( comment_width < COMMENT_MIN_WIDTH ) ? COMMENT_MIN_WIDTH : comment_width;
 
     const font_size = FONT_SIZE_PERC * comment_width;
@@ -66,24 +68,44 @@ const _comment = (props) => {
     };
     
     const _update_comment = (updated_text) => {
-        props.comment_update_func(props.id, updated_text, props.colour);
+        props.comment_update_func(props.id, updated_text, props.colour, props.win_width_perc);
     };
 
     const _update_comment_colour = (updated_hex_colour_val) => {
-        props.comment_update_func(props.id, props.text, updated_hex_colour_val);
+        props.comment_update_func(props.id, props.text, updated_hex_colour_val, props.win_width_perc);
         _set_complement_colour(_get_complement_colour(updated_hex_colour_val));
+    };
+
+    const _update_note_win_width_perc = (updated_win_width_perc) => {
+        props.comment_update_func(props.id, props.text, props.colour, updated_win_width_perc);
     };
 
     const _colour_picker_btn_clicked = () => { 
         _set_is_editing(false);
     };
 
+    const _resizing_note_started = (e) => {
+        _set_start_resize_loc({x: e.clientX, y: e.clientY});
+        _set_is_editing(true);
+        _set_is_resizing(true);
+    };
+
+    const _resizing_note_ended = (e) => {
+        _set_is_resizing(false);
+        const new_x = e.clientX;
+        let new_width = comment_width + (new_x - start_resize_loc.x);
+        let new_win_width_perc =  new_width/props.win_width;
+        _update_note_win_width_perc(new_win_width_perc);
+    };
+
+
     const _show_extended_emoji_list = () => {
         // TODO: Show emoji list
         console.log("display extended emoji list.");
     };
 
-    // Effects
+    /********************* Effects block begin ***********************/
+    // text area focus on editing
     const textarea_ref = useRef(null);
     useEffect(() => {
         if (is_editing && textarea_ref.current) {
@@ -91,8 +113,32 @@ const _comment = (props) => {
         }
     }, [is_editing]);
 
+    // mouse up resizing
+    useEffect(() => {
+        const _mouse_up_resizing = (e) => {
+            console.log("mouse up");
+            if(is_resizing)
+            {
+                _set_is_resizing(false);
+                _resizing_note_ended(e);
+            }
+        };
+    
+        window.addEventListener('mouseup', _mouse_up_resizing);
+        return () => {
+            window.removeEventListener('mouseup', _mouse_up_resizing);
+        };
+        }, [is_resizing]
+    );
+    /********************* Effects block ends ***********************/
+
     return (
-        <Draggable onStart={_handle_comment_drag_start} onStop={_handle_comment_drag_over}>
+        <Draggable 
+            onStart={_handle_comment_drag_start} 
+            onStop={_handle_comment_drag_over}
+            cancel=".resizer" // Prevent dragging when clicking on the resizer 
+        >
+                        
             <div
                 id="comment_root"
                 style={{
@@ -112,6 +158,21 @@ const _comment = (props) => {
                     gap: (FLEXBOX_GAP_PERC * comment_width) + 'px',
                 }}
             >
+                {/* Resizer Handle */}
+                <div 
+                    className="resizer"
+                    onMouseDown={_resizing_note_started}
+                    style={{
+                        width: "10px",
+                        height: "10px",
+                        background: complement_colour,
+                        position: "absolute",
+                        bottom: "0",
+                        right: "0",
+                        cursor: "nwse-resize",
+                    }}
+                />
+
                 <div 
                     id="comment_menubar"
                     style={{
