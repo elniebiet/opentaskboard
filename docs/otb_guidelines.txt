@@ -37,6 +37,8 @@ All contributors are expected to adhere to the project's Code of Conduct. Please
     - Use block comments to separate large pieces of codes that perform a task, consider creating a component
     - Ensure your code is well-documented.
     - Consider breaking to smaller functions if a function is getting to long
+    - Consider writing reusable components
+    - Avoid magic numbers 
 
 ## Testing
 - Write unit tests for your code.
