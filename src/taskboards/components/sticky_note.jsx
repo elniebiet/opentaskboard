@@ -99,7 +99,6 @@ const _sticky_note = (props) => {
     // mouse up resizing
     useEffect(() => {
         const _mouse_up_resizing = (e) => {
-            console.log("mouse up");
             if(is_resizing)
             {
                 _set_is_resizing(false);
