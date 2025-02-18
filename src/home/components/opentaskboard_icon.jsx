@@ -3,6 +3,9 @@ import SvgIcon from '@mui/material/SvgIcon';
 
 export default function _opentaskboard_icon() {
   return (
+    ///////////////////////////////////////// TEMPORARY TASKBOARD ICON /////////////////////////////////////////////////
+    /////////////////////////////// PLEASE REMOVE THIS COMMENT WHEN ICON IS UPDATED ////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     <SvgIcon sx={{ height: 21, width: 100, mr: 2 }}>
       <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="89" height="19">
         <path d="M0 0 C29.37 0 58.74 0 89 0 C89 6.27 89 12.54 89 19 C59.63 19 30.26 19 0 19 C0 12.73 0 6.46 0 0 Z " fill="#FCFCFC" transform="translate(0,0)"/>

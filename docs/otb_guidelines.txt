@@ -1,0 +1,49 @@
+# OpenTaskBoard Guidelines
+
+## Introduction
+Welcome to the OpenTaskBoard project! This document outlines the guidelines for contributing to the project.
+
+## Code of Conduct
+All contributors are expected to adhere to the project's Code of Conduct. Please read it carefully before participating.
+
+## Contribution Guidelines
+1. **Fork the repository**: Create a personal fork of the project on GitHub.
+2. **Clone the repository**: Clone your fork to your local machine.
+3. **Create a branch**: Create a new branch for your work.
+4. **Make changes**: Implement your changes in the new branch.
+5. **Commit changes**: Commit your changes with clear and concise commit messages.
+6. **Push changes**: Push your changes to your fork on GitHub.
+7. **Create a pull request**: Open a pull request to merge your changes into the main repository.
+
+## Coding Standards
+- Function naming convention:
+    - function names start with underscores, including component functions
+    - use underscores to separate meaningful words,
+    - function names are all lowercase
+    - example: _get_todays_date
+    - avoid camel-casing
+- Variable naming convention:
+    - use underscores to separate meaningful words
+    - variable names are all lowercase
+    - avoid camel-casing
+    - example: todays_date
+- Global constants/macros:
+    - use all uppercase to declare global constants
+    - use underscores to separate meaningful words
+    - example: MAX_GRID_SIZE
+- General Rules:
+    - Follow the project's coding style and conventions.
+    - Write clear and concise code with appropriate comments.
+    - Use block comments to separate large pieces of codes that perform a task, consider creating a component
+    - Ensure your code is well-documented.
+    - Consider breaking to smaller functions if a function is getting to long
+
+## Testing
+- Write unit tests for your code.
+- Ensure all tests pass before submitting a pull request.
+
+## Review Process
+- Pull requests will be reviewed by project maintainers.
+- Address any feedback or requested changes promptly.
+
+Thank you for contributing to OpenTaskBoard!

@@ -11,11 +11,13 @@ import { SELECTED_COLOR_THEME } from '../common/globals';
 import { STKNOTE_WIDTH_PERC_DEFAULT } from './components/taskboard_definitions';
 import { COMMENT_WIDTH_PERC_DEFAULT } from './components/taskboard_definitions';
 
-/**
- * Default taskboard component
- */
+
 /****************** Effects block begin ***************************/
-const _use_window_size = () => {
+/**
+ * Gets current window size
+ * @returns {{width, height}} - current window width and height.
+ */
+const _get_window_size = () => {
     const [window_size, _set_window_size] = useState({
       width: window.innerWidth,
       height: window.innerHeight,
@@ -39,15 +41,25 @@ const _use_window_size = () => {
 };
 /****************** Effects block ends ***************************/
 
+/**
+ * Default taskboard component
+ */
 const _taskboard_default = () => {
+
   /***************** Misc block begins *************************/
-  const { width, height } = _use_window_size();
+  const { width, height } = _get_window_size();
   const [last_item_add_or_move_loc, _set_last_item_add_or_move_loc] = useState({loc_x: 100, loc_y: 100}); // last location a toolbar item was added or moved
 
+  /**
+   * set toolbar item location function
+   */
   const _set_tb_item_loc_func = (x, y) => {
     _set_last_item_add_or_move_loc({loc_x: x, loc_y: y});
   };
 
+  /**
+   * Toolbar item drag over to prevent the default "red stop circle" cursor 
+   */
   const _handle_drag_over = (e) => {
     e.preventDefault(); // prevent the default "red stop circle" cursor
   };
@@ -56,6 +68,12 @@ const _taskboard_default = () => {
   /****************** sticky note begins ************************/
   const [notes, _set_notes] = useState([]); // TODO: temporary notes storage
 
+  /**
+   * add sticky note
+   * @param {bool} clicked - item was clicked
+   * @param {float} pos_x - x cord to add note
+   * @param {float} pos_y - y cord to add note   
+   */
   const _add_note = (clicked = true, pos_x = 100, pos_y = 100) => {
     if(clicked)
     {
@@ -96,6 +114,13 @@ const _taskboard_default = () => {
     _set_notes(notes.filter((note) => note.id !== id));
   };
 
+   /**
+   * update note
+   * @param {int} id - note id
+   * @param {string} text - note text
+   * @param {string} colour - hex string of note colour   
+   * @param {float} win_width_perc - note width in percentage wrt window size
+   */
   const _update_note = (id, text, colour, win_width_perc) => {
     _set_notes((prev_notes) =>
       prev_notes.map((note) =>
@@ -139,6 +164,12 @@ const _taskboard_default = () => {
   const [shapes_sub_toolbar_active, _set_shapes_sub_toolbar_active] = useState(false);
   const [sub_tb_item_clicked, _set_sub_tb_item_clicked] = useState(false);
   let initial_click = true;
+  
+  /**
+   * show shapes popup toolbar
+   * @param {float} pos_x - x cord location to show toolbar
+   * @param {float} pos_y - y cord location to show toolbar   
+   */
   const _show_shape_options = (click_loc_x, click_loc_y) => 
   {
     // set cursor type
@@ -166,6 +197,12 @@ const _taskboard_default = () => {
   /************** Add Comment Begins ************************/
   const [comments, _set_comments] = useState([]); // TODO: temporary comments storage
 
+  /**
+   * add comment 
+   * @param {bool} clicked - item was clicked
+   * @param {float} pos_x - x cord to add note
+   * @param {float} pos_y - y cord to add note   
+   */
   const _add_comment = (clicked = true, pos_x = 100, pos_y = 100) => {
     // select cursor
     _set_cursor_type('default');
@@ -209,6 +246,13 @@ const _taskboard_default = () => {
     _set_comments(comments.filter((comment) => comment.id !== id));
   };
 
+  /**
+   * update comment
+   * @param {int} id - comment id
+   * @param {string} text - comment text
+   * @param {string} colour - hex string of comment colour   
+   * @param {float} win_width_perc - comment width in percentage wrt window size
+   */
   const _update_comment = (id, text, colour, win_width_perc) => {
     _set_comments((prev_comments) =>
       prev_comments.map((comment) =>
@@ -219,6 +263,9 @@ const _taskboard_default = () => {
   /************** Add Comment Ends **************************/  
 
   /************** Page listener begins **********************/
+  /**
+   * page click listener - listens for page click 
+   */
   const _page_click_listener = () => {
     useEffect(() => {
         const _handle_page_click = (e) => {

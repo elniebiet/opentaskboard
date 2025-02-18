@@ -7,9 +7,20 @@ import _sticky_note from '../taskboards/components/sticky_note';
 import _comment from '../taskboards/components/comment';
 import board_marker_img_32 from '../../res/imgs/img_board_marker_32x32.png'; 
 import fill_img_32 from '../../res/imgs/img_fill2_32x32.png'; 
-import { SHAPES_TOOLBAR_ITEM_TYPE } from '../common/globals';
+import { SELECTED_COLOR_THEME } from '../common/globals';
+import { STKNOTE_WIDTH_PERC_DEFAULT } from '../taskboards/components/taskboard_definitions';
+import { COMMENT_WIDTH_PERC_DEFAULT } from '../taskboards/components/taskboard_definitions';
 
-const _use_window_size = () => {
+
+/*********************** TEMPORARY SPRINT PLANNING COMPONENNT *************************************/
+/************************ REMOVE THIS COMMENT WHEN UPDATED ****************************************/
+
+/****************** Effects block begin ***************************/
+/**
+ * Gets current window size
+ * @returns {{width, height}} - current window width and height.
+ */
+const _get_window_size = () => {
     const [window_size, _set_window_size] = useState({
       width: window.innerWidth,
       height: window.innerHeight,
@@ -31,16 +42,27 @@ const _use_window_size = () => {
   
     return window_size;
 };
+/****************** Effects block ends ***************************/
 
+/**
+ * Default taskboard component
+ */
 const _sprint_planning_template = () => {
+
   /***************** Misc block begins *************************/
-  const { width, height } = _use_window_size();
+  const { width, height } = _get_window_size();
   const [last_item_add_or_move_loc, _set_last_item_add_or_move_loc] = useState({loc_x: 100, loc_y: 100}); // last location a toolbar item was added or moved
 
+  /**
+   * set toolbar item location function
+   */
   const _set_tb_item_loc_func = (x, y) => {
     _set_last_item_add_or_move_loc({loc_x: x, loc_y: y});
   };
 
+  /**
+   * Toolbar item drag over to prevent the default "red stop circle" cursor 
+   */
   const _handle_drag_over = (e) => {
     e.preventDefault(); // prevent the default "red stop circle" cursor
   };
@@ -49,6 +71,12 @@ const _sprint_planning_template = () => {
   /****************** sticky note begins ************************/
   const [notes, _set_notes] = useState([]); // TODO: temporary notes storage
 
+  /**
+   * add sticky note
+   * @param {bool} clicked - item was clicked
+   * @param {float} pos_x - x cord to add note
+   * @param {float} pos_y - y cord to add note   
+   */
   const _add_note = (clicked = true, pos_x = 100, pos_y = 100) => {
     if(clicked)
     {
@@ -59,20 +87,49 @@ const _sprint_planning_template = () => {
       const {loc_x, loc_y} = last_item_add_or_move_loc;  
       let new_loc_x = loc_x + 20;
       let new_loc_y = loc_y + 20;
-      const new_note = { id: Date.now(), text: "", x_pos: new_loc_x, y_pos: new_loc_y };
+      const new_note = { 
+        id: Date.now(),
+        text: "",
+        x_pos: new_loc_x,
+        y_pos: new_loc_y,
+        colour: SELECTED_COLOR_THEME,
+        win_width_perc: STKNOTE_WIDTH_PERC_DEFAULT 
+      };
       _set_last_item_add_or_move_loc({loc_x: new_loc_x, loc_y: new_loc_y}); // update last added location
       _set_notes([...notes, new_note]);
     }
     else
     {
       // dragged
-      const new_note = { id: Date.now(), text: "", x_pos: pos_x, y_pos: pos_y };
+      const new_note = { 
+        id: Date.now(), 
+        text: "", 
+        x_pos: pos_x, 
+        y_pos: pos_y, 
+        colour: SELECTED_COLOR_THEME, 
+        win_width_perc: STKNOTE_WIDTH_PERC_DEFAULT 
+      };
       _set_notes([...notes, new_note]);
     }
   };
 
   const _delete_note = (id) => {
     _set_notes(notes.filter((note) => note.id !== id));
+  };
+
+   /**
+   * update note
+   * @param {int} id - note id
+   * @param {string} text - note text
+   * @param {string} colour - hex string of note colour   
+   * @param {float} win_width_perc - note width in percentage wrt window size
+   */
+  const _update_note = (id, text, colour, win_width_perc) => {
+    _set_notes((prev_notes) =>
+      prev_notes.map((note) =>
+        note.id === id ? { ...note, text: text, colour: colour, win_width_perc: win_width_perc } : note
+      )
+    );
   };
   /************** sticky note ends ******************************/
 
@@ -110,6 +167,12 @@ const _sprint_planning_template = () => {
   const [shapes_sub_toolbar_active, _set_shapes_sub_toolbar_active] = useState(false);
   const [sub_tb_item_clicked, _set_sub_tb_item_clicked] = useState(false);
   let initial_click = true;
+  
+  /**
+   * show shapes popup toolbar
+   * @param {float} pos_x - x cord location to show toolbar
+   * @param {float} pos_y - y cord location to show toolbar   
+   */
   const _show_shape_options = (click_loc_x, click_loc_y) => 
   {
     // set cursor type
@@ -137,6 +200,12 @@ const _sprint_planning_template = () => {
   /************** Add Comment Begins ************************/
   const [comments, _set_comments] = useState([]); // TODO: temporary comments storage
 
+  /**
+   * add comment 
+   * @param {bool} clicked - item was clicked
+   * @param {float} pos_x - x cord to add note
+   * @param {float} pos_y - y cord to add note   
+   */
   const _add_comment = (clicked = true, pos_x = 100, pos_y = 100) => {
     // select cursor
     _set_cursor_type('default');
@@ -150,14 +219,28 @@ const _sprint_planning_template = () => {
       const {loc_x, loc_y} = last_item_add_or_move_loc;  
       let new_loc_x = loc_x + 20;
       let new_loc_y = loc_y + 20;
-      const new_comment = { id: Date.now(), text: "", x_pos: new_loc_x, y_pos: new_loc_y };
+      const new_comment = { 
+        id: Date.now(), 
+        text: "", 
+        x_pos: new_loc_x, 
+        y_pos: new_loc_y, 
+        colour: SELECTED_COLOR_THEME,
+        win_width_perc: COMMENT_WIDTH_PERC_DEFAULT, 
+      };
       _set_last_item_add_or_move_loc({loc_x: new_loc_x, loc_y: new_loc_y}); // update last added location
       _set_comments([...comments, new_comment]);
     }
     else
     {
       // dragged
-      const new_comment = { id: Date.now(), text: "", x_pos: pos_x, y_pos: pos_y };
+      const new_comment = { 
+        id: Date.now(), 
+        text: "", 
+        x_pos: pos_x, 
+        y_pos: pos_y, 
+        colour: SELECTED_COLOR_THEME,
+        win_width_perc: COMMENT_WIDTH_PERC_DEFAULT, 
+      };
       _set_comments([...comments, new_comment]);
     }
   };
@@ -165,9 +248,27 @@ const _sprint_planning_template = () => {
   const _delete_comment = (id) => {
     _set_comments(comments.filter((comment) => comment.id !== id));
   };
+
+  /**
+   * update comment
+   * @param {int} id - comment id
+   * @param {string} text - comment text
+   * @param {string} colour - hex string of comment colour   
+   * @param {float} win_width_perc - comment width in percentage wrt window size
+   */
+  const _update_comment = (id, text, colour, win_width_perc) => {
+    _set_comments((prev_comments) =>
+      prev_comments.map((comment) =>
+        comment.id === id ? { ...comment, text: text, colour: colour, win_width_perc: win_width_perc } : comment
+      )
+    );
+  };
   /************** Add Comment Ends **************************/  
 
   /************** Page listener begins **********************/
+  /**
+   * page click listener - listens for page click 
+   */
   const _page_click_listener = () => {
     useEffect(() => {
         const _handle_page_click = (e) => {
@@ -205,7 +306,7 @@ const _sprint_planning_template = () => {
 
   return (
       <div 
-        id="sprint_planning_template_root"
+        id="taskboard_default_root"
         onDragOver={_handle_drag_over}
         style={{ 
           height: "100vh",
@@ -235,26 +336,18 @@ const _sprint_planning_template = () => {
           )}
 
           <div>
-            <div
-              style={{
-                top: "20px",
-                fontSize: "16px",
-                cursor: "pointer",
-                position: 'absolute',
-              }}
-            >
-            </div>
+            {/* display notes and comments */}
             <div>
               {notes.map((note) => (
-                <_sticky_note key={note.id} id={note.id} text={note.text} on_delete={_delete_note} note_update_func={_set_tb_item_loc_func} 
-                  x_pos={note.x_pos} y_pos={note.y_pos} win_width={width} win_height={height}/>
+                <_sticky_note key={note.id} id={note.id} text={note.text} win_width_perc={note.win_width_perc} on_delete={_delete_note} tb_item_loc_update_func={_set_tb_item_loc_func} 
+                  note_update_func={_update_note} x_pos={note.x_pos} y_pos={note.y_pos} win_width={width} win_height={height} colour={note.colour}/>
               ))}
             </div>
 
             <div>
               {comments.map((comment) => (
-                <_comment key={comment.id} id={comment.id} text={comment.text} on_delete={_delete_comment} comment_update_func={_set_tb_item_loc_func} 
-                  x_pos={comment.x_pos} y_pos={comment.y_pos} win_width={width} win_height={height}/>
+                <_comment key={comment.id} id={comment.id} text={comment.text} win_width_perc={comment.win_width_perc} on_delete={_delete_comment} tb_item_loc_update_func={_set_tb_item_loc_func} 
+                comment_update_func={_update_comment}  x_pos={comment.x_pos} y_pos={comment.y_pos} win_width={width} win_height={height} colour={comment.colour}/>
               ))}
             </div>
           </div>
