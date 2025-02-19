@@ -39,6 +39,7 @@ All contributors are expected to adhere to the project's Code of Conduct. Please
     - Consider breaking to smaller functions if a function is getting to long
     - Consider writing reusable components
     - Avoid magic numbers 
+    - Consider using few function parameters
 
 ## Testing
 - Write unit tests for your code.
