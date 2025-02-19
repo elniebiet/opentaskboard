@@ -13,7 +13,7 @@ All contributors are expected to adhere to the project's Code of Conduct. Please
 4. **Make changes**: Implement your changes in the new branch.
 5. **Commit changes**: Commit your changes with clear and concise commit messages.
 6. **Push changes**: Push your changes to your fork on GitHub.
-7. **Create a pull request**: Open a pull request to merge your changes into the main repository.
+7. **Create a pull request**: Open a pull request to merge your changes into the development branch.
 
 ## Coding Standards
 - Function naming convention:
