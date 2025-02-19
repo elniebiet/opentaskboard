@@ -40,6 +40,7 @@ All contributors are expected to adhere to the project's Code of Conduct. Please
     - Consider writing reusable components
     - Avoid magic numbers 
     - Consider using few function parameters
+    - Try to avoid hard-coding units e.g., pixels, use dynamic units e.g., percentages
 
 ## Testing
 - Write unit tests for your code.
