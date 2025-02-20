@@ -7,10 +7,12 @@ import _sticky_note from './components/sticky_note';
 import _comment from './components/comment';
 import board_marker_img_32 from '../../res/imgs/img_board_marker_32x32.png'; 
 import fill_img_32 from '../../res/imgs/img_fill2_32x32.png'; 
+import cross_pointer from '../../res/imgs/plus_sign_16x16.png'; 
 import { SELECTED_COLOR_THEME } from '../common/globals';
-import { STKNOTE_WIDTH_PERC_DEFAULT } from './components/taskboard_definitions';
-import { COMMENT_WIDTH_PERC_DEFAULT } from './components/taskboard_definitions';
-
+import { STKNOTE_WIDTH_PERC_DEFAULT } from './taskboard_definitions';
+import { COMMENT_WIDTH_PERC_DEFAULT } from './taskboard_definitions';
+import { SHAPES_TOOLBAR_ITEM_TYPE } from '../common/globals';
+import { TASKBOARD_STATES } from './taskboard_definitions';
 
 /****************** Effects block begin ***************************/
 /**
@@ -49,6 +51,12 @@ const _taskboard_default = () => {
   /***************** Misc block begins *************************/
   const { width, height } = _get_window_size();
   const [last_item_add_or_move_loc, _set_last_item_add_or_move_loc] = useState({loc_x: 100, loc_y: 100}); // last location a toolbar item was added or moved
+
+  // Taskboard state
+  const [taskboard_state, _set_taskboard_state] = useState(TASKBOARD_STATES.TBS_NORMAL);
+  const [draw_shape, _set_draw_shape] = useState(false);
+  const [start_draw_pos, _set_start_draw_pos] = useState({x_pos: 100, y_pos: 100});
+  const [shape_type, _set_shape_type] = useState(SHAPES_TOOLBAR_ITEM_TYPE.STBI_LINE);
 
   /**
    * set toolbar item location function
@@ -184,7 +192,48 @@ const _taskboard_default = () => {
   const _shape_clicked = (e, shape_type) => 
   {
     // sub toolbar_item was clicked
-    _set_sub_tb_item_clicked(true);
+    _set_sub_tb_item_clicked(true); 
+    
+    // custom 'crosshair' cursor
+    let cursor_type = `url(${cross_pointer}) 10 10, auto`;
+    _set_cursor_type(cursor_type);
+    _set_taskboard_state(TASKBOARD_STATES.TBS_DRAWING_SHAPE);
+
+    switch(shape_type)
+    {
+        case SHAPES_TOOLBAR_ITEM_TYPE.STBI_LINE:
+        {
+            console.log("line clicked");
+            _set_shape_type(SHAPES_TOOLBAR_ITEM_TYPE.STBI_LINE);
+            break;
+        }
+        case SHAPES_TOOLBAR_ITEM_TYPE.STBI_CIRCLE:
+        {
+            console.log("circle clicked");
+            _set_shape_type(SHAPES_TOOLBAR_ITEM_TYPE.STBI_CIRCLE);
+            break;    
+        }
+        case SHAPES_TOOLBAR_ITEM_TYPE.STBI_RECT:
+        {
+            break;   
+        }          
+        case SHAPES_TOOLBAR_ITEM_TYPE.STBI_FILLETED_RECT:  
+        {
+            break;
+        }
+        case SHAPES_TOOLBAR_ITEM_TYPE.STBI_TRIANGLE:             
+        {
+            break;    
+        }            
+        case SHAPES_TOOLBAR_ITEM_TYPE.STBI_RIGHT_TRIANGLE:    
+        {
+            break;
+        }                       
+        default:
+        {
+            break;
+        }
+    }
   };
 
   const _deactivate_shapes_sub_tb = () => 
@@ -260,7 +309,7 @@ const _taskboard_default = () => {
       )
     );
   };
-  /************** Add Comment Ends **************************/  
+  /************** Add Comment Ends **************************/
 
   /************** Page listener begins **********************/
   /**
@@ -285,6 +334,12 @@ const _taskboard_default = () => {
             initial_click = true;
           }
         }
+
+        if(taskboard_state == TASKBOARD_STATES.TBS_DRAWING_SHAPE)
+        {
+          _set_start_draw_pos({x_pos: e.clientX, y_pos: e.clientY});
+          _set_draw_shape(true);
+        }
       };
   
       document.addEventListener("click", _handle_page_click);
@@ -300,6 +355,29 @@ const _taskboard_default = () => {
     );
   };
   /**************** Page listener ends **************************/
+
+  /*************** Effects Begin ***************************/
+  // mouse up drawing 
+  useEffect(() => {
+      const _mouse_up_drawing = (e) => {
+          if(draw_shape)
+          {
+            //TODO: draw shape here
+            console.log("drew " + shape_type + " at this point: " + start_draw_pos.x_pos + ", " + start_draw_pos.y_pos + " to this point: " + e.clientX  + ", " + e.clientY);
+
+            // done drawing
+            _set_draw_shape(false);
+            _set_start_draw_pos({x_pos: 100, y_pos: 100});
+          }
+      };
+  
+      window.addEventListener('mouseup', _mouse_up_drawing);
+      return () => {
+        window.removeEventListener('mouseup', _mouse_up_drawing);
+      };
+    }, [draw_shape]
+  );
+  /*************** Effects Ends ***************************/
 
   return (
       <div 

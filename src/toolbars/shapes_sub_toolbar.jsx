@@ -145,7 +145,7 @@ const _add_toolbar_item = (props) =>
     };
 
     return (
-            <div id="main_tb_item">
+            <div id="main_tb_item" onClick={_handle_tb_item_click} >
                 <_square_fab>
                     <img 
                         draggable
@@ -153,7 +153,6 @@ const _add_toolbar_item = (props) =>
                         src={props.img_src}
                         alt={props.img_alt_txt} 
                         style={{ width: props.tb_item_width, height: props.tb_item_height }}
-                        onClick={_handle_tb_item_click} 
                     />
                 </_square_fab>
             </div>
@@ -256,27 +255,27 @@ const _shapes_sub_toolbar = (props) => {
         <div>
             <div id="sprint_planning_template_root" style={toolbar_styling}>
                 <Box sx={{ '& > :not(style)': { m: 0.5 } }} display="flex" flexDirection={flex_dir}>
-                    <_add_toolbar_item shapes_tb_item_clicked={props.shapes_tb_item_clicked_func} item_index={SHAPES_TOOLBAR_ITEM_TYPE.STBI_LINE} tbi_type={TOOLBAR_ITEM_TYPE.DRAGGABLE_CLICKABLE} img_src={line_img} img_alt_txt={"Line"} 
+                    <_add_toolbar_item shapes_tb_item_clicked={props.shapes_tb_item_clicked_func} item_index={SHAPES_TOOLBAR_ITEM_TYPE.STBI_LINE} tbi_type={TOOLBAR_ITEM_TYPE.CLICKABLE} img_src={line_img} img_alt_txt={"Line"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} 
                     deactivate_sub_tb={props.deactivate_shapes_sub_tb}
                     />
-                    <_add_toolbar_item shapes_tb_item_clicked={props.shapes_tb_item_clicked_func} item_index={SHAPES_TOOLBAR_ITEM_TYPE.STBI_CIRCLE} tbi_type={TOOLBAR_ITEM_TYPE.DRAGGABLE_CLICKABLE} img_src={circle_img} img_alt_txt={"Circle"} 
+                    <_add_toolbar_item shapes_tb_item_clicked={props.shapes_tb_item_clicked_func} item_index={SHAPES_TOOLBAR_ITEM_TYPE.STBI_CIRCLE} tbi_type={TOOLBAR_ITEM_TYPE.CLICKABLE} img_src={circle_img} img_alt_txt={"Circle"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} 
                     deactivate_sub_tb={props.deactivate_shapes_sub_tb}
                     />
-                    <_add_toolbar_item shapes_tb_item_clicked={props.shapes_tb_item_clicked_func} item_index={SHAPES_TOOLBAR_ITEM_TYPE.STBI_RECT} tbi_type={TOOLBAR_ITEMS.DRAGGABLE_CLICKABLE} img_src={rect_img} img_alt_txt={"Rectangle"} 
+                    <_add_toolbar_item shapes_tb_item_clicked={props.shapes_tb_item_clicked_func} item_index={SHAPES_TOOLBAR_ITEM_TYPE.STBI_RECT} tbi_type={TOOLBAR_ITEMS.CLICKABLE} img_src={rect_img} img_alt_txt={"Rectangle"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} 
                     deactivate_sub_tb={props.deactivate_shapes_sub_tb}
                     />
-                    <_add_toolbar_item shapes_tb_item_clicked={props.shapes_tb_item_clicked_func} item_index={SHAPES_TOOLBAR_ITEM_TYPE.STBI_FILLETED_RECT} tbi_type={TOOLBAR_ITEM_TYPE.DRAGGABLE_CLICKABLE} img_src={filleted_rect_img} img_alt_txt={"Filleted Rectangle"} 
+                    <_add_toolbar_item shapes_tb_item_clicked={props.shapes_tb_item_clicked_func} item_index={SHAPES_TOOLBAR_ITEM_TYPE.STBI_FILLETED_RECT} tbi_type={TOOLBAR_ITEM_TYPE.CLICKABLE} img_src={filleted_rect_img} img_alt_txt={"Filleted Rectangle"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} 
                     deactivate_sub_tb={props.deactivate_shapes_sub_tb}
                     />
-                    <_add_toolbar_item shapes_tb_item_clicked={props.shapes_tb_item_clicked_func} item_index={SHAPES_TOOLBAR_ITEM_TYPE.STBI_TRIANGLE} tbi_type={TOOLBAR_ITEM_TYPE.DRAGGABLE_CLICKABLE} img_src={triangle_img} img_alt_txt={"Triangle"} 
+                    <_add_toolbar_item shapes_tb_item_clicked={props.shapes_tb_item_clicked_func} item_index={SHAPES_TOOLBAR_ITEM_TYPE.STBI_TRIANGLE} tbi_type={TOOLBAR_ITEM_TYPE.CLICKABLE} img_src={triangle_img} img_alt_txt={"Triangle"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} 
                     deactivate_sub_tb={props.deactivate_shapes_sub_tb}
                     />
-                    <_add_toolbar_item shapes_tb_item_clicked={props.shapes_tb_item_clicked_func} item_index={SHAPES_TOOLBAR_ITEM_TYPE.STBI_RIGHT_TRIANGLE} tbi_type={TOOLBAR_ITEM_TYPE.DRAGGABLE_CLICKABLE} img_src={right_angle_img} img_alt_txt={"Right angle triangle"} 
+                    <_add_toolbar_item shapes_tb_item_clicked={props.shapes_tb_item_clicked_func} item_index={SHAPES_TOOLBAR_ITEM_TYPE.STBI_RIGHT_TRIANGLE} tbi_type={TOOLBAR_ITEM_TYPE.CLICKABLE} img_src={right_angle_img} img_alt_txt={"Right angle triangle"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} 
                     deactivate_sub_tb={props.deactivate_shapes_sub_tb}
                     />
@@ -284,31 +283,11 @@ const _shapes_sub_toolbar = (props) => {
             </div>
             
             
-            {/* Draggable Items begin */}
+            {/* Draggable Items begin  */}
             
-            { (is_dragging_tb_item.is_dragging) && (is_dragging_tb_item.item_index === SHAPES_TOOLBAR_ITEM_TYPE.STBI_LINE) && (
+            {/* { (is_dragging_tb_item.is_dragging) && (is_dragging_tb_item.item_index === SHAPES_TOOLBAR_ITEM_TYPE.STBI_LINE) && (
                 <_on_drag_hover_display tb_img={line_img32} tb_title={"Line"} tb_hover_w={item_width} tb_hover_h={item_height} x_pos={is_dragging_tb_item.x} y_pos={is_dragging_tb_item.y} />
-            )}
-
-            { (is_dragging_tb_item.is_dragging) && (is_dragging_tb_item.item_index === SHAPES_TOOLBAR_ITEM_TYPE.STBI_CIRCLE) && (
-                <_on_drag_hover_display tb_img={circle_img32} tb_title={"Circle"} tb_hover_w={item_width} tb_hover_h={item_height} x_pos={is_dragging_tb_item.x} y_pos={is_dragging_tb_item.y} />
-            )}
-
-            { (is_dragging_tb_item.is_dragging) && (is_dragging_tb_item.item_index === SHAPES_TOOLBAR_ITEM_TYPE.STBI_RECT) && (
-                <_on_drag_hover_display tb_img={rect_img32} tb_title={"Rectangle"} tb_hover_w={item_width} tb_hover_h={item_height} x_pos={is_dragging_tb_item.x} y_pos={is_dragging_tb_item.y} />
-            )}
-
-            { (is_dragging_tb_item.is_dragging) && (is_dragging_tb_item.item_index === SHAPES_TOOLBAR_ITEM_TYPE.STBI_FILLETED_RECT) && (
-                <_on_drag_hover_display tb_img={filleted_rect_img32} tb_title={"Filleted Rectangle"} tb_hover_w={item_width} tb_hover_h={item_height} x_pos={is_dragging_tb_item.x} y_pos={is_dragging_tb_item.y} />
-            )}
-
-            { (is_dragging_tb_item.is_dragging) && (is_dragging_tb_item.item_index === SHAPES_TOOLBAR_ITEM_TYPE.STBI_TRIANGLE) && (
-                <_on_drag_hover_display tb_img={triangle_img32} tb_title={"Triangle"} tb_hover_w={item_width} tb_hover_h={item_height} x_pos={is_dragging_tb_item.x} y_pos={is_dragging_tb_item.y} />
-            )}
-
-            { (is_dragging_tb_item.is_dragging) && (is_dragging_tb_item.item_index === SHAPES_TOOLBAR_ITEM_TYPE.STBI_RIGHT_TRIANGLE) && (
-                <_on_drag_hover_display tb_img={right_angle_img32} tb_title={"Right Triangle"} tb_hover_w={item_width} tb_hover_h={item_height} x_pos={is_dragging_tb_item.x} y_pos={is_dragging_tb_item.y} />
-            )}
+            )} */}
 
             {/* Draggable Items end */}
             

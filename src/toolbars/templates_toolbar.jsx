@@ -170,7 +170,6 @@ const _add_toolbar_item = (props) =>
                         src={props.img_src}
                         alt={props.img_alt_txt} 
                         style={{ width: props.tb_item_width, height: props.tb_item_height }}
-                        onClick={_handle_tb_item_click} 
                     />
                 </_square_fab>
             </div>
