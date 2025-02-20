@@ -141,9 +141,11 @@ const _taskboard_default = () => {
   /************** Pointer selection begins **************************/
   const [cursor_type, _set_cursor_type] = useState("default");
   
-  const _select_cursor_type = (cursor_type = 'default') => 
+  const _pointer_selected = (cursor_type = 'default') => 
   {
+    console.log("pointer selected: taskboard_stat " + taskboard_state);
     _set_cursor_type(cursor_type);
+    _set_taskboard_state(TASKBOARD_STATES.TBS_NORMAL);
   };
   /************** Pointer selection ends ****************************/
 
@@ -169,7 +171,6 @@ const _taskboard_default = () => {
   /************** Add fill ends **********************************/
 
   /************** Shapes selection begins *********************/
-  const [shapes_sub_toolbar_active, _set_shapes_sub_toolbar_active] = useState(false);
   const [sub_tb_item_clicked, _set_sub_tb_item_clicked] = useState(false);
   let initial_click = true;
   
@@ -185,7 +186,7 @@ const _taskboard_default = () => {
 
     initial_click = true;
     console.log('shapes selected, button location: ' + click_loc_x, click_loc_y); 
-    _set_shapes_sub_toolbar_active(true);
+    _set_taskboard_state(TASKBOARD_STATES.TBS_SUB_TOOLBAR_ACTIVE);
     _set_sub_tb_item_clicked(false);
   };
 
@@ -198,7 +199,7 @@ const _taskboard_default = () => {
     let cursor_type = `url(${cross_pointer}) 10 10, auto`;
     _set_cursor_type(cursor_type);
     _set_taskboard_state(TASKBOARD_STATES.TBS_DRAWING_SHAPE);
-
+    console.log("shape clicked: taskboard state " + taskboard_state);
     switch(shape_type)
     {
         case SHAPES_TOOLBAR_ITEM_TYPE.STBI_LINE:
@@ -238,7 +239,7 @@ const _taskboard_default = () => {
 
   const _deactivate_shapes_sub_tb = () => 
   {
-    _set_shapes_sub_toolbar_active(false);
+    _set_taskboard_state(TASKBOARD_STATES.TBS_NORMAL);
   };
 
   /************** Shapes selection ends *********************/
@@ -313,32 +314,43 @@ const _taskboard_default = () => {
 
   /************** Page listener begins **********************/
   /**
-   * page click listener - listens for page click 
+   * page click listener - listens for page clicks 
    */
   const _page_click_listener = () => {
     useEffect(() => {
         const _handle_page_click = (e) => {
         console.log("page clicked at:", e.clientX, e.clientY);
-        
-        // listen to page clicks when sub-toolbar is active, incase non of it's buttons were selected
-        if((shapes_sub_toolbar_active === true) && (sub_tb_item_clicked === false))
+        console.log("taskboard state " + taskboard_state);
+        switch(taskboard_state)
         {
-          // sub-toolbar is active, toolbar item not clicked 
-          if(initial_click) // ignore on initial click from listener - we need the next click
+          // listen to page clicks when sub-toolbar is active, incase non of it's buttons were selected
+          case (TASKBOARD_STATES.TBS_SUB_TOOLBAR_ACTIVE):
           {
-            initial_click = false;
+            if(sub_tb_item_clicked === false)
+            {
+              // sub-toolbar is active, toolbar item not clicked 
+              if(initial_click) // ignore on initial click from listener - we need the next click
+              {
+                initial_click = false;
+              }
+              else  // next click we are interested in
+              {
+                _set_taskboard_state(TASKBOARD_STATES.TBS_NORMAL); 
+                initial_click = true;
+              }
+            }
+            break;
           }
-          else  // next click we are interested in
+          case (TASKBOARD_STATES.TBS_DRAWING_SHAPE):
           {
-            _set_shapes_sub_toolbar_active(false); 
-            initial_click = true;
+            _set_start_draw_pos({x_pos: e.clientX, y_pos: e.clientY});
+            _set_draw_shape(true);
+            break;
           }
-        }
-
-        if(taskboard_state == TASKBOARD_STATES.TBS_DRAWING_SHAPE)
-        {
-          _set_start_draw_pos({x_pos: e.clientX, y_pos: e.clientY});
-          _set_draw_shape(true);
+          default:
+          {
+            break;
+          }
         }
       };
   
@@ -395,18 +407,18 @@ const _taskboard_default = () => {
           <_gridlines_normal grid_size={50} line_color="#E6E6E6" />
           
           <_templates_toolbar pos={"top"} win_width={width} win_height={height} add_note_func={_add_note} set_tb_item_loc_func={_set_tb_item_loc_func} 
-            select_cursor_func={_select_cursor_type} marker_draw_func={_draw_with_marker} add_fill_func={_add_fill} shapes_selected_func={_show_shape_options} 
+            select_cursor_func={_pointer_selected} marker_draw_func={_draw_with_marker} add_fill_func={_add_fill} shapes_selected_func={_show_shape_options} 
             add_comment_func={_add_comment} />
           
           <_templates_toolbar pos={"left"} win_width={width} win_height={height} add_note_func={_add_note} set_tb_item_loc_func={_set_tb_item_loc_func} 
-            select_cursor_func={_select_cursor_type} marker_draw_func={_draw_with_marker} add_fill_func={_add_fill} shapes_selected_func={_show_shape_options} 
+            select_cursor_func={_pointer_selected} marker_draw_func={_draw_with_marker} add_fill_func={_add_fill} shapes_selected_func={_show_shape_options} 
             add_comment_func={_add_comment} />
           
-          {(shapes_sub_toolbar_active === true) && (
+          {(taskboard_state === TASKBOARD_STATES.TBS_SUB_TOOLBAR_ACTIVE) && (
             <_shapes_sub_toolbar shapes_tb_item_clicked_func={_shape_clicked} pos={"top"} win_width={width} win_height={height} deactivate_shapes_sub_tb={_deactivate_shapes_sub_tb} />
           )}
 
-          {(shapes_sub_toolbar_active === true) && (
+          {(taskboard_state === TASKBOARD_STATES.TBS_SUB_TOOLBAR_ACTIVE) && (
             <_shapes_sub_toolbar shapes_tb_item_clicked_func={_shape_clicked} pos={"left"} win_width={width} win_height={height} deactivate_shapes_sub_tb={_deactivate_shapes_sub_tb} />
           )}
 

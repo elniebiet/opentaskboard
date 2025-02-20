@@ -63,7 +63,7 @@ const _add_toolbar_item = (props) =>
         _set_is_dragging(false);
         const { clientX, clientY } = e;
         props.drag_update_func(props.item_index, false, clientX, clientY); 
-        props.deactivate_sub_tb();
+
         // toolbar-item specific actions
         switch(props.item_index)
         {
@@ -107,7 +107,6 @@ const _add_toolbar_item = (props) =>
     {
         props.shapes_tb_item_clicked(e, props.item_index); // tb item clicked
         _on_tb_item_click(e, props.item_index);
-        props.deactivate_sub_tb();
     };
 
     const _on_tb_item_click = (e, tb_item_idx) => {
