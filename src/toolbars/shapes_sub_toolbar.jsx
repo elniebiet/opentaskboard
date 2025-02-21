@@ -143,7 +143,25 @@ const _add_toolbar_item = (props) =>
         }
     };
 
-    return (
+    if(props.tbi_type === TOOLBAR_ITEM_TYPE.CLICKABLE)
+    {
+        return (
+                <div id="main_tb_item" onMouseDown={_handle_tb_item_click} >
+                    <_square_fab>
+                        <img 
+                            draggable
+                            onDragStart={_handle_drag_start}
+                            src={props.img_src}
+                            alt={props.img_alt_txt} 
+                            style={{ width: props.tb_item_width, height: props.tb_item_height }}
+                        />
+                    </_square_fab>
+                </div>
+        );
+    }
+    else
+    {
+        return (
             <div id="main_tb_item" onClick={_handle_tb_item_click} >
                 <_square_fab>
                     <img 
@@ -155,7 +173,8 @@ const _add_toolbar_item = (props) =>
                     />
                 </_square_fab>
             </div>
-    );
+        );
+    }
 };
 
 /**************************** Toolbar Stylings begin ***************************/

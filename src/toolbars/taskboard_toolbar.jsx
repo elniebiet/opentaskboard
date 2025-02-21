@@ -14,7 +14,6 @@ import fill_img from '../../res/imgs/img_fill2_100x100.png';
 import { useState, useEffect } from 'react';
 import { TOOLBAR_ITEMS } from '../common/globals';
 import { TOOLBAR_ITEM_TYPE } from '../common/globals';
-import zIndex from '@mui/material/styles/zIndex';
 import { SELECTED_COLOR_THEME } from '../common/globals';
 import { TASKBOARD_DEFAULT_TB_LOC } from './toolbar_defines';
 import { TASKBOARD_DEFAULT_TB_SIZE } from './toolbar_defines';
@@ -160,8 +159,26 @@ const _add_toolbar_item = (props) =>
             }
         }
     };
-
-    return (
+    
+    if(props.tbi_type === TOOLBAR_ITEM_TYPE.CLICKABLE)
+    {
+        return (
+                <div id="main_tb_item" onMouseDown={_handle_tb_item_click}>
+                    <_square_fab>
+                        <img 
+                            draggable
+                            onDragStart={_handle_drag_start}
+                            src={props.img_src}
+                            alt={props.img_alt_txt} 
+                            style={{ width: props.tb_item_width, height: props.tb_item_height }}
+                        />
+                    </_square_fab>
+                </div>
+        );
+    }
+    else
+    {
+        return (
             <div id="main_tb_item" onClick={_handle_tb_item_click}>
                 <_square_fab>
                     <img 
@@ -173,7 +190,8 @@ const _add_toolbar_item = (props) =>
                     />
                 </_square_fab>
             </div>
-    );
+        );
+    }
 };
 
 /**************************** Toolbar Stylings begin ***************************/
