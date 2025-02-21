@@ -314,9 +314,9 @@ const _taskboard_default = () => {
 
   /************** Page listener begins **********************/
   /**
-   * page click listener - listens for page clicks 
+   * page mouse listener - listens for page clicks 
    */
-  const _page_click_listener = () => {
+  const _page_mouse_down_listener = () => {
     useEffect(() => {
         const _handle_page_click = (e) => {
         console.log("page clicked at:", e.clientX, e.clientY);
@@ -354,11 +354,11 @@ const _taskboard_default = () => {
         }
       };
   
-      document.addEventListener("click", _handle_page_click);
+      document.addEventListener("mousedown", _handle_page_click);
   
       // cleanup function to remove the listener on unmount
       return () => {
-        document.removeEventListener("click", _handle_page_click);
+        document.removeEventListener("mousedown", _handle_page_click);
       };
     }, []);
   
@@ -402,7 +402,7 @@ const _taskboard_default = () => {
           cursor: cursor_type,
         }}
       >
-          <_page_click_listener />
+          <_page_mouse_down_listener />
 
           <_gridlines_normal grid_size={50} line_color="#E6E6E6" />
           
