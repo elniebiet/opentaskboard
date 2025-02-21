@@ -1,0 +1,3 @@
+1. forced parameters for functions
+2. remove temp buffers
+3. try avoid refreshing entire components ondrag

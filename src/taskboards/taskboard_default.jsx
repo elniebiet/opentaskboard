@@ -13,6 +13,7 @@ import { STKNOTE_WIDTH_PERC_DEFAULT } from './taskboard_definitions';
 import { COMMENT_WIDTH_PERC_DEFAULT } from './taskboard_definitions';
 import { SHAPES_TOOLBAR_ITEM_TYPE } from '../common/globals';
 import { TASKBOARD_STATES } from './taskboard_definitions';
+import _draggable_arrow from '../common/components/arrow';
 
 /****************** Effects block begin ***************************/
 /**
@@ -312,6 +313,27 @@ const _taskboard_default = () => {
   };
   /************** Add Comment Ends **************************/
 
+  /*************** Draw Arrow Begins *************************/
+  const [arrows, _set_arrows] = useState([]); // TODO: temporary arrows storage
+  const _draw_arrows = () => {
+    
+  };
+
+  const _add_arrow = (x1_pos, y1_pos, x2_pos, y2_pos, colour, stroke_width) => {
+    const new_arrow = { 
+      id: Date.now(),
+      x1_pos: x1_pos,
+      x2_pos: x2_pos,
+      y1_pos: y1_pos,
+      y2_pos: y2_pos,
+      colour: colour,
+      stroke_width: stroke_width, 
+    };
+    _set_arrows([...arrows, new_arrow]);
+  };
+
+  /*************** Draw Line Ends *************************/
+
   /************** Page listener begins **********************/
   /**
    * page mouse listener - listens for page clicks 
@@ -377,6 +399,8 @@ const _taskboard_default = () => {
             //TODO: draw shape here
             console.log("drew " + shape_type + " at this point: " + start_draw_pos.x_pos + ", " + start_draw_pos.y_pos + " to this point: " + e.clientX  + ", " + e.clientY);
 
+            _add_arrow(start_draw_pos.x_pos, start_draw_pos.y_pos, e.clientX, e.clientY, "#0000ff", 3);
+
             // done drawing
             _set_draw_shape(false);
             _set_start_draw_pos({x_pos: 100, y_pos: 100});
@@ -437,6 +461,14 @@ const _taskboard_default = () => {
                 comment_update_func={_update_comment}  x_pos={comment.x_pos} y_pos={comment.y_pos} win_width={width} win_height={height} colour={comment.colour}/>
               ))}
             </div>
+          </div>
+          
+          {/* display shapes */}
+          <div>
+              {/* display arrows */}
+              {arrows.map((arrow) => (
+                <_draggable_arrow start_pos_x1={arrow.x1_pos} start_pos_y1={arrow.y1_pos} start_pos_x2={arrow.x2_pos} start_pos_y2={arrow.y2_pos} colour={arrow.colour} stroke_width={arrow.stroke_width} />
+              ))}
           </div>
 
       </div>
