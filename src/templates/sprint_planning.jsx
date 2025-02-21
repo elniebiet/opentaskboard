@@ -1,5 +1,5 @@
 import * as React from 'react';
-import _templates_toolbar from '../toolbars/templates_toolbar';
+import _taskboard_toolbar from '../toolbars/taskboard_toolbar';
 import _shapes_sub_toolbar from '../toolbars/shapes_sub_toolbar';
 import { useState, useEffect } from 'react';
 import _gridlines_normal from '../gridlines/normal';
@@ -319,11 +319,11 @@ const _sprint_planning_template = () => {
 
           <_gridlines_normal grid_size={50} line_color="#E6E6E6" />
           
-          <_templates_toolbar pos={"top"} win_width={width} win_height={height} add_note_func={_add_note} set_tb_item_loc_func={_set_tb_item_loc_func} 
+          <_taskboard_toolbar pos={"top"} win_width={width} win_height={height} add_note_func={_add_note} set_tb_item_loc_func={_set_tb_item_loc_func} 
             select_cursor_func={_select_cursor_type} marker_draw_func={_draw_with_marker} add_fill_func={_add_fill} shapes_selected_func={_show_shape_options} 
             add_comment_func={_add_comment} />
           
-          <_templates_toolbar pos={"left"} win_width={width} win_height={height} add_note_func={_add_note} set_tb_item_loc_func={_set_tb_item_loc_func} 
+          <_taskboard_toolbar pos={"left"} win_width={width} win_height={height} add_note_func={_add_note} set_tb_item_loc_func={_set_tb_item_loc_func} 
             select_cursor_func={_select_cursor_type} marker_draw_func={_draw_with_marker} add_fill_func={_add_fill} shapes_selected_func={_show_shape_options} 
             add_comment_func={_add_comment} />
           

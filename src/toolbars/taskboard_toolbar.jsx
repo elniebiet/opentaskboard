@@ -202,7 +202,7 @@ let toolbar_styling_left = {
 };
 /**************************** Toolbar Stylings end ****************************/
 
-const _templates_toolbar = (props) => {
+const _taskboard_toolbar = (props) => {
     let location = props.pos; // ideally top or left
 
     // default: left, vertical toolbar
@@ -308,4 +308,4 @@ const _templates_toolbar = (props) => {
     );
 };
 
-export default _templates_toolbar;
+export default _taskboard_toolbar;
