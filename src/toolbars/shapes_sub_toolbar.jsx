@@ -12,18 +12,12 @@ import { TASKBOARD_DEFAULT_TB_SIZE } from './toolbar_defines';
 import { _get_max_z_index } from '../common/globals';
 
 import line_img from '../../res/imgs/shapes_sub_toolbar/img_line_100x100.png';
-import line_img32 from '../../res/imgs/shapes_sub_toolbar/img_line_32x32.png';
+import arrow_img from '../../res/imgs/shapes_sub_toolbar/img_arrow_100x100.png';
 import circle_img from '../../res/imgs/shapes_sub_toolbar/img_circle_100x100.png';
-import circle_img32 from '../../res/imgs/shapes_sub_toolbar/img_circle_32x32.png';
 import rect_img from '../../res/imgs/shapes_sub_toolbar/img_rect_100x100.png';
-import rect_img32 from '../../res/imgs/shapes_sub_toolbar/img_rect_32x32.png';
 import filleted_rect_img from '../../res/imgs/shapes_sub_toolbar/img_filleted_rect_100x100.png';
-import filleted_rect_img32 from '../../res/imgs/shapes_sub_toolbar/img_filleted_rect_32x32.png';
 import triangle_img from '../../res/imgs/shapes_sub_toolbar/img_triangle_100x100.png';
-import triangle_img32 from '../../res/imgs/shapes_sub_toolbar/img_triangle_32x32.png';
 import right_angle_img from '../../res/imgs/shapes_sub_toolbar/img_right_angle_100x100.png';
-import right_angle_img32 from '../../res/imgs/shapes_sub_toolbar/img_right_angle_32x32.png';
-
 
 //////////////////////////////////////// TEMPORARY SUB TOOLBAR FOR SHAPES  ////////////
 ////////////////////// REMOVE THIS COMMENT WHEN COMPLETED //////////////////////////////////
@@ -113,6 +107,10 @@ const _add_toolbar_item = (props) =>
         switch(tb_item_idx)
         {
             case SHAPES_TOOLBAR_ITEM_TYPE.STBI_LINE:
+            {
+                break;
+            }
+            case SHAPES_TOOLBAR_ITEM_TYPE.STBI_ARROW:
             {
                 break;
             }
@@ -274,6 +272,10 @@ const _shapes_sub_toolbar = (props) => {
             <div id="sprint_planning_template_root" style={toolbar_styling}>
                 <Box sx={{ '& > :not(style)': { m: 0.5 } }} display="flex" flexDirection={flex_dir}>
                     <_add_toolbar_item shapes_tb_item_clicked={props.shapes_tb_item_clicked_func} item_index={SHAPES_TOOLBAR_ITEM_TYPE.STBI_LINE} tbi_type={TOOLBAR_ITEM_TYPE.CLICKABLE} img_src={line_img} img_alt_txt={"Line"} 
+                    tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} 
+                    deactivate_sub_tb={props.deactivate_shapes_sub_tb}
+                    />
+                    <_add_toolbar_item shapes_tb_item_clicked={props.shapes_tb_item_clicked_func} item_index={SHAPES_TOOLBAR_ITEM_TYPE.STBI_ARROW} tbi_type={TOOLBAR_ITEM_TYPE.CLICKABLE} img_src={arrow_img} img_alt_txt={"Arrow"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} 
                     deactivate_sub_tb={props.deactivate_shapes_sub_tb}
                     />

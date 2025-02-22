@@ -39,13 +39,10 @@ const SHAPES_TOOLBAR_ITEM_TYPE = {
     STBI_DIAMOND:           7,
     STBI_PENTAGON:          8,
     STBI_HEXAGON:           9,
-    STBI_RIGHT_ARROW:       10,
-    STBI_LEFT_ARROW:        11,
-    STBI_TOP_ARROW:         12,
-    STBI_DOWN_ARROW:        13,
-    STBI_FOUR_POINT_STAR:   14,
-    STBI_FIVE_POINT_STAR:   15,
-    STBI_SIX_POINT_STAR:    16,
+    STBI_ARROW:             10,
+    STBI_FOUR_POINT_STAR:   11,
+    STBI_FIVE_POINT_STAR:   12,
+    STBI_SIX_POINT_STAR:    13,
 };
 /* Shapes Toolbar sub-item list end */
 

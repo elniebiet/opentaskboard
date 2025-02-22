@@ -1,3 +1,4 @@
-1. forced parameters for functions
+1. forced parameters for functions where necessary
 2. remove temp buffers
 3. try avoid refreshing entire components ondrag
+4. validation of function parameters

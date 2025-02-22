@@ -55,7 +55,7 @@ const _taskboard_default = () => {
 
   // Taskboard state
   const [taskboard_state, _set_taskboard_state] = useState(TASKBOARD_STATES.TBS_NORMAL);
-  const [draw_shape, _set_draw_shape] = useState(false);
+  const [wait_draw_shape_over, _set_wait_draw_shape_over] = useState(false);
   const [start_draw_pos, _set_start_draw_pos] = useState({x_pos: 100, y_pos: 100});
   const [shape_type, _set_shape_type] = useState(SHAPES_TOOLBAR_ITEM_TYPE.STBI_LINE);
 
@@ -72,6 +72,15 @@ const _taskboard_default = () => {
   const _handle_drag_over = (e) => {
     e.preventDefault(); // prevent the default "red stop circle" cursor
   };
+
+  /**
+   * Request taskboard state 
+   */
+  const _request_taskboard_state = ({tb_state}) => {
+    _set_taskboard_state(tb_state);
+  };
+
+  
   /***************** Misc block ends *************************/
 
   /****************** sticky note begins ************************/
@@ -106,6 +115,7 @@ const _taskboard_default = () => {
     }
     else
     {
+
       // dragged
       const new_note = { 
         id: Date.now(), 
@@ -146,7 +156,7 @@ const _taskboard_default = () => {
   {
     console.log("pointer selected: taskboard_stat " + taskboard_state);
     _set_cursor_type(cursor_type);
-    _set_taskboard_state(TASKBOARD_STATES.TBS_NORMAL);
+    _request_taskboard_state({tb_state: TASKBOARD_STATES.TBS_NORMAL});
   };
   /************** Pointer selection ends ****************************/
 
@@ -187,11 +197,11 @@ const _taskboard_default = () => {
 
     initial_click = true;
     console.log('shapes selected, button location: ' + click_loc_x, click_loc_y); 
-    _set_taskboard_state(TASKBOARD_STATES.TBS_SUB_TOOLBAR_ACTIVE);
+    _request_taskboard_state({tb_state: TASKBOARD_STATES.TBS_SUB_TOOLBAR_ACTIVE});
     _set_sub_tb_item_clicked(false);
   };
 
-  const _shape_clicked = (e, shape_type) => 
+  const _shape_clicked = (e, sel_shape_type) => 
   {
     // sub toolbar_item was clicked
     _set_sub_tb_item_clicked(true); 
@@ -199,48 +209,14 @@ const _taskboard_default = () => {
     // custom 'crosshair' cursor
     let cursor_type = `url(${cross_pointer}) 10 10, auto`;
     _set_cursor_type(cursor_type);
-    _set_taskboard_state(TASKBOARD_STATES.TBS_DRAWING_SHAPE);
-    console.log("shape clicked: taskboard state " + taskboard_state);
-    switch(shape_type)
-    {
-        case SHAPES_TOOLBAR_ITEM_TYPE.STBI_LINE:
-        {
-            console.log("line clicked");
-            _set_shape_type(SHAPES_TOOLBAR_ITEM_TYPE.STBI_LINE);
-            break;
-        }
-        case SHAPES_TOOLBAR_ITEM_TYPE.STBI_CIRCLE:
-        {
-            console.log("circle clicked");
-            _set_shape_type(SHAPES_TOOLBAR_ITEM_TYPE.STBI_CIRCLE);
-            break;    
-        }
-        case SHAPES_TOOLBAR_ITEM_TYPE.STBI_RECT:
-        {
-            break;   
-        }          
-        case SHAPES_TOOLBAR_ITEM_TYPE.STBI_FILLETED_RECT:  
-        {
-            break;
-        }
-        case SHAPES_TOOLBAR_ITEM_TYPE.STBI_TRIANGLE:             
-        {
-            break;    
-        }            
-        case SHAPES_TOOLBAR_ITEM_TYPE.STBI_RIGHT_TRIANGLE:    
-        {
-            break;
-        }                       
-        default:
-        {
-            break;
-        }
-    }
+    _set_shape_type(sel_shape_type);
+    _request_taskboard_state({tb_state: TASKBOARD_STATES.TBS_DRAWING_SHAPE});
+    console.log("shape clicked: taskboard state " + taskboard_state + " shapetype: " + sel_shape_type);
   };
 
   const _deactivate_shapes_sub_tb = () => 
   {
-    _set_taskboard_state(TASKBOARD_STATES.TBS_NORMAL);
+    _request_taskboard_state({tb_state: TASKBOARD_STATES.TBS_NORMAL});
   };
 
   /************** Shapes selection ends *********************/
@@ -357,7 +333,7 @@ const _taskboard_default = () => {
               }
               else  // next click we are interested in
               {
-                _set_taskboard_state(TASKBOARD_STATES.TBS_NORMAL); 
+                _request_taskboard_state({tb_state: TASKBOARD_STATES.TBS_NORMAL}); 
                 initial_click = true;
               }
             }
@@ -365,10 +341,16 @@ const _taskboard_default = () => {
           }
           case (TASKBOARD_STATES.TBS_DRAWING_SHAPE):
           {
-            _set_start_draw_pos({x_pos: e.clientX, y_pos: e.clientY});
-            _set_draw_shape(true);
+            _request_taskboard_state({tb_state: TASKBOARD_STATES.TBS_BEGIN_DRAWING_SHAPE});
             break;
           }
+          case (TASKBOARD_STATES.TBS_BEGIN_DRAWING_SHAPE):
+          {
+            _set_start_draw_pos({x_pos: e.clientX, y_pos: e.clientY});
+            _set_wait_draw_shape_over(true);
+            break;
+          }
+          
           default:
           {
             break;
@@ -391,27 +373,43 @@ const _taskboard_default = () => {
   /**************** Page listener ends **************************/
 
   /*************** Effects Begin ***************************/
-  // mouse up drawing 
+  const _do_drawing = ({e, shape_type}) => {
+    switch(shape_type)
+    {
+      case SHAPES_TOOLBAR_ITEM_TYPE.STBI_ARROW:
+      {
+        _add_arrow(start_draw_pos.x_pos, start_draw_pos.y_pos, e.clientX, e.clientY, "#0000ff", 3);
+        break;
+      }
+      default:
+      {
+        console.log("dont know shape " + shape_type);
+        break;
+      }
+    }
+  };
+  
+  // drawing shape over mouseup event 
   useEffect(() => {
-      const _mouse_up_drawing = (e) => {
-          if(draw_shape)
+      const _drawing_shape_over_mouseup = (e) => {
+          if(wait_draw_shape_over)
           {
-            //TODO: draw shape here
+            // draw shape
+            _do_drawing({e: e, shape_type: shape_type});
             console.log("drew " + shape_type + " at this point: " + start_draw_pos.x_pos + ", " + start_draw_pos.y_pos + " to this point: " + e.clientX  + ", " + e.clientY);
 
-            _add_arrow(start_draw_pos.x_pos, start_draw_pos.y_pos, e.clientX, e.clientY, "#0000ff", 3);
-
             // done drawing
-            _set_draw_shape(false);
+            _set_wait_draw_shape_over(false);
             _set_start_draw_pos({x_pos: 100, y_pos: 100});
+            _request_taskboard_state({tb_state: TASKBOARD_STATES.TBS_BEGIN_DRAWING_SHAPE});
           }
       };
   
-      window.addEventListener('mouseup', _mouse_up_drawing);
+      window.addEventListener('mouseup', _drawing_shape_over_mouseup);
       return () => {
-        window.removeEventListener('mouseup', _mouse_up_drawing);
+        window.removeEventListener('mouseup', _drawing_shape_over_mouseup);
       };
-    }, [draw_shape]
+    }, [wait_draw_shape_over]
   );
   /*************** Effects Ends ***************************/
 
