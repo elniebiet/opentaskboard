@@ -1,9 +1,15 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import Draggable from "react-draggable";
 
 const _draggable_arrow = ({ start_pos_x1, start_pos_y1, start_pos_x2, start_pos_y2, colour = "black", stroke_width = 2 }) => {
     const [start, setStart] = useState({ x: start_pos_x1, y: start_pos_y1 });
     const [end, setEnd] = useState({ x: start_pos_x2, y: start_pos_y2 });
+
+    // Update state when props change
+    useEffect(() => {
+        setStart({ x: start_pos_x1, y: start_pos_y1 });
+        setEnd({ x: start_pos_x2, y: start_pos_y2 });
+    }, [start_pos_x1, start_pos_y1, start_pos_x2, start_pos_y2]);
 
     return (
         <Draggable

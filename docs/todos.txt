@@ -1,4 +1,27 @@
 1. forced parameters for functions where necessary
 2. remove temp buffers
-3. try avoid refreshing entire components ondrag
-4. validation of function parameters
+3. avoid using useState when it rerenders entire page frequently, use useRef instead and manually trigger re-render, see below.
+4. try avoid refreshing entire components ondrag
+5. validation of function parameters
+
+
+/**** sample code for triggering useRef using useState ****/
+
+import { useRef, useState } from "react";
+
+const MyComponent = () => {
+  const bufferRef = useRef(new ArrayBuffer(1024 * 1024)); // Large buffer
+  const [, forceRender] = useState(0); // Dummy state
+
+  const updateBuffer = () => {
+    bufferRef.current = new ArrayBuffer(1024 * 1024); // Update ref
+    forceRender((prev) => prev + 1); // Force re-render
+  };
+
+  return (
+    <div>
+      <p>Buffer updated!</p>
+      <button onClick={updateBuffer}>Update Buffer</button>
+    </div>
+  );
+};

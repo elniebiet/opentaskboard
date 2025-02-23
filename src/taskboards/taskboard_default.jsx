@@ -14,6 +14,8 @@ import { COMMENT_WIDTH_PERC_DEFAULT } from './taskboard_definitions';
 import { SHAPES_TOOLBAR_ITEM_TYPE } from '../common/globals';
 import { TASKBOARD_STATES } from './taskboard_definitions';
 import _draggable_arrow from '../common/components/arrow';
+import { global_new_arrow_id } from './taskboard_definitions';
+import { _set_global_new_arrow_id } from './taskboard_definitions';
 
 /****************** Effects block begin ***************************/
 /**
@@ -56,6 +58,7 @@ const _taskboard_default = () => {
   // Taskboard state
   const [taskboard_state, _set_taskboard_state] = useState(TASKBOARD_STATES.TBS_NORMAL);
   const [wait_draw_shape_over, _set_wait_draw_shape_over] = useState(false);
+  const [drawing_shape, _set_drawing_shape] = useState(false);
   const [start_draw_pos, _set_start_draw_pos] = useState({x_pos: 100, y_pos: 100});
   const [shape_type, _set_shape_type] = useState(SHAPES_TOOLBAR_ITEM_TYPE.STBI_LINE);
 
@@ -291,13 +294,10 @@ const _taskboard_default = () => {
 
   /*************** Draw Arrow Begins *************************/
   const [arrows, _set_arrows] = useState([]); // TODO: temporary arrows storage
-  const _draw_arrows = () => {
-    
-  };
 
-  const _add_arrow = (x1_pos, y1_pos, x2_pos, y2_pos, colour, stroke_width) => {
+  const _add_arrow = (id, x1_pos, y1_pos, x2_pos, y2_pos, colour, stroke_width) => {
     const new_arrow = { 
-      id: Date.now(),
+      id: id,
       x1_pos: x1_pos,
       x2_pos: x2_pos,
       y1_pos: y1_pos,
@@ -306,6 +306,56 @@ const _taskboard_default = () => {
       stroke_width: stroke_width, 
     };
     _set_arrows([...arrows, new_arrow]);
+  };
+
+  /**
+   * update end point for an arrow
+   * @param {int} id - arrow id
+   * @param {int} new_x2_pos - new x cordinate
+   * @param {int} new_y2_pos - new y cordinate
+   */
+  const _update_arrow_end_pos = (id, new_x2_pos, new_y2_pos) => {    
+    _set_arrows((prev_arrows) =>
+      prev_arrows.map((arrow) => {
+        if (arrow.id === id) {
+          return { ...arrow, x2_pos: new_x2_pos, y2_pos: new_y2_pos };
+        } else {
+          return arrow;
+        }
+      })
+    );
+  };
+
+  const _start_drawing = ({ arrow_id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour, stroke_width}) => {
+    switch(shape_type)
+    {
+      case SHAPES_TOOLBAR_ITEM_TYPE.STBI_ARROW:
+      {
+        _add_arrow(arrow_id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour, stroke_width);
+        break;
+      }
+      default:
+      {
+        console.log("_start_drawing: dont know shape " + shape_type);
+        break;
+      }
+    }
+  };
+
+  const _update_drawing = ({e, shape_type}) => {
+    switch(shape_type)
+    {
+      case SHAPES_TOOLBAR_ITEM_TYPE.STBI_ARROW:
+      {
+        _update_arrow_end_pos(global_new_arrow_id, e.clientX, e.clientY);
+        break;
+      }
+      default:
+      {
+        console.log("_update_drawing_dont know shape " + shape_type);
+        break;
+      }
+    }
   };
 
   /*************** Draw Line Ends *************************/
@@ -347,7 +397,18 @@ const _taskboard_default = () => {
           case (TASKBOARD_STATES.TBS_BEGIN_DRAWING_SHAPE):
           {
             _set_start_draw_pos({x_pos: e.clientX, y_pos: e.clientY});
-            _set_wait_draw_shape_over(true);
+            _set_global_new_arrow_id(Date.now());
+            _start_drawing({
+              arrow_id: global_new_arrow_id, 
+              start_pos_x: e.clientX, 
+              start_pos_y: e.clientY, 
+              end_pos_x: e.clientX, 
+              end_pos_y: e.clientY, 
+              colour: "#0000ff", 
+              stroke_width: 3
+            });
+            
+            _set_drawing_shape(true);
             break;
           }
           
@@ -372,38 +433,53 @@ const _taskboard_default = () => {
   };
   /**************** Page listener ends **************************/
 
-  /*************** Effects Begin ***************************/
-  const _do_drawing = ({e, shape_type}) => {
-    switch(shape_type)
-    {
-      case SHAPES_TOOLBAR_ITEM_TYPE.STBI_ARROW:
-      {
-        _add_arrow(start_draw_pos.x_pos, start_draw_pos.y_pos, e.clientX, e.clientY, "#0000ff", 3);
-        break;
-      }
-      default:
-      {
-        console.log("dont know shape " + shape_type);
-        break;
-      }
-    }
-  };
-  
+  /*************** Effects Begin ***************************/  
+  // draw shape over mousemove event 
+  useEffect(() => {
+    /**
+     * draw shape mousemove event
+     * this function will trigger the wait for mouse up event
+     * @param {event} e
+     */
+    const _drawing_shape_mousemove = (e) => {
+        if(drawing_shape)
+        {
+          // draw shape
+          _update_drawing({e: e, shape_type: shape_type});
+
+          // done drawing
+          _set_wait_draw_shape_over(true);
+        }
+    };
+
+      window.addEventListener('mousemove', _drawing_shape_mousemove);
+      return () => {
+        window.removeEventListener('mousemove', _drawing_shape_mousemove);
+      };
+    }, [drawing_shape]
+  );
+
   // drawing shape over mouseup event 
   useEffect(() => {
-      const _drawing_shape_over_mouseup = (e) => {
-          if(wait_draw_shape_over)
-          {
-            // draw shape
-            _do_drawing({e: e, shape_type: shape_type});
-            console.log("drew " + shape_type + " at this point: " + start_draw_pos.x_pos + ", " + start_draw_pos.y_pos + " to this point: " + e.clientX  + ", " + e.clientY);
+    /**
+     * draw shape mouse up event
+     * @param {event} e
+     */
+    const _drawing_shape_over_mouseup = (e) => {
+        if(wait_draw_shape_over)
+        {
+          // draw shape
+          _update_drawing({e: e, shape_type: shape_type});
+          console.log("drew " + shape_type + " at this point: " + start_draw_pos.x_pos + ", " + start_draw_pos.y_pos + " to this point: " + e.clientX  + ", " + e.clientY);
 
-            // done drawing
-            _set_wait_draw_shape_over(false);
-            _set_start_draw_pos({x_pos: 100, y_pos: 100});
-            _request_taskboard_state({tb_state: TASKBOARD_STATES.TBS_BEGIN_DRAWING_SHAPE});
-          }
-      };
+          // done drawing
+          _set_wait_draw_shape_over(false);
+          _set_start_draw_pos({x_pos: 100, y_pos: 100});
+          _set_drawing_shape(false);
+          _set_global_new_arrow_id(0);
+          _request_taskboard_state({tb_state: TASKBOARD_STATES.TBS_BEGIN_DRAWING_SHAPE});
+        }
+    };
   
       window.addEventListener('mouseup', _drawing_shape_over_mouseup);
       return () => {
