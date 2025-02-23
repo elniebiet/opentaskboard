@@ -1,4 +1,5 @@
 import * as React from 'react';
+import _get_window_size from '../common/components/window_size';
 import _taskboard_toolbar from '../toolbars/taskboard_toolbar';
 import _shapes_sub_toolbar from '../toolbars/shapes_sub_toolbar';
 import { useState, useEffect } from 'react';
@@ -17,34 +18,6 @@ import _draggable_arrow from '../common/components/arrow';
 import { global_new_arrow_id } from './taskboard_definitions';
 import { _set_global_new_arrow_id } from './taskboard_definitions';
 
-/****************** Effects block begin ***************************/
-/**
- * Gets current window size
- * @returns {{width, height}} - current window width and height.
- */
-const _get_window_size = () => {
-    const [window_size, _set_window_size] = useState({
-      width: window.innerWidth,
-      height: window.innerHeight,
-    });
-  
-    useEffect(() => {
-      const _handle_resize = () => {
-        _set_window_size({
-          width: window.innerWidth,
-          height: window.innerHeight,
-        });
-      };
-  
-      window.addEventListener('resize', _handle_resize);
-      return () => {
-        window.removeEventListener('resize', _handle_resize);
-      };
-    }, []);
-  
-    return window_size;
-};
-/****************** Effects block ends ***************************/
 
 /**
  * Default taskboard component
@@ -82,8 +55,6 @@ const _taskboard_default = () => {
   const _request_taskboard_state = ({tb_state}) => {
     _set_taskboard_state(tb_state);
   };
-
-  
   /***************** Misc block ends *************************/
 
   /****************** sticky note begins ************************/
@@ -221,7 +192,6 @@ const _taskboard_default = () => {
   {
     _request_taskboard_state({tb_state: TASKBOARD_STATES.TBS_NORMAL});
   };
-
   /************** Shapes selection ends *********************/
   
   /************** Add Comment Begins ************************/
@@ -357,8 +327,7 @@ const _taskboard_default = () => {
       }
     }
   };
-
-  /*************** Draw Line Ends *************************/
+  /*************** Draw Arrow Ends *************************/
 
   /************** Page listener begins **********************/
   /**
@@ -432,6 +401,7 @@ const _taskboard_default = () => {
     );
   };
   /**************** Page listener ends **************************/
+
 
   /*************** Effects Begin ***************************/  
   // draw shape over mousemove event 
