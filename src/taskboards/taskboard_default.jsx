@@ -30,8 +30,6 @@ const _taskboard_default = () => {
 
   // Taskboard state
   const [taskboard_state, _set_taskboard_state] = useState(TASKBOARD_STATES.TBS_NORMAL);
-  const [wait_draw_shape_over, _set_wait_draw_shape_over] = useState(false);
-  const [drawing_shape, _set_drawing_shape] = useState(false);
   const [start_draw_pos, _set_start_draw_pos] = useState({x_pos: 100, y_pos: 100});
   const [shape_type, _set_shape_type] = useState(SHAPES_TOOLBAR_ITEM_TYPE.STBI_LINE);
 
@@ -52,7 +50,7 @@ const _taskboard_default = () => {
   /**
    * Request taskboard state 
    */
-  const _request_taskboard_state = ({tb_state}) => {
+  const _request_taskboard_state = (tb_state = TASKBOARD_STATES.TBS_NORMAL) => {
     _set_taskboard_state(tb_state);
   };
   /***************** Misc block ends *************************/
@@ -130,7 +128,7 @@ const _taskboard_default = () => {
   {
     console.log("pointer selected: taskboard_stat " + taskboard_state);
     _set_cursor_type(cursor_type);
-    _request_taskboard_state({tb_state: TASKBOARD_STATES.TBS_NORMAL});
+    _request_taskboard_state(TASKBOARD_STATES.TBS_NORMAL);
   };
   /************** Pointer selection ends ****************************/
 
@@ -171,7 +169,7 @@ const _taskboard_default = () => {
 
     initial_click = true;
     console.log('shapes selected, button location: ' + click_loc_x, click_loc_y); 
-    _request_taskboard_state({tb_state: TASKBOARD_STATES.TBS_SUB_TOOLBAR_ACTIVE});
+    _request_taskboard_state(TASKBOARD_STATES.TBS_SUB_TOOLBAR_ACTIVE);
     _set_sub_tb_item_clicked(false);
   };
 
@@ -184,13 +182,13 @@ const _taskboard_default = () => {
     let cursor_type = `url(${cross_pointer}) 10 10, auto`;
     _set_cursor_type(cursor_type);
     _set_shape_type(sel_shape_type);
-    _request_taskboard_state({tb_state: TASKBOARD_STATES.TBS_DRAWING_SHAPE});
+    _request_taskboard_state(TASKBOARD_STATES.TBS_WAITING_DRAW_SHAPE);
     console.log("shape clicked: taskboard state " + taskboard_state + " shapetype: " + sel_shape_type);
   };
 
   const _deactivate_shapes_sub_tb = () => 
   {
-    _request_taskboard_state({tb_state: TASKBOARD_STATES.TBS_NORMAL});
+    _request_taskboard_state(TASKBOARD_STATES.TBS_NORMAL);
   };
   /************** Shapes selection ends *********************/
   
@@ -352,15 +350,15 @@ const _taskboard_default = () => {
               }
               else  // next click we are interested in
               {
-                _request_taskboard_state({tb_state: TASKBOARD_STATES.TBS_NORMAL}); 
+                _request_taskboard_state(TASKBOARD_STATES.TBS_NORMAL); 
                 initial_click = true;
               }
             }
             break;
           }
-          case (TASKBOARD_STATES.TBS_DRAWING_SHAPE):
+          case (TASKBOARD_STATES.TBS_WAITING_DRAW_SHAPE):
           {
-            _request_taskboard_state({tb_state: TASKBOARD_STATES.TBS_BEGIN_DRAWING_SHAPE});
+            _request_taskboard_state(TASKBOARD_STATES.TBS_BEGIN_DRAWING_SHAPE);
             break;
           }
           case (TASKBOARD_STATES.TBS_BEGIN_DRAWING_SHAPE):
@@ -377,7 +375,7 @@ const _taskboard_default = () => {
               stroke_width: 3
             });
             
-            _set_drawing_shape(true);
+            _request_taskboard_state(TASKBOARD_STATES.TBS_DRAWING_SHAPE);
             break;
           }
           
@@ -412,13 +410,10 @@ const _taskboard_default = () => {
      * @param {event} e
      */
     const _drawing_shape_mousemove = (e) => {
-        if(drawing_shape)
+        if(taskboard_state === TASKBOARD_STATES.TBS_DRAWING_SHAPE)
         {
           // draw shape
           _update_drawing({e: e, shape_type: shape_type});
-
-          // done drawing
-          _set_wait_draw_shape_over(true);
         }
     };
 
@@ -426,7 +421,7 @@ const _taskboard_default = () => {
       return () => {
         window.removeEventListener('mousemove', _drawing_shape_mousemove);
       };
-    }, [drawing_shape]
+    }, [taskboard_state === TASKBOARD_STATES.TBS_DRAWING_SHAPE]
   );
 
   // drawing shape over mouseup event 
@@ -436,18 +431,16 @@ const _taskboard_default = () => {
      * @param {event} e
      */
     const _drawing_shape_over_mouseup = (e) => {
-        if(wait_draw_shape_over)
+        if(taskboard_state === TASKBOARD_STATES.TBS_DRAWING_SHAPE)
         {
           // draw shape
           _update_drawing({e: e, shape_type: shape_type});
           console.log("drew " + shape_type + " at this point: " + start_draw_pos.x_pos + ", " + start_draw_pos.y_pos + " to this point: " + e.clientX  + ", " + e.clientY);
 
           // done drawing
-          _set_wait_draw_shape_over(false);
           _set_start_draw_pos({x_pos: 100, y_pos: 100});
-          _set_drawing_shape(false);
           _set_global_new_arrow_id(0);
-          _request_taskboard_state({tb_state: TASKBOARD_STATES.TBS_BEGIN_DRAWING_SHAPE});
+          _request_taskboard_state(TASKBOARD_STATES.TBS_BEGIN_DRAWING_SHAPE);
         }
     };
   
@@ -455,7 +448,7 @@ const _taskboard_default = () => {
       return () => {
         window.removeEventListener('mouseup', _drawing_shape_over_mouseup);
       };
-    }, [wait_draw_shape_over]
+    }, [taskboard_state === TASKBOARD_STATES.TBS_DRAWING_SHAPE]
   );
   /*************** Effects Ends ***************************/
 

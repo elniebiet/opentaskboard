@@ -8,9 +8,10 @@ const COMMENT_WIDTH_PERC_DEFAULT                      = 0.15;
 const TASKBOARD_STATES = {
     TBS_NORMAL:                 1,
     TBS_SUB_TOOLBAR_ACTIVE:     2,
-    TBS_DRAWING_SHAPE:          3,
-    TBS_BEGIN_DRAWING_SHAPE:    4,
-    TBS_WRITING:                5,
+    TBS_WAITING_DRAW_SHAPE:     3,  // waiting to draw a shape
+    TBS_BEGIN_DRAWING_SHAPE:    4,  // began drawing shape
+    TBS_DRAWING_SHAPE:          5,  // drawing shape
+    TBS_WRITING:                7,
 };
 
 /************************************ TASKBOARD VARIABLE DEFINITIONS *************************************************/
