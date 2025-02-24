@@ -18,14 +18,14 @@ import { _get_global_cursor_type, _set_global_cursor_type } from './taskboard_de
 import { _get_global_new_shape_type, _set_global_new_shape_type } from './taskboard_definitions';
 import { _add_note, _delete_note, _update_note } from './use_note';
 import { _add_comment, _delete_comment, _update_comment } from './use_comment';
-import { _shape_selected_handler } from './use_shape';
+import { _shape_selected_handler, _start_drawing, _update_drawing } from './use_shape';
 
 import notes from './notes_db_temp';        // temporary notes storage
 import comments from './comments_db_temp';  // temporary comments storage
 import arrows from './arrows_db_temp';      // temporary arrows storage
 
 /**
- * Default taskboard component
+ * Default taskboard componen
  */
 const _taskboard_default = () => {
 
@@ -86,7 +86,7 @@ const _taskboard_default = () => {
     _set_global_cursor_type(cursor_type);
     _trigger_taskboard_rerender();
 
-    // TODO: draw
+    // TODO: draw, move block to separate module
   };
   /************** Marker drawing ends ************************/
 
@@ -97,97 +97,9 @@ const _taskboard_default = () => {
     _set_global_cursor_type(cursor_type);
     _trigger_taskboard_rerender();
 
-    // TODO: fill
+    // TODO: fill, move block to separate module
   };
   /************** Add fill ends **********************************/
-
-  /************** Shapes selection begins *********************/  
-  /**
-   * show shapes popup toolbar
-   * @param {float} pos_x - x cord location to show toolbar
-   * @param {float} pos_y - y cord location to show toolbar   
-   */
-  const _show_shape_options = (click_loc_x, click_loc_y) => 
-  {
-    // set cursor type
-    _set_global_cursor_type('default');
-    _trigger_taskboard_rerender();
-
-    console.log('shapes selected, button location: ' + click_loc_x, click_loc_y); 
-    _request_taskboard_state(TASKBOARD_STATES.TBS_SUB_TOOLBAR_ACTIVE);
-  };
-
-  const _deactivate_shapes_sub_tb = () => 
-  {
-    _request_taskboard_state(TASKBOARD_STATES.TBS_NORMAL);
-  };
-
-  const _start_drawing = ({ shape_id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour, stroke_width}) => {
-    let type_of_shape = _get_global_new_shape_type(); 
-    switch(type_of_shape)
-    {
-      case SHAPES_TOOLBAR_ITEM_TYPE.STBI_ARROW:
-      {
-        _add_arrow(shape_id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour, stroke_width);
-        _trigger_taskboard_rerender();
-        break;
-      }
-      default:
-      {
-        console.log("_start_drawing: dont know shape " + type_of_shape);
-        break;
-      }
-    }
-  };
-
-  const _update_drawing = ({e, shape_type}) => {
-    switch(shape_type)
-    {
-      case SHAPES_TOOLBAR_ITEM_TYPE.STBI_ARROW:
-      {
-        _update_arrow_end_pos(_get_global_new_shape_id(), e.clientX, e.clientY);
-        _trigger_taskboard_rerender();
-        break;
-      }
-      default:
-      {
-        console.log("_update_drawing_dont know shape " + shape_type);
-        break;
-      }
-    }
-  };
-
-  const _add_arrow = (id, x1_pos, y1_pos, x2_pos, y2_pos, colour, stroke_width) => {
-    const new_arrow = { 
-      id: id,
-      x1_pos: x1_pos,
-      x2_pos: x2_pos,
-      y1_pos: y1_pos,
-      y2_pos: y2_pos,
-      colour: colour,
-      stroke_width: stroke_width, 
-    };
-    arrows.push(new_arrow);
-  };
-
-  /**
-   * update end point for an arrow
-   * @param {int} id - arrow id
-   * @param {int} new_x2_pos - new x cordinate
-   * @param {int} new_y2_pos - new y cordinate
-   */
-  const _update_arrow_end_pos = (id, new_x2_pos, new_y2_pos) => {    
-    for(let i=0; i<arrows.length; i++)
-    {
-      if(arrows[i].id === id)
-      {
-        arrows[i].x2_pos = new_x2_pos;
-        arrows[i].y2_pos = new_y2_pos;
-        break;
-      }
-    }
-  };
-  /************** Shapes selection ends *********************/
 
   /************** Page listener begins **********************/
   /**
@@ -223,7 +135,7 @@ const _taskboard_default = () => {
               colour: "#0000ff", 
               stroke_width: 3
             });
-            
+            _trigger_taskboard_rerender();
             _request_taskboard_state(TASKBOARD_STATES.TBS_DRAWING_SHAPE);
             break;
           }
@@ -263,6 +175,7 @@ const _taskboard_default = () => {
         {
           // draw shape
           _update_drawing({e: e, shape_type: _get_global_new_shape_type()});
+          _trigger_taskboard_rerender();
         }
     };
 
@@ -317,20 +230,22 @@ const _taskboard_default = () => {
           <_gridlines_normal grid_size={50} line_color="#E6E6E6" />
           
           <_taskboard_toolbar pos={"top"} win_width={width} win_height={height} add_note_func={_add_note} set_tb_item_loc_func={_set_tb_item_loc_func} 
-            select_cursor_func={_select_pointer} marker_draw_func={_draw_with_marker} add_fill_func={_add_fill} shapes_selected_func={_show_shape_options} 
-            add_comment_func={_add_comment} taskboard_rerender_func={_trigger_taskboard_rerender}/>
+            select_cursor_func={_select_pointer} marker_draw_func={_draw_with_marker} add_fill_func={_add_fill} add_comment_func={_add_comment} 
+            taskboard_rerender_func={_trigger_taskboard_rerender} request_taskboard_state={_request_taskboard_state}
+          />
           
           <_taskboard_toolbar pos={"left"} win_width={width} win_height={height} add_note_func={_add_note} set_tb_item_loc_func={_set_tb_item_loc_func} 
-            select_cursor_func={_select_pointer} marker_draw_func={_draw_with_marker} add_fill_func={_add_fill} shapes_selected_func={_show_shape_options} 
-            add_comment_func={_add_comment} taskboard_rerender_func={_trigger_taskboard_rerender}/>
+            select_cursor_func={_select_pointer} marker_draw_func={_draw_with_marker} add_fill_func={_add_fill} add_comment_func={_add_comment} 
+            taskboard_rerender_func={_trigger_taskboard_rerender} request_taskboard_state={_request_taskboard_state}
+          />
           
           {(taskboard_state === TASKBOARD_STATES.TBS_SUB_TOOLBAR_ACTIVE) && (
-            <_shapes_sub_toolbar shapes_tb_item_clicked_func={_shape_selected_handler} pos={"top"} win_width={width} win_height={height} deactivate_shapes_sub_tb={_deactivate_shapes_sub_tb} 
+            <_shapes_sub_toolbar shapes_tb_item_clicked_func={_shape_selected_handler} pos={"top"} win_width={width} win_height={height} 
             taskboard_rerender_func={_trigger_taskboard_rerender} request_taskboard_state={_request_taskboard_state} />
           )}
 
           {(taskboard_state === TASKBOARD_STATES.TBS_SUB_TOOLBAR_ACTIVE) && (
-            <_shapes_sub_toolbar shapes_tb_item_clicked_func={_shape_selected_handler} pos={"left"} win_width={width} win_height={height} deactivate_shapes_sub_tb={_deactivate_shapes_sub_tb} 
+            <_shapes_sub_toolbar shapes_tb_item_clicked_func={_shape_selected_handler} pos={"left"} win_width={width} win_height={height} 
             taskboard_rerender_func={_trigger_taskboard_rerender} request_taskboard_state={_request_taskboard_state} />
           )}
 
