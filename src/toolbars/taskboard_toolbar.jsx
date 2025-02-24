@@ -67,7 +67,6 @@ const _add_toolbar_item = (props) =>
             {
                 props.item_loc_update_func(clientX, clientY);
                 props.on_stk_click(false, clientX, clientY);
-                props.taskboard_rerender_func();
                 break;
             }
             case TOOLBAR_ITEMS.TBI_COMMENT:
@@ -81,6 +80,9 @@ const _add_toolbar_item = (props) =>
                 break;
             }
         }
+
+        // trigger rerender
+        props.taskboard_rerender_func();
     };
     
     /* onMouseUp functions only in component where it was created, we need the global */
@@ -119,7 +121,6 @@ const _add_toolbar_item = (props) =>
             case TOOLBAR_ITEMS.TBI_STKNOTE:
             {
                 props.on_stk_click(true);
-                props.taskboard_rerender_func();
                 break;
             }
             case TOOLBAR_ITEMS.TBI_MARKER:
@@ -160,6 +161,9 @@ const _add_toolbar_item = (props) =>
                 break;
             }
         }
+
+        // trigger rerender
+        props.taskboard_rerender_func();
     };
     
     if(props.tbi_type === TOOLBAR_ITEM_TYPE.CLICKABLE)

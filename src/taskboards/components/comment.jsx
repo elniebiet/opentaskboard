@@ -69,15 +69,18 @@ const _comment = (props) => {
     
     const _update_comment = (updated_text) => {
         props.comment_update_func(props.id, updated_text, props.colour, props.win_width_perc);
+        props.taskboard_rerender_func();
     };
 
     const _update_comment_colour = (updated_hex_colour_val) => {
         props.comment_update_func(props.id, props.text, updated_hex_colour_val, props.win_width_perc);
         _set_complement_colour(_get_complement_colour(updated_hex_colour_val));
+        props.taskboard_rerender_func();
     };
 
     const _update_note_win_width_perc = (updated_win_width_perc) => {
         props.comment_update_func(props.id, props.text, props.colour, updated_win_width_perc);
+        props.taskboard_rerender_func();
     };
 
     const _colour_picker_btn_clicked = () => { 
@@ -102,6 +105,11 @@ const _comment = (props) => {
     const _show_extended_emoji_list = () => {
         // TODO: Show emoji list
         console.log("display extended emoji list.");
+    };
+
+    const _delete_comment = () => {
+        props.on_delete(props.id);
+        props.taskboard_rerender_func();
     };
 
     /********************* Effects block begin ***********************/
@@ -222,7 +230,7 @@ const _comment = (props) => {
                                 justifyContent: "center", 
                                 lineHeight: "1",
                             }}
-                            onClick={() => props.on_delete(props.id)}
+                            onClick={() => _delete_comment()}
                         >
                             X
                         </button>

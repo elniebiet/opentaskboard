@@ -10,15 +10,14 @@ import board_marker_img_32 from '../../res/imgs/img_board_marker_32x32.png';
 import fill_img_32 from '../../res/imgs/img_fill2_32x32.png'; 
 import cross_pointer from '../../res/imgs/plus_sign_16x16.png'; 
 import { SELECTED_COLOR_THEME } from '../common/globals';
-import { STKNOTE_WIDTH_PERC_DEFAULT } from './taskboard_definitions';
-import { COMMENT_WIDTH_PERC_DEFAULT } from './taskboard_definitions';
 import { SHAPES_TOOLBAR_ITEM_TYPE } from '../common/globals';
 import { TASKBOARD_STATES } from './taskboard_definitions';
 import _draggable_arrow from '../common/components/arrow';
 import { _set_global_new_arrow_id, _get_global_new_arrow_id } from './taskboard_definitions';
 import { _get_global_last_item_add_or_move_loc, _set_global_last_item_add_or_move_loc } from './taskboard_definitions';
 import { _get_global_cursor_type, _set_global_cursor_type } from './taskboard_definitions';
-import { _add_note, _delete_note, _update_note } from './use_notes';
+import { _add_note, _delete_note, _update_note } from './use_note';
+import { _add_comment, _delete_comment, _update_comment } from './use_comment';
 
 import notes from './notes_db_temp';  // temporary notes storage
 import comments from './comments_db_temp';  // temporary comments storage
@@ -33,6 +32,7 @@ const _taskboard_default = () => {
 
   // Taskboard state
   const [taskboard_state, _set_taskboard_state] = useState(TASKBOARD_STATES.TBS_NORMAL);
+  
   const [start_draw_pos, _set_start_draw_pos] = useState({x_pos: 100, y_pos: 100});
   const [shape_type, _set_shape_type] = useState(SHAPES_TOOLBAR_ITEM_TYPE.STBI_LINE);
   
@@ -70,11 +70,10 @@ const _taskboard_default = () => {
   /***************** Misc block ends *************************/
 
   /************** Pointer selection begins **************************/
-  const _pointer_selected = (cursor_type = 'default') => 
+  const _select_pointer = (cursor_type = 'default') => 
   {
-    console.log("pointer selected: taskboard_stat " + taskboard_state);
+    console.log("pointer selected: taskboard_state " + taskboard_state);
     _set_global_cursor_type(cursor_type);
-    _trigger_taskboard_rerender();
     _request_taskboard_state(TASKBOARD_STATES.TBS_NORMAL);
   };
   /************** Pointer selection ends ****************************/
@@ -88,7 +87,6 @@ const _taskboard_default = () => {
 
     // TODO: draw
   };
-
   /************** Marker drawing ends ************************/
 
   /************** Add fill begins **********************************/
@@ -102,10 +100,7 @@ const _taskboard_default = () => {
   };
   /************** Add fill ends **********************************/
 
-  /************** Shapes selection begins *********************/
-  const [sub_tb_item_clicked, _set_sub_tb_item_clicked] = useState(false);
-  let initial_click = true;
-  
+  /************** Shapes selection begins *********************/  
   /**
    * show shapes popup toolbar
    * @param {float} pos_x - x cord location to show toolbar
@@ -117,17 +112,12 @@ const _taskboard_default = () => {
     _set_global_cursor_type('default');
     _trigger_taskboard_rerender();
 
-    initial_click = true;
     console.log('shapes selected, button location: ' + click_loc_x, click_loc_y); 
     _request_taskboard_state(TASKBOARD_STATES.TBS_SUB_TOOLBAR_ACTIVE);
-    _set_sub_tb_item_clicked(false);
   };
 
   const _shape_clicked = (e, sel_shape_type) => 
-  {
-    // sub toolbar_item was clicked
-    _set_sub_tb_item_clicked(true); 
-    
+  {    
     // custom 'crosshair' cursor
     let cursor_type = `url(${cross_pointer}) 5 5, auto`;
     _set_global_cursor_type(cursor_type);
@@ -142,86 +132,6 @@ const _taskboard_default = () => {
     _request_taskboard_state(TASKBOARD_STATES.TBS_NORMAL);
   };
   /************** Shapes selection ends *********************/
-  
-  /************** Add Comment Begins ************************/
-  /**
-   * add comment 
-   * @param {bool} clicked - item was clicked
-   * @param {float} pos_x - x cord to add note
-   * @param {float} pos_y - y cord to add note   
-   */
-  const _add_comment = (clicked = true, pos_x = 100, pos_y = 100) => {
-    // select cursor
-    _set_global_cursor_type('default');
-    _trigger_taskboard_rerender();
-    
-    if(clicked)
-    {
-      // set cursor type
-      _set_global_cursor_type('default');
-      _trigger_taskboard_rerender();
-
-      // get last add/drag location
-      const {loc_x, loc_y} = _get_global_last_item_add_or_move_loc();  
-      let new_loc_x = loc_x + 20;
-      let new_loc_y = loc_y + 20;
-      const new_comment = { 
-        id: Date.now(), 
-        text: "", 
-        x_pos: new_loc_x, 
-        y_pos: new_loc_y, 
-        colour: SELECTED_COLOR_THEME,
-        win_width_perc: COMMENT_WIDTH_PERC_DEFAULT, 
-      };
-      _set_global_last_item_add_or_move_loc(new_loc_x, new_loc_y); // update last added location
-      comments.push(new_comment);
-      _trigger_taskboard_rerender();
-    }
-    else
-    {
-      // dragged
-      const new_comment = { 
-        id: Date.now(), 
-        text: "", 
-        x_pos: pos_x, 
-        y_pos: pos_y, 
-        colour: SELECTED_COLOR_THEME,
-        win_width_perc: COMMENT_WIDTH_PERC_DEFAULT, 
-      };
-      comments.push(new_comment);
-      _trigger_taskboard_rerender();
-    }
-  };
-
-  const _delete_comment = (id) => {
-    const index = comments.findIndex(comment => comment.id === id);
-    if (index !== -1) {
-      comments.splice(index, 1); 
-      _trigger_taskboard_rerender();
-    }
-  };
-
-  /**
-   * update comment
-   * @param {int} id - comment id
-   * @param {string} text - comment text
-   * @param {string} colour - hex string of comment colour   
-   * @param {float} win_width_perc - comment width in percentage wrt window size
-   */
-  const _update_comment = (id, text, colour, win_width_perc) => {
-    for(let i=0; i<comments.length; i++)
-    {
-      if(comments[i].id === id)
-      {
-        comments[i].text = text;
-        comments[i].colour = colour;
-        comments[i].win_width_perc = win_width_perc;
-        _trigger_taskboard_rerender();
-        break;
-      }
-    }
-  };
-  /************** Add Comment Ends **************************/
 
   /*************** Draw Arrow Begins *************************/
   const [arrows, _set_arrows] = useState([]); // TODO: temporary arrows storage
@@ -304,19 +214,6 @@ const _taskboard_default = () => {
           // listen to page clicks when sub-toolbar is active, incase non of it's buttons were selected
           case (TASKBOARD_STATES.TBS_SUB_TOOLBAR_ACTIVE):
           {
-            if(sub_tb_item_clicked === false)
-            {
-              // sub-toolbar is active, toolbar item not clicked 
-              if(initial_click) // ignore on initial click from listener - we need the next click
-              {
-                initial_click = false;
-              }
-              else  // next click we are interested in
-              {
-                _request_taskboard_state(TASKBOARD_STATES.TBS_NORMAL); 
-                initial_click = true;
-              }
-            }
             break;
           }
           case (TASKBOARD_STATES.TBS_WAITING_DRAW_SHAPE):
@@ -431,11 +328,11 @@ const _taskboard_default = () => {
           <_gridlines_normal grid_size={50} line_color="#E6E6E6" />
           
           <_taskboard_toolbar pos={"top"} win_width={width} win_height={height} add_note_func={_add_note} set_tb_item_loc_func={_set_tb_item_loc_func} 
-            select_cursor_func={_pointer_selected} marker_draw_func={_draw_with_marker} add_fill_func={_add_fill} shapes_selected_func={_show_shape_options} 
+            select_cursor_func={_select_pointer} marker_draw_func={_draw_with_marker} add_fill_func={_add_fill} shapes_selected_func={_show_shape_options} 
             add_comment_func={_add_comment} taskboard_rerender_func={_trigger_taskboard_rerender}/>
           
           <_taskboard_toolbar pos={"left"} win_width={width} win_height={height} add_note_func={_add_note} set_tb_item_loc_func={_set_tb_item_loc_func} 
-            select_cursor_func={_pointer_selected} marker_draw_func={_draw_with_marker} add_fill_func={_add_fill} shapes_selected_func={_show_shape_options} 
+            select_cursor_func={_select_pointer} marker_draw_func={_draw_with_marker} add_fill_func={_add_fill} shapes_selected_func={_show_shape_options} 
             add_comment_func={_add_comment} taskboard_rerender_func={_trigger_taskboard_rerender}/>
           
           {(taskboard_state === TASKBOARD_STATES.TBS_SUB_TOOLBAR_ACTIVE) && (
@@ -458,7 +355,7 @@ const _taskboard_default = () => {
             <div>
               {comments.map((comment) => (
                 <_comment key={comment.id} id={comment.id} text={comment.text} win_width_perc={comment.win_width_perc} on_delete={_delete_comment} tb_item_loc_update_func={_set_tb_item_loc_func} 
-                comment_update_func={_update_comment}  x_pos={comment.x_pos} y_pos={comment.y_pos} win_width={width} win_height={height} colour={comment.colour}/>
+                comment_update_func={_update_comment}  x_pos={comment.x_pos} y_pos={comment.y_pos} win_width={width} win_height={height} colour={comment.colour} taskboard_rerender_func={_trigger_taskboard_rerender}/>
               ))}
             </div>
           </div>
