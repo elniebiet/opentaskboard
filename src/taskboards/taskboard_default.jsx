@@ -8,7 +8,6 @@ import _sticky_note from './components/sticky_note';
 import _comment from './components/comment';
 import board_marker_img_32 from '../../res/imgs/img_board_marker_32x32.png'; 
 import fill_img_32 from '../../res/imgs/img_fill2_32x32.png'; 
-import cross_pointer from '../../res/imgs/plus_sign_16x16.png'; 
 import { SELECTED_COLOR_THEME } from '../common/globals';
 import { SHAPES_TOOLBAR_ITEM_TYPE } from '../common/globals';
 import { TASKBOARD_STATES } from './taskboard_definitions';
@@ -16,12 +15,14 @@ import _draggable_arrow from '../common/components/arrow';
 import { _set_global_new_shape_id, _get_global_new_shape_id } from './taskboard_definitions';
 import { _get_global_last_item_add_or_move_loc, _set_global_last_item_add_or_move_loc } from './taskboard_definitions';
 import { _get_global_cursor_type, _set_global_cursor_type } from './taskboard_definitions';
+import { _get_global_new_shape_type, _set_global_new_shape_type } from './taskboard_definitions';
 import { _add_note, _delete_note, _update_note } from './use_note';
 import { _add_comment, _delete_comment, _update_comment } from './use_comment';
+import { _shape_selected_handler } from './use_shape';
 
-import notes from './notes_db_temp';  // temporary notes storage
+import notes from './notes_db_temp';        // temporary notes storage
 import comments from './comments_db_temp';  // temporary comments storage
-import arrows from './arrows_db_temp';  // temporary arrows storage
+import arrows from './arrows_db_temp';      // temporary arrows storage
 
 /**
  * Default taskboard component
@@ -35,7 +36,6 @@ const _taskboard_default = () => {
   const [taskboard_state, _set_taskboard_state] = useState(TASKBOARD_STATES.TBS_NORMAL);
   
   const [start_draw_pos, _set_start_draw_pos] = useState({x_pos: 100, y_pos: 100});
-  const [shape_type, _set_shape_type] = useState(SHAPES_TOOLBAR_ITEM_TYPE.STBI_LINE);
   
   const [, _re_render_page] = useState(0);
 
@@ -117,24 +117,14 @@ const _taskboard_default = () => {
     _request_taskboard_state(TASKBOARD_STATES.TBS_SUB_TOOLBAR_ACTIVE);
   };
 
-  const _shape_clicked = (e, sel_shape_type) => 
-  {    
-    // custom 'crosshair' cursor
-    let cursor_type = `url(${cross_pointer}) 5 5, auto`;
-    _set_global_cursor_type(cursor_type);
-    _trigger_taskboard_rerender();
-    _set_shape_type(sel_shape_type);
-    _request_taskboard_state(TASKBOARD_STATES.TBS_WAITING_DRAW_SHAPE);
-    console.log("shape clicked: taskboard state " + taskboard_state + " shapetype: " + sel_shape_type);
-  };
-
   const _deactivate_shapes_sub_tb = () => 
   {
     _request_taskboard_state(TASKBOARD_STATES.TBS_NORMAL);
   };
 
   const _start_drawing = ({ shape_id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour, stroke_width}) => {
-    switch(shape_type)
+    let type_of_shape = _get_global_new_shape_type(); 
+    switch(type_of_shape)
     {
       case SHAPES_TOOLBAR_ITEM_TYPE.STBI_ARROW:
       {
@@ -144,7 +134,7 @@ const _taskboard_default = () => {
       }
       default:
       {
-        console.log("_start_drawing: dont know shape " + shape_type);
+        console.log("_start_drawing: dont know shape " + type_of_shape);
         break;
       }
     }
@@ -272,7 +262,7 @@ const _taskboard_default = () => {
         if(taskboard_state === TASKBOARD_STATES.TBS_DRAWING_SHAPE)
         {
           // draw shape
-          _update_drawing({e: e, shape_type: shape_type});
+          _update_drawing({e: e, shape_type: _get_global_new_shape_type()});
         }
     };
 
@@ -293,8 +283,8 @@ const _taskboard_default = () => {
         if(taskboard_state === TASKBOARD_STATES.TBS_DRAWING_SHAPE)
         {
           // draw shape
-          _update_drawing({e: e, shape_type: shape_type});
-          console.log("drew " + shape_type + " at this point: " + start_draw_pos.x_pos + ", " + start_draw_pos.y_pos + " to this point: " + e.clientX  + ", " + e.clientY);
+          _update_drawing({e: e, shape_type: _get_global_new_shape_type()});
+          console.log("drew " + _get_global_new_shape_type() + " at this point: " + start_draw_pos.x_pos + ", " + start_draw_pos.y_pos + " to this point: " + e.clientX  + ", " + e.clientY);
 
           // done drawing
           _set_start_draw_pos({x_pos: 100, y_pos: 100});
@@ -335,11 +325,13 @@ const _taskboard_default = () => {
             add_comment_func={_add_comment} taskboard_rerender_func={_trigger_taskboard_rerender}/>
           
           {(taskboard_state === TASKBOARD_STATES.TBS_SUB_TOOLBAR_ACTIVE) && (
-            <_shapes_sub_toolbar shapes_tb_item_clicked_func={_shape_clicked} pos={"top"} win_width={width} win_height={height} deactivate_shapes_sub_tb={_deactivate_shapes_sub_tb} />
+            <_shapes_sub_toolbar shapes_tb_item_clicked_func={_shape_selected_handler} pos={"top"} win_width={width} win_height={height} deactivate_shapes_sub_tb={_deactivate_shapes_sub_tb} 
+            taskboard_rerender_func={_trigger_taskboard_rerender} request_taskboard_state={_request_taskboard_state} />
           )}
 
           {(taskboard_state === TASKBOARD_STATES.TBS_SUB_TOOLBAR_ACTIVE) && (
-            <_shapes_sub_toolbar shapes_tb_item_clicked_func={_shape_clicked} pos={"left"} win_width={width} win_height={height} deactivate_shapes_sub_tb={_deactivate_shapes_sub_tb} />
+            <_shapes_sub_toolbar shapes_tb_item_clicked_func={_shape_selected_handler} pos={"left"} win_width={width} win_height={height} deactivate_shapes_sub_tb={_deactivate_shapes_sub_tb} 
+            taskboard_rerender_func={_trigger_taskboard_rerender} request_taskboard_state={_request_taskboard_state} />
           )}
 
           <div>

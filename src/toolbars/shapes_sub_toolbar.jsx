@@ -9,6 +9,7 @@ import { SHAPES_TOOLBAR_ITEM_TYPE } from '../common/globals';
 import { SELECTED_COLOR_THEME } from '../common/globals';
 import { TASKBOARD_DEFAULT_SHAPES_TB_LOC } from './toolbar_defines';
 import { TASKBOARD_DEFAULT_TB_SIZE } from './toolbar_defines';
+import { TASKBOARD_STATES } from '../taskboards/taskboard_definitions';
 import { _get_max_z_index } from '../common/globals';
 
 import line_img from '../../res/imgs/shapes_sub_toolbar/img_line_100x100.png';
@@ -100,7 +101,13 @@ const _add_toolbar_item = (props) =>
     const _handle_tb_item_click = (e) =>
     {
         props.shapes_tb_item_clicked(e, props.item_index); // tb item clicked
-        _on_tb_item_click(e, props.item_index);
+        _on_tb_item_click(e, props.item_index);        
+
+        // trigger re-render
+        props.taskboard_rerender_func();
+
+        // request taskboard state
+        props.request_taskboard_state_func(TASKBOARD_STATES.TBS_WAITING_DRAW_SHAPE);
     };
 
     const _on_tb_item_click = (e, tb_item_idx) => {
@@ -273,31 +280,31 @@ const _shapes_sub_toolbar = (props) => {
                 <Box sx={{ '& > :not(style)': { m: 0.5 } }} display="flex" flexDirection={flex_dir}>
                     <_add_toolbar_item shapes_tb_item_clicked={props.shapes_tb_item_clicked_func} item_index={SHAPES_TOOLBAR_ITEM_TYPE.STBI_LINE} tbi_type={TOOLBAR_ITEM_TYPE.CLICKABLE} img_src={line_img} img_alt_txt={"Line"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} 
-                    deactivate_sub_tb={props.deactivate_shapes_sub_tb}
+                    deactivate_sub_tb={props.deactivate_shapes_sub_tb} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
                     />
                     <_add_toolbar_item shapes_tb_item_clicked={props.shapes_tb_item_clicked_func} item_index={SHAPES_TOOLBAR_ITEM_TYPE.STBI_ARROW} tbi_type={TOOLBAR_ITEM_TYPE.CLICKABLE} img_src={arrow_img} img_alt_txt={"Arrow"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} 
-                    deactivate_sub_tb={props.deactivate_shapes_sub_tb}
+                    deactivate_sub_tb={props.deactivate_shapes_sub_tb} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
                     />
                     <_add_toolbar_item shapes_tb_item_clicked={props.shapes_tb_item_clicked_func} item_index={SHAPES_TOOLBAR_ITEM_TYPE.STBI_CIRCLE} tbi_type={TOOLBAR_ITEM_TYPE.CLICKABLE} img_src={circle_img} img_alt_txt={"Circle"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} 
-                    deactivate_sub_tb={props.deactivate_shapes_sub_tb}
+                    deactivate_sub_tb={props.deactivate_shapes_sub_tb} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
                     />
                     <_add_toolbar_item shapes_tb_item_clicked={props.shapes_tb_item_clicked_func} item_index={SHAPES_TOOLBAR_ITEM_TYPE.STBI_RECT} tbi_type={TOOLBAR_ITEMS.CLICKABLE} img_src={rect_img} img_alt_txt={"Rectangle"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} 
-                    deactivate_sub_tb={props.deactivate_shapes_sub_tb}
+                    deactivate_sub_tb={props.deactivate_shapes_sub_tb} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
                     />
                     <_add_toolbar_item shapes_tb_item_clicked={props.shapes_tb_item_clicked_func} item_index={SHAPES_TOOLBAR_ITEM_TYPE.STBI_FILLETED_RECT} tbi_type={TOOLBAR_ITEM_TYPE.CLICKABLE} img_src={filleted_rect_img} img_alt_txt={"Filleted Rectangle"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} 
-                    deactivate_sub_tb={props.deactivate_shapes_sub_tb}
+                    deactivate_sub_tb={props.deactivate_shapes_sub_tb} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
                     />
                     <_add_toolbar_item shapes_tb_item_clicked={props.shapes_tb_item_clicked_func} item_index={SHAPES_TOOLBAR_ITEM_TYPE.STBI_TRIANGLE} tbi_type={TOOLBAR_ITEM_TYPE.CLICKABLE} img_src={triangle_img} img_alt_txt={"Triangle"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} 
-                    deactivate_sub_tb={props.deactivate_shapes_sub_tb}
+                    deactivate_sub_tb={props.deactivate_shapes_sub_tb} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
                     />
                     <_add_toolbar_item shapes_tb_item_clicked={props.shapes_tb_item_clicked_func} item_index={SHAPES_TOOLBAR_ITEM_TYPE.STBI_RIGHT_TRIANGLE} tbi_type={TOOLBAR_ITEM_TYPE.CLICKABLE} img_src={right_angle_img} img_alt_txt={"Right angle triangle"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} 
-                    deactivate_sub_tb={props.deactivate_shapes_sub_tb}
+                    deactivate_sub_tb={props.deactivate_shapes_sub_tb} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
                     />
                 </Box>
             </div>
