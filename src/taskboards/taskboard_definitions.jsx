@@ -15,17 +15,17 @@ const TASKBOARD_STATES = {
 };
 
 /************************************ TASKBOARD VARIABLE DEFINITIONS *************************************************/
-let global_new_arrow_id                         = 0;
+let global_new_shape_id                         = 0;
 let global_last_item_add_or_move_loc            = {loc_x: 100, loc_y: 100}; // last location a toolbar item was added or moved
 let global_cursor_type                          = "default";                // cursor type in use
 
 /************************************ TASKBOARD GLOBAL FUNCTION DEFINITIONS *************************************************/
-const _get_global_new_arrow_id = () => {
-    return global_new_arrow_id;
+const _get_global_new_shape_id = () => {
+    return global_new_shape_id;
 };
 
-const _set_global_new_arrow_id = (new_id) => {
-    global_new_arrow_id = new_id;
+const _set_global_new_shape_id = (new_id) => {
+    global_new_shape_id = new_id;
 };
 
 const _get_global_last_item_add_or_move_loc= () => {
@@ -52,8 +52,8 @@ export {
     TASKBOARD_STATES,
     
     // FUNCTIONS
-    _get_global_new_arrow_id,
-    _set_global_new_arrow_id,
+    _get_global_new_shape_id,
+    _set_global_new_shape_id,
     _get_global_last_item_add_or_move_loc,
     _set_global_last_item_add_or_move_loc,
     _get_global_cursor_type,

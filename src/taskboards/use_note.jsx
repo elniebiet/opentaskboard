@@ -65,15 +65,15 @@ const _delete_note = (id) => {
 const _update_note = (id, text, colour, win_width_perc) => {
     for(let i=0; i<notes.length; i++)
     {
-      if(notes[i].id === id)
-      {
+        if(notes[i].id === id)
+        {
         notes[i].text = text;
         notes[i].colour = colour;
         notes[i].win_width_perc = win_width_perc;
         break;
-      }
+        }
     }
-  };
+};
 
 export {
     _add_note,

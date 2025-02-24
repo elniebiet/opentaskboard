@@ -1,5 +1,5 @@
 let comments = [
-    // notes structure
+    // comments structure
     
     // { 
     //   id: Date.now(),
@@ -7,7 +7,7 @@ let comments = [
     //   x_pos: new_loc_x,
     //   y_pos: new_loc_y,
     //   colour: SELECTED_COLOR_THEME,
-    //   win_width_perc: STKNOTE_WIDTH_PERC_DEFAULT 
+    //   win_width_perc: COMMENT_WIDTH_PERC_DEFAULT 
     // }
   ];
 

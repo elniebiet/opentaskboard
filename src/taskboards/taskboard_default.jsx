@@ -13,7 +13,7 @@ import { SELECTED_COLOR_THEME } from '../common/globals';
 import { SHAPES_TOOLBAR_ITEM_TYPE } from '../common/globals';
 import { TASKBOARD_STATES } from './taskboard_definitions';
 import _draggable_arrow from '../common/components/arrow';
-import { _set_global_new_arrow_id, _get_global_new_arrow_id } from './taskboard_definitions';
+import { _set_global_new_shape_id, _get_global_new_shape_id } from './taskboard_definitions';
 import { _get_global_last_item_add_or_move_loc, _set_global_last_item_add_or_move_loc } from './taskboard_definitions';
 import { _get_global_cursor_type, _set_global_cursor_type } from './taskboard_definitions';
 import { _add_note, _delete_note, _update_note } from './use_note';
@@ -21,6 +21,7 @@ import { _add_comment, _delete_comment, _update_comment } from './use_comment';
 
 import notes from './notes_db_temp';  // temporary notes storage
 import comments from './comments_db_temp';  // temporary comments storage
+import arrows from './arrows_db_temp';  // temporary arrows storage
 
 /**
  * Default taskboard component
@@ -131,48 +132,14 @@ const _taskboard_default = () => {
   {
     _request_taskboard_state(TASKBOARD_STATES.TBS_NORMAL);
   };
-  /************** Shapes selection ends *********************/
 
-  /*************** Draw Arrow Begins *************************/
-  const [arrows, _set_arrows] = useState([]); // TODO: temporary arrows storage
-
-  const _add_arrow = (id, x1_pos, y1_pos, x2_pos, y2_pos, colour, stroke_width) => {
-    const new_arrow = { 
-      id: id,
-      x1_pos: x1_pos,
-      x2_pos: x2_pos,
-      y1_pos: y1_pos,
-      y2_pos: y2_pos,
-      colour: colour,
-      stroke_width: stroke_width, 
-    };
-    _set_arrows([...arrows, new_arrow]);
-  };
-
-  /**
-   * update end point for an arrow
-   * @param {int} id - arrow id
-   * @param {int} new_x2_pos - new x cordinate
-   * @param {int} new_y2_pos - new y cordinate
-   */
-  const _update_arrow_end_pos = (id, new_x2_pos, new_y2_pos) => {    
-    _set_arrows((prev_arrows) =>
-      prev_arrows.map((arrow) => {
-        if (arrow.id === id) {
-          return { ...arrow, x2_pos: new_x2_pos, y2_pos: new_y2_pos };
-        } else {
-          return arrow;
-        }
-      })
-    );
-  };
-
-  const _start_drawing = ({ arrow_id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour, stroke_width}) => {
+  const _start_drawing = ({ shape_id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour, stroke_width}) => {
     switch(shape_type)
     {
       case SHAPES_TOOLBAR_ITEM_TYPE.STBI_ARROW:
       {
-        _add_arrow(arrow_id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour, stroke_width);
+        _add_arrow(shape_id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour, stroke_width);
+        _trigger_taskboard_rerender();
         break;
       }
       default:
@@ -188,7 +155,8 @@ const _taskboard_default = () => {
     {
       case SHAPES_TOOLBAR_ITEM_TYPE.STBI_ARROW:
       {
-        _update_arrow_end_pos(_get_global_new_arrow_id(), e.clientX, e.clientY);
+        _update_arrow_end_pos(_get_global_new_shape_id(), e.clientX, e.clientY);
+        _trigger_taskboard_rerender();
         break;
       }
       default:
@@ -198,6 +166,42 @@ const _taskboard_default = () => {
       }
     }
   };
+  /************** Shapes selection ends *********************/
+
+  /*************** Draw Arrow Begins *************************/
+  // const [arrows, _set_arrows] = useState([]); // TODO: temporary arrows storage
+
+  const _add_arrow = (id, x1_pos, y1_pos, x2_pos, y2_pos, colour, stroke_width) => {
+    const new_arrow = { 
+      id: id,
+      x1_pos: x1_pos,
+      x2_pos: x2_pos,
+      y1_pos: y1_pos,
+      y2_pos: y2_pos,
+      colour: colour,
+      stroke_width: stroke_width, 
+    };
+    arrows.push(new_arrow);
+  };
+
+  /**
+   * update end point for an arrow
+   * @param {int} id - arrow id
+   * @param {int} new_x2_pos - new x cordinate
+   * @param {int} new_y2_pos - new y cordinate
+   */
+  const _update_arrow_end_pos = (id, new_x2_pos, new_y2_pos) => {    
+    for(let i=0; i<arrows.length; i++)
+    {
+      if(arrows[i].id === id)
+      {
+        arrows[i].x2_pos = new_x2_pos;
+        arrows[i].y2_pos = new_y2_pos;
+        break;
+      }
+    }
+  };
+
   /*************** Draw Arrow Ends *************************/
 
   /************** Page listener begins **********************/
@@ -224,9 +228,9 @@ const _taskboard_default = () => {
           case (TASKBOARD_STATES.TBS_BEGIN_DRAWING_SHAPE):
           {
             _set_start_draw_pos({x_pos: e.clientX, y_pos: e.clientY});
-            _set_global_new_arrow_id(Date.now());
+            _set_global_new_shape_id(Date.now());
             _start_drawing({
-              arrow_id: _get_global_new_arrow_id(), 
+              shape_id: _get_global_new_shape_id(), 
               start_pos_x: e.clientX, 
               start_pos_y: e.clientY, 
               end_pos_x: e.clientX, 
@@ -299,7 +303,7 @@ const _taskboard_default = () => {
 
           // done drawing
           _set_start_draw_pos({x_pos: 100, y_pos: 100});
-          _set_global_new_arrow_id(0);
+          _set_global_new_shape_id(0);
           _request_taskboard_state(TASKBOARD_STATES.TBS_BEGIN_DRAWING_SHAPE);
         }
     };
