@@ -57,15 +57,18 @@ const _sticky_note = (props) => {
 
     const _update_note_text = (updated_text) => { 
         props.note_update_func(props.id, updated_text, props.colour, props.win_width_perc);
+        props.taskboard_rerender_func();
     };
 
     const _update_note_colour = (updated_hex_colour_val) => {
         props.note_update_func(props.id, props.text, updated_hex_colour_val, props.win_width_perc);
         _set_complement_colour(_get_complement_colour(updated_hex_colour_val));
+        props.taskboard_rerender_func();
     };
 
     const _update_note_win_width_perc = (updated_win_width_perc) => {
         props.note_update_func(props.id, props.text, props.colour, updated_win_width_perc);
+        props.taskboard_rerender_func();
     };
 
     const _colour_picker_btn_clicked = () => { 
@@ -84,6 +87,11 @@ const _sticky_note = (props) => {
         let new_width = stknote_width + (new_x - start_resize_loc.x);
         let new_win_width_perc =  new_width/props.win_width;
         _update_note_win_width_perc(new_win_width_perc);
+    };
+
+    const _delete_note = () => {
+        props.on_delete(props.id);
+        props.taskboard_rerender_func();
     };
 
     /********************* Effects block begin ***********************/
@@ -206,7 +214,7 @@ const _sticky_note = (props) => {
                                 justifyContent: "center", 
                                 lineHeight: "1",
                             }}
-                            onClick={() => props.on_delete(props.id)}
+                            onClick={() => _delete_note()}
                         >
                             X
                         </button>

@@ -4,6 +4,7 @@
 4. try avoid refreshing entire components ondrag
 5. validation of function parameters
 6. Fix trigger_rerender
+7. Add note latest location cordinates to db
 
 
 /**** sample code for triggering useRef using useState ****/

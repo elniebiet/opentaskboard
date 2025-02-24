@@ -18,6 +18,7 @@ import _draggable_arrow from '../common/components/arrow';
 import { _set_global_new_arrow_id, _get_global_new_arrow_id } from './taskboard_definitions';
 import { _get_global_last_item_add_or_move_loc, _set_global_last_item_add_or_move_loc } from './taskboard_definitions';
 import { _get_global_cursor_type, _set_global_cursor_type } from './taskboard_definitions';
+import { _add_note, _delete_note, _update_note } from './use_notes';
 
 import notes from './notes_db_temp';  // temporary notes storage
 import comments from './comments_db_temp';  // temporary comments storage
@@ -40,7 +41,7 @@ const _taskboard_default = () => {
   /**
    * manually trigger a rerender of the page
    */
-  const _trigger_rerender = () => {
+  const _trigger_taskboard_rerender = () => {
     _re_render_page((prev) => {
       return ((prev >= 1000000) ? 0 : (prev + 1));
     });
@@ -68,89 +69,12 @@ const _taskboard_default = () => {
   };
   /***************** Misc block ends *************************/
 
-  /****************** sticky note begins ************************/
-  /**
-   * add sticky note
-   * @param {bool} clicked - item was clicked
-   * @param {float} pos_x - x cord to add note
-   * @param {float} pos_y - y cord to add note   
-   */
-  const _add_note = (clicked = true, pos_x = 100, pos_y = 100) => {
-    if(clicked)
-    {
-      // set cursor type
-      _set_global_cursor_type('default');
-      _trigger_rerender();
-
-      // get last add/drag location
-      const {loc_x, loc_y} = _get_global_last_item_add_or_move_loc();  
-      let new_loc_x = loc_x + 20;
-      let new_loc_y = loc_y + 20;
-      const new_note = { 
-        id: Date.now(),
-        text: "",
-        x_pos: new_loc_x,
-        y_pos: new_loc_y,
-        colour: SELECTED_COLOR_THEME,
-        win_width_perc: STKNOTE_WIDTH_PERC_DEFAULT 
-      };
-      _set_global_last_item_add_or_move_loc(new_loc_x, new_loc_y); // update last added location
-      notes.push(new_note);
-      _trigger_rerender();
-    }
-    else
-    {
-
-      // dragged
-      const new_note = { 
-        id: Date.now(), 
-        text: "", 
-        x_pos: pos_x, 
-        y_pos: pos_y, 
-        colour: SELECTED_COLOR_THEME, 
-        win_width_perc: STKNOTE_WIDTH_PERC_DEFAULT 
-      };
-      notes.push(new_note);
-      _trigger_rerender();
-    }
-  };
-
-  const _delete_note = (id) => {
-    const index = notes.findIndex(note => note.id === id);
-    if (index !== -1) {
-      notes.splice(index, 1); 
-      _trigger_rerender();
-    }
-  };
-
-   /**
-   * update note
-   * @param {int} id - note id
-   * @param {string} text - note text
-   * @param {string} colour - hex string of note colour   
-   * @param {float} win_width_perc - note width in percentage wrt window size
-   */
-  const _update_note = (id, text, colour, win_width_perc) => {
-    for(let i=0; i<notes.length; i++)
-    {
-      if(notes[i].id === id)
-      {
-        notes[i].text = text;
-        notes[i].colour = colour;
-        notes[i].win_width_perc = win_width_perc;
-        _trigger_rerender();
-        break;
-      }
-    }
-  };
-  /************** sticky note ends ******************************/
-
   /************** Pointer selection begins **************************/
   const _pointer_selected = (cursor_type = 'default') => 
   {
     console.log("pointer selected: taskboard_stat " + taskboard_state);
     _set_global_cursor_type(cursor_type);
-    _trigger_rerender();
+    _trigger_taskboard_rerender();
     _request_taskboard_state(TASKBOARD_STATES.TBS_NORMAL);
   };
   /************** Pointer selection ends ****************************/
@@ -160,7 +84,7 @@ const _taskboard_default = () => {
   {
     let cursor_type = `url(${board_marker_img_32}) 10 10, auto`;
     _set_global_cursor_type(cursor_type);
-    _trigger_rerender();
+    _trigger_taskboard_rerender();
 
     // TODO: draw
   };
@@ -172,7 +96,7 @@ const _taskboard_default = () => {
   {
     let cursor_type = `url(${fill_img_32}) 10 10, auto`;
     _set_global_cursor_type(cursor_type);
-    _trigger_rerender();
+    _trigger_taskboard_rerender();
 
     // TODO: fill
   };
@@ -191,7 +115,7 @@ const _taskboard_default = () => {
   {
     // set cursor type
     _set_global_cursor_type('default');
-    _trigger_rerender();
+    _trigger_taskboard_rerender();
 
     initial_click = true;
     console.log('shapes selected, button location: ' + click_loc_x, click_loc_y); 
@@ -207,7 +131,7 @@ const _taskboard_default = () => {
     // custom 'crosshair' cursor
     let cursor_type = `url(${cross_pointer}) 5 5, auto`;
     _set_global_cursor_type(cursor_type);
-    _trigger_rerender();
+    _trigger_taskboard_rerender();
     _set_shape_type(sel_shape_type);
     _request_taskboard_state(TASKBOARD_STATES.TBS_WAITING_DRAW_SHAPE);
     console.log("shape clicked: taskboard state " + taskboard_state + " shapetype: " + sel_shape_type);
@@ -229,13 +153,13 @@ const _taskboard_default = () => {
   const _add_comment = (clicked = true, pos_x = 100, pos_y = 100) => {
     // select cursor
     _set_global_cursor_type('default');
-    _trigger_rerender();
+    _trigger_taskboard_rerender();
     
     if(clicked)
     {
       // set cursor type
       _set_global_cursor_type('default');
-      _trigger_rerender();
+      _trigger_taskboard_rerender();
 
       // get last add/drag location
       const {loc_x, loc_y} = _get_global_last_item_add_or_move_loc();  
@@ -251,7 +175,7 @@ const _taskboard_default = () => {
       };
       _set_global_last_item_add_or_move_loc(new_loc_x, new_loc_y); // update last added location
       comments.push(new_comment);
-      _trigger_rerender();
+      _trigger_taskboard_rerender();
     }
     else
     {
@@ -265,7 +189,7 @@ const _taskboard_default = () => {
         win_width_perc: COMMENT_WIDTH_PERC_DEFAULT, 
       };
       comments.push(new_comment);
-      _trigger_rerender();
+      _trigger_taskboard_rerender();
     }
   };
 
@@ -273,7 +197,7 @@ const _taskboard_default = () => {
     const index = comments.findIndex(comment => comment.id === id);
     if (index !== -1) {
       comments.splice(index, 1); 
-      _trigger_rerender();
+      _trigger_taskboard_rerender();
     }
   };
 
@@ -292,7 +216,7 @@ const _taskboard_default = () => {
         comments[i].text = text;
         comments[i].colour = colour;
         comments[i].win_width_perc = win_width_perc;
-        _trigger_rerender();
+        _trigger_taskboard_rerender();
         break;
       }
     }
@@ -508,11 +432,11 @@ const _taskboard_default = () => {
           
           <_taskboard_toolbar pos={"top"} win_width={width} win_height={height} add_note_func={_add_note} set_tb_item_loc_func={_set_tb_item_loc_func} 
             select_cursor_func={_pointer_selected} marker_draw_func={_draw_with_marker} add_fill_func={_add_fill} shapes_selected_func={_show_shape_options} 
-            add_comment_func={_add_comment} />
+            add_comment_func={_add_comment} taskboard_rerender_func={_trigger_taskboard_rerender}/>
           
           <_taskboard_toolbar pos={"left"} win_width={width} win_height={height} add_note_func={_add_note} set_tb_item_loc_func={_set_tb_item_loc_func} 
             select_cursor_func={_pointer_selected} marker_draw_func={_draw_with_marker} add_fill_func={_add_fill} shapes_selected_func={_show_shape_options} 
-            add_comment_func={_add_comment} />
+            add_comment_func={_add_comment} taskboard_rerender_func={_trigger_taskboard_rerender}/>
           
           {(taskboard_state === TASKBOARD_STATES.TBS_SUB_TOOLBAR_ACTIVE) && (
             <_shapes_sub_toolbar shapes_tb_item_clicked_func={_shape_clicked} pos={"top"} win_width={width} win_height={height} deactivate_shapes_sub_tb={_deactivate_shapes_sub_tb} />
@@ -527,7 +451,7 @@ const _taskboard_default = () => {
             <div>
               {notes.map((note) => (
                 <_sticky_note key={note.id} id={note.id} text={note.text} win_width_perc={note.win_width_perc} on_delete={_delete_note} tb_item_loc_update_func={_set_tb_item_loc_func} 
-                  note_update_func={_update_note} x_pos={note.x_pos} y_pos={note.y_pos} win_width={width} win_height={height} colour={note.colour}/>
+                  note_update_func={_update_note} x_pos={note.x_pos} y_pos={note.y_pos} win_width={width} win_height={height} colour={note.colour} taskboard_rerender_func={_trigger_taskboard_rerender}/>
               ))}
             </div>
 
