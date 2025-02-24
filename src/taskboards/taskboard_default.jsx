@@ -166,10 +166,6 @@ const _taskboard_default = () => {
       }
     }
   };
-  /************** Shapes selection ends *********************/
-
-  /*************** Draw Arrow Begins *************************/
-  // const [arrows, _set_arrows] = useState([]); // TODO: temporary arrows storage
 
   const _add_arrow = (id, x1_pos, y1_pos, x2_pos, y2_pos, colour, stroke_width) => {
     const new_arrow = { 
@@ -201,8 +197,7 @@ const _taskboard_default = () => {
       }
     }
   };
-
-  /*************** Draw Arrow Ends *************************/
+  /************** Shapes selection ends *********************/
 
   /************** Page listener begins **********************/
   /**
