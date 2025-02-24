@@ -1,4 +1,4 @@
-let notes = [
+let comments = [
     // notes structure
     
     // { 
@@ -11,4 +11,4 @@ let notes = [
     // }
   ];
 
-  export default notes;
+  export default comments;

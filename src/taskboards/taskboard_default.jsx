@@ -18,7 +18,10 @@ import _draggable_arrow from '../common/components/arrow';
 import { _set_global_new_arrow_id, _get_global_new_arrow_id } from './taskboard_definitions';
 import { _get_global_last_item_add_or_move_loc, _set_global_last_item_add_or_move_loc } from './taskboard_definitions';
 import { _get_global_cursor_type, _set_global_cursor_type } from './taskboard_definitions';
+
 import notes from './notes_db_temp';  // temporary notes storage
+import comments from './comments_db_temp';  // temporary comments storage
+
 /**
  * Default taskboard component
  */
@@ -217,8 +220,6 @@ const _taskboard_default = () => {
   /************** Shapes selection ends *********************/
   
   /************** Add Comment Begins ************************/
-  const [comments, _set_comments] = useState([]); // TODO: temporary comments storage
-
   /**
    * add comment 
    * @param {bool} clicked - item was clicked
@@ -249,7 +250,8 @@ const _taskboard_default = () => {
         win_width_perc: COMMENT_WIDTH_PERC_DEFAULT, 
       };
       _set_global_last_item_add_or_move_loc(new_loc_x, new_loc_y); // update last added location
-      _set_comments([...comments, new_comment]);
+      comments.push(new_comment);
+      _trigger_rerender();
     }
     else
     {
@@ -262,12 +264,17 @@ const _taskboard_default = () => {
         colour: SELECTED_COLOR_THEME,
         win_width_perc: COMMENT_WIDTH_PERC_DEFAULT, 
       };
-      _set_comments([...comments, new_comment]);
+      comments.push(new_comment);
+      _trigger_rerender();
     }
   };
 
   const _delete_comment = (id) => {
-    _set_comments(comments.filter((comment) => comment.id !== id));
+    const index = comments.findIndex(comment => comment.id === id);
+    if (index !== -1) {
+      comments.splice(index, 1); 
+      _trigger_rerender();
+    }
   };
 
   /**
@@ -278,11 +285,17 @@ const _taskboard_default = () => {
    * @param {float} win_width_perc - comment width in percentage wrt window size
    */
   const _update_comment = (id, text, colour, win_width_perc) => {
-    _set_comments((prev_comments) =>
-      prev_comments.map((comment) =>
-        comment.id === id ? { ...comment, text: text, colour: colour, win_width_perc: win_width_perc } : comment
-      )
-    );
+    for(let i=0; i<comments.length; i++)
+    {
+      if(comments[i].id === id)
+      {
+        comments[i].text = text;
+        comments[i].colour = colour;
+        comments[i].win_width_perc = win_width_perc;
+        _trigger_rerender();
+        break;
+      }
+    }
   };
   /************** Add Comment Ends **************************/
 
