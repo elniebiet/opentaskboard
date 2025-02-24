@@ -18,7 +18,7 @@ import _draggable_arrow from '../common/components/arrow';
 import { _set_global_new_arrow_id, _get_global_new_arrow_id } from './taskboard_definitions';
 import { _get_global_last_item_add_or_move_loc, _set_global_last_item_add_or_move_loc } from './taskboard_definitions';
 import { _get_global_cursor_type, _set_global_cursor_type } from './taskboard_definitions';
-
+import notes from './notes_db_temp';  // temporary notes storage
 /**
  * Default taskboard component
  */
@@ -31,7 +31,17 @@ const _taskboard_default = () => {
   const [taskboard_state, _set_taskboard_state] = useState(TASKBOARD_STATES.TBS_NORMAL);
   const [start_draw_pos, _set_start_draw_pos] = useState({x_pos: 100, y_pos: 100});
   const [shape_type, _set_shape_type] = useState(SHAPES_TOOLBAR_ITEM_TYPE.STBI_LINE);
-  const [, _trigger_rerender] = useState(0); // trigger re-render
+  
+  const [, _re_render_page] = useState(0);
+
+  /**
+   * manually trigger a rerender of the page
+   */
+  const _trigger_rerender = () => {
+    _re_render_page((prev) => {
+      return ((prev >= 1000000) ? 0 : (prev + 1));
+    });
+  };
 
   /**
    * set toolbar item location function
@@ -56,8 +66,6 @@ const _taskboard_default = () => {
   /***************** Misc block ends *************************/
 
   /****************** sticky note begins ************************/
-  const [notes, _set_notes] = useState([]); // TODO: temporary notes storage
-
   /**
    * add sticky note
    * @param {bool} clicked - item was clicked
@@ -69,7 +77,7 @@ const _taskboard_default = () => {
     {
       // set cursor type
       _set_global_cursor_type('default');
-      _trigger_rerender((prev) => prev + 1); // trigger re-render
+      _trigger_rerender();
 
       // get last add/drag location
       const {loc_x, loc_y} = _get_global_last_item_add_or_move_loc();  
@@ -84,7 +92,8 @@ const _taskboard_default = () => {
         win_width_perc: STKNOTE_WIDTH_PERC_DEFAULT 
       };
       _set_global_last_item_add_or_move_loc(new_loc_x, new_loc_y); // update last added location
-      _set_notes([...notes, new_note]);
+      notes.push(new_note);
+      _trigger_rerender();
     }
     else
     {
@@ -98,12 +107,17 @@ const _taskboard_default = () => {
         colour: SELECTED_COLOR_THEME, 
         win_width_perc: STKNOTE_WIDTH_PERC_DEFAULT 
       };
-      _set_notes([...notes, new_note]);
+      notes.push(new_note);
+      _trigger_rerender();
     }
   };
 
   const _delete_note = (id) => {
-    _set_notes(notes.filter((note) => note.id !== id));
+    const index = notes.findIndex(note => note.id === id);
+    if (index !== -1) {
+      notes.splice(index, 1); 
+      _trigger_rerender();
+    }
   };
 
    /**
@@ -114,11 +128,17 @@ const _taskboard_default = () => {
    * @param {float} win_width_perc - note width in percentage wrt window size
    */
   const _update_note = (id, text, colour, win_width_perc) => {
-    _set_notes((prev_notes) =>
-      prev_notes.map((note) =>
-        note.id === id ? { ...note, text: text, colour: colour, win_width_perc: win_width_perc } : note
-      )
-    );
+    for(let i=0; i<notes.length; i++)
+    {
+      if(notes[i].id === id)
+      {
+        notes[i].text = text;
+        notes[i].colour = colour;
+        notes[i].win_width_perc = win_width_perc;
+        _trigger_rerender();
+        break;
+      }
+    }
   };
   /************** sticky note ends ******************************/
 
@@ -127,7 +147,7 @@ const _taskboard_default = () => {
   {
     console.log("pointer selected: taskboard_stat " + taskboard_state);
     _set_global_cursor_type(cursor_type);
-    _trigger_rerender((prev) => prev + 1); // trigger re-render
+    _trigger_rerender();
     _request_taskboard_state(TASKBOARD_STATES.TBS_NORMAL);
   };
   /************** Pointer selection ends ****************************/
@@ -137,7 +157,7 @@ const _taskboard_default = () => {
   {
     let cursor_type = `url(${board_marker_img_32}) 10 10, auto`;
     _set_global_cursor_type(cursor_type);
-    _trigger_rerender((prev) => prev + 1); // trigger re-render
+    _trigger_rerender();
 
     // TODO: draw
   };
@@ -149,7 +169,7 @@ const _taskboard_default = () => {
   {
     let cursor_type = `url(${fill_img_32}) 10 10, auto`;
     _set_global_cursor_type(cursor_type);
-    _trigger_rerender((prev) => prev + 1); // trigger re-render
+    _trigger_rerender();
 
     // TODO: fill
   };
@@ -168,7 +188,7 @@ const _taskboard_default = () => {
   {
     // set cursor type
     _set_global_cursor_type('default');
-    _trigger_rerender((prev) => prev + 1); // trigger re-render
+    _trigger_rerender();
 
     initial_click = true;
     console.log('shapes selected, button location: ' + click_loc_x, click_loc_y); 
@@ -184,7 +204,7 @@ const _taskboard_default = () => {
     // custom 'crosshair' cursor
     let cursor_type = `url(${cross_pointer}) 5 5, auto`;
     _set_global_cursor_type(cursor_type);
-    _trigger_rerender((prev) => prev + 1); // trigger re-render
+    _trigger_rerender();
     _set_shape_type(sel_shape_type);
     _request_taskboard_state(TASKBOARD_STATES.TBS_WAITING_DRAW_SHAPE);
     console.log("shape clicked: taskboard state " + taskboard_state + " shapetype: " + sel_shape_type);
@@ -208,13 +228,13 @@ const _taskboard_default = () => {
   const _add_comment = (clicked = true, pos_x = 100, pos_y = 100) => {
     // select cursor
     _set_global_cursor_type('default');
-    _trigger_rerender((prev) => prev + 1); // trigger re-render
+    _trigger_rerender();
     
     if(clicked)
     {
       // set cursor type
       _set_global_cursor_type('default');
-      _trigger_rerender((prev) => prev + 1); // trigger re-render
+      _trigger_rerender();
 
       // get last add/drag location
       const {loc_x, loc_y} = _get_global_last_item_add_or_move_loc();  
