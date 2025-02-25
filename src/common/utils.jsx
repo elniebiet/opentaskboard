@@ -26,6 +26,19 @@ const _get_complement_colour = (orig_colour) => {
     return `#${rOpp}${gOpp}${bOpp}`;
 }
 
+/**
+ * Gets the current cursor type.
+ *
+ * @param {event} e - the event.
+ * @returns {string} - the current cursor type.
+ */
+const _get_cursor_type = (element) => {
+    console.log("element: " + element); 
+    return window.getComputedStyle(element).cursor;
+};
+
+// export
 export {
-    _get_complement_colour
+    _get_complement_colour,
+    _get_cursor_type,
 };

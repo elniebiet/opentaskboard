@@ -217,6 +217,7 @@ let toolbar_styling_top = {
     padding: '5px 10px',
     borderRadius: '0 0 8px 8px',
     boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+    cursor: 'pointer',
 };
 
 let toolbar_styling_left = {
@@ -229,6 +230,7 @@ let toolbar_styling_left = {
     padding: '5px 10px',
     borderRadius: '0 8px 8px 0',
     boxShadow: '2px 0 6px rgba(0, 0, 0, 0.1)',
+    cursor: 'pointer',
 };
 /**************************** Toolbar Stylings end ****************************/
 

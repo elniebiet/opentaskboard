@@ -1,4 +1,7 @@
 import { SHAPES_TOOLBAR_ITEM_TYPE } from "../common/globals";
+import cross_pointer from '../../res/imgs/plus_sign_16x16.png'; 
+import { URL_MAIN } from "../common/globals";
+
 /************************************ TASKBOARD CONST DEFINITIONS *************************************************/
 // Default sticky note width percentage ratio
 const STKNOTE_WIDTH_PERC_DEFAULT                      = 0.15; 
@@ -13,6 +16,12 @@ const TASKBOARD_STATES = {
     TBS_BEGIN_DRAWING_SHAPE:    4,  // began drawing shape
     TBS_DRAWING_SHAPE:          5,  // drawing shape
     TBS_WRITING:                7,
+};
+
+const CURSOR_TYPES = {
+    CT_DEFAULT:        'default',
+    CT_DRAW_SHAPE:     `url(${cross_pointer}) 5 5, auto`,   // draw shape cursor type in assignment
+    CT_DRAW_SHAPE_FULL_PATH: `url("${URL_MAIN}res/imgs/plus_sign_16x16.png") 5 5, auto`, // draw shape cursur type retreived dynamically
 };
 
 /************************************ TASKBOARD VARIABLE DEFINITIONS *************************************************/
@@ -60,6 +69,7 @@ export {
     STKNOTE_WIDTH_PERC_DEFAULT,
     COMMENT_WIDTH_PERC_DEFAULT,
     TASKBOARD_STATES,
+    CURSOR_TYPES,
     
     // FUNCTIONS
     _get_global_new_shape_id,

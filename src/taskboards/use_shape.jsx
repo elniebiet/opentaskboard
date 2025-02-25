@@ -1,8 +1,8 @@
 import { _set_global_cursor_type } from "./taskboard_definitions";
 import { _set_global_new_shape_type, _get_global_new_shape_type, _get_global_new_shape_id } from "./taskboard_definitions";
-import cross_pointer from '../../res/imgs/plus_sign_16x16.png'; 
 import { SHAPES_TOOLBAR_ITEM_TYPE } from "../common/globals";
 import arrows from "./arrows_db_temp";
+import { CURSOR_TYPES } from "./taskboard_definitions";
 
 /**
  * Handler first called when a shape is selected
@@ -12,8 +12,7 @@ import arrows from "./arrows_db_temp";
 const _shape_selected_handler = (e, sel_shape_type) => 
 {    
     // custom 'crosshair' cursor
-    let cursor_type = `url(${cross_pointer}) 5 5, auto`;
-    _set_global_cursor_type(cursor_type);
+    _set_global_cursor_type(CURSOR_TYPES.CT_DRAW_SHAPE);
     _set_global_new_shape_type(sel_shape_type);
 };
 

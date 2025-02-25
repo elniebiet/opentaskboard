@@ -19,6 +19,8 @@ import { _get_global_new_shape_type, _set_global_new_shape_type } from './taskbo
 import { _add_note, _delete_note, _update_note } from './use_note';
 import { _add_comment, _delete_comment, _update_comment } from './use_comment';
 import { _shape_selected_handler, _start_drawing, _update_drawing } from './use_shape';
+import { _get_cursor_type } from '../common/utils';
+import { CURSOR_TYPES } from './taskboard_definitions';
 
 import notes from './notes_db_temp';        // temporary notes storage
 import comments from './comments_db_temp';  // temporary comments storage
@@ -124,6 +126,13 @@ const _taskboard_default = () => {
           }
           case (TASKBOARD_STATES.TBS_BEGIN_DRAWING_SHAPE):
           {
+            // ignore if cursor type is not as expected i.e., hovering over non-drawable object
+            if(_get_cursor_type(e.target) !== CURSOR_TYPES.CT_DRAW_SHAPE_FULL_PATH)
+            {
+              _request_taskboard_state(TASKBOARD_STATES.TBS_BEGIN_DRAWING_SHAPE);
+              break;
+            }
+
             _set_start_draw_pos({x_pos: e.clientX, y_pos: e.clientY});
             _set_global_new_shape_id(Date.now());
             _start_drawing({

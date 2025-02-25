@@ -5,6 +5,10 @@
 5. validation of function parameters
 6. Fix trigger_rerender
 7. Add note latest location cordinates to db
+8. generic popup for active toolbar item
+9. Select zoom in feature
+10. Generic item bounds feature when active/selected
+11. right appbar options: history, present, share ...
 
 
 /**** sample code for triggering useRef using useState ****/
