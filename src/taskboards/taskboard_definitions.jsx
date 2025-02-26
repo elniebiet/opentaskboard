@@ -94,8 +94,6 @@ const _set_global_toolbar_items_active_state = (toolbar_item, is_active, b_clear
 
     global_toolbar_items_active.set(toolbar_item, is_active); 
     global_last_selected_tb_item_type = toolbar_item;
-    console.log("toolbar_item_states: ");
-    console.log(global_toolbar_items_active);
 };
 
 /***************** EXPORT *******************/

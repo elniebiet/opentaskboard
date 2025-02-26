@@ -4,12 +4,13 @@
 4. try avoid refreshing entire components ondrag
 5. validation of function parameters
 6. Fix trigger_rerender
-7. Add note latest location cordinates to db
+7. Add note latest location cordinates to db, update position on drag
 8. generic popup for active toolbar item
 9. Select zoom in feature
 10. Generic item bounds feature when active/selected
 11. right appbar options: history, present, share ...6
 12. hungarian notation for all variables e.g. b_has_data for boolean
+13. resize arrow on screen resize
 
 
 /**** sample code for triggering useRef using useState ****/
