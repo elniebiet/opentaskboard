@@ -6,7 +6,6 @@ import pointer_img from '../../res/imgs/img_pointer100x100.png';
 import sticky_notes_img from '../../res/imgs/img_stk_100x100.png';
 import comment_img from '../../res/imgs/img_comment_100x100.png'; 
 import board_marker_img from '../../res/imgs/img_board_marker_100x100.png'; 
-import board_marker_img_32 from '../../res/imgs/img_board_marker_32x32.png'; 
 import eraser_img from '../../res/imgs/img_eraser_100x100.png'; 
 import eraser_img_32 from '../../res/imgs/img_eraser_32x32.png'; 
 import shapes_img from '../../res/imgs/img_shapes_100x100.png'; 
@@ -18,8 +17,9 @@ import { SELECTED_COLOR_THEME } from '../common/globals';
 import { TASKBOARD_DEFAULT_TB_LOC } from './toolbar_defines';
 import { TASKBOARD_DEFAULT_TB_SIZE } from './toolbar_defines';
 import { TASKBOARD_STATES } from '../taskboards/taskboard_definitions';
-import { _get_max_z_index } from '../common/globals';
+import { _get_max_z_index, _use_max_z_index } from '../common/globals';
 import { _set_global_cursor_type } from '../taskboards/taskboard_definitions';
+import { _get_max_possible_z_index } from '../common/globals';
 
 const _add_toolbar_item = (props) => 
 {
@@ -218,6 +218,7 @@ let toolbar_styling_top = {
     borderRadius: '0 0 8px 8px',
     boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
     cursor: 'pointer',
+    zIndex: _get_max_possible_z_index(),
 };
 
 let toolbar_styling_left = {
@@ -231,6 +232,7 @@ let toolbar_styling_left = {
     borderRadius: '0 8px 8px 0',
     boxShadow: '2px 0 6px rgba(0, 0, 0, 0.1)',
     cursor: 'pointer',
+    zIndex: _get_max_possible_z_index(),
 };
 /**************************** Toolbar Stylings end ****************************/
 

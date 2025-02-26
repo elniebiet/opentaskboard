@@ -49,6 +49,7 @@ const SHAPES_TOOLBAR_ITEM_TYPE = {
 /*********** ZINDEX block begins ***************/
 const ZINDEX = 
 {
+    MAX_POSSIBLE: 1000000000,
     CURRENT_HIGHEST: 1000,
     LOWEST: 0
 }
@@ -62,7 +63,18 @@ const _get_lowest_z_index = () => {
 };
 
 const _use_max_z_index = () => {
-    ZINDEX.CURRENT_HIGHEST += 1;
+    if(ZINDEX.CURRENT_HIGHEST >= ZINDEX.MAX_POSSIBLE)
+    {
+        ZINDEX.CURRENT_HIGHEST = 1000;
+    }
+    else
+    {
+        ZINDEX.CURRENT_HIGHEST += 1;
+    }
+};
+
+const _get_max_possible_z_index = () => {
+    return ZINDEX.MAX_POSSIBLE;
 };
 /*********** ZINDEX block ends ***************/
 
@@ -97,5 +109,6 @@ export {
     _get_max_z_index,
     _get_lowest_z_index,
     _use_max_z_index,
+    _get_max_possible_z_index,
 };
 
