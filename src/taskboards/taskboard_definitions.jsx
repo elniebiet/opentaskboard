@@ -1,4 +1,4 @@
-import { SHAPES_TOOLBAR_ITEM_TYPE } from "../common/globals";
+import { SHAPES_TOOLBAR_ITEM_TYPE, TOOLBAR_ITEMS } from "../common/globals";
 import cross_pointer from '../../res/imgs/plus_sign_16x16.png'; 
 import { URL_MAIN } from "../common/globals";
 
@@ -29,6 +29,19 @@ let global_new_shape_id                         = 0;                        // i
 let global_last_item_add_or_move_loc            = {loc_x: 100, loc_y: 100}; // last location a toolbar item was added or moved
 let global_cursor_type                          = "default";                // cursor type in use
 let global_new_shape_type                       = SHAPES_TOOLBAR_ITEM_TYPE.STBI_LINE; // currently selected type of shape to be drawn, default is line
+
+let global_last_selected_tb_item_type           = TOOLBAR_ITEMS.TBI_CURSOR; // last selected toolbar item type
+
+// map of currently active/selected toolbar items
+let global_toolbar_items_active                 = new Map([
+    [TOOLBAR_ITEMS.TBI_CURSOR,             false],
+    [TOOLBAR_ITEMS.TBI_STKNOTE,            false],
+    [TOOLBAR_ITEMS.TBI_COMMENT,            false],
+    [TOOLBAR_ITEMS.TBI_MARKER,             false],
+    [TOOLBAR_ITEMS.TBI_SHAPE,              false],
+    [TOOLBAR_ITEMS.TBI_FILL,               false],
+    [TOOLBAR_ITEMS.TBI_ERASER,             false],
+]); 
 
 /************************************ TASKBOARD GLOBAL FUNCTION DEFINITIONS *************************************************/
 const _get_global_new_shape_id = () => {
@@ -63,6 +76,28 @@ const _set_global_new_shape_type = (new_shape_type) => {
     global_new_shape_type = new_shape_type;
 };
 
+const _get_global_last_selected_tb_item_type = () => {
+    return global_last_selected_tb_item_type;
+};
+
+const _get_global_toolbar_items_active_state = (toolbar_item) => {
+    return global_toolbar_items_active.get(toolbar_item);
+};
+
+const _set_global_toolbar_items_active_state = (toolbar_item, is_active, b_clear_all_others) => {
+    if(b_clear_all_others)
+    {
+        for (const [key, value] of global_toolbar_items_active) {
+            global_toolbar_items_active.set(key, false);
+        }
+    }
+
+    global_toolbar_items_active.set(toolbar_item, is_active); 
+    global_last_selected_tb_item_type = toolbar_item;
+    console.log("toolbar_item_states: ");
+    console.log(global_toolbar_items_active);
+};
+
 /***************** EXPORT *******************/
 export {
     // CONSTANTS
@@ -80,4 +115,7 @@ export {
     _set_global_cursor_type,
     _get_global_new_shape_type,
     _set_global_new_shape_type,
+    _get_global_last_selected_tb_item_type,
+    _get_global_toolbar_items_active_state,
+    _set_global_toolbar_items_active_state,
 };

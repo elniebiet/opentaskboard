@@ -33,7 +33,6 @@ const _get_complement_colour = (orig_colour) => {
  * @returns {string} - the current cursor type.
  */
 const _get_cursor_type = (element) => {
-    console.log("element: " + element); 
     return window.getComputedStyle(element).cursor;
 };
 

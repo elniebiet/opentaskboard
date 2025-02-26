@@ -1,15 +1,14 @@
 import React, { useState, useRef, useEffect } from "react";
 import Box from '@mui/joy/Box';
-import Textarea from '@mui/joy/Textarea';
 import Draggable from "react-draggable";
 import { SELECTED_COLOR_THEME } from "../../common/globals";
 import { IconButton } from "@mui/material";
-import DeleteIcon from '@mui/icons-material/Delete';
 import { _get_max_z_index, _use_max_z_index } from "../../common/globals";
 import { _colour_picker_round } from "../../common/components/colour_picker";
 import { _get_complement_colour } from "../../common/utils";
 import { Bold } from "lucide-react";
-
+import { _set_global_toolbar_items_active_state } from "../taskboard_definitions";
+import { TOOLBAR_ITEMS } from "../../common/globals";
 /**
  * Comment component
  */
@@ -164,6 +163,7 @@ const _comment = (props) => {
                     flexDirection: "column",
                     gap: (FLEXBOX_GAP_PERC * comment_width) + 'px',
                 }}
+                onClick={(e) => {_set_global_toolbar_items_active_state(TOOLBAR_ITEMS.TBI_COMMENT, true, true)}}
             >
                 {/* Resizer Handle */}
                 <div 

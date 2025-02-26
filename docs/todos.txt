@@ -8,7 +8,8 @@
 8. generic popup for active toolbar item
 9. Select zoom in feature
 10. Generic item bounds feature when active/selected
-11. right appbar options: history, present, share ...
+11. right appbar options: history, present, share ...6
+12. hungarian notation for all variables e.g. b_has_data for boolean
 
 
 /**** sample code for triggering useRef using useState ****/

@@ -3,6 +3,8 @@ import Draggable from "react-draggable";
 import { _get_max_z_index, _use_max_z_index } from "../../common/globals";
 import { _colour_picker_round } from "../../common/components/colour_picker";
 import { _get_complement_colour } from "../../common/utils";
+import { _set_global_toolbar_items_active_state } from "../taskboard_definitions";
+import { TOOLBAR_ITEMS } from "../../common/globals";
 
 /**
  * Sticky note component
@@ -148,6 +150,7 @@ const _sticky_note = (props) => {
                     flexDirection: "column",
                     gap: (FLEXBOX_GAP_PERC * stknote_width) + 'px',
                 }}
+                onClick={() => {_set_global_toolbar_items_active_state(TOOLBAR_ITEMS.TBI_STKNOTE, true, true)}}
             >
                 {/* Resizer Handle */}
                 <div 
