@@ -11,6 +11,7 @@ import { _delete_note, _update_note_loc, _update_note_text, _update_note_colour,
  * Sticky note component
  */
 const _sticky_note = (props) => {
+
     const [is_editing, _set_is_editing] = useState(true);
 
     const [z_index, _set_z_index] = useState(_get_max_z_index());
@@ -21,6 +22,8 @@ const _sticky_note = (props) => {
     const [is_resizing, _set_is_resizing] = useState(false);
 
     const [start_resize_loc, _set_start_resize_loc] = useState({ x: 0, y: 0 });
+
+    const stk_location_ref = useRef(null);
 
     const STKNOTE_MIN_WIDTH                 = 150;  //pixels
     const MENUBAR_HGT_PERC                  = 0.10; // 10% of stknote height 
@@ -40,7 +43,10 @@ const _sticky_note = (props) => {
     {
         const {clientX, clientY} = e;
         props.tb_item_loc_update_func(clientX, clientY);
-        _update_note_loc(props.id, clientX, clientY);
+
+        const {x, y} = _get_note_location();
+        console.log("note location: " + x + " " + y);
+        _update_note_loc(props.id, x, y);
     };
 
     const _handle_note_drag_start = () => {
@@ -98,6 +104,17 @@ const _sticky_note = (props) => {
         props.taskboard_rerender_func();
     };
 
+    const _get_note_location = () => {
+        if (stk_location_ref.current) {
+            const rect = stk_location_ref.current.getBoundingClientRect();
+            return {x: rect.left, y: rect.top};
+        }
+        else
+        {
+            return {x: props.x_pos, y: props.y_pos}
+        }
+    };
+
     /********************* Effects block begin ***********************/
     // text area focus on editing
     const textarea_ref = useRef(null);
@@ -135,6 +152,7 @@ const _sticky_note = (props) => {
         >
             
             <div 
+                ref={stk_location_ref}
                 id="stknote_root"
                 style={{
                     width: stknote_width + 'px',

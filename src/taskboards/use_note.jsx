@@ -110,15 +110,17 @@ const _update_note_win_width_perc = (id, win_width_perc) => {
    * @param {int} int_y_cord - note y cordinate
    */
 const _update_note_loc = (int_id, int_x_cord, int_y_cord) => {
-    // for(let i=0; i<notes.length; i++)
-    // {
-    //     if(notes[i].id === int_id)
-    //     {
-    //         notes[i].x_pos = int_x_cord;
-    //         notes[i].y_pos = int_y_cord;
-    //         break;
-    //     }
-    // }
+    for(let i=0; i<notes.length; i++)
+    {
+        if(notes[i].id === int_id)
+        {
+            console.log("old location: " + int_id + " " + notes[i].x_pos + " " + notes[i].y_pos);
+            console.log("last saved location: " + int_x_cord + " " + int_y_cord);
+            notes[i].x_pos = int_x_cord;
+            notes[i].y_pos = int_y_cord;
+            break;
+        }
+    }
 };
 
 export {
