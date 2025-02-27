@@ -56,27 +56,76 @@ const _delete_note = (id) => {
 };
 
 /**
- * update note
+ * update note text
  * @param {int} id - note id
  * @param {string} text - note text
- * @param {string} colour - hex string of note colour   
- * @param {float} win_width_perc - note width in percentage wrt window size
  */
-const _update_note = (id, text, colour, win_width_perc) => {
+const _update_note_text = (id, text) => {
     for(let i=0; i<notes.length; i++)
     {
         if(notes[i].id === id)
         {
-        notes[i].text = text;
-        notes[i].colour = colour;
-        notes[i].win_width_perc = win_width_perc;
-        break;
+            notes[i].text = text;
+            break;
         }
     }
+};
+
+/**
+ * update note colour
+ * @param {int} id - note id
+ * @param {string} colour - hex string of note colour   
+ */
+const _update_note_colour = (id, colour) => {
+    for(let i=0; i<notes.length; i++)
+    {
+        if(notes[i].id === id)
+        {
+            notes[i].colour = colour;
+            break;
+        }
+    }
+};
+
+/**
+ * update note width percentage
+ * @param {int} id - note id
+ * @param {float} win_width_perc - note width in percentage wrt window size
+ */
+const _update_note_win_width_perc = (id, win_width_perc) => {
+    for(let i=0; i<notes.length; i++)
+    {
+        if(notes[i].id === id)
+        {
+            notes[i].win_width_perc = win_width_perc;
+            break;
+        }
+    }
+};
+
+/**
+   * update note location
+   * @param {int} id - note id
+   * @param {int} int_x_cord - note x cordinate
+   * @param {int} int_y_cord - note y cordinate
+   */
+const _update_note_loc = (int_id, int_x_cord, int_y_cord) => {
+    // for(let i=0; i<notes.length; i++)
+    // {
+    //     if(notes[i].id === int_id)
+    //     {
+    //         notes[i].x_pos = int_x_cord;
+    //         notes[i].y_pos = int_y_cord;
+    //         break;
+    //     }
+    // }
 };
 
 export {
     _add_note,
     _delete_note,
-    _update_note,
+    _update_note_text,
+    _update_note_colour,
+    _update_note_win_width_perc,
+    _update_note_loc,
 };

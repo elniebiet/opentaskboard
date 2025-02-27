@@ -9,6 +9,7 @@ import { _get_complement_colour } from "../../common/utils";
 import { Bold } from "lucide-react";
 import { _set_global_toolbar_items_active_state } from "../taskboard_definitions";
 import { TOOLBAR_ITEMS } from "../../common/globals";
+import { _delete_comment, _update_comment_loc, _update_comment_text, _update_comment_colour, _update_comment_win_width_perc } from "../use_comment";
 /**
  * Comment component
  */
@@ -43,6 +44,7 @@ const _comment = (props) => {
     {
         const {clientX, clientY} = e;
         props.tb_item_loc_update_func(clientX, clientY);
+        _update_comment_loc(props.id, clientX, clientY);
     };
 
     const _handle_comment_drag_start = () => {
@@ -63,22 +65,22 @@ const _comment = (props) => {
 
     const _add_emoji = (emoji) => {
         let txt = props.text + emoji;
-        _update_comment(txt);
+        _update_text(txt);
     };
     
-    const _update_comment = (updated_text) => {
-        props.comment_update_func(props.id, updated_text, props.colour, props.win_width_perc);
+    const _update_text = (updated_text) => {
+        _update_comment_text(props.id, updated_text);
         props.taskboard_rerender_func();
     };
 
-    const _update_comment_colour = (updated_hex_colour_val) => {
-        props.comment_update_func(props.id, props.text, updated_hex_colour_val, props.win_width_perc);
+    const _update_colour = (updated_hex_colour_val) => {
+        _update_comment_colour(props.id, updated_hex_colour_val);
         _set_complement_colour(_get_complement_colour(updated_hex_colour_val));
         props.taskboard_rerender_func();
     };
 
-    const _update_note_win_width_perc = (updated_win_width_perc) => {
-        props.comment_update_func(props.id, props.text, props.colour, updated_win_width_perc);
+    const _update_win_width_perc = (updated_win_width_perc) => {
+        _update_comment_win_width_perc(props.id, updated_win_width_perc);
         props.taskboard_rerender_func();
     };
 
@@ -97,7 +99,7 @@ const _comment = (props) => {
         const new_x = e.clientX;
         let new_width = comment_width + (new_x - start_resize_loc.x);
         let new_win_width_perc =  new_width/props.win_width;
-        _update_note_win_width_perc(new_win_width_perc);
+        _update_win_width_perc(new_win_width_perc);
     };
 
 
@@ -106,8 +108,8 @@ const _comment = (props) => {
         console.log("display extended emoji list.");
     };
 
-    const _delete_comment = () => {
-        props.on_delete(props.id);
+    const _delete = () => {
+        _delete_comment(props.id);
         props.taskboard_rerender_func();
     };
 
@@ -201,7 +203,7 @@ const _comment = (props) => {
                         }}
                     >
                         <_colour_picker_round id={props.id} width={menubar_item_width} height={menubar_item_width} colour={complement_colour} x_pos={props.x_pos - comment_width} y_pos={props.y_pos - comment_width} 
-                            update_colour_func={_update_comment_colour} onclick_func={_colour_picker_btn_clicked}/>
+                            update_colour_func={_update_colour} onclick_func={_colour_picker_btn_clicked}/>
                     </div>
                     <div
                         id="btn_comment_delete"
@@ -230,7 +232,7 @@ const _comment = (props) => {
                                 justifyContent: "center", 
                                 lineHeight: "1",
                             }}
-                            onClick={() => _delete_comment()}
+                            onClick={() => _delete()}
                         >
                             X
                         </button>
@@ -296,7 +298,7 @@ const _comment = (props) => {
                         <textarea
                             placeholder="comment…"
                             value={props.text}
-                            onChange={(event) => _update_comment(event.target.value)}
+                            onChange={(event) => _update_text(event.target.value)}
                             minrows={2}
                             maxrows={4}
                             onBlur={_deactivate_comment}

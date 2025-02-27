@@ -16,8 +16,8 @@ import { _set_global_new_shape_id, _get_global_new_shape_id } from './taskboard_
 import { _get_global_last_item_add_or_move_loc, _set_global_last_item_add_or_move_loc } from './taskboard_definitions';
 import { _get_global_cursor_type, _set_global_cursor_type } from './taskboard_definitions';
 import { _get_global_new_shape_type, _set_global_new_shape_type } from './taskboard_definitions';
-import { _add_note, _delete_note, _update_note } from './use_note';
-import { _add_comment, _delete_comment, _update_comment } from './use_comment';
+import { _add_note } from './use_note';
+import { _add_comment } from './use_comment';
 import { _shape_selected_handler, _start_drawing, _update_drawing } from './use_shape';
 import { _get_cursor_type } from '../common/utils';
 import { CURSOR_TYPES } from './taskboard_definitions';
@@ -268,15 +268,15 @@ const _taskboard_default = () => {
             {/* display notes and comments */}
             <div>
               {notes.map((note) => (
-                <_sticky_note key={note.id} id={note.id} text={note.text} win_width_perc={note.win_width_perc} on_delete={_delete_note} tb_item_loc_update_func={_set_tb_item_loc_func} 
-                  note_update_func={_update_note} x_pos={note.x_pos} y_pos={note.y_pos} win_width={width} win_height={height} colour={note.colour} taskboard_rerender_func={_trigger_taskboard_rerender}/>
+                <_sticky_note key={note.id} id={note.id} text={note.text} win_width_perc={note.win_width_perc} tb_item_loc_update_func={_set_tb_item_loc_func} 
+                  x_pos={note.x_pos} y_pos={note.y_pos} win_width={width} win_height={height} colour={note.colour} taskboard_rerender_func={_trigger_taskboard_rerender}/>
               ))}
             </div>
 
             <div>
               {comments.map((comment) => (
-                <_comment key={comment.id} id={comment.id} text={comment.text} win_width_perc={comment.win_width_perc} on_delete={_delete_comment} tb_item_loc_update_func={_set_tb_item_loc_func} 
-                comment_update_func={_update_comment}  x_pos={comment.x_pos} y_pos={comment.y_pos} win_width={width} win_height={height} colour={comment.colour} taskboard_rerender_func={_trigger_taskboard_rerender}/>
+                <_comment key={comment.id} id={comment.id} text={comment.text} win_width_perc={comment.win_width_perc} tb_item_loc_update_func={_set_tb_item_loc_func} 
+                x_pos={comment.x_pos} y_pos={comment.y_pos} win_width={width} win_height={height} colour={comment.colour} taskboard_rerender_func={_trigger_taskboard_rerender}/>
               ))}
             </div>
           </div>

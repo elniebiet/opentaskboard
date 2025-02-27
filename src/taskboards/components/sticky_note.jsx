@@ -5,6 +5,7 @@ import { _colour_picker_round } from "../../common/components/colour_picker";
 import { _get_complement_colour } from "../../common/utils";
 import { _set_global_toolbar_items_active_state } from "../taskboard_definitions";
 import { TOOLBAR_ITEMS } from "../../common/globals";
+import { _delete_note, _update_note_loc, _update_note_text, _update_note_colour, _update_note_win_width_perc } from "../use_note";
 
 /**
  * Sticky note component
@@ -39,6 +40,7 @@ const _sticky_note = (props) => {
     {
         const {clientX, clientY} = e;
         props.tb_item_loc_update_func(clientX, clientY);
+        _update_note_loc(props.id, clientX, clientY);
     };
 
     const _handle_note_drag_start = () => {
@@ -57,19 +59,19 @@ const _sticky_note = (props) => {
         _set_z_index(z_index - 1);
     };
 
-    const _update_note_text = (updated_text) => { 
-        props.note_update_func(props.id, updated_text, props.colour, props.win_width_perc);
+    const _update_text = (updated_text) => { 
+        _update_note_text(props.id, updated_text);
         props.taskboard_rerender_func();
     };
 
-    const _update_note_colour = (updated_hex_colour_val) => {
-        props.note_update_func(props.id, props.text, updated_hex_colour_val, props.win_width_perc);
+    const _update_colour = (updated_hex_colour_val) => {
+        _update_note_colour(props.id, updated_hex_colour_val);
         _set_complement_colour(_get_complement_colour(updated_hex_colour_val));
         props.taskboard_rerender_func();
     };
 
-    const _update_note_win_width_perc = (updated_win_width_perc) => {
-        props.note_update_func(props.id, props.text, props.colour, updated_win_width_perc);
+    const _update_win_width_perc = (updated_win_width_perc) => {
+        _update_note_win_width_perc(props.id, updated_win_width_perc);
         props.taskboard_rerender_func();
     };
 
@@ -88,11 +90,11 @@ const _sticky_note = (props) => {
         const new_x = e.clientX;
         let new_width = stknote_width + (new_x - start_resize_loc.x);
         let new_win_width_perc =  new_width/props.win_width;
-        _update_note_win_width_perc(new_win_width_perc);
+        _update_win_width_perc(new_win_width_perc);
     };
 
-    const _delete_note = () => {
-        props.on_delete(props.id);
+    const _delete = () => {
+        _delete_note(props.id);
         props.taskboard_rerender_func();
     };
 
@@ -188,7 +190,7 @@ const _sticky_note = (props) => {
                         }}
                     >
                         <_colour_picker_round id={props.id} width={menubar_item_width} height={menubar_item_width} colour={complement_colour} x_pos={props.x_pos - stknote_width} y_pos={props.y_pos - stknote_width} 
-                            update_colour_func={_update_note_colour} onclick_func={_colour_picker_btn_clicked}/>
+                            update_colour_func={_update_colour} onclick_func={_colour_picker_btn_clicked}/>
                     </div>
                     <div
                         id="btn_stknote_delete"
@@ -217,7 +219,7 @@ const _sticky_note = (props) => {
                                 justifyContent: "center", 
                                 lineHeight: "1",
                             }}
-                            onClick={() => _delete_note()}
+                            onClick={() => _delete()}
                         >
                             X
                         </button>
@@ -232,7 +234,7 @@ const _sticky_note = (props) => {
                     {is_editing ? (
                         <textarea
                             value={props.text}
-                            onChange={(e) => _update_note_text(e.target.value)}
+                            onChange={(e) => _update_text(e.target.value)}
                             style={{
                                 marginTop: (FLEXBOX_GAP_PERC * stknote_width) + 'px',
                                 width: (stknote_width - (STKNOTE_TXTAREA_PADDG_PERC * stknote_width)) + 'px',

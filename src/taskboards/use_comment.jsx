@@ -64,27 +64,77 @@ const _delete_comment = (id) => {
 };
 
 /**
-   * update comment
+   * update comment text
    * @param {int} id - comment id
-   * @param {string} text - comment text
-   * @param {string} colour - hex string of comment colour   
-   * @param {float} win_width_perc - comment width in percentage wrt window size
+   * @param {string} text - comment text  
    */
-const _update_comment = (id, text, colour, win_width_perc) => {
+const _update_comment_text = (id, text) => {
     for(let i=0; i<comments.length; i++)
     {
         if(comments[i].id === id)
         {
             comments[i].text = text;
+            break;
+        }
+    }
+};
+
+/**
+   * update comment colour
+   * @param {int} id - comment id
+   * @param {string} colour - hex string of comment colour   
+   */
+const _update_comment_colour = (id, colour) => {
+    for(let i=0; i<comments.length; i++)
+    {
+        if(comments[i].id === id)
+        {
             comments[i].colour = colour;
+            break;
+        }
+    }
+};
+
+/**
+   * update comment width percentage
+   * @param {int} id - comment id
+   * @param {float} win_width_perc - comment width in percentage wrt window size
+   */
+const _update_comment_win_width_perc = (id, win_width_perc) => {
+    for(let i=0; i<comments.length; i++)
+    {
+        if(comments[i].id === id)
+        {
             comments[i].win_width_perc = win_width_perc;
             break;
         }
     }
 };
 
+/**
+   * update comment location
+   * @param {int} id - comment id
+   * @param {int} int_x_cord - comment x cordinate
+   * @param {int} int_y_cord - comment y cordinate
+   */
+const _update_comment_loc = (int_id, int_x_cord, int_y_cord) => {
+    // for(let i=0; i<comments.length; i++)
+    // {
+    //     if(comments[i].id === int_id)
+    //     {
+    //         console.log("updating comment loc");
+    //         comments[i].x_pos = int_x_cord;
+    //         comments[i].y_pos = int_y_cord;
+    //         break;
+    //     }
+    // }
+};
+
 export {
     _add_comment,
     _delete_comment,
-    _update_comment,
+    _update_comment_text,
+    _update_comment_colour,
+    _update_comment_win_width_perc,
+    _update_comment_loc,
 };
