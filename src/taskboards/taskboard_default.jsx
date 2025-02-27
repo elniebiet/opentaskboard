@@ -65,10 +65,14 @@ const _taskboard_default = () => {
   };
 
   /**
-   * Request taskboard state 
+   * Request taskboard state
+   * - call this function to request a new state for the taskboard
    */
   const _request_taskboard_state = (tb_state = TASKBOARD_STATES.TBS_NORMAL) => {
-    _set_taskboard_state(tb_state);
+    if(tb_state > TASKBOARD_STATES.TBS_NONE && tb_state < TASKBOARD_STATES.TBS_LAST)
+    {
+      _set_taskboard_state(tb_state);
+    }
   };
   /***************** Misc block ends *************************/
 
@@ -105,7 +109,9 @@ const _taskboard_default = () => {
 
   /************** Page listener begins **********************/
   /**
-   * page mouse listener - listens for page clicks 
+   * page mouse listener 
+   * this page listener listens for all page clicks
+   * it handles the overall taskboard state changes 
    */
   const _page_mouse_down_listener = () => {
     useEffect(() => {

@@ -10,12 +10,16 @@ const COMMENT_WIDTH_PERC_DEFAULT                      = 0.15;
 
 // Taskboard states
 const TASKBOARD_STATES = {
+    TBS_NONE:                   0,
     TBS_NORMAL:                 1,
     TBS_SUB_TOOLBAR_ACTIVE:     2,
     TBS_WAITING_DRAW_SHAPE:     3,  // waiting to draw a shape
     TBS_BEGIN_DRAWING_SHAPE:    4,  // began drawing shape
     TBS_DRAWING_SHAPE:          5,  // drawing shape
     TBS_WRITING:                7,
+
+
+    TBS_LAST:                   1000, // please add any new state before this item
 };
 
 const CURSOR_TYPES = {
