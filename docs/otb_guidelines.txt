@@ -26,12 +26,14 @@ All contributors are expected to adhere to the project's Code of Conduct. Please
     - use underscores to separate meaningful words
     - variable names are all lowercase
     - avoid camel-casing
-    - example: todays_date
+    - please use hungarian notation with an underscore for variable names
+    - example: str_todays_date (a string holding today's date) 
 - Global constants/macros:
     - use all uppercase to declare global constants
     - use underscores to separate meaningful words
     - example: MAX_GRID_SIZE
 - General Rules:
+    - Always get the latest repo to be up-to-date
     - Follow the project's coding style and conventions.
     - Write clear and concise code with appropriate comments.
     - Use block comments to separate large pieces of codes that perform a task, consider creating a component
