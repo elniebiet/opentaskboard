@@ -114,8 +114,6 @@ const _update_note_loc = (int_id, int_x_cord, int_y_cord) => {
     {
         if(notes[i].id === int_id)
         {
-            console.log("old location: " + int_id + " " + notes[i].x_pos + " " + notes[i].y_pos);
-            console.log("last saved location: " + int_x_cord + " " + int_y_cord);
             notes[i].x_pos = int_x_cord;
             notes[i].y_pos = int_y_cord;
             break;
