@@ -6,13 +6,14 @@ import { _get_complement_colour } from "../../common/utils";
 import { _set_global_toolbar_items_active_state } from "../taskboard_definitions";
 import { TOOLBAR_ITEMS } from "../../common/globals";
 import { _delete_note, _update_note_loc, _update_note_text, _update_note_colour, _update_note_win_width_perc } from "../use_note";
+import { NotepadText } from "lucide-react";
 
 /**
  * Sticky note component
  */
 const _sticky_note = (props) => {
 
-    const [is_editing, _set_is_editing] = useState(true);
+    const [is_editing, _set_is_editing] = useState(false);
 
     const [z_index, _set_z_index] = useState(_get_max_z_index());
     _use_max_z_index();
@@ -24,6 +25,8 @@ const _sticky_note = (props) => {
     const [start_resize_loc, _set_start_resize_loc] = useState({ x: 0, y: 0 });
 
     const stk_location_ref = useRef(null);
+
+    const [root_div_position, _set_root_div_position] = useState({x: props.x_pos, y: props.y_pos});
 
     const STKNOTE_MIN_WIDTH                 = 150;  //pixels
     const MENUBAR_HGT_PERC                  = 0.10; // 10% of stknote height 
@@ -41,11 +44,8 @@ const _sticky_note = (props) => {
 
     const _handle_note_drag_over = (e) =>   
     {
-        const {clientX, clientY} = e;
-        props.tb_item_loc_update_func(clientX, clientY);
-
-        const {x, y} = _get_note_location();
-        console.log("note location: " + x + " " + y);
+        const {x, y} = _get_note_location_top_left();
+        props.tb_item_loc_update_func(x, y);    // last taskboard item moved location update
         _update_note_loc(props.id, x, y);
     };
 
@@ -104,7 +104,7 @@ const _sticky_note = (props) => {
         props.taskboard_rerender_func();
     };
 
-    const _get_note_location = () => {
+    const _get_note_location_top_left = () => {
         if (stk_location_ref.current) {
             const rect = stk_location_ref.current.getBoundingClientRect();
             return {x: rect.left, y: rect.top};
@@ -163,8 +163,8 @@ const _sticky_note = (props) => {
                     boxShadow: "2px 2px 10px rgba(0,0,0,0.2)",
                     cursor: "grab",
                     position: "absolute",
-                    left: props.x_pos + 'px',
-                    top: props.y_pos + 'px',
+                    left: root_div_position.x + 'px',
+                    top: root_div_position.y + 'px',
                     zIndex: z_index,
                     display: "flex",
                     flexDirection: "column",

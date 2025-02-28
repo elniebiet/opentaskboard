@@ -12,6 +12,7 @@ Notable todo items list:
 11. top right appbar options: history, present, share ...6
 12. hungarian notation for all variables e.g. b_has_data for boolean
 13. resize arrow on screen resize
+14. all items on the screen must have a z-index, retrieveable on-reload
 
 
 /**** sample code for triggering useRef using useState
