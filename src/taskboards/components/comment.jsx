@@ -14,7 +14,7 @@ import { _delete_comment, _update_comment_loc, _update_comment_text, _update_com
  * Comment component
  */
 const _comment = (props) => {    
-    const [is_editing, _set_is_editing] = useState(true);
+    const [is_editing, _set_is_editing] = useState(false);
     
     const [z_index, _set_z_index] = useState(_get_max_z_index());
     _use_max_z_index();
@@ -24,6 +24,10 @@ const _comment = (props) => {
     const [is_resizing, _set_is_resizing] = useState(false);
     
     const [start_resize_loc, _set_start_resize_loc] = useState({ x: 0, y: 0 });
+
+    const comments_root_location_ref = useRef(null);
+
+    const [root_div_position, _set_root_div_position] = useState({x: props.x_pos, y: props.y_pos});
     
     const COMMENT_MIN_WIDTH             = 150;  //pixels
     const FLEXBOX_GAP_PERC              = 0.02; // 2% of comment height
@@ -42,9 +46,9 @@ const _comment = (props) => {
 
     const _handle_comment_drag_over = (e) =>   
     {
-        const {clientX, clientY} = e;
-        props.tb_item_loc_update_func(clientX, clientY);
-        _update_comment_loc(props.id, clientX, clientY);
+        const {x, y} = _get_comment_location_top_left();
+        props.tb_item_loc_update_func(x, y);    // last taskboard item moved location update
+        _update_comment_loc(props.id, x, y);
     };
 
     const _handle_comment_drag_start = () => {
@@ -102,6 +106,16 @@ const _comment = (props) => {
         _update_win_width_perc(new_win_width_perc);
     };
 
+    const _get_comment_location_top_left = () => {
+        if (comments_root_location_ref.current) {
+            const rect = comments_root_location_ref.current.getBoundingClientRect();
+            return {x: rect.left, y: rect.top};
+        }
+        else
+        {
+            return {x: props.x_pos, y: props.y_pos}
+        }
+    };
 
     const _show_extended_emoji_list = () => {
         // TODO: Show emoji list
@@ -148,6 +162,7 @@ const _comment = (props) => {
         >
                         
             <div
+                ref={comments_root_location_ref}
                 id="comment_root"
                 style={{
                     width: comment_width + 'px',
@@ -158,8 +173,8 @@ const _comment = (props) => {
                     boxShadow: "2px 2px 10px rgba(0,0,0,0.2)",
                     cursor: "grab",
                     position: "absolute",
-                    left: props.x_pos + 'px',
-                    top: props.y_pos + 'px',
+                    left: root_div_position.x + 'px',
+                    top: root_div_position.y + 'px',
                     zIndex: z_index,
                     display: "flex",
                     flexDirection: "column",

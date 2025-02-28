@@ -6,7 +6,6 @@ import { _get_complement_colour } from "../../common/utils";
 import { _set_global_toolbar_items_active_state } from "../taskboard_definitions";
 import { TOOLBAR_ITEMS } from "../../common/globals";
 import { _delete_note, _update_note_loc, _update_note_text, _update_note_colour, _update_note_win_width_perc } from "../use_note";
-import { NotepadText } from "lucide-react";
 
 /**
  * Sticky note component
@@ -24,7 +23,7 @@ const _sticky_note = (props) => {
 
     const [start_resize_loc, _set_start_resize_loc] = useState({ x: 0, y: 0 });
 
-    const stk_location_ref = useRef(null);
+    const stk_root_location_ref = useRef(null);
 
     const [root_div_position, _set_root_div_position] = useState({x: props.x_pos, y: props.y_pos});
 
@@ -105,8 +104,8 @@ const _sticky_note = (props) => {
     };
 
     const _get_note_location_top_left = () => {
-        if (stk_location_ref.current) {
-            const rect = stk_location_ref.current.getBoundingClientRect();
+        if (stk_root_location_ref.current) {
+            const rect = stk_root_location_ref.current.getBoundingClientRect();
             return {x: rect.left, y: rect.top};
         }
         else
@@ -152,7 +151,7 @@ const _sticky_note = (props) => {
         >
             
             <div 
-                ref={stk_location_ref}
+                ref={stk_root_location_ref}
                 id="stknote_root"
                 style={{
                     width: stknote_width + 'px',

@@ -118,16 +118,15 @@ const _update_comment_win_width_perc = (id, win_width_perc) => {
    * @param {int} int_y_cord - comment y cordinate
    */
 const _update_comment_loc = (int_id, int_x_cord, int_y_cord) => {
-    // for(let i=0; i<comments.length; i++)
-    // {
-    //     if(comments[i].id === int_id)
-    //     {
-    //         console.log("updating comment loc");
-    //         comments[i].x_pos = int_x_cord;
-    //         comments[i].y_pos = int_y_cord;
-    //         break;
-    //     }
-    // }
+    for(let i=0; i<comments.length; i++)
+    {
+        if(comments[i].id === int_id)
+        {
+            comments[i].x_pos = int_x_cord;
+            comments[i].y_pos = int_y_cord;
+            break;
+        }
+    }
 };
 
 export {
