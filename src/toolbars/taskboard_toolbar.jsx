@@ -305,7 +305,7 @@ const _taskboard_toolbar = (props) => {
 
     return (
         <div>
-            <div id="sprint_planning_template_root" style={toolbar_styling}>
+            <div id="taskboard_toolbar_root" style={toolbar_styling}>
                 <Box sx={{ '& > :not(style)': { m: 0.5 } }} display="flex" flexDirection={flex_dir}>
                     <_add_toolbar_item item_index={TOOLBAR_ITEMS.TBI_CURSOR} tbi_type={TOOLBAR_ITEM_TYPE.CLICKABLE} img_src={pointer_img} img_alt_txt={"Cursor"} 
                     on_pointer_click={props.select_cursor_func}  tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} 
