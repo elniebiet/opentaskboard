@@ -23,9 +23,9 @@ const NOTE_TOOLBAR_ITEMS = {
     NTBI_UNDERLINE:                 3,
     NTBI_STRIKETHROUGH:             4,
 // Font and style adjustments
-    NTBI_FONT_SELECTION:            10,
+    NTBI_FONT_FAMILY:               10,
     NTBI_FONT_SIZE:                 11,
-    NTBI_TEXT_COLOUR:               12,
+    NTBI_FONT_COLOUR:               12,
 // Paragraph formatting
     NTBI_ALIGNMENT:                 20,
 // Inserts

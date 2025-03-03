@@ -4,6 +4,15 @@ import Fab from '@mui/material/Fab';
 import { styled } from '@mui/system';
 import bold_img from '../../res/imgs/note_toolbar/bold_100x100.png';
 import italic_img from '../../res/imgs/note_toolbar/italic_100x100.png';
+import underline_img from '../../res/imgs/note_toolbar/underline_100x100.png';
+import strikethrough_img from '../../res/imgs/note_toolbar/strikethrough_100x100.png';
+import font_family_img from '../../res/imgs/note_toolbar/font_type_100x100.png';
+import font_size_img from '../../res/imgs/note_toolbar/font_size_100x100.png';
+import font_colour_img from '../../res/imgs/note_toolbar/font_colour_100x100.png';
+import alignment_img from '../../res/imgs/note_toolbar/alignment_centre_100x100.png';
+import link_img from '../../res/imgs/note_toolbar/link_100x100.png';
+import emoji_img from '../../res/imgs/note_toolbar/emoji_100x100.png';
+import others_img from '../../res/imgs/note_toolbar/ellipsis_100x100.png';
 import { useState, useEffect } from 'react';
 import { SELECTED_COLOR_THEME } from '../common/globals';
 import { TASKBOARD_STATES } from '../taskboards/taskboard_definitions';
@@ -140,6 +149,42 @@ const _note_toolbar = (props) => {
                     taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state} 
                     />
                     <_add_toolbar_item item_index={NOTE_TOOLBAR_ITEMS.NTBI_ITALIC} img_src={italic_img} img_alt_txt={"Italic"} 
+                    tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
+                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state} 
+                    />
+                    <_add_toolbar_item item_index={NOTE_TOOLBAR_ITEMS.NTBI_UNDERLINE} img_src={underline_img} img_alt_txt={"Underline"} 
+                    tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
+                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state} 
+                    />
+                    <_add_toolbar_item item_index={NOTE_TOOLBAR_ITEMS.NTBI_STRIKETHROUGH} img_src={strikethrough_img} img_alt_txt={"StrikeThrough"} 
+                    tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
+                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state} 
+                    />
+                    <_add_toolbar_item item_index={NOTE_TOOLBAR_ITEMS.NTBI_FONT_FAMILY} img_src={font_family_img} img_alt_txt={"Font Family"} 
+                    tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
+                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state} 
+                    />
+                    <_add_toolbar_item item_index={NOTE_TOOLBAR_ITEMS.NTBI_FONT_SIZE} img_src={font_size_img} img_alt_txt={"Font Size"} 
+                    tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
+                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state} 
+                    />
+                    <_add_toolbar_item item_index={NOTE_TOOLBAR_ITEMS.NTBI_FONT_COLOUR} img_src={font_colour_img} img_alt_txt={"Font Colour"} 
+                    tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
+                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state} 
+                    />
+                    <_add_toolbar_item item_index={NOTE_TOOLBAR_ITEMS.NTBI_ALIGNMENT} img_src={alignment_img} img_alt_txt={"Alignment"} 
+                    tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
+                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state} 
+                    />
+                    <_add_toolbar_item item_index={NOTE_TOOLBAR_ITEMS.NTBI_LINK} img_src={link_img} img_alt_txt={"Link"} 
+                    tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
+                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state} 
+                    />
+                    <_add_toolbar_item item_index={NOTE_TOOLBAR_ITEMS.NTBI_EMOJI} img_src={emoji_img} img_alt_txt={"Emoji"} 
+                    tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
+                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state} 
+                    />
+                    <_add_toolbar_item item_index={NOTE_TOOLBAR_ITEMS.NTBI_OTHERS} img_src={others_img} img_alt_txt={"Other options"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
                     on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state} 
                     />
