@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Draggable from "react-draggable";
-import { _set_global_toolbar_items_active_state } from "../../taskboards/taskboard_definitions";
+import { _set_global_toolbar_items_active_state } from "../../taskboards/taskboard_globals";
 import { TOOLBAR_ITEMS } from "../globals";
 import { _get_max_z_index, _use_max_z_index } from "../globals";
 

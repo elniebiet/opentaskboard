@@ -14,11 +14,11 @@ import { useState, useEffect } from 'react';
 import { TOOLBAR_ITEMS } from '../common/globals';
 import { TOOLBAR_ITEM_TYPE } from '../common/globals';
 import { SELECTED_COLOR_THEME } from '../common/globals';
-import { TASKBOARD_DEFAULT_TB_LOC } from './toolbar_defines';
-import { TASKBOARD_DEFAULT_TB_SIZE } from './toolbar_defines';
-import { TASKBOARD_STATES } from '../taskboards/taskboard_definitions';
+import { TASKBOARD_DEFAULT_TB_LOC } from './toolbar_globals';
+import { TASKBOARD_DEFAULT_TB_SIZE } from './toolbar_globals';
+import { TASKBOARD_STATES } from '../taskboards/taskboard_globals';
 import { _get_max_z_index, _use_max_z_index } from '../common/globals';
-import { _set_global_cursor_type } from '../taskboards/taskboard_definitions';
+import { _set_global_cursor_type } from '../taskboards/taskboard_globals';
 import { _get_max_possible_z_index } from '../common/globals';
 
 const _add_toolbar_item = (props) => 

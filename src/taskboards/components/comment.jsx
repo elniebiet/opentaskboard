@@ -7,7 +7,7 @@ import { _get_max_z_index, _use_max_z_index } from "../../common/globals";
 import { _colour_picker_round } from "../../common/components/colour_picker";
 import { _get_complement_colour } from "../../common/utils";
 import { Bold } from "lucide-react";
-import { _set_global_toolbar_items_active_state } from "../taskboard_definitions";
+import { _set_global_toolbar_items_active_state } from "../taskboard_globals";
 import { TOOLBAR_ITEMS } from "../../common/globals";
 import { _delete_comment, _update_comment_loc, _update_comment_text, _update_comment_colour, _update_comment_win_width_perc } from "../use_comment";
 /**

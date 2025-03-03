@@ -10,17 +10,17 @@ import board_marker_img_32 from '../../res/imgs/img_board_marker_32x32.png';
 import fill_img_32 from '../../res/imgs/img_fill2_32x32.png'; 
 import { SELECTED_COLOR_THEME } from '../common/globals';
 import { SHAPES_TOOLBAR_ITEM_TYPE } from '../common/globals';
-import { TASKBOARD_STATES } from './taskboard_definitions';
+import { TASKBOARD_STATES } from './taskboard_globals';
 import _draggable_arrow from '../common/components/arrow';
-import { _set_global_new_shape_id, _get_global_new_shape_id } from './taskboard_definitions';
-import { _get_global_last_item_add_or_move_loc, _set_global_last_item_add_or_move_loc } from './taskboard_definitions';
-import { _get_global_cursor_type, _set_global_cursor_type } from './taskboard_definitions';
-import { _get_global_new_shape_type, _set_global_new_shape_type } from './taskboard_definitions';
+import { _set_global_new_shape_id, _get_global_new_shape_id } from './taskboard_globals';
+import { _get_global_last_item_add_or_move_loc, _set_global_last_item_add_or_move_loc } from './taskboard_globals';
+import { _get_global_cursor_type, _set_global_cursor_type } from './taskboard_globals';
+import { _get_global_new_shape_type, _set_global_new_shape_type } from './taskboard_globals';
 import { _add_note } from './use_note';
 import { _add_comment } from './use_comment';
 import { _shape_selected_handler, _start_drawing, _update_drawing } from './use_shape';
 import { _get_cursor_type } from '../common/utils';
-import { CURSOR_TYPES } from './taskboard_definitions';
+import { CURSOR_TYPES } from './taskboard_globals';
 import _note_toolbar from '../toolbars/note_toolbar';
 
 import notes from './notes_db_temp';        // temporary notes storage
