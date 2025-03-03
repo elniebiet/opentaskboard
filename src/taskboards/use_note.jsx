@@ -22,12 +22,15 @@ const _add_note = (clicked = true, pos_x = 100, pos_y = 100) => {
         let new_loc_x = loc_x + 20;
         let new_loc_y = loc_y + 20;
         const new_note = { 
-        id: Date.now(),
-        text: "",
-        x_pos: new_loc_x,
-        y_pos: new_loc_y,
-        colour: SELECTED_COLOR_THEME,
-        win_width_perc: STKNOTE_WIDTH_PERC_DEFAULT 
+            id: Date.now(),
+            text: "",
+            x_pos: new_loc_x,
+            y_pos: new_loc_y,
+            colour: SELECTED_COLOR_THEME,
+            active: false,
+            win_width_perc: STKNOTE_WIDTH_PERC_DEFAULT,
+            toolbar_show: false,
+            toolbar_display_loc: {x: 200, y: 200},  
         };
         _set_global_last_item_add_or_move_loc(new_loc_x, new_loc_y); // update last added location
         notes.push(new_note);
@@ -37,12 +40,15 @@ const _add_note = (clicked = true, pos_x = 100, pos_y = 100) => {
 
         // dragged
         const new_note = { 
-        id: Date.now(), 
-        text: "", 
-        x_pos: pos_x, 
-        y_pos: pos_y, 
-        colour: SELECTED_COLOR_THEME, 
-        win_width_perc: STKNOTE_WIDTH_PERC_DEFAULT 
+            id: Date.now(), 
+            text: "", 
+            x_pos: pos_x, 
+            y_pos: pos_y, 
+            colour: SELECTED_COLOR_THEME, 
+            active: false,
+            win_width_perc: STKNOTE_WIDTH_PERC_DEFAULT,
+            toolbar_show: false,
+            toolbar_display_loc: {x: 200, y: 200},   
         };
         notes.push(new_note);
     }
@@ -121,6 +127,56 @@ const _update_note_loc = (int_id, int_x_cord, int_y_cord) => {
     }
 };
 
+/**
+ * update note active state
+ * @param {int} id - note id
+ * @param {bool} b_is_active - note is active
+ */
+const _update_note_active_state = (id, b_is_active) => {
+    for(let i=0; i<notes.length; i++)
+    {
+        if(notes[i].id === id)
+        {
+            notes[i].active = b_is_active;
+            break;
+        }
+    }
+};
+
+/**
+ * update note toolbar show
+ * @param {int} id - note id
+ * @param {bool} b_show_toolbar - note is active
+ */
+const _update_note_toolbar_show = (id, b_show_toolbar) => {
+    for(let i=0; i<notes.length; i++)
+    {
+        if(notes[i].id === id)
+        {
+            notes[i].toolbar_show = b_show_toolbar;
+            break;
+        }
+    }
+};
+
+/**
+ * update note toolbar location
+ * @param {int} id - note id
+ * @param {int} int_loc_x - x position
+ * @param {int} int_loc_y - y position
+ */
+const _update_note_toolbar_loc = (id, int_loc_x, int_loc_y) => {
+    for(let i=0; i<notes.length; i++)
+    {
+        if(notes[i].id === id)
+        {
+            notes[i].toolbar_display_loc = {x: int_loc_x, y: int_loc_y};
+            break;
+        }
+    }
+};
+
+
 export {
     _add_note,
     _delete_note,
@@ -128,4 +184,7 @@ export {
     _update_note_colour,
     _update_note_win_width_perc,
     _update_note_loc,
+    _update_note_active_state,
+    _update_note_toolbar_show,
+    _update_note_toolbar_loc,
 };

@@ -5,7 +5,9 @@ import { _colour_picker_round } from "../../common/components/colour_picker";
 import { _get_complement_colour } from "../../common/utils";
 import { _set_global_toolbar_items_active_state } from "../taskboard_globals";
 import { TOOLBAR_ITEMS } from "../../common/globals";
-import { _delete_note, _update_note_loc, _update_note_text, _update_note_colour, _update_note_win_width_perc } from "../use_note";
+import { _delete_note, _update_note_loc, _update_note_text, _update_note_colour, _update_note_win_width_perc,
+            _update_note_active_state, _update_note_toolbar_show, _update_note_toolbar_loc } from "../use_note";
+import _note_toolbar from "../../toolbars/note_toolbar";
 
 /**
  * Sticky note component
@@ -25,7 +27,11 @@ const _sticky_note = (props) => {
 
     const stk_root_location_ref = useRef(null);
 
+    const textarea_ref = useRef(null);
+
     const [root_div_position, _set_root_div_position] = useState({x: props.x_pos, y: props.y_pos});
+
+    const [prevent_note_deactivation, _set_prevent_note_deactivation] = useState(false); 
 
     const STKNOTE_MIN_WIDTH                 = 150;  //pixels
     const MENUBAR_HGT_PERC                  = 0.10; // 10% of stknote height 
@@ -35,17 +41,22 @@ const _sticky_note = (props) => {
     const MENUBAR_ITEM_WIDTH_PERC           = 0.10; // 10% of stknote width
     const STKNOTE_TXTAREA_PADDG_PERC        = 0.05; // 5% of stknote width
     const STKNOTE_PARAGR_PADDG_PERC         = 0.15; // 15% of stknote width
+    const TOOLBAR_NOTE_GAP_TOP_PX           = 0.3;  // percentage of stknote width 
+    const TOOLBAR_NOTE_GAP_LEFT_PX          = 0.01; // percentage of stknote width
 
     let stknote_width = props.win_width_perc * props.win_width;
     stknote_width = ( stknote_width < STKNOTE_MIN_WIDTH ) ? STKNOTE_MIN_WIDTH : stknote_width;
     const font_size = FONT_SIZE_PERC * stknote_width;
     let menubar_item_width   = MENUBAR_ITEM_WIDTH_PERC * stknote_width;
+    let toolbar_note_gap_top_px = TOOLBAR_NOTE_GAP_TOP_PX * stknote_width;
+    let toolbar_note_gap_left_px = TOOLBAR_NOTE_GAP_LEFT_PX * stknote_width; 
 
     const _handle_note_drag_over = (e) =>   
     {
         const {x, y} = _get_note_location_top_left();
         props.tb_item_loc_update_func(x, y);    // last taskboard item moved location update
         _update_note_loc(props.id, x, y);
+        props.taskboard_rerender_func();
     };
 
     const _handle_note_drag_start = () => {
@@ -57,11 +68,27 @@ const _sticky_note = (props) => {
         _set_is_editing(editing_note);
         _set_z_index(_get_max_z_index());
         _use_max_z_index();
+        _update_note_active_state(props.id, true);
+        _update_note_toolbar_loc(props.id, 300, 300);
+        _update_note_toolbar_show(props.id, true);
+        props.taskboard_rerender_func();
     };
 
     const _deactivate_note = (e) => {
-        _set_is_editing(false);
-        _set_z_index(z_index - 1);
+        e.preventDefault();
+        if(prevent_note_deactivation === false)
+        {
+            _set_is_editing(false);
+            _set_z_index(z_index - 1);
+            _update_note_active_state(props.id, false);
+            _update_note_toolbar_show(props.id, false);
+            props.taskboard_rerender_func();
+        }
+        else
+        {
+            _set_prevent_note_deactivation(false);
+            textarea_ref.current.focus();
+        }
     };
 
     const _update_text = (updated_text) => { 
@@ -99,6 +126,7 @@ const _sticky_note = (props) => {
     };
 
     const _delete = () => {
+        _update_note_toolbar_show(props.id, false);
         _delete_note(props.id);
         props.taskboard_rerender_func();
     };
@@ -114,12 +142,22 @@ const _sticky_note = (props) => {
         }
     };
 
+    const _toolbar_item_clicked_notif = (item_clicked) => {
+        _set_prevent_note_deactivation(true);
+        props.taskboard_rerender_func();
+    };
+
+    // toolbar position
+    const {x, y} = _get_note_location_top_left();
+    let toolbar_x_pos = x + toolbar_note_gap_left_px;
+    let toolbar_y_pos = y - toolbar_note_gap_top_px;
+
     /********************* Effects block begin ***********************/
     // text area focus on editing
-    const textarea_ref = useRef(null);
     useEffect(() => {
             if (is_editing && textarea_ref.current) {
                 textarea_ref.current.focus();
+                textarea_ref.current.setSelectionRange(0, props.text.length); // highlight text
             }
         }, [is_editing]
     );
@@ -129,6 +167,7 @@ const _sticky_note = (props) => {
         const _mouse_up_resizing = (e) => {
             if(is_resizing)
             {
+                _set_is_editing(false);
                 _set_is_resizing(false);
                 _resizing_note_ended(e);
             }
@@ -144,150 +183,161 @@ const _sticky_note = (props) => {
 
 
     return (
-        <Draggable 
-            onStart={_handle_note_drag_start} 
-            onStop={_handle_note_drag_over} 
-            cancel=".resizer" // Prevent dragging when clicking on the resizer 
-        >
-            
-            <div 
-                ref={stk_root_location_ref}
-                id="stknote_root"
-                style={{
-                    width: stknote_width + 'px',
-                    minHeight: stknote_width + 'px',
-                    backgroundColor: props.colour,
-                    padding: "10px",
-                    borderRadius: "8px",
-                    boxShadow: "2px 2px 10px rgba(0,0,0,0.2)",
-                    cursor: "grab",
-                    position: "absolute",
-                    left: root_div_position.x + 'px',
-                    top: root_div_position.y + 'px',
-                    zIndex: z_index,
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: (FLEXBOX_GAP_PERC * stknote_width) + 'px',
-                }}
-                onClick={() => {_set_global_toolbar_items_active_state(TOOLBAR_ITEMS.TBI_STKNOTE, true, true)}}
-            >
-                {/* Resizer Handle */}
-                <div 
-                    className="resizer"
-                    onMouseDown={_resizing_note_started}
-                    style={{
-                        width: "10px",
-                        height: "10px",
-                        background: complement_colour,
-                        position: "absolute",
-                        bottom: "0",
-                        right: "0",
-                        cursor: "nwse-resize",
-                    }}
-                />
-
-                <div
-                    id="stknote_menu_bar" 
-                    style={{ 
-                        flexBasis: MENUBAR_HGT_PERC * stknote_width + 'px', 
-                        display: "flex",
-                        flexDirection: "row",
-                        gap: (FLEXBOX_GAP_PERC * stknote_width) + 'px',
-                        justifyContent: "flex-end",
-                        background: props.colour,
-                    }}
-                >
-                    <div
-                        id="btn_stknote_colour"
-                        style={{ 
-                            flexBasis: menubar_item_width + 'px', 
-                            height: MENUBAR_HGT_PERC * stknote_width + 'px',
-                            width: menubar_item_width + 'px',
-                            color: complement_colour
-                        }}
-                    >
-                        <_colour_picker_round id={props.id} width={menubar_item_width} height={menubar_item_width} colour={complement_colour} x_pos={props.x_pos - stknote_width} y_pos={props.y_pos - stknote_width} 
-                            update_colour_func={_update_colour} onclick_func={_colour_picker_btn_clicked}/>
-                    </div>
-                    <div
-                        id="btn_stknote_delete"
-                        style={{ 
-                            flexBasis: menubar_item_width + 'px',
-                            background: props.colour,
-                            borderRadius: "50%",
-                            cursor: "pointer",
-                            height: MENUBAR_HGT_PERC * stknote_width + 'px',
-                            width: menubar_item_width + 'px',
-                        }}
-                    >
-                        <button 
-                            style={{
-                                height: "100%",
-                                width: "100%",
-                                fontSize: font_size + "px",
-                                padding: "0",
-                                margin: "0",
-                                textAlign: "center",
-                                fontWeight: "bold",
-                                backgroundColor: props.colour,
-                                color: complement_colour,
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center", 
-                                lineHeight: "1",
-                            }}
-                            onClick={() => _delete()}
-                        >
-                            X
-                        </button>
-                    </div>
-                </div>
-                <div
-                    id="stknote_text_area"
-                    style={{ 
-                        flexBasis: FLEXBOX_TXTAREA_HGT_PERC * stknote_width + 'px', 
-                    }}
-                >
-                    {is_editing ? (
-                        <textarea
-                            value={props.text}
-                            onChange={(e) => _update_text(e.target.value)}
-                            style={{
-                                marginTop: (FLEXBOX_GAP_PERC * stknote_width) + 'px',
-                                width: (stknote_width - (STKNOTE_TXTAREA_PADDG_PERC * stknote_width)) + 'px',
-                                height: stknote_width + 'px',
-                                border: "none",
-                                outline: "none",
-                                background: "transparent",
-                                resize: "none",
-                                fontSize: font_size + 'px',
-                                color: complement_colour,
-                            }}
-                            onBlur={_deactivate_note}
-                            placeholder="note..."
-                            ref={textarea_ref}
-                        />
-                    ) : (
-                        <p 
-                            style={{
-                                marginTop: (0.15 * stknote_width) + 'px',
-                                width: stknote_width + 'px',
-                                height: (stknote_width - (STKNOTE_PARAGR_PADDG_PERC * stknote_width)) + 'px',
-                                border: "none",
-                                outline: "none",
-                                background: "transparent",
-                                resize: "none",
-                                fontSize: font_size + 'px',
-                                color: complement_colour
-                            }}
-                            onClick={() => _activate_note(true)}
-                        >
-                            {props.text}
-                        </p>
-                    )}
-                </div>
+        <div>
+            {/* display note toolbar */}
+            <div>
+                {(props.show_toolbar === true) ? (
+                    <_note_toolbar note_id={props.id} win_width={props.win_width} win_height={props.win_height} x_pos={toolbar_x_pos} y_pos={toolbar_y_pos}
+                    taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state={props.request_taskboard_state} note_toolbar_item_clicked={_toolbar_item_clicked_notif}
+                    />) : (<div></div>)
+                }
             </div>
-        </Draggable>
+            <div>
+                <Draggable 
+                    onStart={_handle_note_drag_start} 
+                    onStop={_handle_note_drag_over} 
+                    cancel=".resizer" // Prevent dragging when clicking on the resizer 
+                >
+                        <div 
+                            ref={stk_root_location_ref}
+                            id="stknote_root"
+                            style={{
+                                width: stknote_width + 'px',
+                                minHeight: stknote_width + 'px',
+                                backgroundColor: props.colour,
+                                padding: "10px",
+                                borderRadius: "8px",
+                                boxShadow: "2px 2px 10px rgba(0,0,0,0.2)",
+                                cursor: "grab",
+                                position: "absolute",
+                                left: root_div_position.x + 'px',
+                                top: root_div_position.y + 'px',
+                                zIndex: z_index,
+                                display: "flex",
+                                flexDirection: "column",
+                                gap: (FLEXBOX_GAP_PERC * stknote_width) + 'px',
+                            }}
+                            onClick={() => {_set_global_toolbar_items_active_state(TOOLBAR_ITEMS.TBI_STKNOTE, true, true)}}
+                        >
+                            {/* Resizer Handle */}
+                            <div 
+                                className="resizer"
+                                onMouseDown={_resizing_note_started}
+                                style={{
+                                    width: "10px",
+                                    height: "10px",
+                                    background: complement_colour,
+                                    position: "absolute",
+                                    bottom: "0",
+                                    right: "0",
+                                    cursor: "nwse-resize",
+                                }}
+                            />
+
+                            <div
+                                id="stknote_menu_bar" 
+                                style={{ 
+                                    flexBasis: MENUBAR_HGT_PERC * stknote_width + 'px', 
+                                    display: "flex",
+                                    flexDirection: "row",
+                                    gap: (FLEXBOX_GAP_PERC * stknote_width) + 'px',
+                                    justifyContent: "flex-end",
+                                    background: props.colour,
+                                }}
+                            >
+                                <div
+                                    id="btn_stknote_colour"
+                                    style={{ 
+                                        flexBasis: menubar_item_width + 'px', 
+                                        height: MENUBAR_HGT_PERC * stknote_width + 'px',
+                                        width: menubar_item_width + 'px',
+                                        color: complement_colour
+                                    }}
+                                >
+                                    <_colour_picker_round id={props.id} width={menubar_item_width} height={menubar_item_width} colour={complement_colour} x_pos={props.x_pos - stknote_width} y_pos={props.y_pos - stknote_width} 
+                                        update_colour_func={_update_colour} onclick_func={_colour_picker_btn_clicked}/>
+                                </div>
+                                <div
+                                    id="btn_stknote_delete"
+                                    style={{ 
+                                        flexBasis: menubar_item_width + 'px',
+                                        background: props.colour,
+                                        borderRadius: "50%",
+                                        cursor: "pointer",
+                                        height: MENUBAR_HGT_PERC * stknote_width + 'px',
+                                        width: menubar_item_width + 'px',
+                                    }}
+                                >
+                                    <button 
+                                        style={{
+                                            height: "100%",
+                                            width: "100%",
+                                            fontSize: font_size + "px",
+                                            padding: "0",
+                                            margin: "0",
+                                            textAlign: "center",
+                                            fontWeight: "bold",
+                                            backgroundColor: props.colour,
+                                            color: complement_colour,
+                                            display: "flex",
+                                            alignItems: "center",
+                                            justifyContent: "center", 
+                                            lineHeight: "1",
+                                        }}
+                                        onClick={() => _delete()}
+                                    >
+                                        X
+                                    </button>
+                                </div>
+                            </div>
+                            <div
+                                id="stknote_text_area"
+                                style={{ 
+                                    flexBasis: FLEXBOX_TXTAREA_HGT_PERC * stknote_width + 'px', 
+                                }}
+                            >
+                                {is_editing ? (
+                                    <textarea
+                                        value={props.text}
+                                        onChange={(e) => _update_text(e.target.value)}
+                                        style={{
+                                            marginTop: (FLEXBOX_GAP_PERC * stknote_width) + 'px',
+                                            width: (stknote_width - (STKNOTE_TXTAREA_PADDG_PERC * stknote_width)) + 'px',
+                                            height: stknote_width + 'px',
+                                            border: "none",
+                                            outline: "none",
+                                            background: "transparent",
+                                            resize: "none",
+                                            fontSize: font_size + 'px',
+                                            color: complement_colour,
+                                        }}
+                                        onBlur={_deactivate_note}
+                                        placeholder="note..."
+                                        ref={textarea_ref}
+                                    />
+                                ) : (
+                                    <p 
+                                        style={{
+                                            marginTop: (0.15 * stknote_width) + 'px',
+                                            width: stknote_width + 'px',
+                                            height: (stknote_width - (STKNOTE_PARAGR_PADDG_PERC * stknote_width)) + 'px',
+                                            border: "none",
+                                            outline: "none",
+                                            background: "transparent",
+                                            resize: "none",
+                                            fontSize: font_size + 'px',
+                                            color: complement_colour
+                                        }}
+                                        onClick={() => _activate_note(true)}
+                                    >
+                                        {props.text}
+                                    </p>
+                                )}
+                            </div>
+                        </div>
+                </Draggable>
+            </div>
+        </div>
     );
 };
 

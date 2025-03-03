@@ -269,8 +269,14 @@ const _taskboard_default = () => {
             {/* display notes and comments */}
             <div>
               {notes.map((note) => (
-                <_sticky_note key={note.id} id={note.id} text={note.text} win_width_perc={note.win_width_perc} tb_item_loc_update_func={_set_tb_item_loc_func} 
-                  x_pos={note.x_pos} y_pos={note.y_pos} win_width={width} win_height={height} colour={note.colour} taskboard_rerender_func={_trigger_taskboard_rerender}/>
+                <div>
+                  <div>
+                    <_sticky_note key={note.id} id={note.id} text={note.text} win_width_perc={note.win_width_perc} tb_item_loc_update_func={_set_tb_item_loc_func} 
+                      x_pos={note.x_pos} y_pos={note.y_pos} win_width={width} win_height={height} colour={note.colour} taskboard_rerender_func={_trigger_taskboard_rerender}
+                      show_toolbar={note.toolbar_show}  
+                    />
+                  </div>
+                </div>
               ))}
             </div>
 
@@ -289,14 +295,6 @@ const _taskboard_default = () => {
                 <_draggable_arrow start_pos_x1={arrow.x1_pos} start_pos_y1={arrow.y1_pos} start_pos_x2={arrow.x2_pos} start_pos_y2={arrow.y2_pos} colour={arrow.colour} stroke_width={arrow.stroke_width} />
               ))}
           </div>
-          
-          {/* display note toolbar */}
-          <div>
-              <_note_toolbar pos={"top"} win_width={width} win_height={height} set_tb_item_loc_func={_set_tb_item_loc_func} taskboard_rerender_func={_trigger_taskboard_rerender} 
-                request_taskboard_state={_request_taskboard_state}
-              />
-          </div>
-
       </div>
   );
 };

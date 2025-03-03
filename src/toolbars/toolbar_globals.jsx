@@ -1,3 +1,7 @@
+/**
+ * Toolbar global definitions
+ */
+
 // default taskboard tb location (percentage)
 const TASKBOARD_DEFAULT_TB_LOC =
 {
@@ -15,6 +19,7 @@ const TASKBOARD_DEFAULT_SHAPES_TB_LOC =
 // default taskboard toolbar size (percentage)
 const TASKBOARD_DEFAULT_TB_SIZE = 0.02;
 
+/******************************* Note toolbar block begins *******************************/
 /* Note toolbar item indices begin */
 const NOTE_TOOLBAR_ITEMS = {
 // Basic text formatting
@@ -36,10 +41,13 @@ const NOTE_TOOLBAR_ITEMS = {
 };
 /* Note toolbar item indices end */
 
+/******************************* Note toolbar block ends *******************************/
+
+
 export { 
     TASKBOARD_DEFAULT_TB_LOC, 
     TASKBOARD_DEFAULT_SHAPES_TB_LOC, 
     TASKBOARD_DEFAULT_TB_SIZE, 
-    NOTE_TOOLBAR_ITEMS 
+    NOTE_TOOLBAR_ITEMS,
 };
 

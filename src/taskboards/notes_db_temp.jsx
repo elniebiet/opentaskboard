@@ -6,6 +6,7 @@ let notes = [
         x_pos: new_loc_x,
         y_pos: new_loc_y,
         colour: SELECTED_COLOR_THEME,
+        active: false,
         win_width_perc: STKNOTE_WIDTH_PERC_DEFAULT 
     }
     */

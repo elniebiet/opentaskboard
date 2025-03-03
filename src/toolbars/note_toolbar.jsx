@@ -47,10 +47,57 @@ const _add_toolbar_item = (props) =>
         {
             case NOTE_TOOLBAR_ITEMS.NTBI_BOLD:
             {
+                props.note_tb_item_clicked_notif(NOTE_TOOLBAR_ITEMS.NTBI_BOLD);
                 break;
             }
             case NOTE_TOOLBAR_ITEMS.NTBI_ITALIC:
             {
+                props.note_tb_item_clicked_notif(NOTE_TOOLBAR_ITEMS.NTBI_ITALIC);
+                break;    
+            }
+            case NOTE_TOOLBAR_ITEMS.NTBI_UNDERLINE:
+            {
+                props.note_tb_item_clicked_notif(NOTE_TOOLBAR_ITEMS.NTBI_UNDERLINE);
+                break;    
+            }
+            case NOTE_TOOLBAR_ITEMS.NTBI_STRIKETHROUGH:
+            {
+                props.note_tb_item_clicked_notif(NOTE_TOOLBAR_ITEMS.NTBI_STRIKETHROUGH);
+                break;    
+            }
+            case NOTE_TOOLBAR_ITEMS.NTBI_FONT_FAMILY:
+            {
+                props.note_tb_item_clicked_notif(NOTE_TOOLBAR_ITEMS.NTBI_FONT_FAMILY);
+                break;    
+            }
+            case NOTE_TOOLBAR_ITEMS.NTBI_FONT_SIZE:
+            {
+                props.note_tb_item_clicked_notif(NOTE_TOOLBAR_ITEMS.NTBI_FONT_SIZE);
+                break;    
+            }
+            case NOTE_TOOLBAR_ITEMS.NTBI_FONT_COLOUR:
+            {
+                props.note_tb_item_clicked_notif(NOTE_TOOLBAR_ITEMS.NTBI_FONT_COLOUR);
+                break;    
+            }
+            case NOTE_TOOLBAR_ITEMS.NTBI_ALIGNMENT:
+            {
+                props.note_tb_item_clicked_notif(NOTE_TOOLBAR_ITEMS.NTBI_ALIGNMENT);
+                break;    
+            }
+            case NOTE_TOOLBAR_ITEMS.NTBI_LINK:
+            {
+                props.note_tb_item_clicked_notif(NOTE_TOOLBAR_ITEMS.NTBI_LINK);
+                break;    
+            }
+            case NOTE_TOOLBAR_ITEMS.NTBI_EMOJI:
+            {
+                props.note_tb_item_clicked_notif(NOTE_TOOLBAR_ITEMS.NTBI_EMOJI);
+                break;    
+            }
+            case NOTE_TOOLBAR_ITEMS.NTBI_OTHERS:
+            {
+                props.note_tb_item_clicked_notif(NOTE_TOOLBAR_ITEMS.NTBI_OTHERS);
                 break;    
             }
             default:
@@ -60,7 +107,7 @@ const _add_toolbar_item = (props) =>
         }
 
         // trigger rerender
-        // props.taskboard_rerender_func();
+        props.taskboard_rerender_func();
     };
     
     return (
@@ -68,6 +115,7 @@ const _add_toolbar_item = (props) =>
                 <_square_fab>
                     <img 
                         src={props.img_src}
+                        title={props.img_alt_txt}
                         alt={props.img_alt_txt} 
                         style={{ width: props.tb_item_width, height: props.tb_item_height }}
                     />
@@ -76,46 +124,14 @@ const _add_toolbar_item = (props) =>
     );
 };
 
-/**************************** Toolbar Stylings begin ***************************/
-let toolbar_styling_top = {
-    position: 'fixed', 
-    top: '30%', // temp
-    left: '30%',  // temp
-    transform: 'translateX(-50%)', // Offset the div by half its width
-    backgroundColor: SELECTED_COLOR_THEME,
-    color: 'white',
-    padding: '5px 10px',
-    borderRadius: '0 0 8px 8px',
-    boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-    cursor: 'pointer',
-    zIndex: _get_max_possible_z_index(),
-};
-
-let toolbar_styling_left = {
-    position: 'fixed',
-    top: '30%', // temp 
-    left: '30%', // temp
-    transform: 'translateY(-50%)',
-    backgroundColor: SELECTED_COLOR_THEME, 
-    color: 'white',
-    padding: '5px 10px',
-    borderRadius: '0 8px 8px 0',
-    boxShadow: '2px 0 6px rgba(0, 0, 0, 0.1)',
-    cursor: 'pointer',
-    zIndex: _get_max_possible_z_index(),
-};
-/**************************** Toolbar Stylings end ****************************/
-
+/**
+ * note toolbar component
+ *  
+ */
 const _note_toolbar = (props) => {
-    let location = props.pos; // ideally top or left
-
-    // default: left, vertical toolbar
-    let flex_dir = "column";
-    let toolbar_styling = toolbar_styling_left;
-
-    const ITEM_PERCENTAGE = 0.02; // toolbar item res percentage rtive to window size (2 percent of orig win)
-    const ROOT_PERCENTAGE = 0.02; // toolbar container res percentage rtive to window size (3 percent of orig win)
-    const ITEM_BR_PERCENTAGE = 0.006; // toolbar item img border radius percentage
+    const ITEM_PERCENTAGE = 0.02;       // toolbar item res percentage rtive to window size (2 percent of orig win)
+    const ROOT_PERCENTAGE = 0.02;       // toolbar container res percentage rtive to window size (3 percent of orig win)
+    const ITEM_BR_PERCENTAGE = 0.006;   // toolbar item img border radius percentage
 
     let item_width = (ITEM_PERCENTAGE * props.win_width);
     let item_height = item_width;
@@ -124,17 +140,21 @@ const _note_toolbar = (props) => {
     let root_width = (ROOT_PERCENTAGE * props.win_width);
     let root_height = root_width;
         
-    if(location == "top")
-    {
-        flex_dir = "row";
-        toolbar_styling = toolbar_styling_top;
-    }
-    else if(location == "left")
-    {
-        flex_dir = "column";
-        toolbar_styling = toolbar_styling_left;
-    }
-    
+    /**************************** Toolbar Stylings begin ***************************/
+    let toolbar_styling_top = {
+        position: 'fixed', 
+        top: props.y_pos + 'px',
+        left: props.x_pos + 'px',
+        backgroundColor: SELECTED_COLOR_THEME,
+        color: 'white',
+        padding: '5px 10px',
+        borderRadius: '0 0 8px 8px',
+        boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+        cursor: 'pointer',
+        zIndex: _get_max_possible_z_index(),
+    };
+
+/**************************** Toolbar Stylings end ****************************/
     const _do_nothing = () => 
     {
         return;
@@ -142,51 +162,62 @@ const _note_toolbar = (props) => {
 
     return (
         <div>
-            <div id="note_toolbar_root" style={toolbar_styling}>
-                <Box sx={{ '& > :not(style)': { m: 0.5 } }} display="flex" flexDirection={flex_dir}>
+            <div id="note_toolbar_root" style={toolbar_styling_top}>
+                <Box sx={{ '& > :not(style)': { m: 0.5 } }} display="flex" flexDirection={"row"}>
                     <_add_toolbar_item item_index={NOTE_TOOLBAR_ITEMS.NTBI_BOLD} img_src={bold_img} img_alt_txt={"Bold"} 
                     on_bold_click={_do_nothing}  tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br}
                     taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state} 
+                    note_tb_item_clicked_notif={props.note_toolbar_item_clicked}
                     />
                     <_add_toolbar_item item_index={NOTE_TOOLBAR_ITEMS.NTBI_ITALIC} img_src={italic_img} img_alt_txt={"Italic"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
-                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state} 
+                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
+                    note_tb_item_clicked_notif={props.note_toolbar_item_clicked} 
                     />
                     <_add_toolbar_item item_index={NOTE_TOOLBAR_ITEMS.NTBI_UNDERLINE} img_src={underline_img} img_alt_txt={"Underline"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
-                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state} 
+                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
+                    note_tb_item_clicked_notif={props.note_toolbar_item_clicked} 
                     />
                     <_add_toolbar_item item_index={NOTE_TOOLBAR_ITEMS.NTBI_STRIKETHROUGH} img_src={strikethrough_img} img_alt_txt={"StrikeThrough"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
-                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state} 
+                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
+                    note_tb_item_clicked_notif={props.note_toolbar_item_clicked} 
                     />
                     <_add_toolbar_item item_index={NOTE_TOOLBAR_ITEMS.NTBI_FONT_FAMILY} img_src={font_family_img} img_alt_txt={"Font Family"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
-                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state} 
+                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
+                    note_tb_item_clicked_notif={props.note_toolbar_item_clicked} 
                     />
                     <_add_toolbar_item item_index={NOTE_TOOLBAR_ITEMS.NTBI_FONT_SIZE} img_src={font_size_img} img_alt_txt={"Font Size"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
-                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state} 
+                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
+                    note_tb_item_clicked_notif={props.note_toolbar_item_clicked} 
                     />
                     <_add_toolbar_item item_index={NOTE_TOOLBAR_ITEMS.NTBI_FONT_COLOUR} img_src={font_colour_img} img_alt_txt={"Font Colour"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
-                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state} 
+                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
+                    note_tb_item_clicked_notif={props.note_toolbar_item_clicked} 
                     />
                     <_add_toolbar_item item_index={NOTE_TOOLBAR_ITEMS.NTBI_ALIGNMENT} img_src={alignment_img} img_alt_txt={"Alignment"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
-                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state} 
+                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
+                    note_tb_item_clicked_notif={props.note_toolbar_item_clicked} 
                     />
                     <_add_toolbar_item item_index={NOTE_TOOLBAR_ITEMS.NTBI_LINK} img_src={link_img} img_alt_txt={"Link"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
-                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state} 
+                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
+                    note_tb_item_clicked_notif={props.note_toolbar_item_clicked} 
                     />
                     <_add_toolbar_item item_index={NOTE_TOOLBAR_ITEMS.NTBI_EMOJI} img_src={emoji_img} img_alt_txt={"Emoji"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
-                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state} 
+                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
+                    note_tb_item_clicked_notif={props.note_toolbar_item_clicked} 
                     />
                     <_add_toolbar_item item_index={NOTE_TOOLBAR_ITEMS.NTBI_OTHERS} img_src={others_img} img_alt_txt={"Other options"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
-                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state} 
+                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
+                    note_tb_item_clicked_notif={props.note_toolbar_item_clicked} 
                     />
                 </Box>
             </div>            

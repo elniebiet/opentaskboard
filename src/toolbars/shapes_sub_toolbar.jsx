@@ -20,8 +20,6 @@ import filleted_rect_img from '../../res/imgs/shapes_sub_toolbar/img_filleted_re
 import triangle_img from '../../res/imgs/shapes_sub_toolbar/img_triangle_100x100.png';
 import right_angle_img from '../../res/imgs/shapes_sub_toolbar/img_right_angle_100x100.png';
 
-//////////////////////////////////////// TEMPORARY SUB TOOLBAR FOR SHAPES  ////////////
-////////////////////// REMOVE THIS COMMENT WHEN COMPLETED //////////////////////////////////
 const _add_toolbar_item = (props) => 
 {
     let w = props.tb_root_width + 'px';
@@ -157,6 +155,7 @@ const _add_toolbar_item = (props) =>
                             draggable
                             onDragStart={_handle_drag_start}
                             src={props.img_src}
+                            title={props.img_alt_txt}
                             alt={props.img_alt_txt} 
                             style={{ width: props.tb_item_width, height: props.tb_item_height }}
                         />
@@ -173,6 +172,7 @@ const _add_toolbar_item = (props) =>
                         draggable
                         onDragStart={_handle_drag_start}
                         src={props.img_src}
+                        title={props.img_alt_txt}
                         alt={props.img_alt_txt} 
                         style={{ width: props.tb_item_width, height: props.tb_item_height }}
                     />
@@ -207,6 +207,10 @@ let toolbar_styling_left = {
     boxShadow: '2px 0 6px rgba(0, 0, 0, 0.1)',
 };
 /**************************** Toolbar Stylings end ****************************/
+
+/**
+ * shapes sub toolbar component
+ */
 const _shapes_sub_toolbar = (props) => {
     let location = props.pos; // ideally top or left
 
@@ -308,16 +312,6 @@ const _shapes_sub_toolbar = (props) => {
                     />
                 </Box>
             </div>
-            
-            
-            {/* Draggable Items begin  */}
-            
-            {/* { (is_dragging_tb_item.is_dragging) && (is_dragging_tb_item.item_index === SHAPES_TOOLBAR_ITEM_TYPE.STBI_LINE) && (
-                <_on_drag_hover_display tb_img={line_img32} tb_title={"Line"} tb_hover_w={item_width} tb_hover_h={item_height} x_pos={is_dragging_tb_item.x} y_pos={is_dragging_tb_item.y} />
-            )} */}
-
-            {/* Draggable Items end */}
-            
         </div>
     );
 };

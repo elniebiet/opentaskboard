@@ -181,6 +181,7 @@ const _add_toolbar_item = (props) =>
                             draggable
                             onDragStart={_handle_drag_start}
                             src={props.img_src}
+                            title={props.img_alt_txt}
                             alt={props.img_alt_txt} 
                             style={{ width: props.tb_item_width, height: props.tb_item_height }}
                         />
@@ -197,6 +198,7 @@ const _add_toolbar_item = (props) =>
                         draggable
                         onDragStart={_handle_drag_start}
                         src={props.img_src}
+                        title={props.img_alt_txt}
                         alt={props.img_alt_txt} 
                         style={{ width: props.tb_item_width, height: props.tb_item_height }}
                     />
@@ -236,6 +238,9 @@ let toolbar_styling_left = {
 };
 /**************************** Toolbar Stylings end ****************************/
 
+/**
+ * taskboard toolbar component 
+ */
 const _taskboard_toolbar = (props) => {
     let location = props.pos; // ideally top or left
 
