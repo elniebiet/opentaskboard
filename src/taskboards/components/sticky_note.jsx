@@ -1,13 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
 import Draggable from "react-draggable";
 import { _get_max_z_index, _use_max_z_index } from "../../common/globals";
-import { _colour_picker_round } from "../../common/components/colour_picker";
 import { _get_complement_colour } from "../../common/utils";
 import { _set_global_toolbar_items_active_state } from "../taskboard_globals";
 import { TOOLBAR_ITEMS } from "../../common/globals";
 import { _delete_note, _update_note_loc, _update_note_text, _update_note_colour, _update_note_win_width_perc,
             _update_note_active_state, _update_note_toolbar_show, _update_note_toolbar_loc } from "../use_note";
 import _note_toolbar from "../../toolbars/note_toolbar";
+import { _colour_picker_no_button } from "../../common/components/colour_picker";
 
 /**
  * Sticky note component
@@ -41,7 +41,7 @@ const _sticky_note = (props) => {
     const MENUBAR_ITEM_WIDTH_PERC           = 0.10; // 10% of stknote width
     const STKNOTE_TXTAREA_PADDG_PERC        = 0.05; // 5% of stknote width
     const STKNOTE_PARAGR_PADDG_PERC         = 0.15; // 15% of stknote width
-    const TOOLBAR_NOTE_GAP_TOP_PX           = 0.3;  // percentage of stknote width 
+    const TOOLBAR_NOTE_GAP_TOP_PX           = 0.4;  // percentage of stknote width 
     const TOOLBAR_NOTE_GAP_LEFT_PX          = 0.01; // percentage of stknote width
 
     let stknote_width = props.win_width_perc * props.win_width;
@@ -181,6 +181,9 @@ const _sticky_note = (props) => {
     );
     /********************* Effects block ends ***********************/
 
+    const _do_nothing = () => {
+        ;
+    };
 
     return (
         <div>
@@ -189,6 +192,7 @@ const _sticky_note = (props) => {
                 {(props.show_toolbar === true) ? (
                     <_note_toolbar note_id={props.id} win_width={props.win_width} win_height={props.win_height} x_pos={toolbar_x_pos} y_pos={toolbar_y_pos}
                     taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state={props.request_taskboard_state} note_toolbar_item_clicked={_toolbar_item_clicked_notif}
+                    note_colour_picker_btn_clicked_func={_colour_picker_btn_clicked} note_update_colour_func={_update_colour} note_bg_colour={props.colour}
                     />) : (<div></div>)
                 }
             </div>
@@ -245,18 +249,6 @@ const _sticky_note = (props) => {
                                     background: props.colour,
                                 }}
                             >
-                                <div
-                                    id="btn_stknote_colour"
-                                    style={{ 
-                                        flexBasis: menubar_item_width + 'px', 
-                                        height: MENUBAR_HGT_PERC * stknote_width + 'px',
-                                        width: menubar_item_width + 'px',
-                                        color: complement_colour
-                                    }}
-                                >
-                                    <_colour_picker_round id={props.id} width={menubar_item_width} height={menubar_item_width} colour={complement_colour} x_pos={props.x_pos - stknote_width} y_pos={props.y_pos - stknote_width} 
-                                        update_colour_func={_update_colour} onclick_func={_colour_picker_btn_clicked}/>
-                                </div>
                                 <div
                                     id="btn_stknote_delete"
                                     style={{ 

@@ -3,8 +3,10 @@ import { SELECTED_COLOR_THEME } from "../globals";
 import { _get_complement_colour } from "../utils";
 
 /**
- * round colour picker component.
- * required parameters (supplied with props): 
+ * round colour picker with button component.
+ * @param {variable} props - includes {
+ *  - props.id, 
+ *  - props.update_colour_func(), 
  *  - props.colour  (default colour)
  *  - props.update_colour_func (colour update function)
  *  - props.id  (colour picker id)
@@ -13,11 +15,12 @@ import { _get_complement_colour } from "../utils";
  *  - props.height ( colour picker button height )
  *  - props.x_pos (colour picker x location)
  *  - props.y_pos (colour picker y location)
+ *  - }
  */
 const _colour_picker_round = (props) => {
     const [color, _set_colour] = useState(props.colour);
 
-    const colour_picker_id = "cp" + props.id;
+    const colour_picker_id = props.id;
     
     const _update_colour = (hex_colour_val) => {
         _set_colour(hex_colour_val);
@@ -66,6 +69,56 @@ const _colour_picker_round = (props) => {
     );
 };
 
+/**
+ * colour picker to use with external button from caller
+ * @param {variable} props - includes {props.id, props.update_colour_func(), 
+ *  props.onclick_func(), props.width, props.height}
+ * @returns 
+ */
+const _colour_picker_no_button = (props) => {
+    const [color, _set_colour] = useState(props.colour);
+    const colour_picker_id = props.id;
+
+    const _update_colour = (hex_colour_val) => {
+        _set_colour(hex_colour_val);
+        props.update_colour_func(hex_colour_val);
+    };
+    
+    const _cp_btn_clicked = () => {
+        props.onclick_func();
+        document.getElementById(colour_picker_id).click()
+    };
+
+    return (
+        <div 
+            style={{ 
+                display: "flex", 
+                alignItems: "center", 
+            }}
+        >
+            {/* Color Input */}
+            <input
+                id={colour_picker_id}
+                type="color"
+                value={color}
+                onChange={(e) => _update_colour(e.target.value)}
+                style={{ 
+                    width: props.width + 'px',
+                    height: props.height + 'px',
+                    opacity: 1,
+                    border: 0,
+                    margin: 0,
+                    padding: 0,
+                    cursor: 'pointer',
+                    position: 'relative',
+                }}
+                onClick={() => {_cp_btn_clicked}}
+            />
+        </div>
+    );
+};
+
 export {
-    _colour_picker_round
+    _colour_picker_round,
+    _colour_picker_no_button,
 };

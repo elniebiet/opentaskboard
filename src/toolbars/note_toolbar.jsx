@@ -20,6 +20,8 @@ import { _get_max_z_index, _use_max_z_index } from '../common/globals';
 import { _set_global_cursor_type } from '../taskboards/taskboard_globals';
 import { _get_max_possible_z_index } from '../common/globals';
 import { NOTE_TOOLBAR_ITEMS } from './toolbar_globals';
+import { _colour_picker_round } from '../common/components/colour_picker';
+import { _colour_picker_no_button } from '../common/components/colour_picker';
 
 const _add_toolbar_item = (props) => 
 {
@@ -110,18 +112,40 @@ const _add_toolbar_item = (props) =>
         props.taskboard_rerender_func();
     };
     
-    return (
-            <div id="main_tb_item" onMouseDown={_handle_tb_item_click}>
-                <_square_fab>
-                    <img 
-                        src={props.img_src}
-                        title={props.img_alt_txt}
-                        alt={props.img_alt_txt} 
-                        style={{ width: props.tb_item_width, height: props.tb_item_height }}
-                    />
-                </_square_fab>
-            </div>
-    );
+    const _do_nothing = () => {};
+
+    switch(props.item_index)
+    {
+        case NOTE_TOOLBAR_ITEMS.NTBI_FONT_COLOUR:
+        {
+            return (
+                <div id="main_tb_item" onMouseDown={_handle_tb_item_click}>
+                        <div 
+                            id="note_colour_picker"
+                            title={props.img_alt_txt}
+                        >
+                            <_colour_picker_no_button id={"notecp" + props.id} colour={props.note_bg_colour} width={props.tb_root_width} height={props.tb_root_width} 
+                            onclick_func={props.note_colour_picker_btn_clicked_func} update_colour_func={props.note_update_colour_func} />
+                        </div>
+                </div>
+            );
+        }
+        default:
+        {
+            return (
+                <div id="main_tb_item" onMouseDown={_handle_tb_item_click}>
+                    <_square_fab>
+                        <img 
+                            src={props.img_src}
+                            title={props.img_alt_txt}
+                            alt={props.img_alt_txt} 
+                            style={{ width: props.tb_item_width, height: props.tb_item_height }}
+                        />
+                    </_square_fab>
+                </div>
+            );
+        }
+    }
 };
 
 /**
@@ -197,7 +221,8 @@ const _note_toolbar = (props) => {
                     <_add_toolbar_item item_index={NOTE_TOOLBAR_ITEMS.NTBI_FONT_COLOUR} img_src={font_colour_img} img_alt_txt={"Font Colour"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
                     on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
-                    note_tb_item_clicked_notif={props.note_toolbar_item_clicked} 
+                    note_tb_item_clicked_notif={props.note_toolbar_item_clicked} note_colour_picker_btn_clicked_func={props.note_colour_picker_btn_clicked_func}
+                    note_update_colour_func={props.note_update_colour_func} note_bg_colour={props.note_bg_colour}
                     />
                     <_add_toolbar_item item_index={NOTE_TOOLBAR_ITEMS.NTBI_ALIGNMENT} img_src={alignment_img} img_alt_txt={"Alignment"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 

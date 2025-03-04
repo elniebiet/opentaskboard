@@ -14,6 +14,13 @@ Notable todo items list:
 13. resize arrow on screen resize
 14. all items on the screen must have a z-index, retrieveable on-reload
 15. colour theme definitions
+16. Note final design
+17. Comment final design
+18. Chang default pointer
+19. Comment minimise when not active
+20. display toolbar on click of a button
+21. Move note colour picker to toolbar .DONE
+
 
 
 /**** sample code for triggering useRef using useState
