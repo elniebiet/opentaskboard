@@ -9,7 +9,7 @@ import _comment from './components/comment';
 import board_marker_img_32 from '../../res/imgs/img_board_marker_32x32.png'; 
 import fill_img_32 from '../../res/imgs/img_fill2_32x32.png'; 
 import { SELECTED_COLOR_THEME } from '../common/globals';
-import { SHAPES_TOOLBAR_ITEM_TYPE } from '../common/globals';
+import { SHAPES_TOOLBAR_ITEM_TYPE } from '../toolbars/toolbar_globals';
 import { TASKBOARD_STATES } from './taskboard_globals';
 import _draggable_arrow from '../common/components/arrow';
 import { _set_global_new_shape_id, _get_global_new_shape_id } from './taskboard_globals';

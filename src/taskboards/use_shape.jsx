@@ -1,6 +1,6 @@
 import { _set_global_cursor_type } from "./taskboard_globals";
 import { _set_global_new_shape_type, _get_global_new_shape_type, _get_global_new_shape_id } from "./taskboard_globals";
-import { SHAPES_TOOLBAR_ITEM_TYPE } from "../common/globals";
+import { SHAPES_TOOLBAR_ITEM_TYPE } from "../toolbars/toolbar_globals";
 import arrows from "./arrows_db_temp";
 import { CURSOR_TYPES } from "./taskboard_globals";
 

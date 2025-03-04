@@ -11,7 +11,7 @@ import eraser_img_32 from '../../res/imgs/img_eraser_32x32.png';
 import shapes_img from '../../res/imgs/img_shapes_100x100.png'; 
 import fill_img from '../../res/imgs/img_fill2_100x100.png'; 
 import { useState, useEffect } from 'react';
-import { TOOLBAR_ITEMS } from '../common/globals';
+import { TASKBOARD_TOOLBAR_ITEMS } from './toolbar_globals';
 import { TOOLBAR_ITEM_TYPE } from '../common/globals';
 import { SELECTED_COLOR_THEME } from '../common/globals';
 import { TASKBOARD_DEFAULT_TB_LOC } from './toolbar_globals';
@@ -50,7 +50,7 @@ const _add_toolbar_item = (props) =>
         if (is_dragging) {
             const { clientX, clientY } = e; // update ghost element's position
             props.drag_update_func(props.item_index, true, clientX, clientY);
-            if(props.item_index === TOOLBAR_ITEMS.TBI_STKNOTE)
+            if(props.item_index === TASKBOARD_TOOLBAR_ITEMS.TBI_STKNOTE)
             {
                 props.item_loc_update_func(clientX, clientY);
             } 
@@ -65,13 +65,13 @@ const _add_toolbar_item = (props) =>
         // toolbar-item specific actions
         switch(props.item_index)
         {
-            case TOOLBAR_ITEMS.TBI_STKNOTE:
+            case TASKBOARD_TOOLBAR_ITEMS.TBI_STKNOTE:
             {
                 props.item_loc_update_func(clientX, clientY);
                 props.on_stk_click(false, clientX, clientY);
                 break;
             }
-            case TOOLBAR_ITEMS.TBI_COMMENT:
+            case TASKBOARD_TOOLBAR_ITEMS.TBI_COMMENT:
             {
                 props.item_loc_update_func(clientX, clientY);
                 props.on_comment_click(false, clientX, clientY);
@@ -120,34 +120,34 @@ const _add_toolbar_item = (props) =>
     const _on_tb_item_click = (e, tb_item_idx) => {
         switch(tb_item_idx)
         {
-            case TOOLBAR_ITEMS.TBI_STKNOTE:
+            case TASKBOARD_TOOLBAR_ITEMS.TBI_STKNOTE:
             {
                 props.on_stk_click(true);
                 break;
             }
-            case TOOLBAR_ITEMS.TBI_MARKER:
+            case TASKBOARD_TOOLBAR_ITEMS.TBI_MARKER:
             {
                 props.on_marker_click();
                 break;    
             }
-            case TOOLBAR_ITEMS.TBI_CURSOR:
+            case TASKBOARD_TOOLBAR_ITEMS.TBI_CURSOR:
             {
                 let cursor_type = 'default';
                 props.on_pointer_click(cursor_type);
                 break;   
             }          
-            case TOOLBAR_ITEMS.TBI_FILL:  
+            case TASKBOARD_TOOLBAR_ITEMS.TBI_FILL:  
             {
                 props.on_fill_click();
                 break;
             }
-            case TOOLBAR_ITEMS.TBI_ERASER:             
+            case TASKBOARD_TOOLBAR_ITEMS.TBI_ERASER:             
             {
                 let cursor_type = `url(${eraser_img_32}) 10 10, auto`;
                 props.on_eraser_click(cursor_type);
                 break;    
             }            
-            case TOOLBAR_ITEMS.TBI_SHAPE:    
+            case TASKBOARD_TOOLBAR_ITEMS.TBI_SHAPE:    
             {
                 // set cursor type
                 _set_global_cursor_type('default');
@@ -157,7 +157,7 @@ const _add_toolbar_item = (props) =>
                 props.request_taskboard_state_func(TASKBOARD_STATES.TBS_SUB_TOOLBAR_ACTIVE);
                 break;
             }
-            case TOOLBAR_ITEMS.TBI_COMMENT:
+            case TASKBOARD_TOOLBAR_ITEMS.TBI_COMMENT:
             {
                 props.on_comment_click(true);
                 break;    
@@ -312,31 +312,31 @@ const _taskboard_toolbar = (props) => {
         <div>
             <div id="taskboard_toolbar_root" style={toolbar_styling}>
                 <Box sx={{ '& > :not(style)': { m: 0.5 } }} display="flex" flexDirection={flex_dir}>
-                    <_add_toolbar_item item_index={TOOLBAR_ITEMS.TBI_CURSOR} tbi_type={TOOLBAR_ITEM_TYPE.CLICKABLE} img_src={pointer_img} img_alt_txt={"Cursor"} 
+                    <_add_toolbar_item item_index={TASKBOARD_TOOLBAR_ITEMS.TBI_CURSOR} tbi_type={TOOLBAR_ITEM_TYPE.CLICKABLE} img_src={pointer_img} img_alt_txt={"Cursor"} 
                     on_pointer_click={props.select_cursor_func}  tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} 
                     taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state} 
                     />
-                    <_add_toolbar_item item_index={TOOLBAR_ITEMS.TBI_STKNOTE} tbi_type={TOOLBAR_ITEM_TYPE.DRAGGABLE_CLICKABLE} img_src={sticky_notes_img} img_alt_txt={"Sticky Note"} 
+                    <_add_toolbar_item item_index={TASKBOARD_TOOLBAR_ITEMS.TBI_STKNOTE} tbi_type={TOOLBAR_ITEM_TYPE.DRAGGABLE_CLICKABLE} img_src={sticky_notes_img} img_alt_txt={"Sticky Note"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} 
                     on_stk_click={props.add_note_func} item_loc_update_func={props.set_tb_item_loc_func} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state} 
                     />
-                    <_add_toolbar_item item_index={TOOLBAR_ITEMS.TBI_COMMENT} tbi_type={TOOLBAR_ITEMS.DRAGGABLE_CLICKABLE} img_src={comment_img} img_alt_txt={"Comment"} 
+                    <_add_toolbar_item item_index={TASKBOARD_TOOLBAR_ITEMS.TBI_COMMENT} tbi_type={TASKBOARD_TOOLBAR_ITEMS.DRAGGABLE_CLICKABLE} img_src={comment_img} img_alt_txt={"Comment"} 
                     on_comment_click={props.add_comment_func} item_loc_update_func={props.set_tb_item_loc_func} tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} 
                     tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
                     />
-                    <_add_toolbar_item item_index={TOOLBAR_ITEMS.TBI_SHAPE} tbi_type={TOOLBAR_ITEM_TYPE.CLICKABLE} img_src={shapes_img} img_alt_txt={"Shape"} 
+                    <_add_toolbar_item item_index={TASKBOARD_TOOLBAR_ITEMS.TBI_SHAPE} tbi_type={TOOLBAR_ITEM_TYPE.CLICKABLE} img_src={shapes_img} img_alt_txt={"Shape"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
                     drag_update_func={update_dragged_item_info} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
                     />
-                    <_add_toolbar_item item_index={TOOLBAR_ITEMS.TBI_FILL} tbi_type={TOOLBAR_ITEM_TYPE.DRAGGABLE_CLICKABLE} img_src={fill_img} img_alt_txt={"Fill"} 
+                    <_add_toolbar_item item_index={TASKBOARD_TOOLBAR_ITEMS.TBI_FILL} tbi_type={TOOLBAR_ITEM_TYPE.DRAGGABLE_CLICKABLE} img_src={fill_img} img_alt_txt={"Fill"} 
                     on_fill_click={props.add_fill_func} tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
                     drag_update_func={update_dragged_item_info} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
                     />
-                    <_add_toolbar_item item_index={TOOLBAR_ITEMS.TBI_MARKER} tbi_type={TOOLBAR_ITEM_TYPE.CLICKABLE} img_src={board_marker_img} img_alt_txt={"Marker"} 
+                    <_add_toolbar_item item_index={TASKBOARD_TOOLBAR_ITEMS.TBI_MARKER} tbi_type={TOOLBAR_ITEM_TYPE.CLICKABLE} img_src={board_marker_img} img_alt_txt={"Marker"} 
                     on_marker_click={props.marker_draw_func} tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
                     drag_update_func={update_dragged_item_info} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
                     />
-                    <_add_toolbar_item item_index={TOOLBAR_ITEMS.TBI_ERASER} tbi_type={TOOLBAR_ITEM_TYPE.CLICKABLE} img_src={eraser_img} img_alt_txt={"Eraser"} 
+                    <_add_toolbar_item item_index={TASKBOARD_TOOLBAR_ITEMS.TBI_ERASER} tbi_type={TOOLBAR_ITEM_TYPE.CLICKABLE} img_src={eraser_img} img_alt_txt={"Eraser"} 
                     on_eraser_click={props.select_cursor_func} tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
                     drag_update_func={update_dragged_item_info} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
                     />
@@ -346,11 +346,11 @@ const _taskboard_toolbar = (props) => {
             
             {/* Draggable Items begin */}
             
-            { (is_dragging_tb_item.is_dragging) && (is_dragging_tb_item.item_index === TOOLBAR_ITEMS.TBI_STKNOTE) && (
+            { (is_dragging_tb_item.is_dragging) && (is_dragging_tb_item.item_index === TASKBOARD_TOOLBAR_ITEMS.TBI_STKNOTE) && (
                 <_on_drag_hover_display tb_img={sticky_notes_img} tb_title={"Sticky Note"} tb_hover_w={item_width} tb_hover_h={item_height} x_pos={is_dragging_tb_item.x} y_pos={is_dragging_tb_item.y} />
             )}
 
-            { (is_dragging_tb_item.is_dragging) && (is_dragging_tb_item.item_index === TOOLBAR_ITEMS.TBI_COMMENT) && (
+            { (is_dragging_tb_item.is_dragging) && (is_dragging_tb_item.item_index === TASKBOARD_TOOLBAR_ITEMS.TBI_COMMENT) && (
                 <_on_drag_hover_display tb_img={comment_img} tb_title={"Comment"} tb_hover_w={item_width} tb_hover_h={item_height} x_pos={is_dragging_tb_item.x} y_pos={is_dragging_tb_item.y} />
             )}
 

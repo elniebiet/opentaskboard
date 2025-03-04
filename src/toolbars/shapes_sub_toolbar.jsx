@@ -3,9 +3,9 @@ import Box from '@mui/material/Box';
 import Fab from '@mui/material/Fab';
 import { styled } from '@mui/system';
 import { useState, useEffect } from 'react';
-import { TOOLBAR_ITEMS } from '../common/globals';
+import { TASKBOARD_TOOLBAR_ITEMS } from './toolbar_globals';
 import { TOOLBAR_ITEM_TYPE } from '../common/globals';
-import { SHAPES_TOOLBAR_ITEM_TYPE } from '../common/globals';
+import { SHAPES_TOOLBAR_ITEM_TYPE } from './toolbar_globals';
 import { SELECTED_COLOR_THEME } from '../common/globals';
 import { TASKBOARD_DEFAULT_SHAPES_TB_LOC } from './toolbar_globals';
 import { TASKBOARD_DEFAULT_TB_SIZE } from './toolbar_globals';
@@ -294,7 +294,7 @@ const _shapes_sub_toolbar = (props) => {
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} 
                     taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
                     />
-                    <_add_toolbar_item shapes_tb_item_clicked={props.shapes_tb_item_clicked_func} item_index={SHAPES_TOOLBAR_ITEM_TYPE.STBI_RECT} tbi_type={TOOLBAR_ITEMS.CLICKABLE} img_src={rect_img} img_alt_txt={"Rectangle"} 
+                    <_add_toolbar_item shapes_tb_item_clicked={props.shapes_tb_item_clicked_func} item_index={SHAPES_TOOLBAR_ITEM_TYPE.STBI_RECT} tbi_type={TASKBOARD_TOOLBAR_ITEMS.CLICKABLE} img_src={rect_img} img_alt_txt={"Rectangle"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} 
                     taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
                     />

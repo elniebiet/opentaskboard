@@ -20,7 +20,6 @@ import { _get_max_z_index, _use_max_z_index } from '../common/globals';
 import { _set_global_cursor_type } from '../taskboards/taskboard_globals';
 import { _get_max_possible_z_index } from '../common/globals';
 import { NOTE_TOOLBAR_ITEMS } from './toolbar_globals';
-import { _colour_picker_round } from '../common/components/colour_picker';
 import { _colour_picker_no_button } from '../common/components/colour_picker';
 
 const _add_toolbar_item = (props) => 

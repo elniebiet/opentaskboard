@@ -305,54 +305,57 @@ const _sprint_planning_template = () => {
   /**************** Page listener ends **************************/
 
   return (
-      <div 
-        id="taskboard_default_root"
-        onDragOver={_handle_drag_over}
-        style={{ 
-          height: "100vh",
-          width: "100vw",
-          backgroundColor: "#f0f0f0",
-          cursor: cursor_type,
-        }}
-      >
-          <_page_click_listener />
+    <div style={{marginLeft: '30%'}}>
+      Sprint planning component not implemented
+    </div>
+      // <div 
+      //   id="taskboard_default_root"
+      //   onDragOver={_handle_drag_over}
+      //   style={{ 
+      //     height: "100vh",
+      //     width: "100vw",
+      //     backgroundColor: "#f0f0f0",
+      //     cursor: cursor_type,
+      //   }}
+      // >
+      //     <_page_click_listener />
 
-          <_gridlines_normal grid_size={50} line_color="#E6E6E6" />
+      //     <_gridlines_normal grid_size={50} line_color="#E6E6E6" />
           
-          <_taskboard_toolbar pos={"top"} win_width={width} win_height={height} add_note_func={_add_note} set_tb_item_loc_func={_set_tb_item_loc_func} 
-            select_cursor_func={_select_cursor_type} marker_draw_func={_draw_with_marker} add_fill_func={_add_fill} shapes_selected_func={_show_shape_options} 
-            add_comment_func={_add_comment} />
+      //     <_taskboard_toolbar pos={"top"} win_width={width} win_height={height} add_note_func={_add_note} set_tb_item_loc_func={_set_tb_item_loc_func} 
+      //       select_cursor_func={_select_cursor_type} marker_draw_func={_draw_with_marker} add_fill_func={_add_fill} shapes_selected_func={_show_shape_options} 
+      //       add_comment_func={_add_comment} />
           
-          <_taskboard_toolbar pos={"left"} win_width={width} win_height={height} add_note_func={_add_note} set_tb_item_loc_func={_set_tb_item_loc_func} 
-            select_cursor_func={_select_cursor_type} marker_draw_func={_draw_with_marker} add_fill_func={_add_fill} shapes_selected_func={_show_shape_options} 
-            add_comment_func={_add_comment} />
+      //     <_taskboard_toolbar pos={"left"} win_width={width} win_height={height} add_note_func={_add_note} set_tb_item_loc_func={_set_tb_item_loc_func} 
+      //       select_cursor_func={_select_cursor_type} marker_draw_func={_draw_with_marker} add_fill_func={_add_fill} shapes_selected_func={_show_shape_options} 
+      //       add_comment_func={_add_comment} />
           
-          {(shapes_sub_toolbar_active === true) && (
-            <_shapes_sub_toolbar shapes_tb_item_clicked_func={_shape_clicked} pos={"top"} win_width={width} win_height={height} deactivate_shapes_sub_tb={_deactivate_shapes_sub_tb} />
-          )}
+      //     {(shapes_sub_toolbar_active === true) && (
+      //       <_shapes_sub_toolbar shapes_tb_item_clicked_func={_shape_clicked} pos={"top"} win_width={width} win_height={height} deactivate_shapes_sub_tb={_deactivate_shapes_sub_tb} />
+      //     )}
 
-          {(shapes_sub_toolbar_active === true) && (
-            <_shapes_sub_toolbar shapes_tb_item_clicked_func={_shape_clicked} pos={"left"} win_width={width} win_height={height} deactivate_shapes_sub_tb={_deactivate_shapes_sub_tb} />
-          )}
+      //     {(shapes_sub_toolbar_active === true) && (
+      //       <_shapes_sub_toolbar shapes_tb_item_clicked_func={_shape_clicked} pos={"left"} win_width={width} win_height={height} deactivate_shapes_sub_tb={_deactivate_shapes_sub_tb} />
+      //     )}
 
-          <div>
-            {/* display notes and comments */}
-            <div>
-              {notes.map((note) => (
-                <_sticky_note key={note.id} id={note.id} text={note.text} win_width_perc={note.win_width_perc} on_delete={_delete_note} tb_item_loc_update_func={_set_tb_item_loc_func} 
-                  note_update_func={_update_note} x_pos={note.x_pos} y_pos={note.y_pos} win_width={width} win_height={height} colour={note.colour}/>
-              ))}
-            </div>
+      //     <div>
+      //       {/* display notes and comments */}
+      //       <div>
+      //         {notes.map((note) => (
+      //           <_sticky_note key={note.id} id={note.id} text={note.text} win_width_perc={note.win_width_perc} on_delete={_delete_note} tb_item_loc_update_func={_set_tb_item_loc_func} 
+      //             note_update_func={_update_note} x_pos={note.x_pos} y_pos={note.y_pos} win_width={width} win_height={height} colour={note.colour}/>
+      //         ))}
+      //       </div>
 
-            <div>
-              {comments.map((comment) => (
-                <_comment key={comment.id} id={comment.id} text={comment.text} win_width_perc={comment.win_width_perc} on_delete={_delete_comment} tb_item_loc_update_func={_set_tb_item_loc_func} 
-                comment_update_func={_update_comment}  x_pos={comment.x_pos} y_pos={comment.y_pos} win_width={width} win_height={height} colour={comment.colour}/>
-              ))}
-            </div>
-          </div>
+      //       <div>
+      //         {comments.map((comment) => (
+      //           <_comment key={comment.id} id={comment.id} text={comment.text} win_width_perc={comment.win_width_perc} on_delete={_delete_comment} tb_item_loc_update_func={_set_tb_item_loc_func} 
+      //           comment_update_func={_update_comment}  x_pos={comment.x_pos} y_pos={comment.y_pos} win_width={width} win_height={height} colour={comment.colour}/>
+      //         ))}
+      //       </div>
+      //     </div>
 
-      </div>
+      // </div>
   );
 };
 

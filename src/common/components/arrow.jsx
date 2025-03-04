@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Draggable from "react-draggable";
 import { _set_global_toolbar_items_active_state } from "../../taskboards/taskboard_globals";
-import { TOOLBAR_ITEMS } from "../globals";
+import { TASKBOARD_TOOLBAR_ITEMS } from "../../toolbars/toolbar_globals";
 import { _get_max_z_index, _use_max_z_index } from "../globals";
 
 const _draggable_arrow = ({ start_pos_x1, start_pos_y1, start_pos_x2, start_pos_y2, colour = "black", stroke_width = 2 }) => {
@@ -18,7 +18,7 @@ const _draggable_arrow = ({ start_pos_x1, start_pos_y1, start_pos_x2, start_pos_
     const _on_click_handler = () => {
          _set_z_index(_get_max_z_index());
         _use_max_z_index();
-        _set_global_toolbar_items_active_state(TOOLBAR_ITEMS.TBI_SHAPE, true, true);
+        _set_global_toolbar_items_active_state(TASKBOARD_TOOLBAR_ITEMS.TBI_SHAPE, true, true);
     };
 
     return (
