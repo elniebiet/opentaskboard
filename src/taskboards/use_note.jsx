@@ -26,11 +26,12 @@ const _add_note = (clicked = true, pos_x = 100, pos_y = 100) => {
             text: "",
             x_pos: new_loc_x,
             y_pos: new_loc_y,
-            colour: SELECTED_COLOR_THEME,
+            colour: SELECTED_COLOR_THEME.bg_colour,
             active: false,
             win_width_perc: STKNOTE_WIDTH_PERC_DEFAULT,
             toolbar_show: false,
-            toolbar_display_loc: {x: 200, y: 200},  
+            toolbar_display_loc: {x: 200, y: 200},
+            highlighted: true,  
         };
         _set_global_last_item_add_or_move_loc(new_loc_x, new_loc_y); // update last added location
         notes.push(new_note);
@@ -44,11 +45,12 @@ const _add_note = (clicked = true, pos_x = 100, pos_y = 100) => {
             text: "", 
             x_pos: pos_x, 
             y_pos: pos_y, 
-            colour: SELECTED_COLOR_THEME, 
+            colour: SELECTED_COLOR_THEME.bg_colour, 
             active: false,
             win_width_perc: STKNOTE_WIDTH_PERC_DEFAULT,
             toolbar_show: false,
-            toolbar_display_loc: {x: 200, y: 200},   
+            toolbar_display_loc: {x: 200, y: 200},
+            highlighted: true,   
         };
         notes.push(new_note);
     }
@@ -176,6 +178,22 @@ const _update_note_toolbar_loc = (id, int_loc_x, int_loc_y) => {
     }
 };
 
+/**
+ * update note highlighted
+ * @param {int} id - note id
+ * @param {boolean} note_highlighted
+ */
+const _update_note_highlighted = (id, note_highlighted) => {
+    for(let i=0; i<notes.length; i++)
+    {
+        if(notes[i].id === id)
+        {
+            notes[i].highlighted = note_highlighted;
+            break;
+        }
+    }
+};
+
 
 export {
     _add_note,
@@ -187,4 +205,5 @@ export {
     _update_note_active_state,
     _update_note_toolbar_show,
     _update_note_toolbar_loc,
+    _update_note_highlighted,
 };

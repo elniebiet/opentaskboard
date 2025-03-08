@@ -48,8 +48,25 @@ const _get_max_possible_z_index = () => {
 };
 /*********** ZINDEX block ends ***************/
 
+/*********** Highlighter block begins ***************/
+
+/*********** Highlighter block ends ***************/
+
 /* Color Theme */
-let COLOR_THEMES = {white: '#ffffff', black:'#000000', blue_1: '#1976d2'};
+const COLOR_THEMES = {
+    white: {
+        bg_colour: '#ffffff',
+        text_colour: '#000000',
+        highlight_colour: '#1976d2',
+    },
+    
+    black: {
+        bg_colour: '#000000',
+        text_colour: '#ffffff',
+        highlight_colour: '#1976d2',
+    }, 
+};
+
 let SELECTED_COLOR_THEME = COLOR_THEMES.white;
 
 

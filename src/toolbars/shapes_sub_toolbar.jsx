@@ -188,7 +188,7 @@ let toolbar_styling_top = {
     top: TASKBOARD_DEFAULT_SHAPES_TB_LOC.top + '%', 
     left: TASKBOARD_DEFAULT_SHAPES_TB_LOC.left + '%', 
     transform: 'translateX(-50%)', // Offset the div by half its width
-    backgroundColor: SELECTED_COLOR_THEME,
+    backgroundColor: SELECTED_COLOR_THEME.bg_colour,
     color: 'white',
     padding: '5px 10px',
     borderRadius: '0 0 8px 8px',
@@ -200,7 +200,7 @@ let toolbar_styling_left = {
     top: (TASKBOARD_DEFAULT_SHAPES_TB_LOC.left - 10 + '%'), 
     left: TASKBOARD_DEFAULT_SHAPES_TB_LOC.top + '%', 
     transform: 'translateY(-50%)',
-    backgroundColor: SELECTED_COLOR_THEME, 
+    backgroundColor: SELECTED_COLOR_THEME.bg_colour, 
     color: 'white',
     padding: '5px 10px',
     borderRadius: '0 8px 8px 0',

@@ -5,7 +5,8 @@ import { _get_complement_colour } from "../../common/utils";
 import { _set_global_toolbar_items_active_state } from "../taskboard_globals";
 import { TASKBOARD_TOOLBAR_ITEMS } from "../../toolbars/toolbar_globals";
 import { _delete_note, _update_note_loc, _update_note_text, _update_note_colour, _update_note_win_width_perc,
-            _update_note_active_state, _update_note_toolbar_show, _update_note_toolbar_loc } from "../use_note";
+            _update_note_active_state, _update_note_toolbar_show, _update_note_toolbar_loc,
+            _update_note_highlighted } from "../use_note";
 import _note_toolbar from "../../toolbars/note_toolbar";
 import { _colour_picker_no_button } from "../../common/components/colour_picker";
 
@@ -41,15 +42,15 @@ const _sticky_note = (props) => {
     const MENUBAR_ITEM_WIDTH_PERC           = 0.10; // 10% of stknote width
     const STKNOTE_TXTAREA_PADDG_PERC        = 0.05; // 5% of stknote width
     const STKNOTE_PARAGR_PADDG_PERC         = 0.15; // 15% of stknote width
-    const TOOLBAR_NOTE_GAP_TOP_PX           = 0.4;  // percentage of stknote width 
-    const TOOLBAR_NOTE_GAP_LEFT_PX          = 0.01; // percentage of stknote width
+    const TOOLBAR_NOTE_GAP_TOP_PERC         = 0.4;  // percentage of stknote width 
+    const TOOLBAR_NOTE_GAP_LEFT_PERC        = 0.01; // percentage of stknote width
 
     let stknote_width = props.win_width_perc * props.win_width;
     stknote_width = ( stknote_width < STKNOTE_MIN_WIDTH ) ? STKNOTE_MIN_WIDTH : stknote_width;
     const font_size = FONT_SIZE_PERC * stknote_width;
     let menubar_item_width   = MENUBAR_ITEM_WIDTH_PERC * stknote_width;
-    let toolbar_note_gap_top_px = TOOLBAR_NOTE_GAP_TOP_PX * stknote_width;
-    let toolbar_note_gap_left_px = TOOLBAR_NOTE_GAP_LEFT_PX * stknote_width; 
+    let toolbar_note_gap_top_px = TOOLBAR_NOTE_GAP_TOP_PERC * stknote_width;
+    let toolbar_note_gap_left_px = TOOLBAR_NOTE_GAP_LEFT_PERC * stknote_width; 
 
     const _handle_note_drag_over = (e) =>   
     {
@@ -69,6 +70,7 @@ const _sticky_note = (props) => {
         _set_z_index(_get_max_z_index());
         _use_max_z_index();
         _update_note_active_state(props.id, true);
+        _update_note_highlighted(props.id, true);
         _update_note_toolbar_loc(props.id, 300, 300);
         _update_note_toolbar_show(props.id, true);
         props.taskboard_rerender_func();
@@ -81,6 +83,7 @@ const _sticky_note = (props) => {
             _set_is_editing(false);
             _set_z_index(z_index - 1);
             _update_note_active_state(props.id, false);
+            _update_note_highlighted(props.id, false);
             _update_note_toolbar_show(props.id, false);
             props.taskboard_rerender_func();
         }
@@ -195,6 +198,12 @@ const _sticky_note = (props) => {
                     note_colour_picker_btn_clicked_func={_colour_picker_btn_clicked} note_update_colour_func={_update_colour} note_bg_colour={props.colour}
                     />) : (<div></div>)
                 }
+            </div>
+            {/* display highlighter */}
+            <div>
+                {(props.highlighted === true) ? (
+                    <div style={{position: 'absolute', left: '300px', top: '300px'}}>show highlighter</div>
+                    ) : (<div></div>)}
             </div>
             <div>
                 <Draggable 

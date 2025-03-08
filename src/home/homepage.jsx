@@ -20,7 +20,7 @@ export default function _homepage(props) {
         style={{ 
           height: "100vh",
           width: "100vw",
-          backgroundColor: SELECTED_COLOR_THEME,
+          backgroundColor: SELECTED_COLOR_THEME.bg_colour,
         }}
       >
         <CssBaseline enableColorScheme />

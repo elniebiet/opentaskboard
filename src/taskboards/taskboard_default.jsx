@@ -273,7 +273,7 @@ const _taskboard_default = () => {
                   <div>
                     <_sticky_note key={note.id} id={note.id} text={note.text} win_width_perc={note.win_width_perc} tb_item_loc_update_func={_set_tb_item_loc_func} 
                       x_pos={note.x_pos} y_pos={note.y_pos} win_width={width} win_height={height} colour={note.colour} taskboard_rerender_func={_trigger_taskboard_rerender}
-                      show_toolbar={note.toolbar_show}  
+                      show_toolbar={note.toolbar_show} highlighted={note.highlighted}
                     />
                   </div>
                 </div>

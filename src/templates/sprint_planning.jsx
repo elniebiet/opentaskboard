@@ -92,7 +92,7 @@ const _sprint_planning_template = () => {
         text: "",
         x_pos: new_loc_x,
         y_pos: new_loc_y,
-        colour: SELECTED_COLOR_THEME,
+        colour: SELECTED_COLOR_THEME.bg_colour,
         win_width_perc: STKNOTE_WIDTH_PERC_DEFAULT 
       };
       _set_last_item_add_or_move_loc({loc_x: new_loc_x, loc_y: new_loc_y}); // update last added location
@@ -106,7 +106,7 @@ const _sprint_planning_template = () => {
         text: "", 
         x_pos: pos_x, 
         y_pos: pos_y, 
-        colour: SELECTED_COLOR_THEME, 
+        colour: SELECTED_COLOR_THEME.bg_colour, 
         win_width_perc: STKNOTE_WIDTH_PERC_DEFAULT 
       };
       _set_notes([...notes, new_note]);
@@ -224,7 +224,7 @@ const _sprint_planning_template = () => {
         text: "", 
         x_pos: new_loc_x, 
         y_pos: new_loc_y, 
-        colour: SELECTED_COLOR_THEME,
+        colour: SELECTED_COLOR_THEME.bg_colour,
         win_width_perc: COMMENT_WIDTH_PERC_DEFAULT, 
       };
       _set_last_item_add_or_move_loc({loc_x: new_loc_x, loc_y: new_loc_y}); // update last added location
@@ -238,7 +238,7 @@ const _sprint_planning_template = () => {
         text: "", 
         x_pos: pos_x, 
         y_pos: pos_y, 
-        colour: SELECTED_COLOR_THEME,
+        colour: SELECTED_COLOR_THEME.bg_colour,
         win_width_perc: COMMENT_WIDTH_PERC_DEFAULT, 
       };
       _set_comments([...comments, new_comment]);

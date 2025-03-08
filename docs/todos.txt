@@ -20,6 +20,8 @@ Notable todo items list:
 19. Comment minimise when not active
 20. display toolbar on click of a button
 21. Move note colour picker to toolbar .DONE
+22. Every toolbar component should implement a highlighter functionality for highlighted components
+23. Every toolbar component should have a highlighted property 
 
 
 

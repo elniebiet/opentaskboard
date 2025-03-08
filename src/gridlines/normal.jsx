@@ -9,7 +9,7 @@ const _gridlines_normal = (props) => {
     width: "100vw",
     height: "100vh",
     overflow: "hidden",
-    backgroundColor: SELECTED_COLOR_THEME,
+    backgroundColor: SELECTED_COLOR_THEME.bg_colour,
     zIndex: _get_lowest_z_index(),
   };
 
