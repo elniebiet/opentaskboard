@@ -49,6 +49,10 @@ const _get_max_possible_z_index = () => {
 /*********** ZINDEX block ends ***************/
 
 /*********** Highlighter block begins ***************/
+let HIGHLIGHT_PARAMS = {
+    highlight_gap: '15', // pixels
+    highlight_line_width: '5'   // pixels
+};
 
 /*********** Highlighter block ends ***************/
 
@@ -95,5 +99,8 @@ export {
     _get_lowest_z_index,
     _use_max_z_index,
     _get_max_possible_z_index,
+
+    /* Highlighter exports */
+    HIGHLIGHT_PARAMS,
 };
 

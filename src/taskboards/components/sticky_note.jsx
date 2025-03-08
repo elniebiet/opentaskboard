@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import Draggable from "react-draggable";
-import { _get_max_z_index, _use_max_z_index } from "../../common/globals";
+import { _get_max_z_index, _use_max_z_index, SELECTED_COLOR_THEME } from "../../common/globals";
 import { _get_complement_colour } from "../../common/utils";
 import { _set_global_toolbar_items_active_state } from "../taskboard_globals";
 import { TASKBOARD_TOOLBAR_ITEMS } from "../../toolbars/toolbar_globals";
@@ -9,6 +9,8 @@ import { _delete_note, _update_note_loc, _update_note_text, _update_note_colour,
             _update_note_highlighted } from "../use_note";
 import _note_toolbar from "../../toolbars/note_toolbar";
 import { _colour_picker_no_button } from "../../common/components/colour_picker";
+import { HIGHLIGHT_PARAMS } from "../../common/globals";
+import _highlighter from "../../common/components/highlighter";
 
 /**
  * Sticky note component
@@ -150,8 +152,10 @@ const _sticky_note = (props) => {
         props.taskboard_rerender_func();
     };
 
-    // toolbar position
+    // current toolbar top left position
     const {x, y} = _get_note_location_top_left();
+
+    // toolbar position
     let toolbar_x_pos = x + toolbar_note_gap_left_px;
     let toolbar_y_pos = y - toolbar_note_gap_top_px;
 
@@ -202,7 +206,9 @@ const _sticky_note = (props) => {
             {/* display highlighter */}
             <div>
                 {(props.highlighted === true) ? (
-                    <div style={{position: 'absolute', left: '300px', top: '300px'}}>show highlighter</div>
+                    <_highlighter gap={HIGHLIGHT_PARAMS.highlight_gap} line_width={HIGHLIGHT_PARAMS.highlight_line_width} 
+                        item_top_left_pos={{x: x, y: y}} item_width={stknote_width + (FLEXBOX_GAP_PERC * stknote_width * 2)} 
+                        item_height={stknote_width + (FLEXBOX_GAP_PERC * stknote_width)} z_index={z_index} />
                     ) : (<div></div>)}
             </div>
             <div>
@@ -216,7 +222,7 @@ const _sticky_note = (props) => {
                             id="stknote_root"
                             style={{
                                 width: stknote_width + 'px',
-                                minHeight: stknote_width + 'px',
+                                height: stknote_width + 'px',
                                 backgroundColor: props.colour,
                                 padding: "10px",
                                 borderRadius: "8px",
