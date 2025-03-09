@@ -16,18 +16,80 @@ const _highlighter = (props) => {
     let hlight_width = props.item_width + (props.gap * 2);
     let hlight_height = props.item_height + (props.gap * 2);
 
+    let edge_circle_diameter = 0.05 * hlight_width;
+    
+    let bottom_right_circle_style = {
+        width: edge_circle_diameter + 'px',
+        height: edge_circle_diameter + 'px',
+        backgroundColor: SELECTED_COLOR_THEME.highlight_colour,
+        borderRadius: "50%",
+        position: "absolute",
+        left: ((hlight_left_pos + hlight_width) - (edge_circle_diameter / 2) + props.line_width) + 'px',
+        top: ((hlight_top_pos + hlight_height) - (edge_circle_diameter / 2) + props.line_width) + 'px',
+        zIndex: props.z_index,
+    };
+    
+    let bottom_left_circle_style = {
+        width: edge_circle_diameter + 'px',
+        height: edge_circle_diameter + 'px',
+        backgroundColor: SELECTED_COLOR_THEME.highlight_colour,
+        borderRadius: "50%",
+        position: "absolute",
+        left: (hlight_left_pos - (edge_circle_diameter / 2) + props.line_width) + 'px',
+        top: ((hlight_top_pos + hlight_height) - (edge_circle_diameter / 2) + props.line_width) + 'px',
+        zIndex: props.z_index,
+    };
+    
+    let top_left_circle_style = {
+        width: edge_circle_diameter + 'px',
+        height: edge_circle_diameter + 'px',
+        backgroundColor: SELECTED_COLOR_THEME.highlight_colour,
+        borderRadius: "50%",
+        position: "absolute",
+        left: (hlight_left_pos - (edge_circle_diameter / 2) + props.line_width) + 'px',
+        top: (hlight_top_pos - (edge_circle_diameter / 2) + props.line_width) + 'px',
+        zIndex: props.z_index,
+    };
+    
+    let top_right_circle_style = {
+        width: edge_circle_diameter + 'px',
+        height: edge_circle_diameter + 'px',
+        backgroundColor: SELECTED_COLOR_THEME.highlight_colour,
+        borderRadius: "50%",
+        position: "absolute",
+        left: ((hlight_left_pos + hlight_width) - (edge_circle_diameter / 2) + props.line_width) + 'px',
+        top: (hlight_top_pos - (edge_circle_diameter / 2) + props.line_width) + 'px',
+        zIndex: props.z_index,
+    };
+    
     return (
-        <div 
-            style={{
-                position: 'absolute', 
-                left: hlight_left_pos + 'px', 
-                top: hlight_top_pos + 'px',
-                width: hlight_width + 'px',
-                height: hlight_height + 'px',
-                border: props.line_width + 'px ' + 'solid ' + SELECTED_COLOR_THEME.highlight_colour,
-                zIndex: props.z_index,
-            }}
-        >
+        <div>
+            {/* highlighter rectangle */}
+            <div 
+                style={{
+                    position: 'absolute', 
+                    left: hlight_left_pos + 'px', 
+                    top: hlight_top_pos + 'px',
+                    width: hlight_width + 'px',
+                    height: hlight_height + 'px',
+                    border: props.line_width + 'px ' + 'solid ' + SELECTED_COLOR_THEME.highlight_colour,
+                    zIndex: props.z_index,
+                }}
+            >
+            </div>
+            {/* highlighter edge circles */}
+            <div>
+                {/* bottom right edge circle */}
+                <div style={bottom_right_circle_style} />  
+                {/* bottom left edge circle */}
+                <div style={bottom_left_circle_style} />
+                {/* top left edge circle */}
+                <div style={top_left_circle_style} />
+                {/* top right edge circle */}
+                <div style={top_right_circle_style} />
+                  
+                  
+            </div>
         </div>
     );
 };

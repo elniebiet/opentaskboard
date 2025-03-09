@@ -207,8 +207,8 @@ const _sticky_note = (props) => {
             <div>
                 {(props.highlighted === true) ? (
                     <_highlighter gap={HIGHLIGHT_PARAMS.highlight_gap} line_width={HIGHLIGHT_PARAMS.highlight_line_width} 
-                        item_top_left_pos={{x: x, y: y}} item_width={stknote_width + (FLEXBOX_GAP_PERC * stknote_width * 2)} 
-                        item_height={stknote_width + (FLEXBOX_GAP_PERC * stknote_width)} z_index={z_index} />
+                        item_top_left_pos={{x: x, y: y}} item_width={stknote_width + (FLEXBOX_GAP_PERC * stknote_width * 4)} 
+                        item_height={stknote_width + (FLEXBOX_GAP_PERC * stknote_width * 4)} z_index={z_index} />
                     ) : (<div></div>)}
             </div>
             <div>

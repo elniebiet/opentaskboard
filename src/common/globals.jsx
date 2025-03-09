@@ -51,7 +51,7 @@ const _get_max_possible_z_index = () => {
 /*********** Highlighter block begins ***************/
 let HIGHLIGHT_PARAMS = {
     highlight_gap: '15', // pixels
-    highlight_line_width: '5'   // pixels
+    highlight_line_width: '3'   // pixels
 };
 
 /*********** Highlighter block ends ***************/
