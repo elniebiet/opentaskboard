@@ -1,4 +1,5 @@
 import { SELECTED_COLOR_THEME } from "../globals";
+import { HIGHLIGHT_DRAG_DIRECTION } from "../globals";
 
 /**
  * highlighter component for displaying active/selected element
@@ -27,6 +28,7 @@ const _highlighter = (props) => {
         left: ((hlight_left_pos + hlight_width) - (edge_circle_diameter / 2) + props.line_width) + 'px',
         top: ((hlight_top_pos + hlight_height) - (edge_circle_diameter / 2) + props.line_width) + 'px',
         zIndex: props.z_index,
+        cursor: "nwse-resize",
     };
     
     let bottom_left_circle_style = {
@@ -38,6 +40,7 @@ const _highlighter = (props) => {
         left: (hlight_left_pos - (edge_circle_diameter / 2) + props.line_width) + 'px',
         top: ((hlight_top_pos + hlight_height) - (edge_circle_diameter / 2) + props.line_width) + 'px',
         zIndex: props.z_index,
+        cursor: "nwse-resize",
     };
     
     let top_left_circle_style = {
@@ -49,6 +52,7 @@ const _highlighter = (props) => {
         left: (hlight_left_pos - (edge_circle_diameter / 2) + props.line_width) + 'px',
         top: (hlight_top_pos - (edge_circle_diameter / 2) + props.line_width) + 'px',
         zIndex: props.z_index,
+        cursor: "nwse-resize",
     };
     
     let top_right_circle_style = {
@@ -60,8 +64,30 @@ const _highlighter = (props) => {
         left: ((hlight_left_pos + hlight_width) - (edge_circle_diameter / 2) + props.line_width) + 'px',
         top: (hlight_top_pos - (edge_circle_diameter / 2) + props.line_width) + 'px',
         zIndex: props.z_index,
+        cursor: "nwse-resize",
+    };
+
+    const _hlight_bottom_right_mousedown = (e) => {
+        console.log("bottom right clicked");
+        props.highlighter_mouse_down(HIGHLIGHT_DRAG_DIRECTION.BOTTOM_RIGHT);
     };
     
+    const _hlight_bottom_right_mousedrag = (e) => {
+        console.log("bottom right clicked");
+        const {clientX, clientY} = e;
+        let perc_width_incr = 0; // TODO: calculate percentage width increase
+        let perc_height_incr = 0; // TODO: calculate percentage height increase
+        props.highlighter_mouse_drag(HIGHLIGHT_DRAG_DIRECTION.BOTTOM_RIGHT, perc_width_incr, perc_height_incr);
+    };
+
+    const _hlight_bottom_right_mouseup = (e) => {
+        console.log("bottom right clicked");
+        const {clientX, clientY} = e;
+        let perc_width_incr = 0; // TODO: calculate percentage width increase
+        let perc_height_incr = 0; // TODO: calculate percentage height increase
+        props.highlighter_mouse_up(HIGHLIGHT_DRAG_DIRECTION.BOTTOM_RIGHT, perc_width_incr, perc_height_incr);
+    };
+
     return (
         <div>
             {/* highlighter rectangle */}
@@ -80,7 +106,7 @@ const _highlighter = (props) => {
             {/* highlighter edge circles */}
             <div>
                 {/* bottom right edge circle */}
-                <div style={bottom_right_circle_style} />  
+                <div style={bottom_right_circle_style} onMouseDown={_hlight_bottom_right_mousedown} />  
                 {/* bottom left edge circle */}
                 <div style={bottom_left_circle_style} />
                 {/* top left edge circle */}

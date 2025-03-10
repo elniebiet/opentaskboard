@@ -54,6 +54,17 @@ let HIGHLIGHT_PARAMS = {
     highlight_line_width: '3'   // pixels
 };
 
+const HIGHLIGHT_DRAG_DIRECTION = {
+    TOP_LEFT:       1,
+    TOP_RIGHT:      2,
+    BOTTOM_LEFT:    3,
+    BOTTOM_RIGHT:   4,
+    TOP:            5,
+    BOTTOM:         6,
+    LEFT:           7,
+    RIGHT:          8
+};
+
 /*********** Highlighter block ends ***************/
 
 /* Color Theme */
@@ -102,5 +113,6 @@ export {
 
     /* Highlighter exports */
     HIGHLIGHT_PARAMS,
+    HIGHLIGHT_DRAG_DIRECTION,
 };
 

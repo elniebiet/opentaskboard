@@ -11,6 +11,7 @@ import _note_toolbar from "../../toolbars/note_toolbar";
 import { _colour_picker_no_button } from "../../common/components/colour_picker";
 import { HIGHLIGHT_PARAMS } from "../../common/globals";
 import _highlighter from "../../common/components/highlighter";
+import { HIGHLIGHT_DRAG_DIRECTION } from "../../common/globals";
 
 /**
  * Sticky note component
@@ -152,6 +153,23 @@ const _sticky_note = (props) => {
         props.taskboard_rerender_func();
     };
 
+    const _highlighter_mouse_down = (drag_direction) => {
+        _set_prevent_note_deactivation(true);
+        props.taskboard_rerender_func();
+    };
+
+    const _highlighter_mouse_drag = (drag_direction /*HIGHLIGHTER_DRAG_DIRECTION*/, 
+        percentage_width_increase, percentage_height_increase) => {
+        _set_prevent_note_deactivation(true);
+        props.taskboard_rerender_func();
+    };
+
+    const _highlighter_mouse_up = (drag_direction /*HIGHLIGHTER_DRAG_DIRECTION*/, 
+        percentage_width_increase, percentage_height_increase) => {
+        _set_prevent_note_deactivation(true);
+        props.taskboard_rerender_func();
+    };
+
     // current toolbar top left position
     const {x, y} = _get_note_location_top_left();
 
@@ -206,9 +224,9 @@ const _sticky_note = (props) => {
             {/* display highlighter */}
             <div>
                 {(props.highlighted === true) ? (
-                    <_highlighter gap={HIGHLIGHT_PARAMS.highlight_gap} line_width={HIGHLIGHT_PARAMS.highlight_line_width} 
-                        item_top_left_pos={{x: x, y: y}} item_width={stknote_width + (FLEXBOX_GAP_PERC * stknote_width * 4)} 
-                        item_height={stknote_width + (FLEXBOX_GAP_PERC * stknote_width * 4)} z_index={z_index} />
+                    <_highlighter gap={HIGHLIGHT_PARAMS.highlight_gap} line_width={HIGHLIGHT_PARAMS.highlight_line_width} item_top_left_pos={{x: x, y: y}} item_width={stknote_width + (FLEXBOX_GAP_PERC * stknote_width * 4)} 
+                        item_height={stknote_width + (FLEXBOX_GAP_PERC * stknote_width * 4)} z_index={z_index} highlighter_mouse_down={_highlighter_mouse_down} highlighter_mouse_drag={_highlighter_mouse_drag}
+                        highlighter_mouse_up={_highlighter_mouse_up} />
                     ) : (<div></div>)}
             </div>
             <div>
