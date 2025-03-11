@@ -112,6 +112,24 @@ const _update_note_win_width_perc = (id, win_width_perc) => {
 };
 
 /**
+ * get note width percentage
+ * @param {int} id - note id
+ * @return {float} win_width_perc - note width in percentage wrt window size
+ */
+const _get_note_win_width_perc = (id) => {
+    for(let i=0; i<notes.length; i++)
+    {
+        if(notes[i].id === id)
+        {
+            return notes[i].win_width_perc;
+        }
+    }
+
+    return 0;
+};
+
+
+/**
    * update note location
    * @param {int} id - note id
    * @param {int} int_x_cord - note x cordinate
@@ -201,6 +219,7 @@ export {
     _update_note_text,
     _update_note_colour,
     _update_note_win_width_perc,
+    _get_note_win_width_perc,
     _update_note_loc,
     _update_note_active_state,
     _update_note_toolbar_show,

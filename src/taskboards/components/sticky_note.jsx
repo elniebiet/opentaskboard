@@ -5,7 +5,7 @@ import { _get_complement_colour } from "../../common/utils";
 import { _set_global_toolbar_items_active_state } from "../taskboard_globals";
 import { TASKBOARD_TOOLBAR_ITEMS } from "../../toolbars/toolbar_globals";
 import { _delete_note, _update_note_loc, _update_note_text, _update_note_colour, _update_note_win_width_perc,
-            _update_note_active_state, _update_note_toolbar_show, _update_note_toolbar_loc,
+            _get_note_win_width_perc, _update_note_active_state, _update_note_toolbar_show, _update_note_toolbar_loc,
             _update_note_highlighted } from "../use_note";
 import _note_toolbar from "../../toolbars/note_toolbar";
 import { _colour_picker_no_button } from "../../common/components/colour_picker";
@@ -24,10 +24,6 @@ const _sticky_note = (props) => {
     _use_max_z_index();
     
     const [complement_colour, _set_complement_colour] = useState(_get_complement_colour(props.colour));
-
-    const [is_resizing, _set_is_resizing] = useState(false);
-
-    const [start_resize_loc, _set_start_resize_loc] = useState({ x: 0, y: 0 });
 
     const stk_root_location_ref = useRef(null);
 
@@ -117,20 +113,6 @@ const _sticky_note = (props) => {
         _set_is_editing(false);
     };
 
-    const _resizing_note_started = (e) => {
-        _set_start_resize_loc({x: e.clientX, y: e.clientY});
-        _set_is_editing(true);
-        _set_is_resizing(true);
-    };
-
-    const _resizing_note_ended = (e) => {
-        _set_is_resizing(false);
-        const new_x = e.clientX;
-        let new_width = stknote_width + (new_x - start_resize_loc.x);
-        let new_win_width_perc =  new_width/props.win_width;
-        _update_win_width_perc(new_win_width_perc);
-    };
-
     const _delete = () => {
         _update_note_toolbar_show(props.id, false);
         _delete_note(props.id);
@@ -156,18 +138,60 @@ const _sticky_note = (props) => {
     const _highlighter_mouse_down = (drag_direction) => {
         _set_prevent_note_deactivation(true);
         props.taskboard_rerender_func();
+
+        switch(drag_direction)
+        {
+            case HIGHLIGHT_DRAG_DIRECTION.BOTTOM_RIGHT:
+            {
+                _set_is_editing(true);                
+                break;
+            }
+            default:
+            {
+                break;
+            }
+         }
     };
 
-    const _highlighter_mouse_drag = (drag_direction /*HIGHLIGHTER_DRAG_DIRECTION*/, 
-        percentage_width_increase, percentage_height_increase) => {
+    // TODO: implement update for on mouse drag - not only on mouse up
+    const _highlighter_mouse_drag = (drag_direction, percentage_width_increase, percentage_height_increase) => {
         _set_prevent_note_deactivation(true);
         props.taskboard_rerender_func();
+        
+        switch(drag_direction)
+        {
+            case HIGHLIGHT_DRAG_DIRECTION.BOTTOM_RIGHT:
+            {
+                break;
+            }
+            default:
+            {
+                break;
+            }
+         }
     };
 
-    const _highlighter_mouse_up = (drag_direction /*HIGHLIGHTER_DRAG_DIRECTION*/, 
-        percentage_width_increase, percentage_height_increase) => {
+    const _highlighter_mouse_up = (drag_direction, percentage_width_increase, percentage_height_increase) => {
         _set_prevent_note_deactivation(true);
         props.taskboard_rerender_func();
+
+        switch(drag_direction)
+        {
+            case HIGHLIGHT_DRAG_DIRECTION.BOTTOM_RIGHT:
+            {
+                let current_width_perc = _get_note_win_width_perc(props.id);
+                let increase = (percentage_width_increase / 100) * current_width_perc;
+                console.log("current width perc: " + current_width_perc + " percentage increase: " + increase);
+                let new_win_width_perc = current_width_perc + increase;
+                _update_note_win_width_perc(props.id, new_win_width_perc);
+                props.taskboard_rerender_func();
+                break;
+            }
+            default:
+            {
+                break;
+            }
+         }
     };
 
     // current toolbar top left position
@@ -185,24 +209,6 @@ const _sticky_note = (props) => {
                 textarea_ref.current.setSelectionRange(0, props.text.length); // highlight text
             }
         }, [is_editing]
-    );
-
-    // mouse up resizing
-    useEffect(() => {
-        const _mouse_up_resizing = (e) => {
-            if(is_resizing)
-            {
-                _set_is_editing(false);
-                _set_is_resizing(false);
-                _resizing_note_ended(e);
-            }
-        };
-    
-        window.addEventListener('mouseup', _mouse_up_resizing);
-        return () => {
-          window.removeEventListener('mouseup', _mouse_up_resizing);
-        };
-      }, [is_resizing]
     );
     /********************* Effects block ends ***********************/
 
@@ -256,21 +262,6 @@ const _sticky_note = (props) => {
                             }}
                             onClick={() => {_set_global_toolbar_items_active_state(TASKBOARD_TOOLBAR_ITEMS.TBI_STKNOTE, true, true)}}
                         >
-                            {/* Resizer Handle */}
-                            <div 
-                                className="resizer"
-                                onMouseDown={_resizing_note_started}
-                                style={{
-                                    width: "10px",
-                                    height: "10px",
-                                    background: complement_colour,
-                                    position: "absolute",
-                                    bottom: "0",
-                                    right: "0",
-                                    cursor: "nwse-resize",
-                                }}
-                            />
-
                             <div
                                 id="stknote_menu_bar" 
                                 style={{ 

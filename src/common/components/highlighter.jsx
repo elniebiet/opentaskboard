@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { SELECTED_COLOR_THEME } from "../globals";
 import { HIGHLIGHT_DRAG_DIRECTION } from "../globals";
 
@@ -18,6 +19,9 @@ const _highlighter = (props) => {
     let hlight_height = props.item_height + (props.gap * 2);
 
     let edge_circle_diameter = 0.05 * hlight_width;
+
+    const [is_resizing, _set_is_resizing] = useState(false);
+    const [current_drag_dir, _set_current_drag_dir] = useState(HIGHLIGHT_DRAG_DIRECTION.BOTTOM_RIGHT);
     
     let bottom_right_circle_style = {
         width: edge_circle_diameter + 'px',
@@ -69,24 +73,60 @@ const _highlighter = (props) => {
 
     const _hlight_bottom_right_mousedown = (e) => {
         console.log("bottom right clicked");
+        _set_current_drag_dir(HIGHLIGHT_DRAG_DIRECTION.BOTTOM_RIGHT);
+        _set_is_resizing(true);
         props.highlighter_mouse_down(HIGHLIGHT_DRAG_DIRECTION.BOTTOM_RIGHT);
     };
     
     const _hlight_bottom_right_mousedrag = (e) => {
-        console.log("bottom right clicked");
-        const {clientX, clientY} = e;
-        let perc_width_incr = 0; // TODO: calculate percentage width increase
-        let perc_height_incr = 0; // TODO: calculate percentage height increase
+        console.log("bottom right dragging...");
+        let perc_width_incr = 0; 
+        let perc_height_incr = 0;
+        
+        // TODO: update on drag
+
         props.highlighter_mouse_drag(HIGHLIGHT_DRAG_DIRECTION.BOTTOM_RIGHT, perc_width_incr, perc_height_incr);
     };
 
     const _hlight_bottom_right_mouseup = (e) => {
-        console.log("bottom right clicked");
         const {clientX, clientY} = e;
-        let perc_width_incr = 0; // TODO: calculate percentage width increase
-        let perc_height_incr = 0; // TODO: calculate percentage height increase
+        let new_width = clientX - hlight_left_pos;
+        let perc_width_incr = (new_width - hlight_width) / hlight_width * 100;
+        let new_height = clientY - hlight_top_pos;
+        let perc_height_incr = (new_height - hlight_height) / hlight_height * 100;
         props.highlighter_mouse_up(HIGHLIGHT_DRAG_DIRECTION.BOTTOM_RIGHT, perc_width_incr, perc_height_incr);
     };
+
+    /********************* Effects block begins ***********************/
+    // mouse up resizing
+    useEffect(() => {
+        const _mouse_up_resizing = (e) => {
+            if(is_resizing)
+            {
+                switch(current_drag_dir)
+                {
+                    case HIGHLIGHT_DRAG_DIRECTION.BOTTOM_RIGHT:
+                    {
+                        _hlight_bottom_right_mouseup(e);
+                        break;
+                    }
+                    default:
+                    {
+                        break;
+                    }
+                }
+                
+                _set_is_resizing(false);
+            }
+        };
+    
+        window.addEventListener('mouseup', _mouse_up_resizing);
+        return () => {
+            window.removeEventListener('mouseup', _mouse_up_resizing);
+        };
+        }, [is_resizing]
+    );
+    /********************* Effects block ends ***********************/
 
     return (
         <div>
