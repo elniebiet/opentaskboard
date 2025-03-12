@@ -185,6 +185,25 @@ const _sticky_note = (props) => {
                 let new_win_width_perc = current_width_perc + increase;
                 _update_note_win_width_perc(props.id, new_win_width_perc);
                 props.taskboard_rerender_func();
+
+                break;
+            }
+            case HIGHLIGHT_DRAG_DIRECTION.TOP_LEFT:
+            {
+                // calculate new width and height
+                let current_width_perc = _get_note_win_width_perc(props.id);
+                let increase = (percentage_width_increase / 100) * current_width_perc;
+                let new_win_width_perc = current_width_perc + increase;
+                _update_note_win_width_perc(props.id, new_win_width_perc);
+
+                // calculate new top left position
+                let current_root_div_pos = root_div_position;
+                let new_x_pos = current_root_div_pos.x - (percentage_width_increase / 100) * stknote_width;
+                let new_y_pos = current_root_div_pos.y - (percentage_height_increase / 100) * stknote_width;
+                _set_root_div_position({x: new_x_pos, y: new_y_pos});
+                _update_note_loc(props.id, new_x_pos, new_y_pos);
+                props.taskboard_rerender_func();
+
                 break;
             }
             default:
