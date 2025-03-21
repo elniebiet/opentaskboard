@@ -91,10 +91,13 @@ const _highlighter = (props) => {
     const _hlight_bottom_right_mouseup = (e) => {
         const {clientX, clientY} = e;
         let new_width = clientX - hlight_left_pos;
-        let perc_width_incr = (new_width - hlight_width) / hlight_width * 100;
+        let width_change = (new_width - hlight_width);
+        let perc_width_incr = width_change / hlight_width * 100;
         let new_height = clientY - hlight_top_pos;
-        let perc_height_incr = (new_height - hlight_height) / hlight_height * 100;
-        props.highlighter_mouse_up(HIGHLIGHT_DRAG_DIRECTION.BOTTOM_RIGHT, perc_width_incr, perc_height_incr);
+        let height_change = (new_height - hlight_height);
+        let perc_height_incr = height_change / hlight_height * 100;
+        props.highlighter_mouse_up(HIGHLIGHT_DRAG_DIRECTION.BOTTOM_RIGHT, perc_width_incr, perc_height_incr, 
+            width_change, height_change);
     };
 
     const _hlight_top_left_mousedown = (e) => {
@@ -109,7 +112,8 @@ const _highlighter = (props) => {
         let perc_width_incr = width_change / hlight_width * 100;
         let height_change = hlight_top_pos - clientY;
         let perc_height_incr = height_change / hlight_height * 100;
-        props.highlighter_mouse_up(HIGHLIGHT_DRAG_DIRECTION.TOP_LEFT, perc_width_incr, perc_height_incr);
+        props.highlighter_mouse_up(HIGHLIGHT_DRAG_DIRECTION.TOP_LEFT, perc_width_incr, perc_height_incr,
+            width_change, height_change);
 
     };
 
