@@ -179,8 +179,7 @@ const _sticky_note = (props) => {
          }
     };
 
-    const _highlighter_mouse_up = (drag_direction, percentage_width_increase, percentage_height_increase,
-        width_increase_pixels, height_increase_pixels) => 
+    const _highlighter_mouse_up = (drag_direction, width_increase_pixels, height_increase_pixels) => 
     {
         _set_prevent_note_deactivation(true);
         props.taskboard_rerender_func();
@@ -190,7 +189,6 @@ const _sticky_note = (props) => {
             case HIGHLIGHT_DRAG_DIRECTION.BOTTOM_RIGHT:
             {
                 // calculate new width and height
-                let current_width_perc = _get_note_win_width_perc(props.id);
                 let new_width = stknote_width + width_increase_pixels;
                 let new_win_width_perc = new_width / props.win_width;
                 _update_note_win_width_perc(props.id, new_win_width_perc);                
@@ -201,7 +199,6 @@ const _sticky_note = (props) => {
             case HIGHLIGHT_DRAG_DIRECTION.TOP_LEFT:
             {
                 // calculate new width and height
-                let current_width_perc = _get_note_win_width_perc(props.id);
                 let new_width = stknote_width + width_increase_pixels;
                 let new_win_width_perc = new_width / props.win_width;
                 _update_note_win_width_perc(props.id, new_win_width_perc);         
@@ -216,6 +213,26 @@ const _sticky_note = (props) => {
                 const {x, y} = _get_note_location_top_left();
                 _set_overall_top_left({x: (x - width_increase_pixels), y: (y - height_increase_pixels)});
 
+                props.taskboard_rerender_func();
+
+                break;
+            }
+            case HIGHLIGHT_DRAG_DIRECTION.BOTTOM_LEFT:
+            {
+                // calculate new width and height
+                let new_width = stknote_width + width_increase_pixels;
+                let new_win_width_perc = new_width / props.win_width;
+                _update_note_win_width_perc(props.id, new_win_width_perc);
+
+                // calculate new top left position
+                let current_root_div_pos = root_div_position;
+                let new_x_pos = current_root_div_pos.x - width_increase_pixels;
+                let new_y_pos = current_root_div_pos.y;
+                _set_root_div_position({x: new_x_pos, y: new_y_pos});
+                _update_note_loc(props.id, new_x_pos, new_y_pos);
+                
+                const {x, y} = _get_note_location_top_left();
+                _set_overall_top_left({x: (x - width_increase_pixels), y: y});
                 props.taskboard_rerender_func();
 
                 break;

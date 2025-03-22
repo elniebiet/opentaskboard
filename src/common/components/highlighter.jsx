@@ -44,7 +44,7 @@ const _highlighter = (props) => {
         left: (hlight_left_pos - (edge_circle_diameter / 2) + props.line_width) + 'px',
         top: ((hlight_top_pos + hlight_height) - (edge_circle_diameter / 2) + props.line_width) + 'px',
         zIndex: props.z_index,
-        cursor: "nwse-resize",
+        cursor: "nesw-resize",
     };
     
     let top_left_circle_style = {
@@ -68,7 +68,7 @@ const _highlighter = (props) => {
         left: ((hlight_left_pos + hlight_width) - (edge_circle_diameter / 2) + props.line_width) + 'px',
         top: (hlight_top_pos - (edge_circle_diameter / 2) + props.line_width) + 'px',
         zIndex: props.z_index,
-        cursor: "nwse-resize",
+        cursor: "nesw-resize",
     };
 
     const _hlight_bottom_right_mousedown = (e) => {
@@ -92,12 +92,9 @@ const _highlighter = (props) => {
         const {clientX, clientY} = e;
         let new_width = clientX - hlight_left_pos;
         let width_change = (new_width - hlight_width);
-        let perc_width_incr = width_change / hlight_width * 100;
         let new_height = clientY - hlight_top_pos;
         let height_change = (new_height - hlight_height);
-        let perc_height_incr = height_change / hlight_height * 100;
-        props.highlighter_mouse_up(HIGHLIGHT_DRAG_DIRECTION.BOTTOM_RIGHT, perc_width_incr, perc_height_incr, 
-            width_change, height_change);
+        props.highlighter_mouse_up(HIGHLIGHT_DRAG_DIRECTION.BOTTOM_RIGHT, width_change, height_change);
     };
 
     const _hlight_top_left_mousedown = (e) => {
@@ -109,13 +106,24 @@ const _highlighter = (props) => {
     const _hlight_top_left_mouseup = (e) => {
         const {clientX, clientY} = e;
         let width_change = hlight_left_pos - clientX;
-        let perc_width_incr = width_change / hlight_width * 100;
         let height_change = hlight_top_pos - clientY;
-        let perc_height_incr = height_change / hlight_height * 100;
-        props.highlighter_mouse_up(HIGHLIGHT_DRAG_DIRECTION.TOP_LEFT, perc_width_incr, perc_height_incr,
-            width_change, height_change);
-
+        props.highlighter_mouse_up(HIGHLIGHT_DRAG_DIRECTION.TOP_LEFT, width_change, height_change);
     };
+
+    const _hlight_bottom_left_mousedown = (e) => {
+        _set_current_drag_dir(HIGHLIGHT_DRAG_DIRECTION.BOTTOM_LEFT);
+        _set_is_resizing(true);
+        props.highlighter_mouse_down(HIGHLIGHT_DRAG_DIRECTION.BOTTOM_LEFT);
+    };
+
+    const _hlight_bottom_left_mouseup = (e) => {
+        const {clientX, clientY} = e;
+        let width_change = hlight_left_pos - clientX;
+        let height_change = clientY - hlight_top_pos;
+        props.highlighter_mouse_up(HIGHLIGHT_DRAG_DIRECTION.BOTTOM_LEFT, width_change, height_change);
+    };
+
+
 
     /********************* Effects block begins ***********************/
     // mouse up resizing
@@ -133,6 +141,11 @@ const _highlighter = (props) => {
                     case HIGHLIGHT_DRAG_DIRECTION.TOP_LEFT:
                     {
                         _hlight_top_left_mouseup(e);
+                        break;
+                    }
+                    case HIGHLIGHT_DRAG_DIRECTION.BOTTOM_LEFT:
+                    {
+                        _hlight_bottom_left_mouseup(e);
                         break;
                     }
                     default:
@@ -173,7 +186,7 @@ const _highlighter = (props) => {
                 {/* bottom right edge circle */}
                 <div style={bottom_right_circle_style} onMouseDown={_hlight_bottom_right_mousedown} />  
                 {/* bottom left edge circle */}
-                <div style={bottom_left_circle_style} />
+                <div style={bottom_left_circle_style} onMouseDown={_hlight_bottom_left_mousedown}/>
                 {/* top left edge circle */}
                 <div style={top_left_circle_style} onMouseDown={_hlight_top_left_mousedown} />
                 {/* top right edge circle */}
