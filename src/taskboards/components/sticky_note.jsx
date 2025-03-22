@@ -31,6 +31,7 @@ const _sticky_note = (props) => {
 
     const [root_div_position, _set_root_div_position] = useState({x: props.x_pos, y: props.y_pos});
 
+    // cordinates for the actual top-left origin of the note
     const [overall_top_left, _set_overall_top_left] = useState({x: props.x_pos, y: props.y_pos});
 
     const [prevent_note_deactivation, _set_prevent_note_deactivation] = useState(false); 
@@ -122,6 +123,10 @@ const _sticky_note = (props) => {
         props.taskboard_rerender_func();
     };
 
+    /**
+     * Gets the actual top-left origin cordinates of the note
+     * @returns {x, y} object containing x,y cordinates
+     */
     const _get_note_location_top_left = () => {
         if (stk_root_location_ref.current) {
             const rect = stk_root_location_ref.current.getBoundingClientRect();
@@ -184,10 +189,11 @@ const _sticky_note = (props) => {
         {
             case HIGHLIGHT_DRAG_DIRECTION.BOTTOM_RIGHT:
             {
+                // calculate new width and height
                 let current_width_perc = _get_note_win_width_perc(props.id);
-                let increase = (percentage_width_increase / 100) * current_width_perc;
-                let new_win_width_perc = current_width_perc + increase;
-                _update_note_win_width_perc(props.id, new_win_width_perc);
+                let new_width = stknote_width + width_increase_pixels;
+                let new_win_width_perc = new_width / props.win_width;
+                _update_note_win_width_perc(props.id, new_win_width_perc);                
                 props.taskboard_rerender_func();
 
                 break;
@@ -196,9 +202,9 @@ const _sticky_note = (props) => {
             {
                 // calculate new width and height
                 let current_width_perc = _get_note_win_width_perc(props.id);
-                let increase = (percentage_width_increase / 100) * current_width_perc;
-                let new_win_width_perc = current_width_perc + increase;
-                _update_note_win_width_perc(props.id, new_win_width_perc);
+                let new_width = stknote_width + width_increase_pixels;
+                let new_win_width_perc = new_width / props.win_width;
+                _update_note_win_width_perc(props.id, new_win_width_perc);         
 
                 // calculate new top left position
                 let current_root_div_pos = root_div_position;
