@@ -3,7 +3,7 @@ import { SELECTED_COLOR_THEME } from "../globals";
 import { HIGHLIGHT_DRAG_DIRECTION } from "../globals";
 
 /**
- * highlighter component for displaying active/selected element
+ * Generic highlighter component for displaying active/selected element
  * @param {float} props.item_top_left_pos top left cordinate of item to be highlighted over 
  * @param {int} props.item_width width of item to be highlighted over 
  * @param {int} props.item_height height of item to be highlighted over 

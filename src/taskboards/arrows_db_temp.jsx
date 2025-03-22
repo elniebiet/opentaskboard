@@ -8,6 +8,7 @@ let arrows = [
         y2_pos: y2_pos,
         colour: colour,
         stroke_width: stroke_width,
+        highlighted: true,
     }
     */
   ];

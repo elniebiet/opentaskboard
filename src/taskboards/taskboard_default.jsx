@@ -292,7 +292,8 @@ const _taskboard_default = () => {
           <div>
               {/* display arrows */}
               {arrows.map((arrow) => (
-                <_draggable_arrow start_pos_x1={arrow.x1_pos} start_pos_y1={arrow.y1_pos} start_pos_x2={arrow.x2_pos} start_pos_y2={arrow.y2_pos} colour={arrow.colour} stroke_width={arrow.stroke_width} />
+                <_draggable_arrow id={arrow.id} start_pos_x1={arrow.x1_pos} start_pos_y1={arrow.y1_pos} start_pos_x2={arrow.x2_pos} start_pos_y2={arrow.y2_pos} colour={arrow.colour} stroke_width={arrow.stroke_width} 
+                is_highlighted={arrow.highlighted}/>
               ))}
           </div>
       </div>
