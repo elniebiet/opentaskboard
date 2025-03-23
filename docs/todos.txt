@@ -22,6 +22,7 @@ Notable todo items list:
 21. Move note colour picker to toolbar .DONE
 22. Every toolbar component should implement a highlighter functionality for highlighted components
 23. Every toolbar component should have a highlighted property 
+24. Replace note highlighter circles with <circle /> 
 
 
 
