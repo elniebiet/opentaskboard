@@ -5,8 +5,26 @@ import { TASKBOARD_TOOLBAR_ITEMS } from "../../toolbars/toolbar_globals";
 import { _get_max_z_index, _use_max_z_index } from "../globals";
 import { _update_arrow_highlighted } from "../../taskboards/use_arrow";
 
+
 const _arrow_highlighter = (arr_start_x_pos, arr_start_y_pos, arr_end_x_pos, arr_end_y_pos) => {
     //TODO: implement arrow highlighter
+    let CIRCLE_DIAMETER_PERC = 0.05;
+    // let arrow_length_pixels = Math.sqrt(Math.pow((arr_end_x_pos - arr_start_x_pos), 2) + Math.pow((arr_end_y_pos - arr_start_y_pos), 2));
+    // let cycle_diameter = CIRCLE_DIAMETER_PERC * arrow_length_pixels;
+    // console.log(arrow_length_pixels);
+
+    // let start_circle = {
+    //     width: cycle_diameter + 'px',
+    //     height: cycle_diameter + 'px',
+    //     backgroundColor: SELECTED_COLOR_THEME.highlight_colour,
+    //     borderRadius: "50%",
+    //     position: "absolute",
+    //     left: (hlight_left_pos - (edge_circle_diameter / 2) + props.line_width) + 'px',
+    //     top: (hlight_top_pos - (edge_circle_diameter / 2) + props.line_width) + 'px',
+    //     zIndex: props.z_index,
+    //     cursor: "nwse-resize",
+    // };
+
     return (
         <div></div>
     );
@@ -44,7 +62,6 @@ const _draggable_arrow = ({ id, start_pos_x1, start_pos_y1, start_pos_x2, start_
     };
 
     const _on_drag = (e, data) => {
-        console.log("Dragging");
         console.log(data);
         console.log(id);
         // _set_z_index(_get_max_z_index());
