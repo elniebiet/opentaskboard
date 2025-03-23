@@ -48,7 +48,7 @@ const _get_max_possible_z_index = () => {
 };
 /*********** ZINDEX block ends ***************/
 
-/*********** Highlighter block begins ***************/
+/*********** Generic Highlighter block begins ***************/
 let HIGHLIGHT_PARAMS = {
     highlight_gap: '15', // pixels
     highlight_line_width: '3'   // pixels
@@ -65,7 +65,15 @@ const HIGHLIGHT_DRAG_DIRECTION = {
     RIGHT:          8
 };
 
-/*********** Highlighter block ends ***************/
+/*********** Generic Highlighter block ends ***************/
+
+/*********** Arrow Highlight block begins ***************/
+const ARROW_HLIGHT_DRAG_POS = {
+    START:  1,
+    END:    2,
+};
+/*********** Arrow Highlight block ends ***************/
+
 
 /* Color Theme */
 const COLOR_THEMES = {
@@ -114,5 +122,8 @@ export {
     /* Highlighter exports */
     HIGHLIGHT_PARAMS,
     HIGHLIGHT_DRAG_DIRECTION,
+
+    /* Arrow Highlighter exports */
+    ARROW_HLIGHT_DRAG_POS,
 };
 

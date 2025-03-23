@@ -33,6 +33,24 @@ const _update_arrow_end_pos = (id, new_x2_pos, new_y2_pos) => {
 };
 
 /**
+ * update start point for an arrow
+ * @param {int} id - arrow id
+ * @param {int} new_x2_pos - new x cordinate
+ * @param {int} new_y2_pos - new y cordinate
+ */
+const _update_arrow_start_pos = (id, new_x1_pos, new_y1_pos) => {    
+  for(let i=0; i<arrows.length; i++)
+  {
+    if(arrows[i].id === id)
+    {
+      arrows[i].x1_pos = new_x1_pos;
+      arrows[i].y1_pos = new_y1_pos;
+      break;
+    }
+  }
+};
+
+/**
  * update arrow highlighted flag
  * @param {int} id - arrow id
  * @param {boolean} highlighted - arrow highlighted
@@ -51,5 +69,6 @@ const _update_arrow_highlighted = (id, highlighted) => {
 export {
     _add_arrow,
     _update_arrow_end_pos,
-    _update_arrow_highlighted
+    _update_arrow_start_pos,
+    _update_arrow_highlighted,
 };
