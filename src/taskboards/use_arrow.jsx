@@ -66,9 +66,26 @@ const _update_arrow_highlighted = (id, highlighted) => {
     }
 };
 
+/**
+ * update arrow colour
+ * @param {int} id - arrow id
+ * @param {string} colour colour hex string
+ */
+const _update_arrow_colour = (id, colour) => {
+  for(let i=0; i<arrows.length; i++)
+  {
+    if(arrows[i].id === id)
+    {
+      arrows[i].colour = colour;
+      break;
+    }
+  }
+};
+
 export {
     _add_arrow,
     _update_arrow_end_pos,
     _update_arrow_start_pos,
     _update_arrow_highlighted,
+    _update_arrow_colour,
 };
