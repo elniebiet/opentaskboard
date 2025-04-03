@@ -70,7 +70,8 @@ const HIGHLIGHT_DRAG_DIRECTION = {
 /*********** Arrow Highlight block begins ***************/
 const ARROW_HLIGHT_DRAG_POS = {
     START:  1,
-    END:    2,
+    MID:    2,
+    END:    3,
 };
 /*********** Arrow Highlight block ends ***************/
 
