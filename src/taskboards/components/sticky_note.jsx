@@ -74,7 +74,6 @@ const _sticky_note = (props) => {
         _use_max_z_index();
         _update_note_active_state(props.id, true);
         _update_note_highlighted(props.id, true);
-        _update_note_toolbar_loc(props.id, 300, 300);
         _update_note_toolbar_show(props.id, true);
         props.taskboard_rerender_func();
     };
@@ -291,9 +290,11 @@ const _sticky_note = (props) => {
             {/* display note toolbar */}
             <div>
                 {(props.show_toolbar === true) ? (
-                    <_note_toolbar note_id={props.id} win_width={props.win_width} win_height={props.win_height} x_pos={toolbar_x_pos} y_pos={toolbar_y_pos}
-                    taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state={props.request_taskboard_state} note_toolbar_item_clicked={_toolbar_item_clicked_notif}
-                    note_colour_picker_btn_clicked_func={_colour_picker_btn_clicked} note_update_colour_func={_update_colour} note_bg_colour={props.colour}
+                    <_note_toolbar note_id={props.id} win_width={props.win_width} win_height={props.win_height} 
+                        x_pos={toolbar_x_pos} y_pos={toolbar_y_pos} taskboard_rerender_func={props.taskboard_rerender_func} 
+                        request_taskboard_state={props.request_taskboard_state} note_toolbar_item_clicked={_toolbar_item_clicked_notif}
+                        note_colour_picker_btn_clicked_func={_colour_picker_btn_clicked} note_update_colour_func={_update_colour} 
+                        note_bg_colour={props.colour}
                     />) : (<div></div>)
                 }
             </div>

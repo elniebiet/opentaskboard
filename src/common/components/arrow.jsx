@@ -7,9 +7,11 @@ import { _update_arrow_highlighted, _update_arrow_start_pos, _update_arrow_end_p
     _update_arrow_colour } from "../../taskboards/use_arrow";
 import { SELECTED_COLOR_THEME } from "../globals";
 import { ARROW_HLIGHT_DRAG_POS } from "../globals";
+import _arrow_toolbar from "../../toolbars/arrow_toolbar";
+import { _update_arrow_toolbar_show, _update_arrow_toolbar_loc } from "../../taskboards/use_arrow";
 
 const _draggable_arrow = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour = "black", stroke_width = 2, 
-    is_highlighted, taskboard_rerender_func }) => {
+    is_highlighted, taskboard_rerender_func, show_toolbar, win_width, win_height }) => {
 
     const [line_start_pos, _set_line_start_pos] = useState({ x: start_pos_x, y: start_pos_y });
     const [line_end_pos, _set_line_end_pos] = useState({ x: end_pos_x, y: end_pos_y });
@@ -21,7 +23,8 @@ const _draggable_arrow = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, 
     
     const arrow_root_ref = useRef(null);
     
-    const HLIGHT_CIRC_RADIUS_RATIO_TO_STROKEWIDTH = 2.0;
+    const HLIGHT_CIRC_RADIUS_RATIO_TO_STROKEWIDTH   = 2.0;
+    const TOOLBAR_DISTANCE_TOP_PERC                 = 0.1; // percentage of the window height
     
     // Update state when props change
     useEffect(() => {
@@ -33,16 +36,21 @@ const _draggable_arrow = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, 
     }, [start_pos_x , start_pos_y, end_pos_x, end_pos_y]);
 
     const _on_click_handler = () => {
+        // probably take this out because of onmousedown event does the same thing
          _set_z_index(_get_max_z_index());
         _use_max_z_index();
         _set_global_toolbar_items_active_state(TASKBOARD_TOOLBAR_ITEMS.TBI_SHAPE, true, true);
         _set_arr_highlighted(true);
         _update_arrow_highlighted(id, true);
+        _update_arrow_toolbar_show(id, true);
+        taskboard_rerender_func();
     };
 
     const _deactivate_arrow = (e) => { 
         _set_arr_highlighted(false);
         _update_arrow_highlighted(id, false);
+        _update_arrow_toolbar_show(id, false);
+        taskboard_rerender_func();
     };
 
     const _hlight_start_mousedown = (e) => {
@@ -60,6 +68,52 @@ const _draggable_arrow = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, 
         _set_is_dragging_hlighter(true);
     };
     
+    const _get_line_length = () => {
+        const dx = line_end_pos.x - line_start_pos.x;
+        const dy = line_end_pos.y - line_start_pos.y;
+        return Math.sqrt(dx * dx + dy * dy);
+    };
+
+    const _toolbar_item_clicked_notif = (item_clicked) => {
+        // TODO: Implementation
+
+        // _set_prevent_note_deactivation(true);
+        taskboard_rerender_func();
+    };
+
+    const _colour_picker_btn_clicked = () => { 
+        // TODO: Implementation
+
+        console.log("color picker button clicked");
+    };
+
+    const _update_colour = (updated_hex_colour_val) => {
+        // TODO: Implementation
+
+        // _update_arrow_colour(props.id, updated_hex_colour_val);
+        //_set_complement_colour(_get_complement_colour(updated_hex_colour_val));
+        taskboard_rerender_func();
+    };
+
+    const _get_toolbar_position = () => {
+        let toolbar_distance_top = TOOLBAR_DISTANCE_TOP_PERC * win_height;
+        
+        let x = (line_start_pos.x + line_end_pos.x) / 2;
+        let y = 0; 
+        
+        if(line_start_pos.y < line_end_pos.y)
+        {
+            y = line_start_pos.y - toolbar_distance_top;
+        }
+        else
+        {
+            y = line_end_pos.y - toolbar_distance_top;
+        } 
+
+        y = (y < 0) ? 0 : y;
+
+        return { toolbar_x_pos: x, toolbar_y_pos: y };
+    };
 
     /********************* Effects block begins ***************************/
     // Event listener to detect click outside arrow component
@@ -75,6 +129,9 @@ const _draggable_arrow = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, 
                 _set_global_toolbar_items_active_state(TASKBOARD_TOOLBAR_ITEMS.TBI_SHAPE, true, true);
                 _set_arr_highlighted(true);
                 _update_arrow_highlighted(id, true);
+                
+                _update_arrow_toolbar_show(id, true);
+                taskboard_rerender_func();
             }
         };
 
@@ -170,8 +227,25 @@ const _draggable_arrow = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, 
     }, [is_dragging_hlighter]);
     /********************* Effects block ends *****************************/
 
+    
+    // calculate toolbar position
+    const { toolbar_x_pos, toolbar_y_pos } = _get_toolbar_position();
+
     return (
         <div ref={arrow_root_ref} id="arrow_root">
+            {/* display arrow toolbar */}
+            <div>
+                {(show_toolbar === true) ? (
+                    <_arrow_toolbar id={id} win_width={win_width} win_height={win_height} 
+                        x_pos={toolbar_x_pos} y_pos={toolbar_y_pos} taskboard_rerender_func={taskboard_rerender_func} 
+                        arrow_toolbar_item_clicked={_toolbar_item_clicked_notif}
+                        arrow_colour_picker_btn_clicked_func={_colour_picker_btn_clicked} arrow_update_colour_func={_update_colour} 
+                        arrow_bg_colour={colour}
+                    />
+                    ) : (<div></div>)
+                }
+            </div>
+            {/* display arrow */}
             <div>
                 <svg 
                     width="100%" 

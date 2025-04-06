@@ -29,7 +29,7 @@ const _add_note = (clicked = true, pos_x = 100, pos_y = 100) => {
             colour: SELECTED_COLOR_THEME.bg_colour,
             active: false,
             win_width_perc: STKNOTE_WIDTH_PERC_DEFAULT,
-            toolbar_show: false,
+            toolbar_show: true,
             toolbar_display_loc: {x: 200, y: 200},
             highlighted: true,  
         };
@@ -48,7 +48,7 @@ const _add_note = (clicked = true, pos_x = 100, pos_y = 100) => {
             colour: SELECTED_COLOR_THEME.bg_colour, 
             active: false,
             win_width_perc: STKNOTE_WIDTH_PERC_DEFAULT,
-            toolbar_show: false,
+            toolbar_show: true,
             toolbar_display_loc: {x: 200, y: 200},
             highlighted: true,   
         };
