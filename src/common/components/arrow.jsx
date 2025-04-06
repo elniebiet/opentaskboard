@@ -27,7 +27,6 @@ const _draggable_arrow = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, 
     useEffect(() => {
         if(is_dragging_arrow === false)
         {
-            console.log("is dragging is false");
             _set_line_start_pos({ x: start_pos_x, y: start_pos_y });
             _set_line_end_pos({ x: end_pos_x, y: end_pos_y });
         }
@@ -68,6 +67,14 @@ const _draggable_arrow = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, 
         const _handle_click_outside_arrow = (event) => {
             if (arrow_root_ref.current && !arrow_root_ref.current.contains(event.target)) {
                 _deactivate_arrow();
+            }
+            else
+            {
+                _set_z_index(_get_max_z_index());
+                _use_max_z_index();
+                _set_global_toolbar_items_active_state(TASKBOARD_TOOLBAR_ITEMS.TBI_SHAPE, true, true);
+                _set_arr_highlighted(true);
+                _update_arrow_highlighted(id, true);
             }
         };
 
