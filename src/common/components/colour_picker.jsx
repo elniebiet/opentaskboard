@@ -112,7 +112,7 @@ const _colour_picker_no_button = (props) => {
                     cursor: 'pointer',
                     position: 'relative',
                 }}
-                onClick={() => {_cp_btn_clicked}}
+                onClick={() => {_cp_btn_clicked()}}
             />
         </div>
     );

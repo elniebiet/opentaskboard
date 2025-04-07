@@ -68,8 +68,18 @@ const NOTE_TOOLBAR_ITEMS = {
     NTBI_OTHERS:                    100,
 };
 /* Note toolbar item indices end */
-
 /******************************* Note toolbar block ends *******************************/
+
+/******************************* Arrow toolbar block begins *******************************/
+/* Arrow toolbar item indices begin */
+const ARROW_TOOLBAR_ITEMS = {
+    ATBI_COLOUR:                1,
+    ATBI_INCREASE_LINE_WIDTH:   2,
+    ATBI_DECREASE_LINE_WIDTH:   3,
+    ATBI_DELETE:                4,
+};
+/* Arrow toolbar item indices end */    
+/******************************* Arrow toolbar block ends *******************************/
 
 
 export { 
@@ -79,5 +89,6 @@ export {
     TASKBOARD_TOOLBAR_ITEMS, 
     NOTE_TOOLBAR_ITEMS,
     SHAPES_TOOLBAR_ITEM_TYPE,
+    ARROW_TOOLBAR_ITEMS,
 };
 

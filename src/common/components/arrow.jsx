@@ -9,6 +9,7 @@ import { SELECTED_COLOR_THEME } from "../globals";
 import { ARROW_HLIGHT_DRAG_POS } from "../globals";
 import _arrow_toolbar from "../../toolbars/arrow_toolbar";
 import { _update_arrow_toolbar_show, _update_arrow_toolbar_loc } from "../../taskboards/use_arrow";
+import { ARROW_TOOLBAR_ITEMS } from "../../toolbars/toolbar_globals";
 
 const _draggable_arrow = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour = "black", stroke_width = 2, 
     is_highlighted, taskboard_rerender_func, show_toolbar, win_width, win_height }) => {
@@ -16,7 +17,8 @@ const _draggable_arrow = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, 
     const [line_start_pos, _set_line_start_pos] = useState({ x: start_pos_x, y: start_pos_y });
     const [line_end_pos, _set_line_end_pos] = useState({ x: end_pos_x, y: end_pos_y });
     const [z_index, _set_z_index] = useState(_get_max_z_index());
-    const [arr_highlighted, _set_arr_highlighted] = useState(is_highlighted);
+    const [arr_highlighted, _set_arr_highlighted] = useState(is_highlighted);   // arr_highlighted is the local version of is_highlighted
+    const [display_toolbar, _set_display_toolbar] = useState(show_toolbar);     // display_toolbar is the local version of show_toolbar
     const [selected_hlight_pos, _set_selected_hlight_pos] = useState(ARROW_HLIGHT_DRAG_POS.START);
     const [is_dragging_hlighter, _set_is_dragging_hlighter] = useState(false);
     const [is_dragging_arrow, _set_is_dragging_arrow] = useState(false); 
@@ -42,6 +44,7 @@ const _draggable_arrow = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, 
         _set_global_toolbar_items_active_state(TASKBOARD_TOOLBAR_ITEMS.TBI_SHAPE, true, true);
         _set_arr_highlighted(true);
         _update_arrow_highlighted(id, true);
+        _set_display_toolbar(true);
         _update_arrow_toolbar_show(id, true);
         taskboard_rerender_func();
     };
@@ -49,6 +52,7 @@ const _draggable_arrow = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, 
     const _deactivate_arrow = (e) => { 
         _set_arr_highlighted(false);
         _update_arrow_highlighted(id, false);
+        _set_display_toolbar(false);
         _update_arrow_toolbar_show(id, false);
     };
 
@@ -73,24 +77,46 @@ const _draggable_arrow = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, 
         return Math.sqrt(dx * dx + dy * dy);
     };
 
-    const _toolbar_item_clicked_notif = (item_clicked) => {
+    const _toolbar_item_clicked_notif = (arrow_tb_item_index) => {
         // TODO: Implementation
-
+        // TODO: check if the toolbar item clicked is the colour picker, activate do not draw flag, close this flag on next click
+        switch(arrow_tb_item_index)
+        {
+            case ARROW_TOOLBAR_ITEMS.ATBI_COLOUR:
+            {
+                console.log("colour selected");
+                break;
+            }
+            case ARROW_TOOLBAR_ITEMS.ATBI_INCREASE_LINE_WIDTH:
+            {
+                // TODO: Keep toolbar active when button clicked
+                console.log("increase line width selected");
+                break;
+            }
+            case ARROW_TOOLBAR_ITEMS.ATBI_DECREASE_LINE_WIDTH:
+            {
+                // TODO: Keep toolbar active when button clicked
+                console.log("decrease line width selected");
+                break;
+            }
+            case ARROW_TOOLBAR_ITEMS.ATBI_DELETE:
+            {
+                // delete the arrow
+                console.log("delete the arrow");
+                break;
+            }
+            default:
+            {
+                break;
+            }
+        }
+        
         // _set_prevent_note_deactivation(true);
         taskboard_rerender_func();
     };
 
-    const _colour_picker_btn_clicked = () => { 
-        // TODO: Implementation
-
-        console.log("color picker button clicked");
-    };
-
     const _update_colour = (updated_hex_colour_val) => {
-        // TODO: Implementation
-
-        // _update_arrow_colour(props.id, updated_hex_colour_val);
-        //_set_complement_colour(_get_complement_colour(updated_hex_colour_val));
+        _update_arrow_colour(id, updated_hex_colour_val);
         taskboard_rerender_func();
     };
 
@@ -129,6 +155,7 @@ const _draggable_arrow = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, 
                 _set_arr_highlighted(true);
                 _update_arrow_highlighted(id, true);
                 
+                _set_display_toolbar(true);
                 _update_arrow_toolbar_show(id, true);
                 taskboard_rerender_func();
             }
@@ -234,11 +261,10 @@ const _draggable_arrow = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, 
         <div ref={arrow_root_ref} id="arrow_root">
             {/* display arrow toolbar */}
             <div>
-                {(show_toolbar === true) ? (
+                {(display_toolbar === true) ? (
                     <_arrow_toolbar id={id} win_width={win_width} win_height={win_height} 
                         x_pos={toolbar_x_pos} y_pos={toolbar_y_pos} taskboard_rerender_func={taskboard_rerender_func} 
-                        arrow_toolbar_item_clicked={_toolbar_item_clicked_notif}
-                        arrow_colour_picker_btn_clicked_func={_colour_picker_btn_clicked} arrow_update_colour_func={_update_colour} 
+                        arrow_toolbar_item_clicked={_toolbar_item_clicked_notif} arrow_update_colour_func={_update_colour} 
                         arrow_bg_colour={colour}
                     />
                     ) : (<div></div>)
@@ -262,7 +288,7 @@ const _draggable_arrow = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, 
                 >
                     {/* Arrowhead Definition */}
                     <defs>
-                        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                        <marker id={`arrowhead${id}`} markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
                             <polygon points="0 0, 10 3.5, 0 7" fill={colour} />
                         </marker>
                     </defs>
@@ -275,7 +301,7 @@ const _draggable_arrow = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, 
                         y2={line_end_pos.y}
                         stroke={colour}
                         strokeWidth={stroke_width}
-                        markerEnd="url(#arrowhead)"
+                        markerEnd={`url(#arrowhead${id})`}
                         style={{ cursor: "grab", pointerEvents: "all" }}
                     />
 

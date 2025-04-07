@@ -2,28 +2,16 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Fab from '@mui/material/Fab';
 import { styled } from '@mui/system';
-import bold_img from '../../res/imgs/note_toolbar/bold_100x100.png';
-import italic_img from '../../res/imgs/note_toolbar/italic_100x100.png';
-import underline_img from '../../res/imgs/note_toolbar/underline_100x100.png';
-import strikethrough_img from '../../res/imgs/note_toolbar/strikethrough_100x100.png';
-import font_family_img from '../../res/imgs/note_toolbar/font_type_100x100.png';
-import font_size_img from '../../res/imgs/note_toolbar/font_size_100x100.png';
-import font_colour_img from '../../res/imgs/note_toolbar/font_colour_100x100.png';
-import alignment_img from '../../res/imgs/note_toolbar/alignment_centre_100x100.png';
-import link_img from '../../res/imgs/note_toolbar/link_100x100.png';
-import emoji_img from '../../res/imgs/note_toolbar/emoji_100x100.png';
-import others_img from '../../res/imgs/note_toolbar/ellipsis_100x100.png';
-import { useState, useEffect } from 'react';
+import unused_colour_img from '../../res/imgs/arrow_toolbar/colour_100x100.png';
+import increase_line_width_img from '../../res/imgs/arrow_toolbar/increase_line_width_100x100.png';
+import reduce_line_width_img from '../../res/imgs/arrow_toolbar/reduce_line_width_100x100.png';
+import delete_img from '../../res/imgs/arrow_toolbar/delete_100x100.png';
 import { SELECTED_COLOR_THEME } from '../common/globals';
-import { TASKBOARD_STATES } from '../taskboards/taskboard_globals';
 import { _get_max_z_index, _use_max_z_index } from '../common/globals';
 import { _set_global_cursor_type } from '../taskboards/taskboard_globals';
 import { _get_max_possible_z_index } from '../common/globals';
-import { NOTE_TOOLBAR_ITEMS } from './toolbar_globals';
+import { ARROW_TOOLBAR_ITEMS } from './toolbar_globals';
 import { _colour_picker_no_button } from '../common/components/colour_picker';
-
-// TEMPORARY ARROW TOOLBAR: 
-// REMOVE THIS COMMENT WHEN COMPLETED
 
 const _add_toolbar_item = (props) => 
 {
@@ -47,61 +35,27 @@ const _add_toolbar_item = (props) =>
     };
 
     const _on_tb_item_click = (e, tb_item_idx) => {
+        // Note: Can get rid of this switch statement if the cases do nothing else
         switch(tb_item_idx)
         {
-            case NOTE_TOOLBAR_ITEMS.NTBI_BOLD:
+            case ARROW_TOOLBAR_ITEMS.ATBI_COLOUR:
             {
-                props.arrow_tb_item_clicked_notif(NOTE_TOOLBAR_ITEMS.NTBI_BOLD);
-                break;
-            }
-            case NOTE_TOOLBAR_ITEMS.NTBI_ITALIC:
-            {
-                props.arrow_tb_item_clicked_notif(NOTE_TOOLBAR_ITEMS.NTBI_ITALIC);
+                props.arrow_tb_item_clicked_notif(ARROW_TOOLBAR_ITEMS.ATBI_COLOUR);
                 break;    
             }
-            case NOTE_TOOLBAR_ITEMS.NTBI_UNDERLINE:
+            case ARROW_TOOLBAR_ITEMS.ATBI_INCREASE_LINE_WIDTH:
             {
-                props.arrow_tb_item_clicked_notif(NOTE_TOOLBAR_ITEMS.NTBI_UNDERLINE);
+                props.arrow_tb_item_clicked_notif(ARROW_TOOLBAR_ITEMS.ATBI_INCREASE_LINE_WIDTH);
                 break;    
             }
-            case NOTE_TOOLBAR_ITEMS.NTBI_STRIKETHROUGH:
+            case ARROW_TOOLBAR_ITEMS.ATBI_DECREASE_LINE_WIDTH:
             {
-                props.arrow_tb_item_clicked_notif(NOTE_TOOLBAR_ITEMS.NTBI_STRIKETHROUGH);
+                props.arrow_tb_item_clicked_notif(ARROW_TOOLBAR_ITEMS.ATBI_DECREASE_LINE_WIDTH);
                 break;    
             }
-            case NOTE_TOOLBAR_ITEMS.NTBI_FONT_FAMILY:
+            case ARROW_TOOLBAR_ITEMS.ATBI_DELETE:
             {
-                props.arrow_tb_item_clicked_notif(NOTE_TOOLBAR_ITEMS.NTBI_FONT_FAMILY);
-                break;    
-            }
-            case NOTE_TOOLBAR_ITEMS.NTBI_FONT_SIZE:
-            {
-                props.arrow_tb_item_clicked_notif(NOTE_TOOLBAR_ITEMS.NTBI_FONT_SIZE);
-                break;    
-            }
-            case NOTE_TOOLBAR_ITEMS.NTBI_FONT_COLOUR:
-            {
-                props.arrow_tb_item_clicked_notif(NOTE_TOOLBAR_ITEMS.NTBI_FONT_COLOUR);
-                break;    
-            }
-            case NOTE_TOOLBAR_ITEMS.NTBI_ALIGNMENT:
-            {
-                props.arrow_tb_item_clicked_notif(NOTE_TOOLBAR_ITEMS.NTBI_ALIGNMENT);
-                break;    
-            }
-            case NOTE_TOOLBAR_ITEMS.NTBI_LINK:
-            {
-                props.arrow_tb_item_clicked_notif(NOTE_TOOLBAR_ITEMS.NTBI_LINK);
-                break;    
-            }
-            case NOTE_TOOLBAR_ITEMS.NTBI_EMOJI:
-            {
-                props.arrow_tb_item_clicked_notif(NOTE_TOOLBAR_ITEMS.NTBI_EMOJI);
-                break;    
-            }
-            case NOTE_TOOLBAR_ITEMS.NTBI_OTHERS:
-            {
-                props.arrow_tb_item_clicked_notif(NOTE_TOOLBAR_ITEMS.NTBI_OTHERS);
+                props.arrow_tb_item_clicked_notif(ARROW_TOOLBAR_ITEMS.ATBI_DELETE);
                 break;    
             }
             default:
@@ -118,20 +72,21 @@ const _add_toolbar_item = (props) =>
 
     switch(props.item_index)
     {
-        case NOTE_TOOLBAR_ITEMS.NTBI_FONT_COLOUR:
+        case ARROW_TOOLBAR_ITEMS.ATBI_COLOUR:
         {
             return (
                 <div id="main_tb_item" onMouseDown={_handle_tb_item_click}>
                         <div 
-                            id="note_colour_picker"
+                            id="arrow_colour_picker"
                             title={props.img_alt_txt}
                         >
-                            <_colour_picker_no_button id={"notecp" + props.id} colour={props.arrow_bg_colour} width={props.tb_root_width} height={props.tb_root_width} 
-                            onclick_func={props.arrow_colour_picker_btn_clicked_func} update_colour_func={props.arrow_update_colour_func} />
+                            <_colour_picker_no_button id={"arrowcp" + props.id} colour={props.arrow_bg_colour} width={props.tb_root_width} height={props.tb_root_width} 
+                            update_colour_func={props.arrow_update_colour_func} onclick_func={_do_nothing} />
                         </div>
                 </div>
             );
         }
+
         default:
         {
             return (
@@ -190,61 +145,28 @@ const _arrow_toolbar = (props) => {
         <div>
             <div id="note_toolbar_root" style={toolbar_styling_top}>
                 <Box sx={{ '& > :not(style)': { m: 0.5 } }} display="flex" flexDirection={"row"}>
-                    <_add_toolbar_item item_index={NOTE_TOOLBAR_ITEMS.NTBI_BOLD} img_src={bold_img} img_alt_txt={"Bold"} 
-                    on_bold_click={_do_nothing}  tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br}
-                    taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state} 
+                    <_add_toolbar_item item_index={ARROW_TOOLBAR_ITEMS.ATBI_INCREASE_LINE_WIDTH} img_src={increase_line_width_img} img_alt_txt={"Increase Line Width"} 
+                    tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
+                    taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
+                    arrow_tb_item_clicked_notif={props.arrow_toolbar_item_clicked} arrow_update_colour_func={props.arrow_update_colour_func} 
+                    arrow_bg_colour={props.arrow_bg_colour}
+                    />
+                    <_add_toolbar_item item_index={ARROW_TOOLBAR_ITEMS.ATBI_DECREASE_LINE_WIDTH} img_src={reduce_line_width_img} img_alt_txt={"Reduce Line Width"} 
+                    tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
+                    taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
+                    arrow_tb_item_clicked_notif={props.arrow_toolbar_item_clicked} arrow_update_colour_func={props.arrow_update_colour_func} 
+                    arrow_bg_colour={props.arrow_bg_colour}
+                    />
+                    <_add_toolbar_item item_index={ARROW_TOOLBAR_ITEMS.ATBI_COLOUR} img_src={unused_colour_img} img_alt_txt={"Colour"} 
+                    tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
+                    taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
+                    arrow_tb_item_clicked_notif={props.arrow_toolbar_item_clicked} arrow_update_colour_func={props.arrow_update_colour_func} 
+                    arrow_bg_colour={props.arrow_bg_colour}
+                    />
+                    <_add_toolbar_item item_index={ARROW_TOOLBAR_ITEMS.ATBI_DELETE} img_src={delete_img} img_alt_txt={"Delete"} 
+                    tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
+                    taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
                     arrow_tb_item_clicked_notif={props.arrow_toolbar_item_clicked}
-                    />
-                    <_add_toolbar_item item_index={NOTE_TOOLBAR_ITEMS.NTBI_ITALIC} img_src={italic_img} img_alt_txt={"Italic"} 
-                    tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
-                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
-                    arrow_tb_item_clicked_notif={props.arrow_toolbar_item_clicked} 
-                    />
-                    <_add_toolbar_item item_index={NOTE_TOOLBAR_ITEMS.NTBI_UNDERLINE} img_src={underline_img} img_alt_txt={"Underline"} 
-                    tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
-                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
-                    arrow_tb_item_clicked_notif={props.arrow_toolbar_item_clicked} 
-                    />
-                    <_add_toolbar_item item_index={NOTE_TOOLBAR_ITEMS.NTBI_STRIKETHROUGH} img_src={strikethrough_img} img_alt_txt={"StrikeThrough"} 
-                    tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
-                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
-                    arrow_tb_item_clicked_notif={props.arrow_toolbar_item_clicked} 
-                    />
-                    <_add_toolbar_item item_index={NOTE_TOOLBAR_ITEMS.NTBI_FONT_FAMILY} img_src={font_family_img} img_alt_txt={"Font Family"} 
-                    tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
-                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
-                    arrow_tb_item_clicked_notif={props.arrow_toolbar_item_clicked} 
-                    />
-                    <_add_toolbar_item item_index={NOTE_TOOLBAR_ITEMS.NTBI_FONT_SIZE} img_src={font_size_img} img_alt_txt={"Font Size"} 
-                    tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
-                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
-                    arrow_tb_item_clicked_notif={props.arrow_toolbar_item_clicked} 
-                    />
-                    <_add_toolbar_item item_index={NOTE_TOOLBAR_ITEMS.NTBI_FONT_COLOUR} img_src={font_colour_img} img_alt_txt={"Font Colour"} 
-                    tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
-                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
-                    arrow_tb_item_clicked_notif={props.arrow_toolbar_item_clicked} arrow_colour_picker_btn_clicked_func={props.arrow_colour_picker_btn_clicked_func}
-                    arrow_update_colour_func={props.arrow_update_colour_func} arrow_bg_colour={props.arrow_bg_colour}
-                    />
-                    <_add_toolbar_item item_index={NOTE_TOOLBAR_ITEMS.NTBI_ALIGNMENT} img_src={alignment_img} img_alt_txt={"Alignment"} 
-                    tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
-                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
-                    arrow_tb_item_clicked_notif={props.arrow_toolbar_item_clicked} 
-                    />
-                    <_add_toolbar_item item_index={NOTE_TOOLBAR_ITEMS.NTBI_LINK} img_src={link_img} img_alt_txt={"Link"} 
-                    tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
-                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
-                    arrow_tb_item_clicked_notif={props.arrow_toolbar_item_clicked} 
-                    />
-                    <_add_toolbar_item item_index={NOTE_TOOLBAR_ITEMS.NTBI_EMOJI} img_src={emoji_img} img_alt_txt={"Emoji"} 
-                    tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
-                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
-                    arrow_tb_item_clicked_notif={props.arrow_toolbar_item_clicked} 
-                    />
-                    <_add_toolbar_item item_index={NOTE_TOOLBAR_ITEMS.NTBI_OTHERS} img_src={others_img} img_alt_txt={"Other options"} 
-                    tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
-                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
-                    arrow_tb_item_clicked_notif={props.arrow_toolbar_item_clicked} 
                     />
                 </Box>
             </div>            

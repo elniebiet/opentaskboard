@@ -24,6 +24,7 @@ Notable todo items list:
 23. Every toolbar component should have a highlighted property 
 24. Replace note highlighter circles with <circle /> 
 25. Increase activation width of arrow, so that areas close to the arrow activates the arrow.
+26. Update z_indices in database anytime they are updated
 
 
 
