@@ -23,6 +23,7 @@ Notable todo items list:
 22. Every toolbar component should implement a highlighter functionality for highlighted components
 23. Every toolbar component should have a highlighted property 
 24. Replace note highlighter circles with <circle /> 
+25. Increase activation width of arrow, so that areas close to the arrow activates the arrow.
 
 
 

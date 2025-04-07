@@ -50,7 +50,6 @@ const _draggable_arrow = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, 
         _set_arr_highlighted(false);
         _update_arrow_highlighted(id, false);
         _update_arrow_toolbar_show(id, false);
-        taskboard_rerender_func();
     };
 
     const _hlight_start_mousedown = (e) => {
