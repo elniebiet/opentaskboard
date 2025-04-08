@@ -78,7 +78,7 @@ const _taskboard_default = () => {
   /***************** Misc block ends *************************/
 
   /************** Pointer selection begins **************************/
-  const _select_pointer = (cursor_type = 'default') => 
+  const _select_pointer = (cursor_type = CURSOR_TYPES.CT_DEFAULT) => 
   {
     console.log("pointer selected: taskboard_state " + taskboard_state);
     _set_global_cursor_type(cursor_type);
@@ -121,7 +121,19 @@ const _taskboard_default = () => {
         console.log("taskboard state " + taskboard_state);
         switch(taskboard_state)
         {
-          // listen to page clicks when sub-toolbar is active, incase non of it's buttons were selected
+          // listen to page clicks when main sub-toolbar is active, incase non of it's buttons were selected
+          case (TASKBOARD_STATES.TBS_NORMAL):
+          {
+            let cursor_type = _get_global_cursor_type();
+            console.log("cursor type: " + cursor_type);
+            if(cursor_type !== CURSOR_TYPES.CT_DEFAULT)
+            {
+              _set_global_cursor_type(CURSOR_TYPES.CT_DEFAULT);
+              _trigger_taskboard_rerender();
+            }
+
+            break;  
+          }
           case (TASKBOARD_STATES.TBS_SUB_TOOLBAR_ACTIVE):
           {
             break;
@@ -292,8 +304,9 @@ const _taskboard_default = () => {
           <div>
               {/* display arrows */}
               {arrows.map((arrow) => (
-                <_draggable_arrow key={arrow.id} id={arrow.id} start_pos_x={arrow.x1_pos} start_pos_y={arrow.y1_pos} end_pos_x={arrow.x2_pos} end_pos_y={arrow.y2_pos} colour={arrow.colour} stroke_width={arrow.stroke_width} 
-                is_highlighted={arrow.highlighted} taskboard_rerender_func={_trigger_taskboard_rerender} show_toolbar={arrow.toolbar_show} win_width={width} win_height={height}/>
+                <_draggable_arrow key={arrow.id} id={arrow.id} start_pos_x={arrow.x1_pos} start_pos_y={arrow.y1_pos} end_pos_x={arrow.x2_pos} end_pos_y={arrow.y2_pos} 
+                colour={arrow.colour} stroke_width={arrow.stroke_width} is_highlighted={arrow.highlighted} taskboard_rerender_func={_trigger_taskboard_rerender} 
+                show_toolbar={arrow.toolbar_show} win_width={width} win_height={height} request_taskboard_state={_request_taskboard_state}/>
               ))}
           </div>
       </div>
