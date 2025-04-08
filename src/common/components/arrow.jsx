@@ -10,6 +10,7 @@ import { ARROW_HLIGHT_DRAG_POS } from "../globals";
 import _arrow_toolbar from "../../toolbars/arrow_toolbar";
 import { _update_arrow_toolbar_show, _update_arrow_toolbar_loc } from "../../taskboards/use_arrow";
 import { ARROW_TOOLBAR_ITEMS } from "../../toolbars/toolbar_globals";
+import { _delete_arrow } from "../../taskboards/use_arrow";
 
 const _draggable_arrow = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour = "black", stroke_width = 2, 
     is_highlighted, taskboard_rerender_func, show_toolbar, win_width, win_height }) => {
@@ -100,8 +101,7 @@ const _draggable_arrow = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, 
             }
             case ARROW_TOOLBAR_ITEMS.ATBI_DELETE:
             {
-                // delete the arrow
-                console.log("delete the arrow");
+                _delete_arrow(id);
                 break;
             }
             default:

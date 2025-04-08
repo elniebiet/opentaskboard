@@ -117,6 +117,17 @@ const _update_arrow_toolbar_loc = (id, int_loc_x, int_loc_y) => {
   }
 };
 
+/**
+ * delete arrow
+ * @param {int} id - arrow id
+ */
+const _delete_arrow = (id) => {
+  const index = arrows.findIndex(arrow => arrow.id === id);
+  if (index !== -1) {
+      arrows.splice(index, 1); 
+  }
+};
+
 export {
     _add_arrow,
     _update_arrow_end_pos,
@@ -125,4 +136,5 @@ export {
     _update_arrow_colour,
     _update_arrow_toolbar_show,
     _update_arrow_toolbar_loc,
+    _delete_arrow,
 };
