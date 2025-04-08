@@ -27,6 +27,7 @@ const _draggable_arrow = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, 
     
     const HLIGHT_CIRC_RADIUS_RATIO_TO_STROKEWIDTH   = 2.0;
     const TOOLBAR_DISTANCE_TOP_PERC                 = 0.1; // percentage of the window height
+
     
     // Update state when props change
     useEffect(() => {
@@ -89,13 +90,11 @@ const _draggable_arrow = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, 
             }
             case ARROW_TOOLBAR_ITEMS.ATBI_INCREASE_LINE_WIDTH:
             {
-                // TODO: Keep toolbar active when button clicked
                 console.log("increase line width selected");
                 break;
             }
             case ARROW_TOOLBAR_ITEMS.ATBI_DECREASE_LINE_WIDTH:
             {
-                // TODO: Keep toolbar active when button clicked
                 console.log("decrease line width selected");
                 break;
             }
@@ -110,8 +109,7 @@ const _draggable_arrow = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, 
                 break;
             }
         }
-        
-        // _set_prevent_note_deactivation(true);
+
         taskboard_rerender_func();
     };
 
@@ -145,6 +143,7 @@ const _draggable_arrow = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, 
     useEffect(() => {
         const _handle_click_outside_arrow = (event) => {
             if (arrow_root_ref.current && !arrow_root_ref.current.contains(event.target)) {
+                console.log("Clicked outside the arrow component");                
                 _deactivate_arrow();
             }
             else

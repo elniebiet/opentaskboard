@@ -45,11 +45,13 @@ const _add_toolbar_item = (props) =>
             }
             case ARROW_TOOLBAR_ITEMS.ATBI_INCREASE_LINE_WIDTH:
             {
+                e.stopPropagation(); // to keep toolbar active
                 props.arrow_tb_item_clicked_notif(ARROW_TOOLBAR_ITEMS.ATBI_INCREASE_LINE_WIDTH);
                 break;    
             }
             case ARROW_TOOLBAR_ITEMS.ATBI_DECREASE_LINE_WIDTH:
             {
+                e.stopPropagation(); // to keep toolbar active
                 props.arrow_tb_item_clicked_notif(ARROW_TOOLBAR_ITEMS.ATBI_DECREASE_LINE_WIDTH);
                 break;    
             }
