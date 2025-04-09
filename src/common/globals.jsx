@@ -80,6 +80,7 @@ const ARROW_WIDTH_INCR_FACTOR   = 0.1; // 10 percent of original width
 const ARROW_WIDTH_DECR_FACTOR   = 0.1; // 10 percent of original width
 const MAX_ARROW_WIDTH           = 100; // maximum arrow width in pixels
 const MIN_ARROW_WIDTH           = 1;   // minimum arrow width in pixels
+const MIN_ARROW_LENGTH          = 30;  // minimum arrow length in pixels
 /*********** Arrow block ends ***************/
 
 
@@ -139,5 +140,6 @@ export {
     ARROW_WIDTH_DECR_FACTOR,
     MAX_ARROW_WIDTH,
     MIN_ARROW_WIDTH,
+    MIN_ARROW_LENGTH,
 };
 

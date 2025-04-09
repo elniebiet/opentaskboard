@@ -1,20 +1,36 @@
 import arrows from "./arrows_db_temp";
-import { ARROW_WIDTH_INCR_FACTOR, ARROW_WIDTH_DECR_FACTOR, MAX_ARROW_WIDTH, MIN_ARROW_WIDTH } from "../common/globals";
+import { ARROW_WIDTH_INCR_FACTOR, ARROW_WIDTH_DECR_FACTOR, MAX_ARROW_WIDTH, MIN_ARROW_WIDTH,
+  MIN_ARROW_LENGTH } from "../common/globals";
+
+const _calculate_arrow_length = (line_start_pos_x, line_start_pos_y, line_end_pos_x, line_end_pos_y) => {
+  const dx = line_end_pos_x - line_start_pos_x;
+  const dy = line_end_pos_y - line_start_pos_y;
+  return Math.sqrt(dx * dx + dy * dy);
+};
 
 const _add_arrow = (id, x1_pos, y1_pos, x2_pos, y2_pos, colour, stroke_width) => {
-    const new_arrow = { 
-        id: id,
-        x1_pos: x1_pos,
-        x2_pos: x2_pos,
-        y1_pos: y1_pos,
-        y2_pos: y2_pos,
-        colour: colour,
-        stroke_width: stroke_width, 
-        highlighted: true,
-        toolbar_show: true,
-        toolbar_display_loc: {x: 200, y: 200},
-    };
-    arrows.push(new_arrow);
+
+  let line_length = _calculate_arrow_length(x1_pos, y1_pos, x2_pos, y2_pos);
+  
+  if(line_length < MIN_ARROW_LENGTH)
+  {
+    x2_pos = x1_pos + MIN_ARROW_LENGTH;
+    y2_pos = y1_pos + MIN_ARROW_LENGTH;
+  }
+
+  const new_arrow = { 
+      id: id,
+      x1_pos: x1_pos,
+      x2_pos: x2_pos,
+      y1_pos: y1_pos,
+      y2_pos: y2_pos,
+      colour: colour,
+      stroke_width: stroke_width, 
+      highlighted: true,
+      toolbar_show: true,
+      toolbar_display_loc: {x: 200, y: 200},
+  };
+  arrows.push(new_arrow);
 };
 
 /**
@@ -28,6 +44,14 @@ const _update_arrow_end_pos = (id, new_x2_pos, new_y2_pos) => {
     {
       if(arrows[i].id === id)
       {
+        let line_length = _calculate_arrow_length(arrows[i].x1_pos, arrows[i].y1_pos, new_x2_pos, new_y2_pos);
+  
+        if(line_length < MIN_ARROW_LENGTH)
+        {
+          new_x2_pos = new_x2_pos + MIN_ARROW_LENGTH;
+          new_y2_pos = new_y2_pos + MIN_ARROW_LENGTH;
+        }
+
         arrows[i].x2_pos = new_x2_pos;
         arrows[i].y2_pos = new_y2_pos;
         break;
