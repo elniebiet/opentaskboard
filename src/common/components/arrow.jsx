@@ -11,6 +11,25 @@ import _arrow_toolbar from "../../toolbars/arrow_toolbar";
 import { ARROW_TOOLBAR_ITEMS } from "../../toolbars/toolbar_globals";
 import { TASKBOARD_STATES } from "../../taskboards/taskboard_globals";
 
+/**
+ * _draggable_arrow - Draggable arrow component
+ * PLEASE NOTE: THIS COMPONENT IMPLEMENTS ITS OWN HIGHLIGHTER
+ * @param {int} id - Arrow ID
+ * @param {float} start_pos_x - Arrow start x position
+ * @param {float} start_pos_y - Arrow start y position
+ * @param {float} end_pos_x - Arrow end x position
+ * @param {float} end_pos_y - Arrow end y position
+ * @param {string} colour - Arrow colour
+ * @param {int} stroke_width - Arrow stroke width
+ * @param {boolean} is_highlighted - Arrow highlighted state
+ * @param {function} taskboard_rerender_func - Function to trigger taskboard re-render
+ * @param {boolean} show_toolbar - Arrow toolbar visibility
+ * @param {int} win_width - Window width
+ * @param {int} win_height - Window height
+ * @param {function} request_taskboard_state - Function to request taskboard state
+ * @returns 
+ */
+
 const _draggable_arrow = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour = "black", stroke_width = 2, 
     is_highlighted, taskboard_rerender_func, show_toolbar, win_width, win_height, request_taskboard_state }) => {
 
