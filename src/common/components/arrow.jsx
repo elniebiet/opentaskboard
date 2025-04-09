@@ -5,7 +5,7 @@ import { TASKBOARD_TOOLBAR_ITEMS } from "../../toolbars/toolbar_globals";
 import { _get_max_z_index, _use_max_z_index } from "../globals";
 import { _update_arrow_highlighted, _update_arrow_start_pos, _update_arrow_end_pos,
     _update_arrow_colour, _update_arrow_toolbar_show, _update_arrow_toolbar_loc,
-    _delete_arrow   } from "../../taskboards/use_arrow";
+    _delete_arrow, _increase_arrow_width, _decrease_arrow_width } from "../../taskboards/use_arrow";
 import { SELECTED_COLOR_THEME } from "../globals";
 import { ARROW_HLIGHT_DRAG_POS } from "../globals";
 import _arrow_toolbar from "../../toolbars/arrow_toolbar";
@@ -89,13 +89,13 @@ const _draggable_arrow = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, 
             }
             case ARROW_TOOLBAR_ITEMS.ATBI_INCREASE_LINE_WIDTH:
             {
-                console.log("increase line width selected");
+                _increase_arrow_width(id);
                 request_taskboard_state(TASKBOARD_STATES.TBS_NORMAL);
                 break;
             }
             case ARROW_TOOLBAR_ITEMS.ATBI_DECREASE_LINE_WIDTH:
             {
-                console.log("decrease line width selected");
+                _decrease_arrow_width(id);
                 request_taskboard_state(TASKBOARD_STATES.TBS_NORMAL);
                 break;
             }

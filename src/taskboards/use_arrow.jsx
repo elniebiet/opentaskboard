@@ -1,4 +1,5 @@
 import arrows from "./arrows_db_temp";
+import { ARROW_WIDTH_INCR_FACTOR, ARROW_WIDTH_DECR_FACTOR, MAX_ARROW_WIDTH, MIN_ARROW_WIDTH } from "../common/globals";
 
 const _add_arrow = (id, x1_pos, y1_pos, x2_pos, y2_pos, colour, stroke_width) => {
     const new_arrow = { 
@@ -128,6 +129,56 @@ const _delete_arrow = (id) => {
   }
 };
 
+/**
+ * increase arrow width
+ * @param {int} id - arrow id
+ */
+const _increase_arrow_width = (id) => {
+  for(let i=0; i<arrows.length; i++)
+  {
+    if(arrows[i].id === id)
+    {
+      let increment = (arrows[i].stroke_width * ARROW_WIDTH_INCR_FACTOR);
+
+      if(arrows[i].stroke_width + increment > MAX_ARROW_WIDTH)
+      {
+        arrows[i].stroke_width = MAX_ARROW_WIDTH;
+      }
+      else
+      {
+        arrows[i].stroke_width += increment;
+      }
+
+      break;
+    }
+  }
+};
+
+/**
+ * decrease arrow width
+ * @param {int} id - arrow id
+ */
+const _decrease_arrow_width = (id) => {
+  for(let i=0; i<arrows.length; i++)
+  {
+    if(arrows[i].id === id)
+    {
+      let decrement = (arrows[i].stroke_width * ARROW_WIDTH_INCR_FACTOR);
+      
+      if(arrows[i].stroke_width - decrement < MIN_ARROW_WIDTH)
+      {
+        arrows[i].stroke_width = MIN_ARROW_WIDTH;
+      }
+      else
+      {
+        arrows[i].stroke_width -= decrement;
+      }
+
+      break;
+    }
+  }
+};
+
 export {
     _add_arrow,
     _update_arrow_end_pos,
@@ -137,4 +188,6 @@ export {
     _update_arrow_toolbar_show,
     _update_arrow_toolbar_loc,
     _delete_arrow,
+    _increase_arrow_width,
+    _decrease_arrow_width,
 };

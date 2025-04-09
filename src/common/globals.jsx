@@ -67,13 +67,20 @@ const HIGHLIGHT_DRAG_DIRECTION = {
 
 /*********** Generic Highlighter block ends ***************/
 
-/*********** Arrow Highlight block begins ***************/
+/*********** Arrow block begins ***************/
+// Arrow highlighter drag positions
 const ARROW_HLIGHT_DRAG_POS = {
     START:  1,
     MID:    2,
     END:    3,
 };
-/*********** Arrow Highlight block ends ***************/
+
+// Arrow width increment and decrement factors
+const ARROW_WIDTH_INCR_FACTOR   = 0.1; // 10 percent of original width
+const ARROW_WIDTH_DECR_FACTOR   = 0.1; // 10 percent of original width
+const MAX_ARROW_WIDTH           = 100; // maximum arrow width in pixels
+const MIN_ARROW_WIDTH           = 1;   // minimum arrow width in pixels
+/*********** Arrow block ends ***************/
 
 
 /* Color Theme */
@@ -126,5 +133,11 @@ export {
 
     /* Arrow Highlighter exports */
     ARROW_HLIGHT_DRAG_POS,
+
+    /* Arrow exports */
+    ARROW_WIDTH_INCR_FACTOR,
+    ARROW_WIDTH_DECR_FACTOR,
+    MAX_ARROW_WIDTH,
+    MIN_ARROW_WIDTH,
 };
 
