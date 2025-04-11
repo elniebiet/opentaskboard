@@ -22,6 +22,8 @@ const _highlighter = (props) => {
 
     const [is_resizing, _set_is_resizing] = useState(false);
     const [current_drag_dir, _set_current_drag_dir] = useState(HIGHLIGHT_DRAG_DIRECTION.BOTTOM_RIGHT);
+    const [show_join_arrows, _set_show_join_arrows] = useState(false);
+
     
     let bottom_right_circle_style = {
         width: edge_circle_diameter + 'px',
@@ -207,8 +209,51 @@ const _highlighter = (props) => {
                 <div style={top_left_circle_style} onMouseDown={_hlight_top_left_mousedown} />
                 {/* top right edge circle */}
                 <div style={top_right_circle_style} onMouseDown={_hlight_top_right_mousedown}/>
-                  
-                  
+            </div>
+            {/* Join Arrow triangles */}
+            <div>
+                <svg style={{ position: "absolute", left: 0, top: 0, width: "100%", height: "100%", pointerEvents: "none", zIndex: props.z_index + 1 }}>
+                    <polygon
+                        points={`
+                            ${hlight_left_pos + hlight_width / 2 - 5},${hlight_top_pos - 2}
+                            ${hlight_left_pos + hlight_width / 2 + 5},${hlight_top_pos - 2}
+                            ${hlight_left_pos + hlight_width / 2},${hlight_top_pos - 10}
+                        `}
+                        fill={SELECTED_COLOR_THEME.highlight_colour}
+                    />
+
+                    {/* Right triangle - now pointing left */}
+                    <polygon
+                        points={`
+                            ${hlight_left_pos + hlight_width + 7},${hlight_top_pos + hlight_height / 2 - 5}
+                            ${hlight_left_pos + hlight_width + 7},${hlight_top_pos + hlight_height / 2 + 5}
+                            ${hlight_left_pos + hlight_width + 17},${hlight_top_pos + hlight_height / 2}
+                        `}
+                        fill={SELECTED_COLOR_THEME.highlight_colour}
+                    />
+
+
+                    {/* Bottom triangle - now pointing up */}
+                    <polygon
+                        points={`
+                            ${hlight_left_pos + hlight_width / 2 - 5},${hlight_top_pos + hlight_height + 7}
+                            ${hlight_left_pos + hlight_width / 2 + 5},${hlight_top_pos + hlight_height + 7}
+                            ${hlight_left_pos + hlight_width / 2},${hlight_top_pos + hlight_height + 15}
+                        `}
+                        fill={SELECTED_COLOR_THEME.highlight_colour}
+                    />
+
+
+                    {/* Left triangle - now pointing right */}
+                    <polygon
+                        points={`
+                            ${hlight_left_pos - 2},${hlight_top_pos + hlight_height / 2 - 5}
+                            ${hlight_left_pos - 2},${hlight_top_pos + hlight_height / 2 + 5}
+                            ${hlight_left_pos - 10},${hlight_top_pos + hlight_height / 2}
+                        `}
+                        fill={SELECTED_COLOR_THEME.highlight_colour}
+                    />
+                </svg>
             </div>
         </div>
     );
