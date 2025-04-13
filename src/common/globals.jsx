@@ -65,6 +65,12 @@ const HIGHLIGHT_DRAG_DIRECTION = {
     RIGHT:          8
 };
 
+const HIGHLIGHT_JOIN_POSITIONS = {
+    TOP:        1,
+    RIGHT:      2,
+    BOTTOM:     3,
+    LEFT:       4,
+};
 /*********** Generic Highlighter block ends ***************/
 
 /*********** Arrow block begins ***************/
@@ -131,6 +137,7 @@ export {
     /* Highlighter exports */
     HIGHLIGHT_PARAMS,
     HIGHLIGHT_DRAG_DIRECTION,
+    HIGHLIGHT_JOIN_POSITIONS,
 
     /* Arrow Highlighter exports */
     ARROW_HLIGHT_DRAG_POS,

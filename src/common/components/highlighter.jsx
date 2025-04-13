@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { SELECTED_COLOR_THEME } from "../globals";
 import { HIGHLIGHT_DRAG_DIRECTION } from "../globals";
+import { HIGHLIGHT_JOIN_POSITIONS } from "../globals";
 
 /**
  * Generic highlighter component for displaying active/selected element
@@ -138,6 +139,16 @@ const _highlighter = (props) => {
         props.highlighter_mouse_up(HIGHLIGHT_DRAG_DIRECTION.TOP_RIGHT, width_change, height_change);
     };
 
+    /**
+     * hover over a join position handler
+     * @param {event} e hover event
+     * @param {HIGHLIGHT_JOIN_POSITIONS} position join position
+     */
+    const _on_join_position_hover = (e, position) => {
+        // TODO: IMPLEMENTATION
+        console.log("join position " + position);
+    };
+    
     /********************* Effects block begins ***********************/
     // mouse up resizing
     useEffect(() => {
@@ -213,6 +224,7 @@ const _highlighter = (props) => {
             {/* Join Arrow triangles */}
             <div>
                 <svg style={{ position: "absolute", left: 0, top: 0, width: "100%", height: "100%", pointerEvents: "none", zIndex: props.z_index + 1 }}>
+                    {/* Top triangle - now pointing down */}
                     <polygon
                         points={`
                             ${hlight_left_pos + hlight_width / 2 - 5},${hlight_top_pos - 2}
@@ -221,7 +233,7 @@ const _highlighter = (props) => {
                         `}
                         fill={SELECTED_COLOR_THEME.highlight_colour}
                     />
-
+                    
                     {/* Right triangle - now pointing left */}
                     <polygon
                         points={`
@@ -230,6 +242,9 @@ const _highlighter = (props) => {
                             ${hlight_left_pos + hlight_width + 17},${hlight_top_pos + hlight_height / 2}
                         `}
                         fill={SELECTED_COLOR_THEME.highlight_colour}
+                        onMouseEnter={() => {console.log("top join position hover")}}
+                        onClick={() => {console.log("right join position clicked")}}
+
                     />
 
 
