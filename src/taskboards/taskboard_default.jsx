@@ -20,6 +20,11 @@ import { _shape_selected_handler, _start_drawing, _update_drawing } from './use_
 import { _get_cursor_type } from '../common/utils';
 import { CURSOR_TYPES } from './taskboard_globals';
 import _note_toolbar from '../toolbars/note_toolbar';
+import { ARROW_JOIN_POINT } from '../common/globals';
+import { _update_arrow_end_pos } from './use_arrow';
+import { _get_current_joining_arrow_id, _get_last_hovered_joining_item_id, _set_last_hovered_joining_item_id, 
+        _get_last_hovered_joining_position, _set_last_hovered_joining_position } from '../common/globals';
+import { _otbf_update_item_join_arrow_id } from '../common/otb_finder';
 
 import notes from './notes_db_temp';        // temporary notes storage
 import comments from './comments_db_temp';  // temporary comments storage
@@ -164,6 +169,11 @@ const _taskboard_default = () => {
             _request_taskboard_state(TASKBOARD_STATES.TBS_DRAWING_SHAPE);
             break;
           }
+          case (TASKBOARD_STATES.TBS_JOINING_STARTED):
+          {
+            // joining started, clicked at: e.clientX, e.clientY)
+            break; 
+          }
           
           default:
           {
@@ -237,6 +247,63 @@ const _taskboard_default = () => {
       };
     }, [taskboard_state === TASKBOARD_STATES.TBS_DRAWING_SHAPE]
   );
+
+  // joining over mouseup event 
+  useEffect(() => {
+    /**
+     * joining over mouse up event
+     * @param {event} e
+     */
+    const _joining_over_mouseup = (e) => {
+        if(taskboard_state === TASKBOARD_STATES.TBS_JOINING_STARTED)
+        {
+          let current_joining_arrow_id = _get_current_joining_arrow_id();
+          _update_arrow_end_pos(current_joining_arrow_id, e.clientX, e.clientY);
+
+          // update the last hovered item with new arrow properties
+          let last_hovered_joining_item_id = _get_last_hovered_joining_item_id();
+          let last_hovered_joining_position = _get_last_hovered_joining_position();
+          _otbf_update_item_join_arrow_id(last_hovered_joining_item_id, last_hovered_joining_position, current_joining_arrow_id, ARROW_JOIN_POINT.END_POINT);
+
+          // clear the last hovered item id
+          _set_last_hovered_joining_item_id(-1);
+
+          // todo: disable all highlights here if not disabled already
+
+          // revert to normal state
+          _request_taskboard_state(TASKBOARD_STATES.TBS_NORMAL);
+        }
+    };
+  
+      window.addEventListener('mouseup', _joining_over_mouseup);
+      return () => {
+        window.removeEventListener('mouseup', _joining_over_mouseup);
+      };
+    }, [taskboard_state === TASKBOARD_STATES.TBS_JOINING_STARTED]
+  );
+
+  // joining arrow mousemove event 
+  useEffect(() => {
+    /**
+     * joining arrow mousemove event
+     * this function be triggered during a mousemove when drawing a join arrow
+     * @param {event} e
+     */
+    const _joining_arrow_mousemove = (e) => {
+        if(taskboard_state === TASKBOARD_STATES.TBS_JOINING_STARTED)
+        {
+          let current_joining_arrow_id = _get_current_joining_arrow_id();
+          _update_arrow_end_pos(current_joining_arrow_id, e.clientX, e.clientY);
+          _trigger_taskboard_rerender();
+        }
+    };
+
+      window.addEventListener('mousemove', _joining_arrow_mousemove);
+      return () => {
+        window.removeEventListener('mousemove', _joining_arrow_mousemove);
+      };
+    }, [taskboard_state === TASKBOARD_STATES.TBS_JOINING_STARTED]
+  );
   /*************** Effects Ends ***************************/
 
   return (
@@ -282,7 +349,8 @@ const _taskboard_default = () => {
                   <div>
                     <_sticky_note key={note.id} id={note.id} text={note.text} win_width_perc={note.win_width_perc} tb_item_loc_update_func={_set_tb_item_loc_func} 
                       x_pos={note.x_pos} y_pos={note.y_pos} win_width={width} win_height={height} colour={note.colour} taskboard_rerender_func={_trigger_taskboard_rerender}
-                      show_toolbar={note.toolbar_show} highlighted={note.highlighted}
+                      show_toolbar={note.toolbar_show} highlighted={note.highlighted} join_arrow_ids={note.join_arrow_ids} request_taskboard_state={_request_taskboard_state} 
+                      overall_taskboard_state={taskboard_state}
                     />
                   </div>
                 </div>
@@ -292,7 +360,8 @@ const _taskboard_default = () => {
             <div>
               {comments.map((comment) => (
                 <_comment key={comment.id} id={comment.id} text={comment.text} win_width_perc={comment.win_width_perc} tb_item_loc_update_func={_set_tb_item_loc_func} 
-                x_pos={comment.x_pos} y_pos={comment.y_pos} win_width={width} win_height={height} colour={comment.colour} taskboard_rerender_func={_trigger_taskboard_rerender}/>
+                x_pos={comment.x_pos} y_pos={comment.y_pos} win_width={width} win_height={height} colour={comment.colour} taskboard_rerender_func={_trigger_taskboard_rerender}
+                request_taskboard_state={_request_taskboard_state} overall_taskboard_state={taskboard_state} />
               ))}
             </div>
           </div>
@@ -303,7 +372,8 @@ const _taskboard_default = () => {
               {arrows.map((arrow) => (
                 <_draggable_arrow key={arrow.id} id={arrow.id} start_pos_x={arrow.x1_pos} start_pos_y={arrow.y1_pos} end_pos_x={arrow.x2_pos} end_pos_y={arrow.y2_pos} 
                 colour={arrow.colour} stroke_width={arrow.stroke_width} is_highlighted={arrow.highlighted} taskboard_rerender_func={_trigger_taskboard_rerender} 
-                show_toolbar={arrow.toolbar_show} win_width={width} win_height={height} request_taskboard_state={_request_taskboard_state}/>
+                show_toolbar={arrow.toolbar_show} win_width={width} win_height={height} request_taskboard_state={_request_taskboard_state} overall_taskboard_state={taskboard_state}
+                />
               ))}
           </div>
       </div>

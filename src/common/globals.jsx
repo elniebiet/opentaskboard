@@ -70,6 +70,7 @@ const HIGHLIGHT_JOIN_POSITIONS = {
     RIGHT:      2,
     BOTTOM:     3,
     LEFT:       4,
+    NONE:       5,   
 };
 /*********** Generic Highlighter block ends ***************/
 
@@ -81,12 +82,69 @@ const ARROW_HLIGHT_DRAG_POS = {
     END:    3,
 };
 
+// Arrow join point
+const ARROW_JOIN_POINT = {
+    START_POINT:  1,
+    END_POINT:    2,
+};
+
 // Arrow width increment and decrement factors
 const ARROW_WIDTH_INCR_FACTOR   = 0.1; // 10 percent of original width
 const ARROW_WIDTH_DECR_FACTOR   = 0.1; // 10 percent of original width
 const MAX_ARROW_WIDTH           = 100; // maximum arrow width in pixels
 const MIN_ARROW_WIDTH           = 1;   // minimum arrow width in pixels
 const MIN_ARROW_LENGTH          = 30;  // minimum arrow length in pixels
+
+// current joining arrow id
+let current_joining_arrow_id = -1;
+
+const _get_current_joining_arrow_id = () => {
+    return current_joining_arrow_id;
+};
+
+const _set_current_joining_arrow_id = (id) => {
+    current_joining_arrow_id = id;
+};
+
+// current joining positino
+let current_joining_position = HIGHLIGHT_JOIN_POSITIONS.TOP;
+
+const _get_current_joining_position = () => {
+    return current_joining_position;
+};
+
+const _set_current_joining_position = (joining_pos) => {
+    current_joining_position = joining_pos;
+};
+
+// last hovered joining position item id 
+// during a join, this is the last item hovered over for joining
+// clear this id when the join is completed
+let last_hovered_joining_item_id = -1;
+
+const _get_last_hovered_joining_item_id = () => {
+    return last_hovered_joining_item_id;
+};
+
+const _set_last_hovered_joining_item_id = (id) => {
+    if(id === last_hovered_joining_item_id) return;
+
+    last_hovered_joining_item_id = id;
+};
+
+// last hovered joining position
+// during a join, this is the last position hovered over for joining
+let last_hovered_joining_position = HIGHLIGHT_JOIN_POSITIONS.NONE;
+
+const _get_last_hovered_joining_position = () => {
+    return last_hovered_joining_position;
+};
+
+const _set_last_hovered_joining_position = (joining_pos) => {
+    if(joining_pos === last_hovered_joining_position) return;
+
+    last_hovered_joining_position = joining_pos;
+}
 /*********** Arrow block ends ***************/
 
 
@@ -106,6 +164,7 @@ const COLOR_THEMES = {
 };
 
 let SELECTED_COLOR_THEME = COLOR_THEMES.white;
+
 
 
 
@@ -148,5 +207,14 @@ export {
     MAX_ARROW_WIDTH,
     MIN_ARROW_WIDTH,
     MIN_ARROW_LENGTH,
+    ARROW_JOIN_POINT,
+    _get_current_joining_arrow_id,
+    _set_current_joining_arrow_id,
+    _get_current_joining_position,
+    _set_current_joining_position,
+    _get_last_hovered_joining_item_id,
+    _set_last_hovered_joining_item_id,
+    _get_last_hovered_joining_position,
+    _set_last_hovered_joining_position,
 };
 

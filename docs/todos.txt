@@ -25,6 +25,10 @@ Notable todo items list:
 24. Replace note highlighter circles with <circle /> 
 25. Increase activation width of arrow, so that areas close to the arrow activates the arrow.
 26. Update z_indices in database anytime they are updated
+27. All components must have a unique global id - e.g. all notes and arrows most not repeat ids
+28. Can come up with format for creating ids - maybe use GUIDs instead
+29. Implement proper/efficient search for items
+30. Delete join arrows when component is deleted
 
 
 

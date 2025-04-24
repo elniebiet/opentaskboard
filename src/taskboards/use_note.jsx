@@ -2,7 +2,9 @@ import { _get_global_last_item_add_or_move_loc, _set_global_last_item_add_or_mov
 import { _set_global_cursor_type } from "./taskboard_globals";
 import { SELECTED_COLOR_THEME } from "../common/globals";
 import { STKNOTE_WIDTH_PERC_DEFAULT } from "./taskboard_globals";
+import { ARROW_JOIN_POINT } from "../common/globals";
 
+// temporary note database for testing
 import notes from "./notes_db_temp";
 
 /**
@@ -31,7 +33,8 @@ const _add_note = (clicked = true, pos_x = 100, pos_y = 100) => {
             win_width_perc: STKNOTE_WIDTH_PERC_DEFAULT,
             toolbar_show: true,
             toolbar_display_loc: {x: 200, y: 200},
-            highlighted: true,  
+            highlighted: true,
+            join_arrow_ids: {top: [-1, ARROW_JOIN_POINT.START_POINT], bottom: [-1, ARROW_JOIN_POINT.START_POINT], left: [-1, ARROW_JOIN_POINT.START_POINT], right: [-1, ARROW_JOIN_POINT.START_POINT]},
         };
         _set_global_last_item_add_or_move_loc(new_loc_x, new_loc_y); // update last added location
         notes.push(new_note);
@@ -51,6 +54,7 @@ const _add_note = (clicked = true, pos_x = 100, pos_y = 100) => {
             toolbar_show: true,
             toolbar_display_loc: {x: 200, y: 200},
             highlighted: true,   
+            join_arrow_ids: {top: [-1, ARROW_JOIN_POINT.START_POINT], bottom: [-1, ARROW_JOIN_POINT.START_POINT], left: [-1, ARROW_JOIN_POINT.START_POINT], right: [-1, ARROW_JOIN_POINT.START_POINT]},
         };
         notes.push(new_note);
     }
@@ -211,7 +215,6 @@ const _update_note_highlighted = (id, note_highlighted) => {
         }
     }
 };
-
 
 export {
     _add_note,

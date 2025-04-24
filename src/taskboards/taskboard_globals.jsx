@@ -18,6 +18,7 @@ const TASKBOARD_STATES = {
     TBS_BEGIN_DRAWING_SHAPE:    4,  // began drawing shape
     TBS_DRAWING_SHAPE:          5,  // drawing shape
     TBS_WRITING:                7,
+    TBS_JOINING_STARTED:        8,  // joining started
 
 
     TBS_LAST:                   1000, // please add any new state before this item

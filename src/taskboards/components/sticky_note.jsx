@@ -9,9 +9,12 @@ import { _delete_note, _update_note_loc, _update_note_text, _update_note_colour,
             _update_note_highlighted } from "../use_note";
 import _note_toolbar from "../../toolbars/note_toolbar";
 import { _colour_picker_no_button } from "../../common/components/colour_picker";
-import { HIGHLIGHT_PARAMS } from "../../common/globals";
 import _highlighter from "../../common/components/highlighter";
-import { HIGHLIGHT_DRAG_DIRECTION } from "../../common/globals";
+import { HIGHLIGHT_DRAG_DIRECTION, HIGHLIGHT_JOIN_POSITIONS, ARROW_JOIN_POINT, 
+    HIGHLIGHT_PARAMS } from "../../common/globals";
+import { TASKBOARD_STATES } from "../taskboard_globals";
+import { _set_last_hovered_joining_item_id } from "../../common/globals";
+import { _otbf_update_item_join_arrow_id } from "../../common/otb_finder";
 
 /**
  * Sticky note component
@@ -35,6 +38,8 @@ const _sticky_note = (props) => {
     const [overall_top_left, _set_overall_top_left] = useState({x: props.x_pos, y: props.y_pos});
 
     const [prevent_note_deactivation, _set_prevent_note_deactivation] = useState(false); 
+
+    const [joining_show_highlighter, _set_joining_show_highlighter] = useState(false); 
 
     const STKNOTE_MIN_WIDTH                 = 150;  //pixels
     const MENUBAR_HGT_PERC                  = 0.10; // 10% of stknote height 
@@ -160,22 +165,33 @@ const _sticky_note = (props) => {
          }
     };
 
-    // TODO: implement update for on mouse drag - not only on mouse up
-    const _highlighter_mouse_drag = (drag_direction, percentage_width_increase, percentage_height_increase) => {
+    /**
+     * highlighter join started event handler, called when joining is started
+     * @param {HIGHLIGHT_JOIN_POSITIONS} join_position e.g., top, right ...
+     * @param {*} arrow_id created arrow id
+     */
+    const _highlighter_join_started = (join_position, arrow_id) => {
         _set_prevent_note_deactivation(true);
+        // associate arrow id with note
+        _otbf_update_item_join_arrow_id(props.id, join_position, arrow_id, ARROW_JOIN_POINT.START_POINT);
         props.taskboard_rerender_func();
-        
-        switch(drag_direction)
+    };
+
+    const _on_mouse_hover = (e) => {
+        if(props.overall_taskboard_state === TASKBOARD_STATES.TBS_JOINING_STARTED)
         {
-            case HIGHLIGHT_DRAG_DIRECTION.BOTTOM_RIGHT:
-            {
-                break;
-            }
-            default:
-            {
-                break;
-            }
-         }
+            _set_joining_show_highlighter(true); // show highlighter on hover
+        }
+    };
+
+    /**
+     * _on_join event handler, called when joining is complete and mouse is up
+     * @param {HIGHLIGHT_JOIN_POSITIONS} join_position e.g., top, right ...
+     * @param {int} arrow_id
+     */
+    const _on_join = (join_position, arrow_id) => {
+        _otbf_update_item_join_arrow_id(props.id, join_position, arrow_id, ARROW_JOIN_POINT.END_POINT);
+        props.taskboard_rerender_func();
     };
 
     const _highlighter_mouse_up = (drag_direction, width_increase_pixels, height_increase_pixels) => 
@@ -286,7 +302,9 @@ const _sticky_note = (props) => {
     };
 
     return (
-        <div>
+        <div
+            onMouseEnter={(e) => { _on_mouse_hover(e); }}
+        >
             {/* display note toolbar */}
             <div>
                 {(props.show_toolbar === true) ? (
@@ -300,10 +318,12 @@ const _sticky_note = (props) => {
             </div>
             {/* display highlighter */}
             <div>
-                {(props.highlighted === true) ? (
-                    <_highlighter gap={HIGHLIGHT_PARAMS.highlight_gap} line_width={HIGHLIGHT_PARAMS.highlight_line_width} item_top_left_pos={{x: overall_top_left.x, y: overall_top_left.y}} item_width={stknote_width + (FLEXBOX_GAP_PERC * stknote_width * 4)} 
-                        item_height={stknote_width + (FLEXBOX_GAP_PERC * stknote_width * 4)} z_index={z_index} highlighter_mouse_down={_highlighter_mouse_down} highlighter_mouse_drag={_highlighter_mouse_drag}
-                        highlighter_mouse_up={_highlighter_mouse_up} />
+                {(props.highlighted === true || joining_show_highlighter === true) ? (
+                    <_highlighter caller_id={props.id} gap={HIGHLIGHT_PARAMS.highlight_gap} line_width={HIGHLIGHT_PARAMS.highlight_line_width} item_top_left_pos={{x: overall_top_left.x, y: overall_top_left.y}} item_width={stknote_width + (FLEXBOX_GAP_PERC * stknote_width * 4)} 
+                        item_height={stknote_width + (FLEXBOX_GAP_PERC * stknote_width * 4)} z_index={z_index} highlighter_mouse_down={_highlighter_mouse_down}
+                        highlighter_mouse_up={_highlighter_mouse_up} highlighter_join_started={_highlighter_join_started} join_arrow_ids={props.join_arrow_ids} 
+                        request_taskboard_state={props.request_taskboard_state} overall_taskboard_state={props.overall_taskboard_state} on_join={_on_join} taskboard_rerender_func={props.taskboard_rerender_func}
+                    />
                     ) : (<div></div>)}
             </div>
             <div>
