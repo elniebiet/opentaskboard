@@ -10,33 +10,38 @@ import { _set_current_joining_arrow_id, _get_current_joining_arrow_id,
 
 /**
  * Generic highlighter component for displaying active/selected element
- * @param {float} props.item_top_left_pos top left cordinate of item to be highlighted over 
- * @param {int} props.item_width width of item to be highlighted over 
- * @param {int} props.item_height height of item to be highlighted over
- * @param {float} props.gap gap between the highlighter and the item to be highlighted over 
- * @param {int} props.z_index zIndex of item to be highlighted over 
- * @param {int} props.line_width line width of the highlighter 
- * @param {int} props.caller_id id of the caller component - used to identify the item to be highlighted over
- * @param {*}   props.join_arrow_ids join arrow ids for the item to be highlighted over - structure:         
+ * @param {float} item_top_left_pos top left cordinate of item to be highlighted over 
+ * @param {int} item_width width of item to be highlighted over 
+ * @param {int} item_height height of item to be highlighted over
+ * @param {float} gap gap between the highlighter and the item to be highlighted over 
+ * @param {int} z_index zIndex of item to be highlighted over 
+ * @param {int} line_width line width of the highlighter 
+ * @param {int} caller_id id of the caller component - used to identify the item to be highlighted over
+ * @param {*}   join_arrow_ids join arrow ids for the item to be highlighted over - structure:         
  *      join_arrow_ids: {
  *          top: [-1, ARROW_JOIN_POINT.START_POINT], 
  *          bottom: [-1, ARROW_JOIN_POINT.START_POINT], 
  *          left: [-1, ARROW_JOIN_POINT.START_POINT], 
  *          right: [-1, ARROW_JOIN_POINT.START_POINT]
  *      }
- * @param {function}   props.highlighter_drag_mouse_down(func params: HIGHLIGHT_DRAG_DIRECTION) function to call when mouse down on highlighter edge circle - used to start resizing    
- * @param {function}   props.highlighter_join_started(func params: HIGHLIGHT_JOIN_POSITIONS, arrow_id) function to call when mouse down on join position - used to start joining
- * @param {TASKBOARD_STATES} props.overall_taskboard_state overall taskboard state
- * @param {function} props.request_taskboard_state(func params: TASKBOARD_STATES) function to call to request taskboard state change
- * @param {function} props.taskboard_rerender_func(func params: none) function to call to rerender taskboard
+ * @param {function}   highlighter_drag_mouse_down(func params: HIGHLIGHT_DRAG_DIRECTION) function to call when mouse down on highlighter edge circle - used to start resizing    
+ * @param {function}   highlighter_join_started(func params: HIGHLIGHT_JOIN_POSITIONS, arrow_id) function to call when mouse down on join position - used to start joining
+ * @param {TASKBOARD_STATES} overall_taskboard_state overall taskboard state
+ * @param {function} request_taskboard_state(func params: TASKBOARD_STATES) function to call to request taskboard state change
+ * @param {function} taskboard_rerender_func(func params: none) function to call to rerender taskboard
+ * @param {function} highlighter_drag_mouse_up(func params: HIGHLIGHT_DRAG_DIRECTION, width_change, height_change) function to call when mouse up on highlighter edge circle - used to stop resizing
  * @returns 
  */
-const _highlighter = (props) => {
+const _highlighter = ({
+    item_top_left_pos, item_width, item_height, gap, z_index, line_width, caller_id, 
+    join_arrow_ids, highlighter_drag_mouse_down, highlighter_join_started, highlighter_drag_mouse_up,
+    overall_taskboard_state, request_taskboard_state, taskboard_rerender_func
+}) => {
 
-    let hlight_left_pos = props.item_top_left_pos.x - props.gap;
-    let hlight_top_pos = props.item_top_left_pos.y - props.gap;
-    let hlight_width = props.item_width + (props.gap * 2);
-    let hlight_height = props.item_height + (props.gap * 2);
+    let hlight_left_pos = item_top_left_pos.x - gap;
+    let hlight_top_pos = item_top_left_pos.y - gap;
+    let hlight_width = item_width + (gap * 2);
+    let hlight_height = item_height + (gap * 2);
 
     let edge_circle_diameter = 0.05 * hlight_width;
 
@@ -49,9 +54,9 @@ const _highlighter = (props) => {
         backgroundColor: SELECTED_COLOR_THEME.highlight_colour,
         borderRadius: "50%",
         position: "absolute",
-        left: ((hlight_left_pos + hlight_width) - (edge_circle_diameter / 2) + props.line_width) + 'px',
-        top: ((hlight_top_pos + hlight_height) - (edge_circle_diameter / 2) + props.line_width) + 'px',
-        zIndex: props.z_index,
+        left: ((hlight_left_pos + hlight_width) - (edge_circle_diameter / 2) + line_width) + 'px',
+        top: ((hlight_top_pos + hlight_height) - (edge_circle_diameter / 2) + line_width) + 'px',
+        zIndex: z_index,
         cursor: "nwse-resize",
     };
     
@@ -61,9 +66,9 @@ const _highlighter = (props) => {
         backgroundColor: SELECTED_COLOR_THEME.highlight_colour,
         borderRadius: "50%",
         position: "absolute",
-        left: (hlight_left_pos - (edge_circle_diameter / 2) + props.line_width) + 'px',
-        top: ((hlight_top_pos + hlight_height) - (edge_circle_diameter / 2) + props.line_width) + 'px',
-        zIndex: props.z_index,
+        left: (hlight_left_pos - (edge_circle_diameter / 2) + line_width) + 'px',
+        top: ((hlight_top_pos + hlight_height) - (edge_circle_diameter / 2) + line_width) + 'px',
+        zIndex: z_index,
         cursor: "nesw-resize",
     };
     
@@ -73,9 +78,9 @@ const _highlighter = (props) => {
         backgroundColor: SELECTED_COLOR_THEME.highlight_colour,
         borderRadius: "50%",
         position: "absolute",
-        left: (hlight_left_pos - (edge_circle_diameter / 2) + props.line_width) + 'px',
-        top: (hlight_top_pos - (edge_circle_diameter / 2) + props.line_width) + 'px',
-        zIndex: props.z_index,
+        left: (hlight_left_pos - (edge_circle_diameter / 2) + line_width) + 'px',
+        top: (hlight_top_pos - (edge_circle_diameter / 2) + line_width) + 'px',
+        zIndex: z_index,
         cursor: "nwse-resize",
     };
     
@@ -85,16 +90,16 @@ const _highlighter = (props) => {
         backgroundColor: SELECTED_COLOR_THEME.highlight_colour,
         borderRadius: "50%",
         position: "absolute",
-        left: ((hlight_left_pos + hlight_width) - (edge_circle_diameter / 2) + props.line_width) + 'px',
-        top: (hlight_top_pos - (edge_circle_diameter / 2) + props.line_width) + 'px',
-        zIndex: props.z_index,
+        left: ((hlight_left_pos + hlight_width) - (edge_circle_diameter / 2) + line_width) + 'px',
+        top: (hlight_top_pos - (edge_circle_diameter / 2) + line_width) + 'px',
+        zIndex: z_index,
         cursor: "nesw-resize",
     };
 
     const _hlight_bottom_right_mousedown = (e) => {
         _set_current_drag_dir(HIGHLIGHT_DRAG_DIRECTION.BOTTOM_RIGHT);
         _set_is_resizing(true);
-        props.highlighter_drag_mouse_down(HIGHLIGHT_DRAG_DIRECTION.BOTTOM_RIGHT);
+        highlighter_drag_mouse_down(HIGHLIGHT_DRAG_DIRECTION.BOTTOM_RIGHT);
     };
 
     const _hlight_bottom_right_mouseup = (e) => {
@@ -103,46 +108,46 @@ const _highlighter = (props) => {
         let width_change = (new_width - hlight_width);
         let new_height = clientY - hlight_top_pos;
         let height_change = (new_height - hlight_height);
-        props.highlighter_drag_mouse_up(HIGHLIGHT_DRAG_DIRECTION.BOTTOM_RIGHT, width_change, height_change);
+        highlighter_drag_mouse_up(HIGHLIGHT_DRAG_DIRECTION.BOTTOM_RIGHT, width_change, height_change);
     };
 
     const _hlight_top_left_mousedown = (e) => {
         _set_current_drag_dir(HIGHLIGHT_DRAG_DIRECTION.TOP_LEFT);
         _set_is_resizing(true);
-        props.highlighter_drag_mouse_down(HIGHLIGHT_DRAG_DIRECTION.TOP_LEFT);
+        highlighter_drag_mouse_down(HIGHLIGHT_DRAG_DIRECTION.TOP_LEFT);
     };
 
     const _hlight_top_left_mouseup = (e) => {
         const {clientX, clientY} = e;
         let width_change = hlight_left_pos - clientX;
         let height_change = hlight_top_pos - clientY;
-        props.highlighter_drag_mouse_up(HIGHLIGHT_DRAG_DIRECTION.TOP_LEFT, width_change, height_change);
+        highlighter_drag_mouse_up(HIGHLIGHT_DRAG_DIRECTION.TOP_LEFT, width_change, height_change);
     };
 
     const _hlight_bottom_left_mousedown = (e) => {
         _set_current_drag_dir(HIGHLIGHT_DRAG_DIRECTION.BOTTOM_LEFT);
         _set_is_resizing(true);
-        props.highlighter_drag_mouse_down(HIGHLIGHT_DRAG_DIRECTION.BOTTOM_LEFT);
+        highlighter_drag_mouse_down(HIGHLIGHT_DRAG_DIRECTION.BOTTOM_LEFT);
     };
 
     const _hlight_bottom_left_mouseup = (e) => {
         const {clientX, clientY} = e;
         let width_change = hlight_left_pos - clientX;
         let height_change = clientY - hlight_top_pos;
-        props.highlighter_drag_mouse_up(HIGHLIGHT_DRAG_DIRECTION.BOTTOM_LEFT, width_change, height_change);
+        highlighter_drag_mouse_up(HIGHLIGHT_DRAG_DIRECTION.BOTTOM_LEFT, width_change, height_change);
     };
 
     const _hlight_top_right_mousedown = (e) => {
         _set_current_drag_dir(HIGHLIGHT_DRAG_DIRECTION.TOP_RIGHT);
         _set_is_resizing(true);
-        props.highlighter_drag_mouse_down(HIGHLIGHT_DRAG_DIRECTION.TOP_RIGHT);
+        highlighter_drag_mouse_down(HIGHLIGHT_DRAG_DIRECTION.TOP_RIGHT);
     };
 
     const _hlight_top_right_mouseup = (e) => {
         const {clientX, clientY} = e;
         let width_change = clientX - (hlight_left_pos + hlight_width);
         let height_change = hlight_top_pos - clientY;
-        props.highlighter_drag_mouse_up(HIGHLIGHT_DRAG_DIRECTION.TOP_RIGHT, width_change, height_change);
+        highlighter_drag_mouse_up(HIGHLIGHT_DRAG_DIRECTION.TOP_RIGHT, width_change, height_change);
     };
 
     /**
@@ -151,9 +156,9 @@ const _highlighter = (props) => {
      * @param {HIGHLIGHT_JOIN_POSITIONS} position join position
      */
     const _on_join_position_hover = (e, position) => {
-        if(props.overall_taskboard_state === TASKBOARD_STATES.TBS_JOINING_STARTED)
+        if(overall_taskboard_state === TASKBOARD_STATES.TBS_JOINING_STARTED)
         {
-            _set_last_hovered_joining_item_id(props.caller_id);
+            _set_last_hovered_joining_item_id(caller_id);
             _set_last_hovered_joining_position(position);
         }
     };
@@ -168,9 +173,9 @@ const _highlighter = (props) => {
         _add_arrow(arrow_id, e.clientX, e.clientY, e.clientX + 10, e.clientY+10, SELECTED_COLOR_THEME.highlight_colour, 2);
         _set_current_joining_arrow_id(arrow_id);
         _set_current_joining_position(position);
-        props.highlighter_join_started(position, arrow_id);
+        highlighter_join_started(position, arrow_id);
 
-        props.request_taskboard_state(TASKBOARD_STATES.TBS_JOINING_STARTED);
+        request_taskboard_state(TASKBOARD_STATES.TBS_JOINING_STARTED);
     };
 
     /**
@@ -184,10 +189,10 @@ const _highlighter = (props) => {
         let y_pos = 0;
 
         // top position
-        if(props.join_arrow_ids.top[0] !== -1)
+        if(join_arrow_ids.top[0] !== -1)
         {
-            arrow_id = props.join_arrow_ids.top[0];
-            arrow_join_point = props.join_arrow_ids.top[1];
+            arrow_id = join_arrow_ids.top[0];
+            arrow_join_point = join_arrow_ids.top[1];
             x_pos = hlight_left_pos + (hlight_width / 2);
             y_pos = hlight_top_pos - 10;
 
@@ -202,10 +207,10 @@ const _highlighter = (props) => {
         }
 
         // bottom position
-        if(props.join_arrow_ids.bottom[0] !== -1)
+        if(join_arrow_ids.bottom[0] !== -1)
         {
-            arrow_id = props.join_arrow_ids.bottom[0];
-            arrow_join_point = props.join_arrow_ids.bottom[1];
+            arrow_id = join_arrow_ids.bottom[0];
+            arrow_join_point = join_arrow_ids.bottom[1];
             x_pos = hlight_left_pos + (hlight_width / 2);
             y_pos = hlight_top_pos + hlight_height + 15; //10
 
@@ -220,10 +225,10 @@ const _highlighter = (props) => {
         }
 
         // left position
-        if(props.join_arrow_ids.left[0] !== -1)
+        if(join_arrow_ids.left[0] !== -1)
         {
-            arrow_id = props.join_arrow_ids.left[0];
-            arrow_join_point = props.join_arrow_ids.left[1];
+            arrow_id = join_arrow_ids.left[0];
+            arrow_join_point = join_arrow_ids.left[1];
             x_pos = hlight_left_pos - 10;
             y_pos = hlight_top_pos + (hlight_height / 2);
 
@@ -238,10 +243,10 @@ const _highlighter = (props) => {
         }
 
         // right position
-        if(props.join_arrow_ids.right[0] !== -1)
+        if(join_arrow_ids.right[0] !== -1)
         {
-            arrow_id = props.join_arrow_ids.right[0];
-            arrow_join_point = props.join_arrow_ids.right[1];
+            arrow_id = join_arrow_ids.right[0];
+            arrow_join_point = join_arrow_ids.right[1];
             x_pos = hlight_left_pos + hlight_width + 10;
             y_pos = hlight_top_pos + (hlight_height / 2);
 
@@ -305,7 +310,7 @@ const _highlighter = (props) => {
     // joining over mouse up event
     useEffect(() => {
             const _on_joining_over_mouse_up = (e) => {
-                if(props.overall_taskboard_state === TASKBOARD_STATES.TBS_JOINING_STARTED)
+                if(overall_taskboard_state === TASKBOARD_STATES.TBS_JOINING_STARTED)
                 {
                     // might want to do something here: mouse up after a join
                     // typically handled by the taskboard component
@@ -316,15 +321,15 @@ const _highlighter = (props) => {
             return () => {
                 window.removeEventListener('mouseup', _on_joining_over_mouse_up);
             };
-        }, [props.overall_taskboard_state === TASKBOARD_STATES.TBS_JOINING_STARTED]
+        }, [overall_taskboard_state === TASKBOARD_STATES.TBS_JOINING_STARTED]
     );
 
     // Detect Highlighter Props change - update components that need to be updated e.g., joining arrows
     useEffect(() => {
         _update_join_arrow_positions();
         // rerender
-        props.taskboard_rerender_func();
-    }, [props.item_top_left_pos.x , props.item_top_left_pos.y, props.item_width, props.item_height]);
+        taskboard_rerender_func();
+    }, [item_top_left_pos.x , item_top_left_pos.y, item_width, item_height]);
     
     /********************* Effects block ends ***********************/
 
@@ -338,8 +343,8 @@ const _highlighter = (props) => {
                     top: hlight_top_pos + 'px',
                     width: hlight_width + 'px',
                     height: hlight_height + 'px',
-                    border: props.line_width + 'px ' + 'solid ' + SELECTED_COLOR_THEME.highlight_colour,
-                    zIndex: props.z_index,
+                    border: line_width + 'px ' + 'solid ' + SELECTED_COLOR_THEME.highlight_colour,
+                    zIndex: z_index,
                 }}
             >
             </div>
@@ -356,7 +361,7 @@ const _highlighter = (props) => {
             </div>
             {/* Join Arrow triangles */}
             <div>
-                <svg style={{ position: "absolute", left: 0, top: 0, width: "100%", height: "100%", pointerEvents: "none", zIndex: props.z_index + 1 }}>
+                <svg style={{ position: "absolute", left: 0, top: 0, width: "100%", height: "100%", pointerEvents: "none", zIndex: z_index + 1 }}>
                     {/* Top triangle - now pointing down */}
                     <polygon
                         points={`
