@@ -19,7 +19,7 @@ import { TASKBOARD_DEFAULT_TB_SIZE } from './toolbar_globals';
 import { TASKBOARD_STATES } from '../taskboards/taskboard_globals';
 import { _get_max_z_index, _use_max_z_index } from '../common/globals';
 import { _set_global_cursor_type } from '../taskboards/taskboard_globals';
-import { _get_max_possible_z_index } from '../common/globals';
+import { _get_toolbar_z_index} from '../common/globals';
 
 const _add_toolbar_item = (props) => 
 {
@@ -220,7 +220,7 @@ let toolbar_styling_top = {
     borderRadius: '0 0 8px 8px',
     boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
     cursor: 'pointer',
-    zIndex: _get_max_possible_z_index(),
+    zIndex: _get_toolbar_z_index(),
 };
 
 let toolbar_styling_left = {
@@ -234,7 +234,7 @@ let toolbar_styling_left = {
     borderRadius: '0 8px 8px 0',
     boxShadow: '2px 0 6px rgba(0, 0, 0, 0.1)',
     cursor: 'pointer',
-    zIndex: _get_max_possible_z_index(),
+    zIndex: _get_toolbar_z_index(),
 };
 /**************************** Toolbar Stylings end ****************************/
 

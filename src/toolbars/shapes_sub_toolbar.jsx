@@ -10,7 +10,7 @@ import { SELECTED_COLOR_THEME } from '../common/globals';
 import { TASKBOARD_DEFAULT_SHAPES_TB_LOC } from './toolbar_globals';
 import { TASKBOARD_DEFAULT_TB_SIZE } from './toolbar_globals';
 import { TASKBOARD_STATES } from '../taskboards/taskboard_globals';
-import { _get_max_z_index } from '../common/globals';
+import { _get_subtoolbar_z_index } from '../common/globals';
 
 import line_img from '../../res/imgs/shapes_sub_toolbar/img_line_100x100.png';
 import arrow_img from '../../res/imgs/shapes_sub_toolbar/img_arrow_100x100.png';
@@ -19,6 +19,7 @@ import rect_img from '../../res/imgs/shapes_sub_toolbar/img_rect_100x100.png';
 import filleted_rect_img from '../../res/imgs/shapes_sub_toolbar/img_filleted_rect_100x100.png';
 import triangle_img from '../../res/imgs/shapes_sub_toolbar/img_triangle_100x100.png';
 import right_angle_img from '../../res/imgs/shapes_sub_toolbar/img_right_angle_100x100.png';
+import zIndex from '@mui/material/styles/zIndex';
 
 const _add_toolbar_item = (props) => 
 {
@@ -193,6 +194,7 @@ let toolbar_styling_top = {
     padding: '5px 10px',
     borderRadius: '0 0 8px 8px',
     boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+    zIndex: _get_subtoolbar_z_index(),
 };
 
 let toolbar_styling_left = {
@@ -205,6 +207,7 @@ let toolbar_styling_left = {
     padding: '5px 10px',
     borderRadius: '0 8px 8px 0',
     boxShadow: '2px 0 6px rgba(0, 0, 0, 0.1)',
+    zIndex: _get_subtoolbar_z_index(),
 };
 /**************************** Toolbar Stylings end ****************************/
 
@@ -257,7 +260,7 @@ const _shapes_sub_toolbar = (props) => {
             width: props_1.tb_hover_w * 2,
             height: props_1.tb_hover_h * 2,
             opacity: 0.5, // Makes it slightly transparent
-            zIndex: _get_max_z_index(),
+            zIndex: _get_subtoolbar_z_index(),
             cursor: 'pointer',
         };
 

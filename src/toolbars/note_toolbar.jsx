@@ -18,7 +18,7 @@ import { SELECTED_COLOR_THEME } from '../common/globals';
 import { TASKBOARD_STATES } from '../taskboards/taskboard_globals';
 import { _get_max_z_index, _use_max_z_index } from '../common/globals';
 import { _set_global_cursor_type } from '../taskboards/taskboard_globals';
-import { _get_max_possible_z_index } from '../common/globals';
+import { _get_toolbar_z_index } from '../common/globals';
 import { NOTE_TOOLBAR_ITEMS } from './toolbar_globals';
 import { _colour_picker_no_button } from '../common/components/colour_picker';
 
@@ -174,7 +174,7 @@ const _note_toolbar = (props) => {
         borderRadius: '0 0 8px 8px',
         boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
         cursor: 'pointer',
-        zIndex: _get_max_possible_z_index(),
+        zIndex: _get_toolbar_z_index(),
     };
 
 /**************************** Toolbar Stylings end ****************************/

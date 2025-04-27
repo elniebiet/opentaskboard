@@ -20,7 +20,12 @@ const TOOLBAR_ITEM_TYPE = {
 const ZINDEX = 
 {
     MAX_POSSIBLE: 1000000000,
-    CURRENT_HIGHEST: 1000,
+    SUBTOOLBAR_Z_INDEX: 10000000,
+    TOOLBAR_Z_INDEX: 1000000,
+
+    // most components should fall within this range ( > 10000, < 1000000)
+    
+    CURRENT_HIGHEST: 10000,
     LOWEST: 0
 }
 
@@ -45,6 +50,14 @@ const _use_max_z_index = () => {
 
 const _get_max_possible_z_index = () => {
     return ZINDEX.MAX_POSSIBLE;
+};
+
+const _get_toolbar_z_index = () => {
+    return ZINDEX.TOOLBAR_Z_INDEX;
+};
+
+const _get_subtoolbar_z_index = () => {
+    return ZINDEX.SUBTOOLBAR_Z_INDEX;
 };
 /*********** ZINDEX block ends ***************/
 
@@ -192,6 +205,8 @@ export {
     _get_lowest_z_index,
     _use_max_z_index,
     _get_max_possible_z_index,
+    _get_toolbar_z_index,
+    _get_subtoolbar_z_index,
 
     /* Highlighter exports */
     HIGHLIGHT_PARAMS,
