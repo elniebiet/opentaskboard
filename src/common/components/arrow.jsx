@@ -57,18 +57,6 @@ const _draggable_arrow = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, 
         }
     }, [start_pos_x , start_pos_y, end_pos_x, end_pos_y]);
 
-    const _on_click_handler = () => {
-        // probably take this out because of onmousedown event does the same thing
-         _set_z_index(_get_max_z_index());
-        _use_max_z_index();
-        _set_global_toolbar_items_active_state(TASKBOARD_TOOLBAR_ITEMS.TBI_SHAPE, true, true);
-        _set_arr_highlighted(true);
-        _update_arrow_highlighted(id, true);
-        _set_display_toolbar(true);
-        _update_arrow_toolbar_show(id, true);
-        taskboard_rerender_func();
-    };
-
     const _deactivate_arrow = (e) => { 
         _set_arr_highlighted(false);
         _update_arrow_highlighted(id, false);
@@ -300,8 +288,6 @@ const _draggable_arrow = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, 
                         pointerEvents: "none",
                         zIndex: z_index, 
                     }}
-
-                    onClick={_on_click_handler}
                 >
                     {/* Arrowhead Definition */}
                     <defs>

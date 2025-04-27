@@ -12,18 +12,23 @@ import { _set_current_joining_arrow_id, _get_current_joining_arrow_id,
  * Generic highlighter component for displaying active/selected element
  * @param {float} props.item_top_left_pos top left cordinate of item to be highlighted over 
  * @param {int} props.item_width width of item to be highlighted over 
- * @param {int} props.item_height height of item to be highlighted over 
+ * @param {int} props.item_height height of item to be highlighted over
+ * @param {float} props.gap gap between the highlighter and the item to be highlighted over 
  * @param {int} props.z_index zIndex of item to be highlighted over 
  * @param {int} props.line_width line width of the highlighter 
  * @param {int} props.caller_id id of the caller component - used to identify the item to be highlighted over
- * @param {*} join_arrow_ids join arrow ids for the item to be highlighted over - structure:             
- * join_arrow_ids: {
- *  top: [-1, ARROW_JOIN_POINT.START_POINT], 
- *  bottom: [-1, ARROW_JOIN_POINT.START_POINT], 
- *  left: [-1, ARROW_JOIN_POINT.START_POINT], 
- *  right: [-1, ARROW_JOIN_POINT.START_POINT]
- * }
+ * @param {*}   props.join_arrow_ids join arrow ids for the item to be highlighted over - structure:         
+ *      join_arrow_ids: {
+ *          top: [-1, ARROW_JOIN_POINT.START_POINT], 
+ *          bottom: [-1, ARROW_JOIN_POINT.START_POINT], 
+ *          left: [-1, ARROW_JOIN_POINT.START_POINT], 
+ *          right: [-1, ARROW_JOIN_POINT.START_POINT]
+ *      }
+ * @param {function}   props.highlighter_drag_mouse_down(func params: HIGHLIGHT_DRAG_DIRECTION) function to call when mouse down on highlighter edge circle - used to start resizing    
+ * @param {function}   props.highlighter_join_started(func params: HIGHLIGHT_JOIN_POSITIONS, arrow_id) function to call when mouse down on join position - used to start joining
  * @param {TASKBOARD_STATES} props.overall_taskboard_state overall taskboard state
+ * @param {function} props.request_taskboard_state(func params: TASKBOARD_STATES) function to call to request taskboard state change
+ * @param {function} props.taskboard_rerender_func(func params: none) function to call to rerender taskboard
  * @returns 
  */
 const _highlighter = (props) => {
@@ -89,7 +94,7 @@ const _highlighter = (props) => {
     const _hlight_bottom_right_mousedown = (e) => {
         _set_current_drag_dir(HIGHLIGHT_DRAG_DIRECTION.BOTTOM_RIGHT);
         _set_is_resizing(true);
-        props.highlighter_mouse_down(HIGHLIGHT_DRAG_DIRECTION.BOTTOM_RIGHT);
+        props.highlighter_drag_mouse_down(HIGHLIGHT_DRAG_DIRECTION.BOTTOM_RIGHT);
     };
 
     const _hlight_bottom_right_mouseup = (e) => {
@@ -98,46 +103,46 @@ const _highlighter = (props) => {
         let width_change = (new_width - hlight_width);
         let new_height = clientY - hlight_top_pos;
         let height_change = (new_height - hlight_height);
-        props.highlighter_mouse_up(HIGHLIGHT_DRAG_DIRECTION.BOTTOM_RIGHT, width_change, height_change);
+        props.highlighter_drag_mouse_up(HIGHLIGHT_DRAG_DIRECTION.BOTTOM_RIGHT, width_change, height_change);
     };
 
     const _hlight_top_left_mousedown = (e) => {
         _set_current_drag_dir(HIGHLIGHT_DRAG_DIRECTION.TOP_LEFT);
         _set_is_resizing(true);
-        props.highlighter_mouse_down(HIGHLIGHT_DRAG_DIRECTION.TOP_LEFT);
+        props.highlighter_drag_mouse_down(HIGHLIGHT_DRAG_DIRECTION.TOP_LEFT);
     };
 
     const _hlight_top_left_mouseup = (e) => {
         const {clientX, clientY} = e;
         let width_change = hlight_left_pos - clientX;
         let height_change = hlight_top_pos - clientY;
-        props.highlighter_mouse_up(HIGHLIGHT_DRAG_DIRECTION.TOP_LEFT, width_change, height_change);
+        props.highlighter_drag_mouse_up(HIGHLIGHT_DRAG_DIRECTION.TOP_LEFT, width_change, height_change);
     };
 
     const _hlight_bottom_left_mousedown = (e) => {
         _set_current_drag_dir(HIGHLIGHT_DRAG_DIRECTION.BOTTOM_LEFT);
         _set_is_resizing(true);
-        props.highlighter_mouse_down(HIGHLIGHT_DRAG_DIRECTION.BOTTOM_LEFT);
+        props.highlighter_drag_mouse_down(HIGHLIGHT_DRAG_DIRECTION.BOTTOM_LEFT);
     };
 
     const _hlight_bottom_left_mouseup = (e) => {
         const {clientX, clientY} = e;
         let width_change = hlight_left_pos - clientX;
         let height_change = clientY - hlight_top_pos;
-        props.highlighter_mouse_up(HIGHLIGHT_DRAG_DIRECTION.BOTTOM_LEFT, width_change, height_change);
+        props.highlighter_drag_mouse_up(HIGHLIGHT_DRAG_DIRECTION.BOTTOM_LEFT, width_change, height_change);
     };
 
     const _hlight_top_right_mousedown = (e) => {
         _set_current_drag_dir(HIGHLIGHT_DRAG_DIRECTION.TOP_RIGHT);
         _set_is_resizing(true);
-        props.highlighter_mouse_down(HIGHLIGHT_DRAG_DIRECTION.TOP_RIGHT);
+        props.highlighter_drag_mouse_down(HIGHLIGHT_DRAG_DIRECTION.TOP_RIGHT);
     };
 
     const _hlight_top_right_mouseup = (e) => {
         const {clientX, clientY} = e;
         let width_change = clientX - (hlight_left_pos + hlight_width);
         let height_change = hlight_top_pos - clientY;
-        props.highlighter_mouse_up(HIGHLIGHT_DRAG_DIRECTION.TOP_RIGHT, width_change, height_change);
+        props.highlighter_drag_mouse_up(HIGHLIGHT_DRAG_DIRECTION.TOP_RIGHT, width_change, height_change);
     };
 
     /**

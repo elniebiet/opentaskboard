@@ -147,7 +147,7 @@ const _sticky_note = (props) => {
         props.taskboard_rerender_func();
     };
 
-    const _highlighter_mouse_down = (drag_direction) => {
+    const _highlighter_drag_mouse_down = (drag_direction) => {
         _set_prevent_note_deactivation(true);
         props.taskboard_rerender_func();
 
@@ -194,7 +194,7 @@ const _sticky_note = (props) => {
         props.taskboard_rerender_func();
     };
 
-    const _highlighter_mouse_up = (drag_direction, width_increase_pixels, height_increase_pixels) => 
+    const _highlighter_drag_mouse_up = (drag_direction, width_increase_pixels, height_increase_pixels) => 
     {
         _set_prevent_note_deactivation(true);
         props.taskboard_rerender_func();
@@ -320,8 +320,8 @@ const _sticky_note = (props) => {
             <div>
                 {(props.highlighted === true || joining_show_highlighter === true) ? (
                     <_highlighter caller_id={props.id} gap={HIGHLIGHT_PARAMS.highlight_gap} line_width={HIGHLIGHT_PARAMS.highlight_line_width} item_top_left_pos={{x: overall_top_left.x, y: overall_top_left.y}} item_width={stknote_width + (FLEXBOX_GAP_PERC * stknote_width * 4)} 
-                        item_height={stknote_width + (FLEXBOX_GAP_PERC * stknote_width * 4)} z_index={z_index} highlighter_mouse_down={_highlighter_mouse_down}
-                        highlighter_mouse_up={_highlighter_mouse_up} highlighter_join_started={_highlighter_join_started} join_arrow_ids={props.join_arrow_ids} 
+                        item_height={stknote_width + (FLEXBOX_GAP_PERC * stknote_width * 4)} z_index={z_index} highlighter_drag_mouse_down={_highlighter_drag_mouse_down}
+                        highlighter_drag_mouse_up={_highlighter_drag_mouse_up} highlighter_join_started={_highlighter_join_started} join_arrow_ids={props.join_arrow_ids} 
                         request_taskboard_state={props.request_taskboard_state} overall_taskboard_state={props.overall_taskboard_state} on_join={_on_join} taskboard_rerender_func={props.taskboard_rerender_func}
                     />
                     ) : (<div></div>)}
