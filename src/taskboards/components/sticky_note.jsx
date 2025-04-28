@@ -112,11 +112,6 @@ const _sticky_note = (props) => {
         props.taskboard_rerender_func();
     };
 
-    const _update_win_width_perc = (updated_win_width_perc) => {
-        _update_note_win_width_perc(props.id, updated_win_width_perc);
-        props.taskboard_rerender_func();
-    };
-
     const _colour_picker_btn_clicked = () => { 
         _set_is_editing(false);
     };
@@ -182,16 +177,6 @@ const _sticky_note = (props) => {
         {
             _set_joining_show_highlighter(true); // show highlighter on hover
         }
-    };
-
-    /**
-     * _on_join event handler, called when joining is complete and mouse is up
-     * @param {HIGHLIGHT_JOIN_POSITIONS} join_position e.g., top, right ...
-     * @param {int} arrow_id
-     */
-    const _on_join = (join_position, arrow_id) => {
-        _otbf_update_item_join_arrow_id(props.id, join_position, arrow_id, ARROW_JOIN_POINT.END_POINT);
-        props.taskboard_rerender_func();
     };
 
     const _highlighter_drag_mouse_up = (drag_direction, width_increase_pixels, height_increase_pixels) => 
@@ -295,6 +280,15 @@ const _sticky_note = (props) => {
             }
         }, [is_editing]
     );
+
+    // monitor highlighted param change
+    useEffect(() => {
+        if(props.highlighted === false)
+        {
+            _set_joining_show_highlighter(false); // hide highlighter on hover
+        }
+    }, [props.highlighted]);
+
     /********************* Effects block ends ***********************/
 
     const _do_nothing = () => {
@@ -322,7 +316,7 @@ const _sticky_note = (props) => {
                     <_highlighter caller_id={props.id} gap={HIGHLIGHT_PARAMS.highlight_gap} line_width={HIGHLIGHT_PARAMS.highlight_line_width} item_top_left_pos={{x: overall_top_left.x, y: overall_top_left.y}} item_width={stknote_width + (FLEXBOX_GAP_PERC * stknote_width * 4)} 
                         item_height={stknote_width + (FLEXBOX_GAP_PERC * stknote_width * 4)} z_index={z_index} highlighter_drag_mouse_down={_highlighter_drag_mouse_down}
                         highlighter_drag_mouse_up={_highlighter_drag_mouse_up} highlighter_join_started={_highlighter_join_started} join_arrow_ids={props.join_arrow_ids} 
-                        request_taskboard_state={props.request_taskboard_state} overall_taskboard_state={props.overall_taskboard_state} on_join={_on_join} taskboard_rerender_func={props.taskboard_rerender_func}
+                        request_taskboard_state={props.request_taskboard_state} overall_taskboard_state={props.overall_taskboard_state} taskboard_rerender_func={props.taskboard_rerender_func}
                     />
                     ) : (<div></div>)}
             </div>

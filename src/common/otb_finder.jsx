@@ -10,6 +10,7 @@
 import notes from "../taskboards/notes_db_temp";
 import arrows from "../taskboards/arrows_db_temp";
 import { HIGHLIGHT_JOIN_POSITIONS, ARROW_JOIN_POINT } from "../common/globals";
+import { _update_note_active_state, _update_note_highlighted } from "../taskboards/use_note";
 
 /**
  * update join arrow id
@@ -57,11 +58,35 @@ const _otbf_update_item_join_arrow_id = (id, join_arrow_position, join_arrow_id,
 
 };
 
+/**
+ * deactivate item
+ * @param {int} id - note id
+ */
+const _otbf_deactivate_item = (id) => {
+    let item_found = false;
+
+    // search notes for the item with the given id
+    for(let i=0; i<notes.length; i++)
+    {
+        if(notes[i].id === id)
+        {
+            item_found = true;
+            _update_note_active_state(id, false);
+            _update_note_highlighted(id, false);
+            console.log("deactivate item id: ", id);
+            break;
+        }
+    }
+
+    if(item_found) return;
+};
+
 /////////////////////////////////////////////////////////////////////////////////////////////
 // ALL LINES IN THIS BLOCK ARE TEMPORARY - to be replaced with the original code
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 export {
     _otbf_update_item_join_arrow_id,
+    _otbf_deactivate_item,
 };
 

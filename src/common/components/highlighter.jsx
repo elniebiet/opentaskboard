@@ -158,8 +158,8 @@ const _highlighter = ({
     const _on_join_position_hover = (e, position) => {
         if(overall_taskboard_state === TASKBOARD_STATES.TBS_JOINING_STARTED)
         {
-            _set_last_hovered_joining_item_id(caller_id);
-            _set_last_hovered_joining_position(position);
+            _set_last_hovered_joining_item_id(caller_id); // save the id of the last position hovered over for joining
+            _set_last_hovered_joining_position(position); // save the last position hovered over for joining
         }
     };
 
@@ -171,8 +171,8 @@ const _highlighter = ({
     const _on_join_position_mouse_down = (e, position) => {
         let arrow_id = Date.now();
         _add_arrow(arrow_id, e.clientX, e.clientY, e.clientX + 10, e.clientY+10, SELECTED_COLOR_THEME.highlight_colour, 2);
-        _set_current_joining_arrow_id(arrow_id);
-        _set_current_joining_position(position);
+        _set_current_joining_arrow_id(arrow_id); // set current joining arrow id for access by another component
+        _set_current_joining_position(position); // set the current join position for access by another component
         highlighter_join_started(position, arrow_id);
 
         request_taskboard_state(TASKBOARD_STATES.TBS_JOINING_STARTED);
