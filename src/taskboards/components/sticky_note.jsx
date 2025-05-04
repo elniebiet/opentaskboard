@@ -96,9 +96,17 @@ const _sticky_note = (props) => {
         props.taskboard_rerender_func();
     };
 
-    const _handle_note_drag_start = () => {
+    const _handle_note_drag_start = (e) => {
+        if(e.movementX === 0 && e.movementY === 0)
+        { 
+            // prevent drag if no movement
+            return;
+        }
+
         _set_z_index(_get_max_z_index());
         _use_max_z_index();
+        _set_is_editing(false);
+        props.taskboard_rerender_func();
     }
 
     const _activate_note = (editing_note) => {
@@ -137,6 +145,7 @@ const _sticky_note = (props) => {
     const _update_colour = (updated_hex_colour_val) => {
         _update_note_colour(props.id, updated_hex_colour_val);
         _set_complement_colour(_get_complement_colour(updated_hex_colour_val));
+        _set_is_editing(true);
         props.taskboard_rerender_func();
     };
 
@@ -304,7 +313,9 @@ const _sticky_note = (props) => {
     useEffect(() => {
             if (is_editing && textarea_ref.current) {
                 textarea_ref.current.focus();
-                textarea_ref.current.setSelectionRange(0, props.text.length); // highlight text
+
+                // set text to highlight on activation
+                textarea_ref.current.setSelectionRange(props.text.length, props.text.length); // highlight text
             }
         }, [is_editing]
     );
