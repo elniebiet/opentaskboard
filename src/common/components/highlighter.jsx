@@ -45,6 +45,7 @@ const _highlighter = ({
 
     let edge_circle_diameter = 0.05 * hlight_width;
     let hlight_circle_radius = hlight_width / 10;
+    let edge_triangle_height = 0.05 * hlight_width;
 
     const [is_resizing, _set_is_resizing] = useState(false);
     const [current_drag_dir, _set_current_drag_dir] = useState(HIGHLIGHT_DRAG_DIRECTION.BOTTOM_RIGHT);
@@ -374,12 +375,12 @@ const _highlighter = ({
             {/* Join Arrow triangles */}
             <div>
                 <svg style={{ position: "absolute", left: 0, top: 0, width: "100%", height: "100%", pointerEvents: "none", zIndex: z_index + 1 }}>
-                    {/* Top triangle - now pointing down */}
+                    {/* Top triangle - pointing up */}
                     <polygon
                         points={`
-                            ${hlight_left_pos + hlight_width / 2 - 5},${hlight_top_pos - 2}
-                            ${hlight_left_pos + hlight_width / 2 + 5},${hlight_top_pos - 2}
-                            ${hlight_left_pos + hlight_width / 2},${hlight_top_pos - 10}
+                            ${hlight_left_pos + hlight_width / 2 - (edge_triangle_height / 2)},${hlight_top_pos - 2}
+                            ${hlight_left_pos + hlight_width / 2 + (edge_triangle_height / 2)},${hlight_top_pos - 2}
+                            ${hlight_left_pos + hlight_width / 2},${hlight_top_pos - edge_triangle_height}
                         `}
                         fill={SELECTED_COLOR_THEME.highlight_colour}
                         onMouseEnter={(e) => {_on_join_position_hover(e, HIGHLIGHT_JOIN_POSITIONS.TOP)}}
@@ -403,12 +404,12 @@ const _highlighter = ({
                         strokeOpacity={0.4}
                     />)}
 
-                    {/* Right triangle - now pointing left */}
+                    {/* Right triangle - pointing right */}
                     <polygon
                         points={`
-                            ${hlight_left_pos + hlight_width + 7},${hlight_top_pos + hlight_height / 2 - 5}
-                            ${hlight_left_pos + hlight_width + 7},${hlight_top_pos + hlight_height / 2 + 5}
-                            ${hlight_left_pos + hlight_width + 17},${hlight_top_pos + hlight_height / 2}
+                            ${hlight_left_pos + hlight_width + 7},${hlight_top_pos + hlight_height / 2 - (edge_triangle_height / 2)}
+                            ${hlight_left_pos + hlight_width + 7},${hlight_top_pos + hlight_height / 2 + (edge_triangle_height / 2)}
+                            ${hlight_left_pos + hlight_width + 7 + edge_triangle_height },${hlight_top_pos + hlight_height / 2}
                         `}
                         fill={SELECTED_COLOR_THEME.highlight_colour}
                         onMouseEnter={(e) => {_on_join_position_hover(e, HIGHLIGHT_JOIN_POSITIONS.RIGHT)}}
@@ -432,12 +433,12 @@ const _highlighter = ({
                         strokeOpacity={0.4}
                     />)}
 
-                    {/* Bottom triangle - now pointing up */}
+                    {/* Bottom triangle - pointing down */}
                     <polygon
                         points={`
-                            ${hlight_left_pos + hlight_width / 2 - 5},${hlight_top_pos + hlight_height + 7}
-                            ${hlight_left_pos + hlight_width / 2 + 5},${hlight_top_pos + hlight_height + 7}
-                            ${hlight_left_pos + hlight_width / 2},${hlight_top_pos + hlight_height + 15}
+                            ${hlight_left_pos + hlight_width / 2 - (edge_triangle_height / 2)},${hlight_top_pos + hlight_height + 7}
+                            ${hlight_left_pos + hlight_width / 2 + (edge_triangle_height / 2)},${hlight_top_pos + hlight_height + 7}
+                            ${hlight_left_pos + hlight_width / 2},${hlight_top_pos + hlight_height + 5 + edge_triangle_height}
                         `}
                         fill={SELECTED_COLOR_THEME.highlight_colour}
                         onMouseEnter={(e) => {_on_join_position_hover(e, HIGHLIGHT_JOIN_POSITIONS.BOTTOM)}}
@@ -461,12 +462,12 @@ const _highlighter = ({
                         strokeOpacity={0.4}
                     />)}
 
-                    {/* Left triangle - now pointing right */}
+                    {/* Left triangle - pointing left */}
                     <polygon
                         points={`
-                            ${hlight_left_pos - 2},${hlight_top_pos + hlight_height / 2 - 5}
-                            ${hlight_left_pos - 2},${hlight_top_pos + hlight_height / 2 + 5}
-                            ${hlight_left_pos - 10},${hlight_top_pos + hlight_height / 2}
+                            ${hlight_left_pos - 2},${hlight_top_pos + hlight_height / 2 - (edge_triangle_height / 2)}
+                            ${hlight_left_pos - 2},${hlight_top_pos + hlight_height / 2 + (edge_triangle_height / 2)}
+                            ${hlight_left_pos - edge_triangle_height},${hlight_top_pos + hlight_height / 2}
                         `}
                         fill={SELECTED_COLOR_THEME.highlight_colour}
                         onMouseEnter={(e) => {_on_join_position_hover(e, HIGHLIGHT_JOIN_POSITIONS.LEFT)}}

@@ -29,6 +29,8 @@ Notable todo items list:
 28. Can come up with format for creating ids - maybe use GUIDs instead
 29. Implement proper/efficient search for items
 30. Delete join arrows when component is deleted
+31. Need to implement changes tracker for undo and redo
+32. Remove draggable feature from join arrows
 
 
 

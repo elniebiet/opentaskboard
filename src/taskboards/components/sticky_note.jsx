@@ -41,22 +41,50 @@ const _sticky_note = (props) => {
 
     const [joining_show_highlighter, _set_joining_show_highlighter] = useState(false); 
 
-    const STKNOTE_MIN_WIDTH                 = 150;  //pixels
-    const MENUBAR_HGT_PERC                  = 0.10; // 10% of stknote height 
-    const FLEXBOX_GAP_PERC                  = 0.02; // 2% of stknote height
-    const FLEXBOX_TXTAREA_HGT_PERC          = 0.90; // 90% of stknote height
-    const FONT_SIZE_PERC                    = 0.08; // 8% of stknote width
-    const MENUBAR_ITEM_WIDTH_PERC           = 0.10; // 10% of stknote width
-    const STKNOTE_TXTAREA_PADDG_PERC        = 0.05; // 5% of stknote width
-    const STKNOTE_PARAGR_PADDG_PERC         = 0.15; // 15% of stknote width
-    const TOOLBAR_NOTE_GAP_TOP_PERC         = 0.4;  // percentage of stknote width 
-    const TOOLBAR_NOTE_GAP_LEFT_PERC        = 0.01; // percentage of stknote width
+    const STKNOTE_MIN_WIDTH                             = 150;  //pixels
+    const MENUBAR_HGT_PERC                              = 0.10; // 10% of stknote height 
+    const FLEXBOX_GAP_PERC                              = 0.02; // 2% of stknote height
+    const FLEXBOX_TXTAREA_HGT_PERC                      = 0.90; // 90% of stknote height
+    const FONT_SIZE_PERC                                = 0.08; // 8% of stknote width
+    const MENUBAR_ITEM_WIDTH_PERC                       = 0.10; // 10% of stknote width
+    const STKNOTE_TXTAREA_PADDG_PERC                    = 0.05; // 5% of stknote width
+    const STKNOTE_PARAGR_PADDG_PERC                     = 0.15; // 15% of stknote width
+    const TOOLBAR_NOTE_GAP_TOP_PERC_DEFAULT             = 0.2;  // percentage of stknote width 
+    const TOOLBAR_NOTE_GAP_TOP_PERC_0_200               = 0.50; // percentage of stknote width when stknote width < 200px
+    const TOOLBAR_NOTE_GAP_TOP_PERC_200_300             = 0.40; // percentage of stknote width 
+    const TOOLBAR_NOTE_GAP_TOP_PERC_300_400             = 0.30; // percentage of stknote width 
+    const TOOLBAR_NOTE_GAP_LEFT_PERC                    = 0.01; // percentage of stknote width
+
+    const _get_note_toolbar_top_gap_perc = (note_width) => {
+        
+        let toolbar_perc = TOOLBAR_NOTE_GAP_TOP_PERC_DEFAULT;
+        
+        if(note_width < 200)
+        {
+            toolbar_perc = TOOLBAR_NOTE_GAP_TOP_PERC_0_200;
+        }
+        else if(note_width >= 200 && note_width < 300)
+        {
+            toolbar_perc = TOOLBAR_NOTE_GAP_TOP_PERC_200_300;
+        }
+        else if(note_width >= 300 && note_width < 400)
+        {
+            toolbar_perc = TOOLBAR_NOTE_GAP_TOP_PERC_300_400;
+        }
+        else
+        {
+            toolbar_perc = TOOLBAR_NOTE_GAP_TOP_PERC_DEFAULT;
+        }
+
+        return toolbar_perc;
+    };
 
     let stknote_width = props.win_width_perc * props.win_width;
     stknote_width = ( stknote_width < STKNOTE_MIN_WIDTH ) ? STKNOTE_MIN_WIDTH : stknote_width;
     const font_size = FONT_SIZE_PERC * stknote_width;
     let menubar_item_width   = MENUBAR_ITEM_WIDTH_PERC * stknote_width;
-    let toolbar_note_gap_top_px = TOOLBAR_NOTE_GAP_TOP_PERC * stknote_width;
+    let toolbar_note_gap_perc = _get_note_toolbar_top_gap_perc(stknote_width);    
+    let toolbar_note_gap_top_px = toolbar_note_gap_perc * stknote_width;
     let toolbar_note_gap_left_px = TOOLBAR_NOTE_GAP_LEFT_PERC * stknote_width; 
 
     const _handle_note_drag_over = (e) =>   
