@@ -44,9 +44,11 @@ const _highlighter = ({
     let hlight_height = item_height + (gap * 2);
 
     let edge_circle_diameter = 0.05 * hlight_width;
+    let hlight_circle_radius = hlight_width / 10;
 
     const [is_resizing, _set_is_resizing] = useState(false);
     const [current_drag_dir, _set_current_drag_dir] = useState(HIGHLIGHT_DRAG_DIRECTION.BOTTOM_RIGHT);
+    const [join_pos_hover, _set_join_pos_hover] = useState({started: false, position: HIGHLIGHT_JOIN_POSITIONS.NONE});
     
     let bottom_right_circle_style = {
         width: edge_circle_diameter + 'px',
@@ -156,11 +158,21 @@ const _highlighter = ({
      * @param {HIGHLIGHT_JOIN_POSITIONS} position join position
      */
     const _on_join_position_hover = (e, position) => {
+        _set_join_pos_hover({started: true, position: position});
         if(overall_taskboard_state === TASKBOARD_STATES.TBS_JOINING_STARTED)
         {
             _set_last_hovered_joining_item_id(caller_id); // save the id of the last position hovered over for joining
             _set_last_hovered_joining_position(position); // save the last position hovered over for joining
         }
+    };
+
+    /**
+     * hover ended over a join position handler
+     * @param {event} e hover end event (mouse leave)
+     * @param {HIGHLIGHT_JOIN_POSITIONS} position join position
+     */
+    const _on_join_position_hover_end = (e) => {
+        _set_join_pos_hover({started: false, position: HIGHLIGHT_JOIN_POSITIONS.NONE});
     };
 
     /**
@@ -372,12 +384,25 @@ const _highlighter = ({
                         fill={SELECTED_COLOR_THEME.highlight_colour}
                         onMouseEnter={(e) => {_on_join_position_hover(e, HIGHLIGHT_JOIN_POSITIONS.TOP)}}
                         onMouseDown={(e) => {_on_join_position_mouse_down(e, HIGHLIGHT_JOIN_POSITIONS.TOP)}}
+                        onMouseLeave={(e) => {_on_join_position_hover_end(e)}}
                         style={{ 
                             pointerEvents: "auto",
                             cursor: "pointer",
                         }}
                     />
                     
+                    {/* Top hover over circle */}
+                    {(join_pos_hover.started === true) && (join_pos_hover.position === HIGHLIGHT_JOIN_POSITIONS.TOP) && 
+                    (<circle 
+                        cx={hlight_left_pos + hlight_width / 2} 
+                        cy={hlight_top_pos - 10} 
+                        r={hlight_circle_radius} 
+                        fill="none" 
+                        stroke={SELECTED_COLOR_THEME.highlight_colour}
+                        strokeWidth={(line_width / 2 > 0) ? (line_width / 2) : line_width}
+                        strokeOpacity={0.4}
+                    />)}
+
                     {/* Right triangle - now pointing left */}
                     <polygon
                         points={`
@@ -388,12 +413,24 @@ const _highlighter = ({
                         fill={SELECTED_COLOR_THEME.highlight_colour}
                         onMouseEnter={(e) => {_on_join_position_hover(e, HIGHLIGHT_JOIN_POSITIONS.RIGHT)}}
                         onMouseDown={(e) => {_on_join_position_mouse_down(e, HIGHLIGHT_JOIN_POSITIONS.RIGHT)}}
+                        onMouseLeave={(e) => {_on_join_position_hover_end(e)}}
                         style={{ 
                             pointerEvents: "auto", 
                             cursor: "pointer",
                         }}
                     />
 
+                    {/* Right hover over circle */}
+                    {(join_pos_hover.started === true) && (join_pos_hover.position === HIGHLIGHT_JOIN_POSITIONS.RIGHT) && 
+                    (<circle 
+                        cx={hlight_left_pos + hlight_width + 17} 
+                        cy={hlight_top_pos + hlight_height / 2} 
+                        r={hlight_circle_radius} 
+                        fill="none" 
+                        stroke={SELECTED_COLOR_THEME.highlight_colour}
+                        strokeWidth={(line_width / 2 > 0) ? (line_width / 2) : line_width}
+                        strokeOpacity={0.4}
+                    />)}
 
                     {/* Bottom triangle - now pointing up */}
                     <polygon
@@ -405,12 +442,24 @@ const _highlighter = ({
                         fill={SELECTED_COLOR_THEME.highlight_colour}
                         onMouseEnter={(e) => {_on_join_position_hover(e, HIGHLIGHT_JOIN_POSITIONS.BOTTOM)}}
                         onMouseDown={(e) => {_on_join_position_mouse_down(e, HIGHLIGHT_JOIN_POSITIONS.BOTTOM)}}
+                        onMouseLeave={(e) => {_on_join_position_hover_end(e)}}
                         style={{ 
                             pointerEvents: "auto", 
                             cursor: "pointer",
                         }}
                     />
 
+                    {/* Bottom hover over circle */}
+                    {(join_pos_hover.started === true) && (join_pos_hover.position === HIGHLIGHT_JOIN_POSITIONS.BOTTOM) && 
+                    (<circle 
+                        cx={hlight_left_pos + hlight_width / 2} 
+                        cy={hlight_top_pos + hlight_height + 11} 
+                        r={hlight_circle_radius} 
+                        fill="none" 
+                        stroke={SELECTED_COLOR_THEME.highlight_colour}
+                        strokeWidth={(line_width / 2 > 0) ? (line_width / 2) : line_width} // TODO: replace this line
+                        strokeOpacity={0.4}
+                    />)}
 
                     {/* Left triangle - now pointing right */}
                     <polygon
@@ -422,11 +471,25 @@ const _highlighter = ({
                         fill={SELECTED_COLOR_THEME.highlight_colour}
                         onMouseEnter={(e) => {_on_join_position_hover(e, HIGHLIGHT_JOIN_POSITIONS.LEFT)}}
                         onMouseDown={(e) => {_on_join_position_mouse_down(e, HIGHLIGHT_JOIN_POSITIONS.LEFT)}}
+                        onMouseLeave={(e) => {_on_join_position_hover_end(e)}}
                         style={{ 
                             pointerEvents: "auto", 
                             cursor: "pointer",
                         }}
                     />
+
+                    {/* Left hover over circle */}
+                    {(join_pos_hover.started === true) && (join_pos_hover.position === HIGHLIGHT_JOIN_POSITIONS.LEFT) && 
+                    (<circle 
+                        cx={hlight_left_pos - 10} 
+                        cy={hlight_top_pos + hlight_height / 2} 
+                        r={hlight_circle_radius} 
+                        fill="none" 
+                        stroke={SELECTED_COLOR_THEME.highlight_colour}
+                        strokeWidth={(line_width / 2 > 0) ? (line_width / 2) : line_width}
+                        strokeOpacity={0.4}
+                    />)}
+
                 </svg>
             </div>
         </div>
