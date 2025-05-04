@@ -49,7 +49,7 @@ const _sticky_note = (props) => {
     const MENUBAR_ITEM_WIDTH_PERC                       = 0.10; // 10% of stknote width
     const STKNOTE_TXTAREA_PADDG_PERC                    = 0.05; // 5% of stknote width
     const STKNOTE_PARAGR_PADDG_PERC                     = 0.15; // 15% of stknote width
-    const TOOLBAR_NOTE_GAP_TOP_PERC_DEFAULT             = 0.2;  // percentage of stknote width 
+    const TOOLBAR_NOTE_GAP_TOP_PERC_DEFAULT             = 0.25;  // percentage of stknote width 
     const TOOLBAR_NOTE_GAP_TOP_PERC_0_200               = 0.50; // percentage of stknote width when stknote width < 200px
     const TOOLBAR_NOTE_GAP_TOP_PERC_200_300             = 0.40; // percentage of stknote width 
     const TOOLBAR_NOTE_GAP_TOP_PERC_300_400             = 0.30; // percentage of stknote width 
@@ -330,7 +330,7 @@ const _sticky_note = (props) => {
             {/* display note toolbar */}
             <div>
                 {(props.show_toolbar === true) ? (
-                    <_note_toolbar note_id={props.id} win_width={props.win_width} win_height={props.win_height} 
+                    <_note_toolbar note_id={props.id} note_width={stknote_width} note_height={stknote_width} 
                         x_pos={toolbar_x_pos} y_pos={toolbar_y_pos} taskboard_rerender_func={props.taskboard_rerender_func} 
                         request_taskboard_state={props.request_taskboard_state} note_toolbar_item_clicked={_toolbar_item_clicked_notif}
                         note_colour_picker_btn_clicked_func={_colour_picker_btn_clicked} note_update_colour_func={_update_colour} 

@@ -152,15 +152,15 @@ const _add_toolbar_item = (props) =>
  *  
  */
 const _note_toolbar = (props) => {
-    const ITEM_PERCENTAGE = 0.02;       // toolbar item res percentage rtive to window size (2 percent of orig win)
-    const ROOT_PERCENTAGE = 0.02;       // toolbar container res percentage rtive to window size (3 percent of orig win)
-    const ITEM_BR_PERCENTAGE = 0.006;   // toolbar item img border radius percentage
+    const ITEM_PERCENTAGE = 0.10;       // toolbar item res percentage rtive to window size (2 percent of orig win)
+    const ROOT_PERCENTAGE = 0.10;       // toolbar container res percentage rtive to window size (3 percent of orig win)
+    const ITEM_BR_PERCENTAGE = 0.03;   // toolbar item img border radius percentage
 
-    let item_width = (ITEM_PERCENTAGE * props.win_width);
+    let item_width = (ITEM_PERCENTAGE * props.note_width);
     let item_height = item_width;
-    let item_br = (ITEM_BR_PERCENTAGE * props.win_width);
+    let item_br = (ITEM_BR_PERCENTAGE * props.note_width);
 
-    let root_width = (ROOT_PERCENTAGE * props.win_width);
+    let root_width = (ROOT_PERCENTAGE * props.note_width);
     let root_height = root_width;
         
     /**************************** Toolbar Stylings begin ***************************/
