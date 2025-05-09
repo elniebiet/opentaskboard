@@ -10,6 +10,7 @@ import board_marker_img_32 from '../../res/imgs/img_board_marker_32x32.png';
 import fill_img_32 from '../../res/imgs/img_fill2_32x32.png'; 
 import { TASKBOARD_STATES } from './taskboard_globals';
 import _draggable_arrow from '../common/components/arrow';
+import _draggable_line from '../common/components/line';
 import { _set_global_new_shape_id, _get_global_new_shape_id } from './taskboard_globals';
 import { _get_global_last_item_add_or_move_loc, _set_global_last_item_add_or_move_loc } from './taskboard_globals';
 import { _get_global_cursor_type, _set_global_cursor_type } from './taskboard_globals';
@@ -29,6 +30,7 @@ import { _otbf_update_item_join_arrow_id, _otbf_deactivate_item } from '../commo
 import notes from './notes_db_temp';        // temporary notes storage
 import comments from './comments_db_temp';  // temporary comments storage
 import arrows from './arrows_db_temp';      // temporary arrows storage
+import lines from './lines_db_temp';        // temporary lines storage
 
 /**
  * Default taskboard componen
@@ -370,12 +372,24 @@ const _taskboard_default = () => {
           {/* display shapes */}
           <div>
               {/* display arrows */}
-              {arrows.map((arrow) => (
-                <_draggable_arrow key={arrow.id} id={arrow.id} start_pos_x={arrow.x1_pos} start_pos_y={arrow.y1_pos} end_pos_x={arrow.x2_pos} end_pos_y={arrow.y2_pos} 
-                colour={arrow.colour} stroke_width={arrow.stroke_width} is_highlighted={arrow.highlighted} taskboard_rerender_func={_trigger_taskboard_rerender} 
-                show_toolbar={arrow.toolbar_show} win_width={width} win_height={height} request_taskboard_state={_request_taskboard_state} overall_taskboard_state={taskboard_state}
-                />
-              ))}
+              <div>
+                {arrows.map((arrow) => (
+                  <_draggable_arrow key={arrow.id} id={arrow.id} start_pos_x={arrow.x1_pos} start_pos_y={arrow.y1_pos} end_pos_x={arrow.x2_pos} end_pos_y={arrow.y2_pos} 
+                  colour={arrow.colour} stroke_width={arrow.stroke_width} is_highlighted={arrow.highlighted} taskboard_rerender_func={_trigger_taskboard_rerender} 
+                  show_toolbar={arrow.toolbar_show} win_width={width} win_height={height} request_taskboard_state={_request_taskboard_state} overall_taskboard_state={taskboard_state}
+                  />
+                ))}
+              </div>
+
+              {/* display lines */}
+              <div>
+                {lines.map((line) => (
+                  <_draggable_line key={line.id} id={line.id} start_pos_x={line.x1_pos} start_pos_y={line.y1_pos} end_pos_x={line.x2_pos} end_pos_y={line.y2_pos} 
+                  colour={line.colour} stroke_width={line.stroke_width} is_highlighted={line.highlighted} taskboard_rerender_func={_trigger_taskboard_rerender} 
+                  show_toolbar={line.toolbar_show} win_width={width} win_height={height} request_taskboard_state={_request_taskboard_state} overall_taskboard_state={taskboard_state}
+                  />
+                ))}
+              </div>
           </div>
       </div>
   );

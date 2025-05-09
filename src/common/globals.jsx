@@ -118,8 +118,9 @@ const _get_current_joining_arrow_id = () => {
 const _set_current_joining_arrow_id = (id) => {
     current_joining_arrow_id = id;
 };
+/*********** Arrow block ends ***************/
 
-// current joining positino
+// current joining position
 let current_joining_position = HIGHLIGHT_JOIN_POSITIONS.TOP;
 
 const _get_current_joining_position = () => {
@@ -158,7 +159,40 @@ const _set_last_hovered_joining_position = (joining_pos) => {
 
     last_hovered_joining_position = joining_pos;
 }
-/*********** Arrow block ends ***************/
+
+
+/*********** Line block begins ***************/
+// Line highlighter drag positions
+const LINE_HLIGHT_DRAG_POS = {
+    START:  1,
+    MID:    2,
+    END:    3,
+};
+
+// Line join point
+const LINE_JOIN_POINT = {
+    START_POINT:  1,
+    END_POINT:    2,
+};
+
+// Line width increment and decrement factors
+const LINE_WIDTH_INCR_FACTOR   = 0.1; // 10 percent of original width
+const LINE_WIDTH_DECR_FACTOR   = 0.1; // 10 percent of original width
+const MAX_LINE_WIDTH           = 100; // maximum line width in pixels
+const MIN_LINE_WIDTH           = 1;   // minimum line width in pixels
+const MIN_LINE_LENGTH          = 30;  // minimum line length in pixels
+
+// current joining line id
+let current_joining_line_id = -1;
+
+const _get_current_joining_line_id = () => {
+    return current_joining_line_id;
+};
+
+const _set_current_joining_line_id = (id) => {
+    current_joining_line_id = id;
+};
+/*********** Line block ends ***************/
 
 
 /* Color Theme */
@@ -213,9 +247,6 @@ export {
     HIGHLIGHT_DRAG_DIRECTION,
     HIGHLIGHT_JOIN_POSITIONS,
 
-    /* Arrow Highlighter exports */
-    ARROW_HLIGHT_DRAG_POS,
-
     /* Arrow exports */
     ARROW_WIDTH_INCR_FACTOR,
     ARROW_WIDTH_DECR_FACTOR,
@@ -223,13 +254,28 @@ export {
     MIN_ARROW_WIDTH,
     MIN_ARROW_LENGTH,
     ARROW_JOIN_POINT,
+    ARROW_HLIGHT_DRAG_POS,
     _get_current_joining_arrow_id,
     _set_current_joining_arrow_id,
+
+    /* Line exports */
+    LINE_WIDTH_INCR_FACTOR,
+    LINE_WIDTH_DECR_FACTOR,
+    MAX_LINE_WIDTH,
+    MIN_LINE_WIDTH,
+    MIN_LINE_LENGTH,
+    LINE_JOIN_POINT,
+    LINE_HLIGHT_DRAG_POS,
+    _get_current_joining_line_id,
+    _set_current_joining_line_id,
+
+    /* other exports */
     _get_current_joining_position,
     _set_current_joining_position,
     _get_last_hovered_joining_item_id,
     _set_last_hovered_joining_item_id,
     _get_last_hovered_joining_position,
     _set_last_hovered_joining_position,
+
 };
 

@@ -3,6 +3,7 @@ import { _set_global_new_shape_type, _get_global_new_shape_type, _get_global_new
 import { SHAPES_TOOLBAR_ITEM_TYPE } from "../toolbars/toolbar_globals";
 import { CURSOR_TYPES } from "./taskboard_globals";
 import { _add_arrow, _update_arrow_end_pos } from "./use_arrow";
+import { _add_line, _update_line_end_pos } from "./use_line";
 
 /**
  * Handler first called when a shape is selected
@@ -25,6 +26,11 @@ const _start_drawing = ({ shape_id, start_pos_x, start_pos_y, end_pos_x, end_pos
             _add_arrow(shape_id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour, stroke_width);
             break;
         }
+        case SHAPES_TOOLBAR_ITEM_TYPE.STBI_LINE:
+        {
+            _add_line(shape_id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour, stroke_width);
+            break;
+        }
         default:
         {
             console.log("_start_drawing: dont know shape " + type_of_shape);
@@ -39,6 +45,11 @@ const _update_drawing = ({e, shape_type}) => {
         case SHAPES_TOOLBAR_ITEM_TYPE.STBI_ARROW:
         {
             _update_arrow_end_pos(_get_global_new_shape_id(), e.clientX, e.clientY);
+            break;
+        }
+        case SHAPES_TOOLBAR_ITEM_TYPE.STBI_LINE:
+        {
+            _update_line_end_pos(_get_global_new_shape_id(), e.clientX, e.clientY);
             break;
         }
         default:

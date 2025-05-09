@@ -187,7 +187,7 @@ const _decrease_arrow_width = (id) => {
   {
     if(arrows[i].id === id)
     {
-      let decrement = (arrows[i].stroke_width * ARROW_WIDTH_INCR_FACTOR);
+      let decrement = (arrows[i].stroke_width * ARROW_WIDTH_DECR_FACTOR);
       
       if(arrows[i].stroke_width - decrement < MIN_ARROW_WIDTH)
       {

@@ -81,6 +81,17 @@ const ARROW_TOOLBAR_ITEMS = {
 /* Arrow toolbar item indices end */    
 /******************************* Arrow toolbar block ends *******************************/
 
+/******************************* Line toolbar block begins *******************************/
+/* Line toolbar item indices begin */
+const LINE_TOOLBAR_ITEMS = {
+    ATBI_COLOUR:                1,
+    ATBI_INCREASE_LINE_WIDTH:   2,
+    ATBI_DECREASE_LINE_WIDTH:   3,
+    ATBI_DELETE:                4,
+};
+/* Arrow toolbar item indices end */    
+/******************************* Line toolbar block ends *******************************/
+
 
 export { 
     TASKBOARD_DEFAULT_TB_LOC, 
@@ -90,5 +101,6 @@ export {
     NOTE_TOOLBAR_ITEMS,
     SHAPES_TOOLBAR_ITEM_TYPE,
     ARROW_TOOLBAR_ITEMS,
+    LINE_TOOLBAR_ITEMS,
 };
 
