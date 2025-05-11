@@ -148,7 +148,7 @@ const _draggable_line = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, c
     useEffect(() => {
         const _handle_click_outside_line = (event) => {
             if (line_root_ref.current && !line_root_ref.current.contains(event.target)) {
-                console.log("Clicked outside the line component");                
+                // clicked outside the line component                
                 _deactivate_line();
             }
             else
@@ -296,7 +296,6 @@ const _draggable_line = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, c
                         y2={line_end_pos.y}
                         stroke={colour}
                         strokeWidth={stroke_width}
-                        markerEnd={`url(#linehead${id})`}
                         style={{ cursor: "grab", pointerEvents: "all" }}
                     />
 

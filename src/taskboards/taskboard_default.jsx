@@ -11,6 +11,7 @@ import fill_img_32 from '../../res/imgs/img_fill2_32x32.png';
 import { TASKBOARD_STATES } from './taskboard_globals';
 import _draggable_arrow from '../common/components/arrow';
 import _draggable_line from '../common/components/line';
+import _draggable_circle from '../common/components/circle';
 import { _set_global_new_shape_id, _get_global_new_shape_id } from './taskboard_globals';
 import { _get_global_last_item_add_or_move_loc, _set_global_last_item_add_or_move_loc } from './taskboard_globals';
 import { _get_global_cursor_type, _set_global_cursor_type } from './taskboard_globals';
@@ -31,6 +32,7 @@ import notes from './notes_db_temp';        // temporary notes storage
 import comments from './comments_db_temp';  // temporary comments storage
 import arrows from './arrows_db_temp';      // temporary arrows storage
 import lines from './lines_db_temp';        // temporary lines storage
+import circles from './circles_db_temp';    // temporary circles storage
 
 /**
  * Default taskboard componen
@@ -390,6 +392,17 @@ const _taskboard_default = () => {
                   />
                 ))}
               </div>
+
+              {/* display circles */}
+              <div>
+                {circles.map((circle) => (
+                  <_draggable_circle key={circle.id} id={circle.id} start_pos_x={circle.x1_pos} start_pos_y={circle.y1_pos} end_pos_x={circle.x2_pos} end_pos_y={circle.y2_pos} 
+                  colour={circle.colour} stroke_width={circle.stroke_width} is_highlighted={circle.highlighted} taskboard_rerender_func={_trigger_taskboard_rerender} 
+                  show_toolbar={circle.toolbar_show} win_width={width} win_height={height} request_taskboard_state={_request_taskboard_state} overall_taskboard_state={taskboard_state}
+                  />
+                ))}
+              </div>
+
           </div>
       </div>
   );

@@ -92,6 +92,17 @@ const LINE_TOOLBAR_ITEMS = {
 /* Arrow toolbar item indices end */    
 /******************************* Line toolbar block ends *******************************/
 
+/******************************* Circle toolbar block begins *******************************/
+/* Circle toolbar item indices begin */
+const CIRCLE_TOOLBAR_ITEMS = {
+    ATBI_COLOUR:                1,
+    ATBI_INCREASE_CIRCLE_WIDTH:   2,
+    ATBI_DECREASE_CIRCLE_WIDTH:   3,
+    ATBI_DELETE:                4,
+};
+/* Arrow toolbar item indices end */    
+/******************************* Circle toolbar block ends *******************************/
+
 
 export { 
     TASKBOARD_DEFAULT_TB_LOC, 
@@ -102,5 +113,6 @@ export {
     SHAPES_TOOLBAR_ITEM_TYPE,
     ARROW_TOOLBAR_ITEMS,
     LINE_TOOLBAR_ITEMS,
+    CIRCLE_TOOLBAR_ITEMS,
 };
 

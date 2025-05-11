@@ -2,46 +2,49 @@ import { useState, useEffect, useRef } from "react";
 import { _set_global_toolbar_items_active_state } from "../../taskboards/taskboard_globals";
 import { TASKBOARD_TOOLBAR_ITEMS } from "../../toolbars/toolbar_globals";
 import { _get_max_z_index, _use_max_z_index } from "../globals";
-import { _update_arrow_highlighted, _update_arrow_start_pos, _update_arrow_end_pos,
-    _update_arrow_colour, _update_arrow_toolbar_show, _update_arrow_toolbar_loc,
-    _delete_arrow, _increase_arrow_width, _decrease_arrow_width } from "../../taskboards/use_arrow";
-import { SELECTED_COLOR_THEME, ARROW_HLIGHT_DRAG_POS } from "../globals";
-import _arrow_toolbar from "../../toolbars/arrow_toolbar";
-import { ARROW_TOOLBAR_ITEMS } from "../../toolbars/toolbar_globals";
+import { _update_circle_highlighted, _update_circle_start_pos, _update_circle_end_pos,
+    _update_circle_colour, _update_circle_toolbar_show, _update_circle_toolbar_loc,
+    _delete_circle, _increase_circle_width, _decrease_circle_width } from "../../taskboards/use_circle";
+import { SELECTED_COLOR_THEME, CIRCLE_HLIGHT_DRAG_POS } from "../globals";
+import _circle_toolbar from "../../toolbars/circle_toolbar";
+import { CIRCLE_TOOLBAR_ITEMS } from "../../toolbars/toolbar_globals";
 import { TASKBOARD_STATES } from "../../taskboards/taskboard_globals";
 
 /**
- * _draggable_arrow - Draggable arrow component
- * PLEASE NOTE: THIS COMPONENT IMPLEMENTS ITS OWN HIGHLIGHTER
- * @param {int} id - Arrow ID
- * @param {float} start_pos_x - Arrow start x position
- * @param {float} start_pos_y - Arrow start y position
- * @param {float} end_pos_x - Arrow end x position
- * @param {float} end_pos_y - Arrow end y position
- * @param {string} colour - Arrow colour
- * @param {int} stroke_width - Arrow stroke width
- * @param {boolean} is_highlighted - Arrow highlighted state
+ * _draggable_circle - Draggable circle component
+ * *****************************************************************************************
+ * PLEASE NOTE: THIS COMPONENT USES THE GENERIC HIGHLIGHTER AS WELL AS A CUSTOM HIGHLIGHTER.
+ * ************ THE CUSTOM HIGHLIGHTER IS USEFUL FOR DRAGGING THE CIRCLE *******************
+ * ***************************************************************************************** 
+ * @param {int} id - circle ID
+ * @param {float} start_pos_x - circle start x position
+ * @param {float} start_pos_y - circle start y position
+ * @param {float} end_pos_x - circle end x position
+ * @param {float} end_pos_y - circle end y position
+ * @param {string} colour - circle colour
+ * @param {int} stroke_width - circle stroke width
+ * @param {boolean} is_highlighted - circle highlighted state
  * @param {function} taskboard_rerender_func - Function to trigger taskboard re-render
- * @param {boolean} show_toolbar - Arrow toolbar visibility
+ * @param {boolean} show_toolbar - circle toolbar visibility
  * @param {int} win_width - Window width
  * @param {int} win_height - Window height
  * @param {function} request_taskboard_state - Function to request taskboard state
  * @returns 
  */
 
-const _draggable_arrow = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour = "black", stroke_width = 2, 
+const _draggable_circle = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour = "black", stroke_width = 2, 
     is_highlighted, taskboard_rerender_func, show_toolbar, win_width, win_height, request_taskboard_state }) => {
 
-    const [line_start_pos, _set_line_start_pos] = useState({ x: start_pos_x, y: start_pos_y });
-    const [line_end_pos, _set_line_end_pos] = useState({ x: end_pos_x, y: end_pos_y });
+    const [circle_start_pos, _set_circle_start_pos] = useState({ x: start_pos_x, y: start_pos_y });
+    const [circle_end_pos, _set_circle_end_pos] = useState({ x: end_pos_x, y: end_pos_y });
     const [z_index, _set_z_index] = useState(_get_max_z_index());
     const [arr_highlighted, _set_arr_highlighted] = useState(is_highlighted);   // arr_highlighted is the local version of is_highlighted
     const [display_toolbar, _set_display_toolbar] = useState(show_toolbar);     // display_toolbar is the local version of show_toolbar
-    const [selected_hlight_pos, _set_selected_hlight_pos] = useState(ARROW_HLIGHT_DRAG_POS.START);
+    const [selected_hlight_pos, _set_selected_hlight_pos] = useState(CIRCLE_HLIGHT_DRAG_POS.START);
     const [is_dragging_hlighter, _set_is_dragging_hlighter] = useState(false);
-    const [is_dragging_arrow, _set_is_dragging_arrow] = useState(false); 
+    const [is_dragging_circle, _set_is_dragging_circle] = useState(false); 
     
-    const arrow_root_ref = useRef(null);
+    const circle_root_ref = useRef(null);
     
     const HLIGHT_CIRC_RADIUS_RATIO_TO_STROKEWIDTH   = 2.0;
     const TOOLBAR_DISTANCE_TOP_PERC                 = 0.1; // percentage of the window height
@@ -49,64 +52,64 @@ const _draggable_arrow = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, 
     
     // Update state when props change
     useEffect(() => {
-        if(is_dragging_arrow === false)
+        if(is_dragging_circle === false)
         {
-            _set_line_start_pos({ x: start_pos_x, y: start_pos_y });
-            _set_line_end_pos({ x: end_pos_x, y: end_pos_y });
+            _set_circle_start_pos({ x: start_pos_x, y: start_pos_y });
+            _set_circle_end_pos({ x: end_pos_x, y: end_pos_y });
         }
     }, [start_pos_x , start_pos_y, end_pos_x, end_pos_y]);
 
-    const _deactivate_arrow = (e) => { 
+    const _deactivate_circle = (e) => { 
         _set_arr_highlighted(false);
-        _update_arrow_highlighted(id, false);
+        _update_circle_highlighted(id, false);
         _set_display_toolbar(false);
-        _update_arrow_toolbar_show(id, false);
+        _update_circle_toolbar_show(id, false);
     };
 
     const _hlight_start_mousedown = (e) => {
-        _set_selected_hlight_pos(ARROW_HLIGHT_DRAG_POS.START);
+        _set_selected_hlight_pos(CIRCLE_HLIGHT_DRAG_POS.START);
         _set_is_dragging_hlighter(true);
     };
 
     const _hlight_mid_mousedown = (e) => {
-        _set_selected_hlight_pos(ARROW_HLIGHT_DRAG_POS.MID);
+        _set_selected_hlight_pos(CIRCLE_HLIGHT_DRAG_POS.MID);
         _set_is_dragging_hlighter(true);
     };
 
     const _hlight_end_mousedown = (e) => {
-        _set_selected_hlight_pos(ARROW_HLIGHT_DRAG_POS.END);
+        _set_selected_hlight_pos(CIRCLE_HLIGHT_DRAG_POS.END);
         _set_is_dragging_hlighter(true);
     };
     
-    const _get_line_length = () => {
-        const dx = line_end_pos.x - line_start_pos.x;
-        const dy = line_end_pos.y - line_start_pos.y;
+    const _get_circle_diameter = () => {
+        const dx = circle_end_pos.x - circle_start_pos.x;
+        const dy = circle_end_pos.y - circle_start_pos.y;
         return Math.sqrt(dx * dx + dy * dy);
     };
 
-    const _toolbar_item_clicked_notif = (arrow_tb_item_index) => {
-        switch(arrow_tb_item_index)
+    const _toolbar_item_clicked_notif = (circle_tb_item_index) => {
+        switch(circle_tb_item_index)
         {
-            case ARROW_TOOLBAR_ITEMS.ATBI_COLOUR:
+            case CIRCLE_TOOLBAR_ITEMS.ATBI_COLOUR:
             {
                 request_taskboard_state(TASKBOARD_STATES.TBS_NORMAL);
                 break;
             }
-            case ARROW_TOOLBAR_ITEMS.ATBI_INCREASE_LINE_WIDTH:
+            case CIRCLE_TOOLBAR_ITEMS.ATBI_INCREASE_CIRCLE_WIDTH:
             {
-                _increase_arrow_width(id);
+                _increase_circle_width(id);
                 request_taskboard_state(TASKBOARD_STATES.TBS_NORMAL);
                 break;
             }
-            case ARROW_TOOLBAR_ITEMS.ATBI_DECREASE_LINE_WIDTH:
+            case CIRCLE_TOOLBAR_ITEMS.ATBI_DECREASE_CIRCLE_WIDTH:
             {
-                _decrease_arrow_width(id);
+                _decrease_circle_width(id);
                 request_taskboard_state(TASKBOARD_STATES.TBS_NORMAL);
                 break;
             }
-            case ARROW_TOOLBAR_ITEMS.ATBI_DELETE:
+            case CIRCLE_TOOLBAR_ITEMS.ATBI_DELETE:
             {
-                _delete_arrow(id);
+                _delete_circle(id);
                 break;
             }
             default:
@@ -119,23 +122,23 @@ const _draggable_arrow = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, 
     };
 
     const _update_colour = (updated_hex_colour_val) => {
-        _update_arrow_colour(id, updated_hex_colour_val);
+        _update_circle_colour(id, updated_hex_colour_val);
         taskboard_rerender_func();
     };
 
     const _get_toolbar_position = () => {
         let toolbar_distance_top = TOOLBAR_DISTANCE_TOP_PERC * win_height;
         
-        let x = (line_start_pos.x + line_end_pos.x) / 2;
+        let x = (circle_start_pos.x + circle_end_pos.x) / 2;
         let y = 0; 
         
-        if(line_start_pos.y < line_end_pos.y)
+        if(circle_start_pos.y < circle_end_pos.y)
         {
-            y = line_start_pos.y - toolbar_distance_top;
+            y = circle_start_pos.y - toolbar_distance_top;
         }
         else
         {
-            y = line_end_pos.y - toolbar_distance_top;
+            y = circle_end_pos.y - toolbar_distance_top;
         } 
 
         y = (y < 0) ? 0 : y;
@@ -144,12 +147,12 @@ const _draggable_arrow = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, 
     };
 
     /********************* Effects block begins ***************************/
-    // Event listener to detect click outside arrow component
+    // Event listener to detect click outside circle component
     useEffect(() => {
-        const _handle_click_outside_arrow = (event) => {
-            if (arrow_root_ref.current && !arrow_root_ref.current.contains(event.target)) {
-                // clicked outside the arrow component                
-                _deactivate_arrow();
+        const _handle_click_outside_circle = (event) => {
+            if (circle_root_ref.current && !circle_root_ref.current.contains(event.target)) {
+                // clicked outside the circle component                
+                _deactivate_circle();
             }
             else
             {
@@ -157,17 +160,17 @@ const _draggable_arrow = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, 
                 _use_max_z_index();
                 _set_global_toolbar_items_active_state(TASKBOARD_TOOLBAR_ITEMS.TBI_SHAPE, true, true);
                 _set_arr_highlighted(true);
-                _update_arrow_highlighted(id, true);
+                _update_circle_highlighted(id, true);
                 
                 _set_display_toolbar(true);
-                _update_arrow_toolbar_show(id, true);
+                _update_circle_toolbar_show(id, true);
                 taskboard_rerender_func();
             }
         };
 
-        document.addEventListener("mousedown", _handle_click_outside_arrow);
+        document.addEventListener("mousedown", _handle_click_outside_circle);
         return () => {
-            document.removeEventListener("mousedown", _handle_click_outside_arrow);
+            document.removeEventListener("mousedown", _handle_click_outside_circle);
         };
     }, []);
 
@@ -176,33 +179,33 @@ const _draggable_arrow = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, 
         const _handle_mouse_up = (event) => {   
             if(is_dragging_hlighter === true)
             {
-                if(selected_hlight_pos === ARROW_HLIGHT_DRAG_POS.START)
+                if(selected_hlight_pos === CIRCLE_HLIGHT_DRAG_POS.START)
                 {
                     const {clientX, clientY} = event;
-                    _set_line_start_pos({x: clientX, y: clientY});
+                    _set_circle_start_pos({x: clientX, y: clientY});
                     _set_is_dragging_hlighter(false);
-                    _update_arrow_start_pos(id, clientX, clientY);                    
+                    _update_circle_start_pos(id, clientX, clientY);                    
                 }
-                else if(selected_hlight_pos === ARROW_HLIGHT_DRAG_POS.MID)
+                else if(selected_hlight_pos === CIRCLE_HLIGHT_DRAG_POS.MID)
                 {
                     const {clientX, clientY} = event;
-                    const mid_x = (line_start_pos.x + line_end_pos.x) / 2;
-                    const mid_y = (line_start_pos.y + line_end_pos.y) / 2;
+                    const mid_x = (circle_start_pos.x + circle_end_pos.x) / 2;
+                    const mid_y = (circle_start_pos.y + circle_end_pos.y) / 2;
                     const dx = clientX - mid_x;
                     const dy = clientY - mid_y;
 
-                    _set_line_start_pos({x: line_start_pos.x + dx, y: line_start_pos.y + dy});
-                    _set_line_end_pos({x: line_end_pos.x + dx, y: line_end_pos.y + dy});
+                    _set_circle_start_pos({x: circle_start_pos.x + dx, y: circle_start_pos.y + dy});
+                    _set_circle_end_pos({x: circle_end_pos.x + dx, y: circle_end_pos.y + dy});
                     _set_is_dragging_hlighter(false);
-                    _update_arrow_start_pos(id, line_start_pos.x + dx, line_start_pos.y + dy);
-                    _update_arrow_end_pos(id, line_end_pos.x + dx, line_end_pos.y + dy);
+                    _update_circle_start_pos(id, circle_start_pos.x + dx, circle_start_pos.y + dy);
+                    _update_circle_end_pos(id, circle_end_pos.x + dx, circle_end_pos.y + dy);
                 }
-                else if(selected_hlight_pos === ARROW_HLIGHT_DRAG_POS.END)
+                else if(selected_hlight_pos === CIRCLE_HLIGHT_DRAG_POS.END)
                 {
                     const {clientX, clientY} = event;
-                    _set_line_end_pos({x: clientX, y: clientY});
+                    _set_circle_end_pos({x: clientX, y: clientY});
                     _set_is_dragging_hlighter(false);
-                    _update_arrow_end_pos(id, clientX, clientY);
+                    _update_circle_end_pos(id, clientX, clientY);
                 }
 
                 taskboard_rerender_func();
@@ -220,30 +223,30 @@ const _draggable_arrow = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, 
         const _handle_mouse_move = (event) => {   
             if(is_dragging_hlighter === true)
             {
-                if(selected_hlight_pos === ARROW_HLIGHT_DRAG_POS.START)
+                if(selected_hlight_pos === CIRCLE_HLIGHT_DRAG_POS.START)
                 {
                     const {clientX, clientY} = event;
-                    _set_line_start_pos({x: clientX, y: clientY});
-                    _update_arrow_start_pos(id, clientX, clientY);                    
+                    _set_circle_start_pos({x: clientX, y: clientY});
+                    _update_circle_start_pos(id, clientX, clientY);                    
                 }
-                else if(selected_hlight_pos === ARROW_HLIGHT_DRAG_POS.MID)
+                else if(selected_hlight_pos === CIRCLE_HLIGHT_DRAG_POS.MID)
                 {
                     const {clientX, clientY} = event;
-                    const mid_x = (line_start_pos.x + line_end_pos.x) / 2;
-                    const mid_y = (line_start_pos.y + line_end_pos.y) / 2;
+                    const mid_x = (circle_start_pos.x + circle_end_pos.x) / 2;
+                    const mid_y = (circle_start_pos.y + circle_end_pos.y) / 2;
                     const dx = clientX - mid_x;
                     const dy = clientY - mid_y;
 
-                    _set_line_start_pos({x: line_start_pos.x + dx, y: line_start_pos.y + dy});
-                    _set_line_end_pos({x: line_end_pos.x + dx, y: line_end_pos.y + dy});
-                    _update_arrow_start_pos(id, line_start_pos.x + dx, line_start_pos.y + dy);
-                    _update_arrow_end_pos(id, line_end_pos.x + dx, line_end_pos.y + dy);
+                    _set_circle_start_pos({x: circle_start_pos.x + dx, y: circle_start_pos.y + dy});
+                    _set_circle_end_pos({x: circle_end_pos.x + dx, y: circle_end_pos.y + dy});
+                    _update_circle_start_pos(id, circle_start_pos.x + dx, circle_start_pos.y + dy);
+                    _update_circle_end_pos(id, circle_end_pos.x + dx, circle_end_pos.y + dy);
                 }
-                else if(selected_hlight_pos === ARROW_HLIGHT_DRAG_POS.END)
+                else if(selected_hlight_pos === CIRCLE_HLIGHT_DRAG_POS.END)
                 {
                     const {clientX, clientY} = event;
-                    _set_line_end_pos({x: clientX, y: clientY});
-                    _update_arrow_end_pos(id, clientX, clientY);
+                    _set_circle_end_pos({x: clientX, y: clientY});
+                    _update_circle_end_pos(id, clientX, clientY);
                 }
 
                 taskboard_rerender_func();
@@ -262,19 +265,20 @@ const _draggable_arrow = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, 
     const { toolbar_x_pos, toolbar_y_pos } = _get_toolbar_position();
 
     return (
-        <div ref={arrow_root_ref} id="arrow_root">
-            {/* display arrow toolbar */}
+        <div ref={circle_root_ref} id="circle_root">
+            {/* display circle toolbar */}
             <div>
                 {(display_toolbar === true) ? (
-                    <_arrow_toolbar id={id} win_width={win_width} win_height={win_height} 
+                    <_circle_toolbar id={id} win_width={win_width} win_height={win_height} 
                         x_pos={toolbar_x_pos} y_pos={toolbar_y_pos} taskboard_rerender_func={taskboard_rerender_func} 
-                        arrow_toolbar_item_clicked={_toolbar_item_clicked_notif} arrow_update_colour_func={_update_colour} 
-                        arrow_bg_colour={colour}
+                        circle_toolbar_item_clicked={_toolbar_item_clicked_notif} circle_update_colour_func={_update_colour} 
+                        circle_bg_colour={colour}
                     />
                     ) : (<div></div>)
                 }
             </div>
-            {/* display arrow */}
+
+            {/* display circle */}
             <div>
                 <svg 
                     width="100%" 
@@ -288,33 +292,37 @@ const _draggable_arrow = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, 
                         zIndex: z_index, 
                     }}
                 >
-                    {/* Arrowhead Definition */}
-                    <defs>
-                        <marker id={`arrowhead${id}`} markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-                            <polygon points="0 0, 10 3.5, 0 7" fill={colour} />
-                        </marker>
-                    </defs>
-
-                    {/* Arrow Line */}
-                    <line
-                        x1={line_start_pos.x}
-                        y1={line_start_pos.y}
-                        x2={line_end_pos.x}
-                        y2={line_end_pos.y}
+                    {/* Main Circle */}
+                    <circle 
+                        cx={(circle_start_pos.x + circle_end_pos.x) / 2} 
+                        cy={(circle_start_pos.y + circle_end_pos.y) / 2}  
+                        r={(_get_circle_diameter() / 2)} 
+                        fill="none" 
                         stroke={colour}
                         strokeWidth={stroke_width}
-                        markerEnd={`url(#arrowhead${id})`}
-                        style={{ cursor: "grab", pointerEvents: "all" }}
+                        strokeOpacity={0.4}
                     />
 
-                    {/* display arrow highlighter */}
+                    {/* Transparent line drawn in center of the circle  */}
+                    <line
+                        x1={circle_start_pos.x}
+                        y1={circle_start_pos.y}
+                        x2={circle_end_pos.x}
+                        y2={circle_end_pos.y}
+                        stroke={colour}
+                        strokeWidth={(_get_circle_diameter())}
+                        style={{ cursor: "grab", pointerEvents: "all" }}
+                        strokeOpacity={0.0}
+                    />
 
-                    {/* Circle at the start of the line */}
+                    {/* Custom highlighter: drawn on the centre line */}
+
+                    {/* Circle at the start of the center line */}
                     {(arr_highlighted === true) ? (
                         <circle 
                             className="highlighter_circle"
-                            cx={line_start_pos.x} 
-                            cy={line_start_pos.y} 
+                            cx={circle_start_pos.x} 
+                            cy={circle_start_pos.y} 
                             r={stroke_width * HLIGHT_CIRC_RADIUS_RATIO_TO_STROKEWIDTH} 
                             fill={SELECTED_COLOR_THEME.highlight_colour}
                             style={{ cursor: "ew-resize", pointerEvents: "all" }}
@@ -322,12 +330,12 @@ const _draggable_arrow = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, 
                         />
                     ) : (<div></div>)}
 
-                    {/* Circle at the middle of the line */}
+                    {/* Circle at the middle of the center line */}
                     {(arr_highlighted === true) ? (
                         <circle 
                             className="highlighter_circle"
-                            cx={(line_start_pos.x + line_end_pos.x) / 2} 
-                            cy={(line_start_pos.y + line_end_pos.y) / 2} 
+                            cx={(circle_start_pos.x + circle_end_pos.x) / 2} 
+                            cy={(circle_start_pos.y + circle_end_pos.y) / 2} 
                             r={stroke_width * HLIGHT_CIRC_RADIUS_RATIO_TO_STROKEWIDTH} 
                             fill={SELECTED_COLOR_THEME.highlight_colour}
                             style={{ cursor: "move", pointerEvents: "all" }}
@@ -335,12 +343,12 @@ const _draggable_arrow = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, 
                         />
                     ) : (<div></div>)}
 
-                    {/* Circle at the end of the line */}
+                    {/* Circle at the end of the center line */}
                     {(arr_highlighted === true) ? (
                         <circle
                             className="highlighter_circle"
-                            cx={line_end_pos.x} 
-                            cy={line_end_pos.y} 
+                            cx={circle_end_pos.x} 
+                            cy={circle_end_pos.y} 
                             r={stroke_width * HLIGHT_CIRC_RADIUS_RATIO_TO_STROKEWIDTH}
                             fill={SELECTED_COLOR_THEME.highlight_colour} 
                             style={{ cursor: "ew-resize", pointerEvents: "all" }} 
@@ -354,4 +362,4 @@ const _draggable_arrow = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, 
     );
 };
 
-export default _draggable_arrow;
+export default _draggable_circle;

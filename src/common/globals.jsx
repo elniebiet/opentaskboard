@@ -169,12 +169,6 @@ const LINE_HLIGHT_DRAG_POS = {
     END:    3,
 };
 
-// Line join point
-const LINE_JOIN_POINT = {
-    START_POINT:  1,
-    END_POINT:    2,
-};
-
 // Line width increment and decrement factors
 const LINE_WIDTH_INCR_FACTOR   = 0.1; // 10 percent of original width
 const LINE_WIDTH_DECR_FACTOR   = 0.1; // 10 percent of original width
@@ -182,18 +176,23 @@ const MAX_LINE_WIDTH           = 100; // maximum line width in pixels
 const MIN_LINE_WIDTH           = 1;   // minimum line width in pixels
 const MIN_LINE_LENGTH          = 30;  // minimum line length in pixels
 
-// current joining line id
-let current_joining_line_id = -1;
-
-const _get_current_joining_line_id = () => {
-    return current_joining_line_id;
-};
-
-const _set_current_joining_line_id = (id) => {
-    current_joining_line_id = id;
-};
 /*********** Line block ends ***************/
 
+/*********** Circle block begins ***************/
+// Circle highlighter drag positions
+const CIRCLE_HLIGHT_DRAG_POS = {
+    START:  1,
+    MID:    2,
+    END:    3,
+};
+
+// Circle line width increment and decrement factors
+const CIRCLE_LINE_WIDTH_INCR_FACTOR   = 0.1; // 10 percent of original width
+const CIRCLE_LINE_WIDTH_DECR_FACTOR   = 0.1; // 10 percent of original width
+const MAX_CIRCLE_LINE_WIDTH           = 100; // maximum circle width in pixels
+const MIN_CIRCLE_LINE_WIDTH           = 1;   // minimum circle width in pixels
+const MIN_CIRCLE_DIAMETER          = 30;  // minimum circle length in pixels
+/*********** Circle block ends ***************/
 
 /* Color Theme */
 const COLOR_THEMES = {
@@ -264,10 +263,15 @@ export {
     MAX_LINE_WIDTH,
     MIN_LINE_WIDTH,
     MIN_LINE_LENGTH,
-    LINE_JOIN_POINT,
     LINE_HLIGHT_DRAG_POS,
-    _get_current_joining_line_id,
-    _set_current_joining_line_id,
+
+    /* Circle exports */
+    CIRCLE_LINE_WIDTH_INCR_FACTOR,
+    CIRCLE_LINE_WIDTH_DECR_FACTOR,
+    MAX_CIRCLE_LINE_WIDTH,
+    MIN_CIRCLE_LINE_WIDTH,
+    MIN_CIRCLE_DIAMETER,
+    CIRCLE_HLIGHT_DRAG_POS,
 
     /* other exports */
     _get_current_joining_position,
