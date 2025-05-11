@@ -11,7 +11,7 @@ import { LINE_TOOLBAR_ITEMS } from "../../toolbars/toolbar_globals";
 import { TASKBOARD_STATES } from "../../taskboards/taskboard_globals";
 
 /**
- * _draggable_line - Draggable line component (functions very similar to the draggable arrow component)
+ * _draggable_line - Draggable line component (functions very similar to the draggable line component)
  * PLEASE NOTE: THIS COMPONENT ALSO IMPLEMENTS ITS OWN HIGHLIGHTER
  * @param {int} id - line ID
  * @param {float} start_pos_x - line start x position
@@ -288,14 +288,7 @@ const _draggable_line = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, c
                         zIndex: z_index, 
                     }}
                 >
-                    {/* Arrowhead Definition */}
-                    <defs>
-                        <marker id={`linehead${id}`} markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-                            <polygon points="0 0, 10 3.5, 0 7" fill={colour} />
-                        </marker>
-                    </defs>
-
-                    {/* Arrow Line */}
+                    {/* Line */}
                     <line
                         x1={line_start_pos.x}
                         y1={line_start_pos.y}
