@@ -49,12 +49,32 @@ const _taskboard_default = () => {
   
   const [, _re_render_page] = useState(0);
 
+  /** 
+   * click counter incremented each time there is a page click 
+   * useful to inform other components of clicks
+   */
+  const [click_counter, _set_click_counter] = useState(0);
+
+  /**
+   * click event target for the last active click event
+   */
+  const [click_event_target, _set_click_event_target] = useState(null);
+
   /**
    * manually trigger a rerender of the page
    */
   const _trigger_taskboard_rerender = () => {
     _re_render_page((prev) => {
       return ((prev >= 1000000) ? 0 : (prev + 1));
+    });
+  };
+
+  /**
+   * manually increment click counter to inform other components of clicks
+   */
+  const _increment_click_counter = () => {
+    _set_click_counter((prev) => {
+    return ((prev >= 1000000) ? 0 : (prev + 1));
     });
   };
 
@@ -125,6 +145,9 @@ const _taskboard_default = () => {
     useEffect(() => {
         const _handle_page_click = (e) => {
         console.log("page clicked at:", e.clientX, e.clientY);
+        _increment_click_counter();
+        _set_click_event_target(e.target);
+
         console.log("taskboard state " + taskboard_state);
         switch(taskboard_state)
         {
@@ -397,8 +420,10 @@ const _taskboard_default = () => {
               <div>
                 {circles.map((circle) => (
                   <_draggable_circle key={circle.id} id={circle.id} start_pos_x={circle.x1_pos} start_pos_y={circle.y1_pos} end_pos_x={circle.x2_pos} end_pos_y={circle.y2_pos} 
-                  colour={circle.colour} stroke_width={circle.stroke_width} is_highlighted={circle.highlighted} taskboard_rerender_func={_trigger_taskboard_rerender} 
+                  colour={circle.colour} stroke_width={circle.stroke_width} is_highlighted={circle.highlighted} taskboard_rerender_func={_trigger_taskboard_rerender}
+                  active={circle.active} join_arrow_ids={circle.join_arrow_ids} 
                   show_toolbar={circle.toolbar_show} win_width={width} win_height={height} request_taskboard_state={_request_taskboard_state} overall_taskboard_state={taskboard_state}
+                  main_page_click_counter={click_counter} main_page_last_click_event_target={click_event_target}
                   />
                 ))}
               </div>

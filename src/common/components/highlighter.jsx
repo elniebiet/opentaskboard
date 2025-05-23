@@ -30,12 +30,17 @@ import { _set_current_joining_arrow_id, _get_current_joining_arrow_id,
  * @param {function} request_taskboard_state(func params: TASKBOARD_STATES) function to call to request taskboard state change
  * @param {function} taskboard_rerender_func(func params: none) function to call to rerender taskboard
  * @param {function} highlighter_drag_mouse_up(func params: HIGHLIGHT_DRAG_DIRECTION, width_change, height_change) function to call when mouse up on highlighter edge circle - used to stop resizing
+ * @param {boolean} show_top_left_resizer show top left resizer
+ * @param {boolean} show_top_right_resizer show top right resizer
+ * @param {boolean} show_bottom_left_resizer show bottom left resizer
+ * @param {boolean} show_bottom_right_resizer show bottom right resizer
  * @returns 
  */
 const _highlighter = ({
     item_top_left_pos, item_width, item_height, gap, z_index, line_width, caller_id, 
     join_arrow_ids, highlighter_drag_mouse_down, highlighter_join_started, highlighter_drag_mouse_up,
-    overall_taskboard_state, request_taskboard_state, taskboard_rerender_func
+    overall_taskboard_state, request_taskboard_state, taskboard_rerender_func, show_top_left_resizer,
+    show_top_right_resizer, show_bottom_left_resizer, show_bottom_right_resizer
 }) => {
 
     let hlight_left_pos = item_top_left_pos.x - gap;
@@ -364,13 +369,20 @@ const _highlighter = ({
             {/* highlighter edge circles */}
             <div>
                 {/* bottom right edge circle */}
-                <div style={bottom_right_circle_style} onMouseDown={_hlight_bottom_right_mousedown} />  
+                {(show_bottom_right_resizer === true) 
+                && (<div style={bottom_right_circle_style} onMouseDown={_hlight_bottom_right_mousedown} />)}
+
                 {/* bottom left edge circle */}
-                <div style={bottom_left_circle_style} onMouseDown={_hlight_bottom_left_mousedown}/>
+                {(show_bottom_left_resizer === true) 
+                && (<div style={bottom_left_circle_style} onMouseDown={_hlight_bottom_left_mousedown}/>)}
+
                 {/* top left edge circle */}
-                <div style={top_left_circle_style} onMouseDown={_hlight_top_left_mousedown} />
+                {(show_top_left_resizer === true) 
+                && (<div style={top_left_circle_style} onMouseDown={_hlight_top_left_mousedown} />)}
+
                 {/* top right edge circle */}
-                <div style={top_right_circle_style} onMouseDown={_hlight_top_right_mousedown}/>
+                {(show_top_right_resizer === true) 
+                && (<div style={top_right_circle_style} onMouseDown={_hlight_top_right_mousedown}/>)}
             </div>
             {/* Join Arrow triangles */}
             <div>

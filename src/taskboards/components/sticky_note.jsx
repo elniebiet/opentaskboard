@@ -352,10 +352,25 @@ const _sticky_note = (props) => {
             {/* display highlighter */}
             <div>
                 {(props.highlighted === true || joining_show_highlighter === true) ? (
-                    <_highlighter caller_id={props.id} gap={HIGHLIGHT_PARAMS.highlight_gap} line_width={HIGHLIGHT_PARAMS.highlight_line_width} item_top_left_pos={{x: overall_top_left.x, y: overall_top_left.y}} item_width={stknote_width + (FLEXBOX_GAP_PERC * stknote_width * 4)} 
-                        item_height={stknote_width + (FLEXBOX_GAP_PERC * stknote_width * 4)} z_index={z_index} highlighter_drag_mouse_down={_highlighter_drag_mouse_down}
-                        highlighter_drag_mouse_up={_highlighter_drag_mouse_up} highlighter_join_started={_highlighter_join_started} join_arrow_ids={props.join_arrow_ids} 
-                        request_taskboard_state={props.request_taskboard_state} overall_taskboard_state={props.overall_taskboard_state} taskboard_rerender_func={props.taskboard_rerender_func}
+                    <_highlighter 
+                        caller_id={props.id} 
+                        gap={HIGHLIGHT_PARAMS.highlight_gap} 
+                        line_width={HIGHLIGHT_PARAMS.highlight_line_width} 
+                        item_top_left_pos={{x: overall_top_left.x, y: overall_top_left.y}} 
+                        item_width={stknote_width + (FLEXBOX_GAP_PERC * stknote_width * 4)} 
+                        item_height={stknote_width + (FLEXBOX_GAP_PERC * stknote_width * 4)} 
+                        z_index={z_index} 
+                        highlighter_drag_mouse_down={_highlighter_drag_mouse_down}
+                        highlighter_drag_mouse_up={_highlighter_drag_mouse_up} 
+                        highlighter_join_started={_highlighter_join_started} 
+                        join_arrow_ids={props.join_arrow_ids} 
+                        request_taskboard_state={props.request_taskboard_state} 
+                        overall_taskboard_state={props.overall_taskboard_state} 
+                        taskboard_rerender_func={props.taskboard_rerender_func}
+                        show_top_left_resizer={true}
+                        show_top_right_resizer={true}
+                        show_bottom_left_resizer={true}
+                        show_bottom_right_resizer={true}
                     />
                     ) : (<div></div>)}
             </div>

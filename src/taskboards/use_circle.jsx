@@ -1,6 +1,7 @@
 import circles from "./circles_db_temp";
 import { CIRCLE_LINE_WIDTH_INCR_FACTOR, CIRCLE_LINE_WIDTH_DECR_FACTOR, MAX_CIRCLE_LINE_WIDTH, MIN_CIRCLE_LINE_WIDTH,
   MIN_CIRCLE_DIAMETER } from "../common/globals";
+import { ARROW_JOIN_POINT } from "../common/globals";
 
 const _calculate_circle_length = (circle_start_pos_x, circle_start_pos_y, circle_end_pos_x, circle_end_pos_y) => {
   const dx = circle_end_pos_x - circle_start_pos_x;
@@ -29,6 +30,8 @@ const _add_circle = (id, x1_pos, y1_pos, x2_pos, y2_pos, colour, stroke_width) =
       highlighted: true,
       toolbar_show: true,
       toolbar_display_loc: {x: 200, y: 200},
+      active: false,
+      join_arrow_ids: {top: [-1, ARROW_JOIN_POINT.START_POINT], bottom: [-1, ARROW_JOIN_POINT.START_POINT], left: [-1, ARROW_JOIN_POINT.START_POINT], right: [-1, ARROW_JOIN_POINT.START_POINT]}
   };
   circles.push(new_circle);
 };
@@ -203,6 +206,22 @@ const _decrease_circle_width = (id) => {
   }
 };
 
+/**
+ * update circle active state
+ * @param {int} id - circle id
+ * @param {bool} b_is_active - circle is active
+ */
+const _update_circle_active_state = (id, b_is_active) => {
+  for(let i=0; i<circles.length; i++)
+  {
+      if(circles[i].id === id)
+      {
+          circles[i].active = b_is_active;
+          break;
+      }
+  }
+};
+
 export {
     _add_circle,
     _update_circle_end_pos,
@@ -214,4 +233,5 @@ export {
     _delete_circle,
     _increase_circle_width,
     _decrease_circle_width,
+    _update_circle_active_state,
 };
