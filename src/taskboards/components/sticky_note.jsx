@@ -41,6 +41,8 @@ const _sticky_note = (props) => {
 
     const [joining_show_highlighter, _set_joining_show_highlighter] = useState(false); 
 
+    const [local_param_note_active, _set_local_param_note_active] = useState(false); // local param to track note active state
+
     const STKNOTE_MIN_WIDTH                             = 150;  //pixels
     const MENUBAR_HGT_PERC                              = 0.10; // 10% of stknote height 
     const FLEXBOX_GAP_PERC                              = 0.02; // 2% of stknote height
@@ -117,10 +119,13 @@ const _sticky_note = (props) => {
         _update_note_highlighted(props.id, true);
         _update_note_toolbar_show(props.id, true);
         props.taskboard_rerender_func();
+
+        _set_local_param_note_active(true);
     };
 
-    const _deactivate_note = (e) => {
-        e.preventDefault();
+    const _deactivate_note = (event_target) => {
+        // e.preventDefault();  // might be needed for some other component (need to pass in the event to use this
+                                // not the event target)
         if(prevent_note_deactivation === false)
         {
             _set_is_editing(false);
@@ -129,6 +134,8 @@ const _sticky_note = (props) => {
             _update_note_highlighted(props.id, false);
             _update_note_toolbar_show(props.id, false);
             props.taskboard_rerender_func();
+
+            _set_local_param_note_active(false);
         }
         else
         {
@@ -309,6 +316,17 @@ const _sticky_note = (props) => {
     let toolbar_y_pos = y - toolbar_note_gap_top_px;
 
     /********************* Effects block begin ***********************/
+    // Subscribe for main page click event
+    useEffect(() => {
+        if (stk_root_location_ref.current && !stk_root_location_ref.current.contains(props.main_page_last_click_event_target)) {
+            if(local_param_note_active === true)
+            {
+                // clicked outside of the note component, deactivate note     
+                _deactivate_note(props.main_page_last_click_event_target);
+            }
+        }
+    }, [props.main_page_click_counter]);
+    
     // text area focus on editing
     useEffect(() => {
             if (is_editing && textarea_ref.current) {
@@ -466,7 +484,6 @@ const _sticky_note = (props) => {
                                             fontSize: font_size + 'px',
                                             color: complement_colour,
                                         }}
-                                        onBlur={_deactivate_note}
                                         placeholder="note..."
                                         ref={textarea_ref}
                                     />

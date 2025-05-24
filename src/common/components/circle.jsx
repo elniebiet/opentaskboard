@@ -58,6 +58,7 @@ const _draggable_circle = ({
     const [is_dragging_circle, _set_is_dragging_circle] = useState(false); 
     const [prevent_circle_deactivation, _set_prevent_circle_deactivation] = useState(false); 
     const [joining_show_highlighter, _set_joining_show_highlighter] = useState(false); 
+    const [local_param_circle_active, _set_local_param_circle_active] = useState(false); // local param to track circle active state
     
     // custom highlighter vars begin
     const [selected_hlight_pos, _set_selected_hlight_pos] = useState(CIRCLE_HLIGHT_DRAG_POS.MID);
@@ -80,7 +81,8 @@ const _draggable_circle = ({
     }, [start_pos_x , start_pos_y, end_pos_x, end_pos_y]);
 
     const _deactivate_circle = (event_target) => { 
-        // e.preventDefault(); // might be needed for some other component
+        // e.preventDefault();  // might be needed for some other component (need to pass in the event to use this
+                                // not the event target)
 
         if(prevent_circle_deactivation === false)
         {
@@ -89,6 +91,8 @@ const _draggable_circle = ({
             _set_display_toolbar(false);
             _update_circle_toolbar_show(id, false);
             taskboard_rerender_func();
+
+            _set_local_param_circle_active(false);
         }
         else
         {
@@ -250,6 +254,7 @@ const _draggable_circle = ({
         _set_global_toolbar_items_active_state(TASKBOARD_TOOLBAR_ITEMS.TBI_SHAPE, true, true);
         _set_arr_highlighted(true);
         _update_circle_highlighted(id, true);
+        _set_local_param_circle_active(true);
         
         _set_display_toolbar(true);
         _update_circle_toolbar_show(id, true);
@@ -260,8 +265,11 @@ const _draggable_circle = ({
     // Subscribe for main page click event
     useEffect(() => {
         if (circle_root_ref.current && !circle_root_ref.current.contains(main_page_last_click_event_target)) {
-            // clicked outside of the circle component, deactivate circle     
-            _deactivate_circle(main_page_last_click_event_target);
+            // clicked outside of the circle component, deactivate circle  
+            if(local_param_circle_active === true)
+            {
+                _deactivate_circle(main_page_last_click_event_target);
+            }
         }
     }, [main_page_click_counter]);
     
