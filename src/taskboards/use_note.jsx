@@ -5,7 +5,7 @@ import { STKNOTE_WIDTH_PERC_DEFAULT } from "./taskboard_globals";
 import { ARROW_JOIN_POINT } from "../common/globals";
 
 // temporary note database for testing
-import notes from "./notes_db_temp";
+import notes from "../db/taskboards/notes_db_temp";
 
 /**
  * add sticky note

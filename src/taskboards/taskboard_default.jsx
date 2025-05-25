@@ -29,12 +29,12 @@ import { _get_current_joining_arrow_id, _get_last_hovered_joining_item_id, _set_
         _get_last_hovered_joining_position, _set_last_hovered_joining_position } from '../common/globals';
 import { _otbf_update_item_join_arrow_id, _otbf_deactivate_item } from '../common/otb_finder';
 
-import notes from './notes_db_temp';              // temporary notes storage
-import comments from './comments_db_temp';        // temporary comments storage
-import arrows from './arrows_db_temp';            // temporary arrows storage
-import lines from './lines_db_temp';              // temporary lines storage
-import circles from './circles_db_temp';          // temporary circles storage
-import rectangles from './rectangles_db_temp';    // temporary rectangles storage
+import notes from '../db/taskboards/notes_db_temp';
+import comments from '../db/taskboards/comments_db_temp';        // temporary comments storage
+import arrows from '../db/taskboards/arrows_db_temp';            // temporary arrows storage
+import lines from '../db/taskboards/lines_db_temp';              // temporary lines storage
+import circles from '../db/taskboards/circles_db_temp';          // temporary circles storage
+import rectangles from '../db/taskboards/rectangles_db_temp';    // temporary rectangles storage
 
 /**
  * Default taskboard componen

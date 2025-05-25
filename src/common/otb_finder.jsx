@@ -7,10 +7,10 @@
 // ALL LINES IN THIS BLOCK ARE TEMPORARY - to be replaced with the original code
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-import notes from "../taskboards/notes_db_temp";
-import arrows from "../taskboards/arrows_db_temp";
-import circles from "../taskboards/circles_db_temp";
-import rectangles from "../taskboards/rectangles_db_temp";
+import notes from "../db/taskboards/notes_db_temp";
+import arrows from "../db/taskboards/arrows_db_temp";
+import circles from "../db/taskboards/circles_db_temp";
+import rectangles from "../db/taskboards/rectangles_db_temp";
 import { HIGHLIGHT_JOIN_POSITIONS, ARROW_JOIN_POINT } from "../common/globals";
 import { _update_note_active_state, _update_note_highlighted } from "../taskboards/use_note";
 import { _update_circle_active_state, _update_circle_highlighted } from "../taskboards/use_circle";

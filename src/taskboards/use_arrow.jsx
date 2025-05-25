@@ -1,4 +1,4 @@
-import arrows from "./arrows_db_temp";
+import arrows from "../db/taskboards/arrows_db_temp";
 import { ARROW_WIDTH_INCR_FACTOR, ARROW_WIDTH_DECR_FACTOR, MAX_ARROW_WIDTH, MIN_ARROW_WIDTH,
   MIN_ARROW_LENGTH } from "../common/globals";
 

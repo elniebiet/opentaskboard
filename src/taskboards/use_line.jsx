@@ -1,4 +1,4 @@
-import lines from "./lines_db_temp";
+import lines from "../db/taskboards/lines_db_temp";
 import { LINE_WIDTH_INCR_FACTOR, LINE_WIDTH_DECR_FACTOR, MAX_LINE_WIDTH, MIN_LINE_WIDTH,
   MIN_LINE_LENGTH } from "../common/globals";
 

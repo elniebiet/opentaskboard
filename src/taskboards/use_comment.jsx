@@ -3,7 +3,7 @@ import { _set_global_cursor_type } from "./taskboard_globals";
 import { SELECTED_COLOR_THEME } from "../common/globals";
 import { COMMENT_WIDTH_PERC_DEFAULT } from "./taskboard_globals";
 
-import comments from "./comments_db_temp";
+import comments from "../db/taskboards/comments_db_temp";
 
 /**
  * add sticky note

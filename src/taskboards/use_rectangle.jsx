@@ -1,4 +1,4 @@
-import rectangles from "./rectangles_db_temp";
+import rectangles from "../db/taskboards/rectangles_db_temp";
 import { RECTANGLE_LINE_WIDTH_INCR_FACTOR, RECTANGLE_LINE_WIDTH_DECR_FACTOR, MAX_RECTANGLE_LINE_WIDTH, MIN_RECTANGLE_LINE_WIDTH,
   MIN_RECTANGLE_LENGTH } from "../common/globals";
 import { ARROW_JOIN_POINT } from "../common/globals";
