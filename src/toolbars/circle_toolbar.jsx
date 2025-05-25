@@ -108,7 +108,7 @@ const _add_toolbar_item = (props) =>
 };
 
 /**
- * note toolbar component
+ * circle toolbar component
  *  
  */
 const _circle_toolbar = (props) => {

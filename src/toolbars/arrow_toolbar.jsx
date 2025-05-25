@@ -108,7 +108,7 @@ const _add_toolbar_item = (props) =>
 };
 
 /**
- * note toolbar component
+ * arrow toolbar component
  *  
  */
 const _arrow_toolbar = (props) => {

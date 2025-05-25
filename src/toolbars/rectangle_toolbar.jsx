@@ -108,7 +108,7 @@ const _add_toolbar_item = (props) =>
 };
 
 /**
- * note toolbar component
+ * rectangle toolbar component
  *  
  */
 const _rectangle_toolbar = (props) => {
