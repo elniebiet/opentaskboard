@@ -1,6 +1,6 @@
 import circles from "../db/taskboards/circles_db_temp";
-import { CIRCLE_LINE_WIDTH_INCR_FACTOR, CIRCLE_LINE_WIDTH_DECR_FACTOR, MAX_CIRCLE_LINE_WIDTH, MIN_CIRCLE_LINE_WIDTH,
-  MIN_CIRCLE_DIAMETER } from "../common/globals";
+import { LINE_WIDTH_INCR_FACTOR, LINE_WIDTH_DECR_FACTOR, MAX_LINE_WIDTH, MIN_LINE_WIDTH,
+  MIN_LINE_LENGTH } from "../common/globals";
 import { ARROW_JOIN_POINT } from "../common/globals";
 
 const _calculate_circle_length = (circle_start_pos_x, circle_start_pos_y, circle_end_pos_x, circle_end_pos_y) => {
@@ -13,10 +13,10 @@ const _add_circle = (id, x1_pos, y1_pos, x2_pos, y2_pos, colour, stroke_width) =
 
   let circle_length = _calculate_circle_length(x1_pos, y1_pos, x2_pos, y2_pos);
   
-  if(circle_length < MIN_CIRCLE_DIAMETER)
+  if(circle_length < MIN_LINE_LENGTH)
   {
-    x2_pos = x1_pos + MIN_CIRCLE_DIAMETER;
-    y2_pos = y1_pos + MIN_CIRCLE_DIAMETER;
+    x2_pos = x1_pos + MIN_LINE_LENGTH;
+    y2_pos = y1_pos + MIN_LINE_LENGTH;
   }
 
   const new_circle = { 
@@ -49,10 +49,10 @@ const _update_circle_end_pos = (id, new_x2_pos, new_y2_pos) => {
       {
         let circle_length = _calculate_circle_length(circles[i].x1_pos, circles[i].y1_pos, new_x2_pos, new_y2_pos);
   
-        if(circle_length < MIN_CIRCLE_DIAMETER)
+        if(circle_length < MIN_LINE_LENGTH)
         {
-          new_x2_pos = new_x2_pos + MIN_CIRCLE_DIAMETER;
-          new_y2_pos = new_y2_pos + MIN_CIRCLE_DIAMETER;
+          new_x2_pos = new_x2_pos + MIN_LINE_LENGTH;
+          new_y2_pos = new_y2_pos + MIN_LINE_LENGTH;
         }
 
         circles[i].x2_pos = new_x2_pos;
@@ -165,11 +165,11 @@ const _increase_circle_width = (id) => {
   {
     if(circles[i].id === id)
     {
-      let increment = (circles[i].stroke_width * CIRCLE_LINE_WIDTH_INCR_FACTOR);
+      let increment = (circles[i].stroke_width * LINE_WIDTH_INCR_FACTOR);
 
-      if(circles[i].stroke_width + increment > MAX_CIRCLE_LINE_WIDTH)
+      if(circles[i].stroke_width + increment > MAX_LINE_WIDTH)
       {
-        circles[i].stroke_width = MAX_CIRCLE_LINE_WIDTH;
+        circles[i].stroke_width = MAX_LINE_WIDTH;
       }
       else
       {
@@ -190,11 +190,11 @@ const _decrease_circle_width = (id) => {
   {
     if(circles[i].id === id)
     {
-      let decrement = (circles[i].stroke_width * CIRCLE_LINE_WIDTH_DECR_FACTOR);
+      let decrement = (circles[i].stroke_width * LINE_WIDTH_DECR_FACTOR);
       
-      if(circles[i].stroke_width - decrement < MIN_CIRCLE_LINE_WIDTH)
+      if(circles[i].stroke_width - decrement < MIN_LINE_WIDTH)
       {
-        circles[i].stroke_width = MIN_CIRCLE_LINE_WIDTH;
+        circles[i].stroke_width = MIN_LINE_WIDTH;
       }
       else
       {

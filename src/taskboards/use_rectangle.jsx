@@ -1,6 +1,6 @@
 import rectangles from "../db/taskboards/rectangles_db_temp";
-import { RECTANGLE_LINE_WIDTH_INCR_FACTOR, RECTANGLE_LINE_WIDTH_DECR_FACTOR, MAX_RECTANGLE_LINE_WIDTH, MIN_RECTANGLE_LINE_WIDTH,
-  MIN_RECTANGLE_LENGTH } from "../common/globals";
+import { LINE_WIDTH_INCR_FACTOR, LINE_WIDTH_DECR_FACTOR, MAX_LINE_WIDTH, MIN_LINE_WIDTH,
+  MIN_LINE_LENGTH } from "../common/globals";
 import { ARROW_JOIN_POINT } from "../common/globals";
 
 const _calculate_rectangle_length = (rectangle_start_pos_x, rectangle_start_pos_y, rectangle_end_pos_x, rectangle_end_pos_y) => {
@@ -12,10 +12,10 @@ const _calculate_rectangle_length = (rectangle_start_pos_x, rectangle_start_pos_
 const _add_rectangle = (id, x1_pos, y1_pos, x2_pos, y2_pos, colour, stroke_width, filleted) => {
   let rectangle_length = _calculate_rectangle_length(x1_pos, y1_pos, x2_pos, y2_pos);
   
-  if(rectangle_length < MIN_RECTANGLE_LENGTH)
+  if(rectangle_length < MIN_LINE_LENGTH)
   {
-    x2_pos = x1_pos + MIN_RECTANGLE_LENGTH;
-    y2_pos = y1_pos + MIN_RECTANGLE_LENGTH;
+    x2_pos = x1_pos + MIN_LINE_LENGTH;
+    y2_pos = y1_pos + MIN_LINE_LENGTH;
   }
 
   const new_rectangle = { 
@@ -49,10 +49,10 @@ const _update_rectangle_end_pos = (id, new_x2_pos, new_y2_pos) => {
       {
         let rectangle_length = _calculate_rectangle_length(rectangles[i].x1_pos, rectangles[i].y1_pos, new_x2_pos, new_y2_pos);
 
-        if(rectangle_length < MIN_RECTANGLE_LENGTH)
+        if(rectangle_length < MIN_LINE_LENGTH)
         {
-          new_x2_pos = new_x2_pos + MIN_RECTANGLE_LENGTH;
-          new_y2_pos = new_y2_pos + MIN_RECTANGLE_LENGTH;
+          new_x2_pos = new_x2_pos + MIN_LINE_LENGTH;
+          new_y2_pos = new_y2_pos + MIN_LINE_LENGTH;
         }
 
         rectangles[i].x2_pos = new_x2_pos;
@@ -165,11 +165,11 @@ const _increase_rectangle_width = (id) => {
   {
     if(rectangles[i].id === id)
     {
-      let increment = (rectangles[i].stroke_width * RECTANGLE_LINE_WIDTH_INCR_FACTOR);
+      let increment = (rectangles[i].stroke_width * LINE_WIDTH_INCR_FACTOR);
 
-      if(rectangles[i].stroke_width + increment > MAX_RECTANGLE_LINE_WIDTH)
+      if(rectangles[i].stroke_width + increment > MAX_LINE_WIDTH)
       {
-        rectangles[i].stroke_width = MAX_RECTANGLE_LINE_WIDTH;
+        rectangles[i].stroke_width = MAX_LINE_WIDTH;
       }
       else
       {
@@ -190,11 +190,11 @@ const _decrease_rectangle_width = (id) => {
   {
     if(rectangles[i].id === id)
     {
-      let decrement = (rectangles[i].stroke_width * RECTANGLE_LINE_WIDTH_DECR_FACTOR);
+      let decrement = (rectangles[i].stroke_width * LINE_WIDTH_DECR_FACTOR);
       
-      if(rectangles[i].stroke_width - decrement < MIN_RECTANGLE_LINE_WIDTH)
+      if(rectangles[i].stroke_width - decrement < MIN_LINE_WIDTH)
       {
-        rectangles[i].stroke_width = MIN_RECTANGLE_LINE_WIDTH;
+        rectangles[i].stroke_width = MIN_LINE_WIDTH;
       }
       else
       {

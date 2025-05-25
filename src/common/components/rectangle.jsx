@@ -5,7 +5,7 @@ import { _get_max_z_index, _use_max_z_index } from "../globals";
 import { _update_rectangle_highlighted, _update_rectangle_start_pos, _update_rectangle_end_pos,
     _update_rectangle_colour, _update_rectangle_toolbar_show, _update_rectangle_toolbar_loc,
     _delete_rectangle, _increase_rectangle_width, _decrease_rectangle_width } from "../../taskboards/use_rectangle";
-import { SELECTED_COLOR_THEME, RECTANGLE_HLIGHT_DRAG_POS } from "../globals";
+import { SELECTED_COLOR_THEME, LINE_HLIGHT_DRAG_POS } from "../globals";
 import _line_toolbar from "../../toolbars/line_toolbar";
 import { RECTANGLE_TOOLBAR_ITEMS } from "../../toolbars/toolbar_globals";
 import { TASKBOARD_STATES } from "../../taskboards/taskboard_globals";
@@ -62,7 +62,7 @@ const _draggable_rectangle = ({
     const [local_param_rectangle_active, _set_local_param_rectangle_active] = useState(false); // local param to track rectangle active state
     
     // custom highlighter vars begin
-    const [selected_hlight_pos, _set_selected_hlight_pos] = useState(RECTANGLE_HLIGHT_DRAG_POS.MID);
+    const [selected_hlight_pos, _set_selected_hlight_pos] = useState(LINE_HLIGHT_DRAG_POS.MID);
     const [is_dragging_hlighter, _set_is_dragging_hlighter] = useState(false);
     // custom highlighter vars end
 
@@ -104,7 +104,7 @@ const _draggable_rectangle = ({
 
     // Custom highlighter: drag mid point
     const _hlight_mid_mousedown = (e) => {
-        _set_selected_hlight_pos(RECTANGLE_HLIGHT_DRAG_POS.MID);
+        _set_selected_hlight_pos(LINE_HLIGHT_DRAG_POS.MID);
         _set_is_dragging_hlighter(true);
     };
 
@@ -288,7 +288,7 @@ const _draggable_rectangle = ({
         const _handle_mouse_up = (event) => {   
             if(is_dragging_hlighter === true)
             {
-                if(selected_hlight_pos === RECTANGLE_HLIGHT_DRAG_POS.MID)
+                if(selected_hlight_pos === LINE_HLIGHT_DRAG_POS.MID)
                 {
                     const {clientX, clientY} = event;
                     const mid_x = (rectangle_start_pos.x + rectangle_end_pos.x) / 2;
@@ -318,7 +318,7 @@ const _draggable_rectangle = ({
         const _handle_mouse_move = (event) => {   
             if(is_dragging_hlighter === true)
             {
-                if(selected_hlight_pos === RECTANGLE_HLIGHT_DRAG_POS.MID)
+                if(selected_hlight_pos === LINE_HLIGHT_DRAG_POS.MID)
                 {
                     const {clientX, clientY} = event;
                     const mid_x = (rectangle_start_pos.x + rectangle_end_pos.x) / 2;

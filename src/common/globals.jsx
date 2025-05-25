@@ -178,38 +178,6 @@ const MIN_LINE_LENGTH          = 30;  // minimum line length in pixels
 
 /*********** Line block ends ***************/
 
-/*********** Circle block begins ***************/
-// Circle highlighter drag positions
-const CIRCLE_HLIGHT_DRAG_POS = {
-    START:  1,
-    MID:    2,
-    END:    3,
-};
-
-// Circle line width increment and decrement factors
-const CIRCLE_LINE_WIDTH_INCR_FACTOR     = 0.1; // 10 percent of original width
-const CIRCLE_LINE_WIDTH_DECR_FACTOR     = 0.1; // 10 percent of original width
-const MAX_CIRCLE_LINE_WIDTH             = 100; // maximum circle width in pixels
-const MIN_CIRCLE_LINE_WIDTH             = 1;   // minimum circle width in pixels
-const MIN_CIRCLE_DIAMETER               = 30;  // minimum circle length in pixels
-/*********** Circle block ends ***************/
-
-/*********** Rectangle block begins ***************/
-// Rectangle highlighter drag positions
-const RECTANGLE_HLIGHT_DRAG_POS = {
-    START:  1,
-    MID:    2,
-    END:    3,
-};
-
-// Rectangle line width increment and decrement factors
-const RECTANGLE_LINE_WIDTH_INCR_FACTOR      = 0.1; // 10 percent of original width
-const RECTANGLE_LINE_WIDTH_DECR_FACTOR      = 0.1; // 10 percent of original width
-const MAX_RECTANGLE_LINE_WIDTH              = 100; // maximum rectangle width in pixels
-const MIN_RECTANGLE_LINE_WIDTH              = 1;   // minimum rectangle width in pixels
-const MIN_RECTANGLE_LENGTH                  = 30;  // minimum rectangle length in pixels
-/*********** Rectangle block ends ***************/
-
 /************* Color Theme block begins ************/
 const COLOR_THEMES = {
     white: {
@@ -311,22 +279,6 @@ export {
     MIN_LINE_WIDTH,
     MIN_LINE_LENGTH,
     LINE_HLIGHT_DRAG_POS,
-
-    /* Circle exports */
-    CIRCLE_LINE_WIDTH_INCR_FACTOR,
-    CIRCLE_LINE_WIDTH_DECR_FACTOR,
-    MAX_CIRCLE_LINE_WIDTH,
-    MIN_CIRCLE_LINE_WIDTH,
-    MIN_CIRCLE_DIAMETER,
-    CIRCLE_HLIGHT_DRAG_POS,
-
-    /* Rectangle exports */
-    RECTANGLE_LINE_WIDTH_INCR_FACTOR,
-    RECTANGLE_LINE_WIDTH_DECR_FACTOR,
-    MAX_RECTANGLE_LINE_WIDTH,
-    MIN_RECTANGLE_LINE_WIDTH,
-    MIN_RECTANGLE_LENGTH,
-    RECTANGLE_HLIGHT_DRAG_POS,
 
     /* click/drag exports */
     _set_click_or_drag,
