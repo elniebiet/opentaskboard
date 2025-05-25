@@ -15,23 +15,23 @@ import _draggable_circle from '../common/components/circle';
 import _draggable_rectangle from '../common/components/rectangle';
 import _draggable_triangle from '../common/components/triangle';
 import _draggable_rightangle from '../common/components/rightangle';
-import { _set_global_new_shape_id, _get_global_new_shape_id } from './taskboard_globals';
-import { _get_global_last_item_add_or_move_loc, _set_global_last_item_add_or_move_loc } from './taskboard_globals';
-import { _get_global_cursor_type, _set_global_cursor_type } from './taskboard_globals';
-import { _get_global_new_shape_type, _set_global_new_shape_type } from './taskboard_globals';
+import { _set_global_new_shape_id, _get_global_new_shape_id,
+        _get_global_last_item_add_or_move_loc, _set_global_last_item_add_or_move_loc,
+        _get_global_cursor_type, _set_global_cursor_type,
+        _get_global_new_shape_type, _set_global_new_shape_type,
+        CURSOR_TYPES } from './taskboard_globals';
 import { _add_note } from './use_note';
 import { _add_comment } from './use_comment';
 import { _shape_selected_handler, _start_drawing, _update_drawing } from './use_shape';
 import { _get_cursor_type } from '../common/utils';
-import { CURSOR_TYPES } from './taskboard_globals';
 import _note_toolbar from '../toolbars/note_toolbar';
-import { ARROW_JOIN_POINT } from '../common/globals';
 import { _update_arrow_end_pos } from './use_arrow';
 import { _get_current_joining_arrow_id, _get_last_hovered_joining_item_id, _set_last_hovered_joining_item_id, 
-        _get_last_hovered_joining_position, _set_last_hovered_joining_position } from '../common/globals';
+        _get_last_hovered_joining_position, _set_last_hovered_joining_position,
+        ARROW_JOIN_POINT } from '../common/globals';
 import { _otbf_update_item_join_arrow_id, _otbf_deactivate_item } from '../common/otb_finder';
 
-import notes from '../db/taskboards/notes_db_temp';
+import notes from '../db/taskboards/notes_db_temp';              // temporary notes storage
 import comments from '../db/taskboards/comments_db_temp';        // temporary comments storage
 import arrows from '../db/taskboards/arrows_db_temp';            // temporary arrows storage
 import lines from '../db/taskboards/lines_db_temp';              // temporary lines storage
