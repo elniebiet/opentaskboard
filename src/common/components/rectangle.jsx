@@ -67,7 +67,7 @@ const _draggable_rectangle = ({
 
     const rectangle_root_ref = useRef(null);
     
-    const HLIGHT_CIRC_RADIUS_RATIO_TO_STROKEWIDTH   = 2.0;
+    const HLIGHT_CIRC_RADIUS_RATIO_TO_STROKEWIDTH   = 0.5;
     const TOOLBAR_DISTANCE_TOP_PERC                 = 0.1; // percentage of the window height
 
     
