@@ -9,7 +9,7 @@ const _calculate_rectangle_length = (rectangle_start_pos_x, rectangle_start_pos_
   return Math.sqrt(dx * dx + dy * dy);
 };
 
-const _add_rectangle = (id, x1_pos, y1_pos, x2_pos, y2_pos, colour, stroke_width) => {
+const _add_rectangle = (id, x1_pos, y1_pos, x2_pos, y2_pos, colour, stroke_width, filleted) => {
   let rectangle_length = _calculate_rectangle_length(x1_pos, y1_pos, x2_pos, y2_pos);
   
   if(rectangle_length < MIN_RECTANGLE_LENGTH)
@@ -30,7 +30,8 @@ const _add_rectangle = (id, x1_pos, y1_pos, x2_pos, y2_pos, colour, stroke_width
       toolbar_show: true,
       toolbar_display_loc: {x: 200, y: 200},
       active: false,
-      join_arrow_ids: {top: [-1, ARROW_JOIN_POINT.START_POINT], bottom: [-1, ARROW_JOIN_POINT.START_POINT], left: [-1, ARROW_JOIN_POINT.START_POINT], right: [-1, ARROW_JOIN_POINT.START_POINT]}
+      join_arrow_ids: {top: [-1, ARROW_JOIN_POINT.START_POINT], bottom: [-1, ARROW_JOIN_POINT.START_POINT], left: [-1, ARROW_JOIN_POINT.START_POINT], right: [-1, ARROW_JOIN_POINT.START_POINT]},
+      filleted: filleted,
   };
   rectangles.push(new_rectangle);
 };

@@ -48,7 +48,8 @@ const _draggable_rectangle = ({
     is_highlighted, taskboard_rerender_func, show_toolbar, 
     win_width, win_height, request_taskboard_state, 
     active, join_arrow_ids, overall_taskboard_state, 
-    main_page_click_counter, main_page_last_click_event_target}) => {
+    main_page_click_counter, main_page_last_click_event_target,
+    filleted }) => {
 
     const [rectangle_start_pos, _set_rectangle_start_pos] = useState({ x: start_pos_x, y: start_pos_y });
     const [rectangle_end_pos, _set_rectangle_end_pos] = useState({ x: end_pos_x, y: end_pos_y });
@@ -69,6 +70,7 @@ const _draggable_rectangle = ({
     
     const HLIGHT_CIRC_RADIUS_RATIO_TO_STROKEWIDTH   = 2.0;
     const TOOLBAR_DISTANCE_TOP_PERC                 = 0.1; // percentage of the window height
+    const RECT_FILLET_PERCENTAGE                    = 0.2; // percentage of the rectangle width/height for fillet radius
 
     
     // Update rectangle props when they are changed change
@@ -416,6 +418,8 @@ const _draggable_rectangle = ({
                         width={Math.abs(rectangle_end_pos.x - rectangle_start_pos.x)}
                         height={Math.abs(rectangle_end_pos.y - rectangle_start_pos.y)}
                         fill="none"
+                        rx={filleted * (RECT_FILLET_PERCENTAGE * Math.abs(rectangle_end_pos.x - rectangle_start_pos.x))}
+                        ry={filleted * (RECT_FILLET_PERCENTAGE * Math.abs(rectangle_end_pos.y - rectangle_start_pos.y))}
                         stroke={colour}
                         strokeWidth={stroke_width}
                         strokeOpacity={1.0}

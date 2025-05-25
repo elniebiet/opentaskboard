@@ -437,7 +437,7 @@ const _taskboard_default = () => {
                   colour={rectangle.colour} stroke_width={rectangle.stroke_width} is_highlighted={rectangle.highlighted} taskboard_rerender_func={_trigger_taskboard_rerender}
                   active={rectangle.active} join_arrow_ids={rectangle.join_arrow_ids} 
                   show_toolbar={rectangle.toolbar_show} win_width={width} win_height={height} request_taskboard_state={_request_taskboard_state} overall_taskboard_state={taskboard_state}
-                  main_page_click_counter={click_counter} main_page_last_click_event_target={click_event_target}
+                  main_page_click_counter={click_counter} main_page_last_click_event_target={click_event_target} filleted={rectangle.filleted}
                   />
                 ))}
               </div>

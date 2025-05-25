@@ -40,10 +40,16 @@ const _start_drawing = ({ shape_id, start_pos_x, start_pos_y, end_pos_x, end_pos
         }
         case SHAPES_TOOLBAR_ITEM_TYPE.STBI_RECT:
         {
-            _add_rectangle(shape_id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour, stroke_width);
+            const filleted = 0;
+            _add_rectangle(shape_id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour, stroke_width, filleted);
             break;
         }
-        
+        case SHAPES_TOOLBAR_ITEM_TYPE.STBI_FILLETED_RECT:
+        {
+            const filleted = 1;
+            _add_rectangle(shape_id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour, stroke_width, filleted);
+            break;
+        }
         default:
         {
             console.log("_start_drawing: dont know shape " + type_of_shape);
@@ -71,6 +77,11 @@ const _update_drawing = ({e, shape_type}) => {
             break;
         }
         case SHAPES_TOOLBAR_ITEM_TYPE.STBI_RECT:
+        {
+            _update_rectangle_end_pos(_get_global_new_shape_id(), e.clientX, e.clientY);
+            break;
+        }
+        case SHAPES_TOOLBAR_ITEM_TYPE.STBI_FILLETED_RECT:
         {
             _update_rectangle_end_pos(_get_global_new_shape_id(), e.clientX, e.clientY);
             break;
