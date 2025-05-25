@@ -10,7 +10,6 @@ const _calculate_rectangle_length = (rectangle_start_pos_x, rectangle_start_pos_
 };
 
 const _add_rectangle = (id, x1_pos, y1_pos, x2_pos, y2_pos, colour, stroke_width) => {
-    console.log("adding rect");
   let rectangle_length = _calculate_rectangle_length(x1_pos, y1_pos, x2_pos, y2_pos);
   
   if(rectangle_length < MIN_RECTANGLE_LENGTH)
@@ -48,7 +47,7 @@ const _update_rectangle_end_pos = (id, new_x2_pos, new_y2_pos) => {
       if(rectangles[i].id === id)
       {
         let rectangle_length = _calculate_rectangle_length(rectangles[i].x1_pos, rectangles[i].y1_pos, new_x2_pos, new_y2_pos);
-  
+
         if(rectangle_length < MIN_RECTANGLE_LENGTH)
         {
           new_x2_pos = new_x2_pos + MIN_RECTANGLE_LENGTH;

@@ -67,7 +67,7 @@ const _draggable_rectangle = ({
 
     const rectangle_root_ref = useRef(null);
     
-    const HLIGHT_CIRC_RADIUS_RATIO_TO_STROKEWIDTH   = 1.0;
+    const HLIGHT_CIRC_RADIUS_RATIO_TO_STROKEWIDTH   = 2.0;
     const TOOLBAR_DISTANCE_TOP_PERC                 = 0.1; // percentage of the window height
 
     
@@ -106,7 +106,7 @@ const _draggable_rectangle = ({
         _set_is_dragging_hlighter(true);
     };
 
-    const _get_rectangle_length = () => {
+    const _get_rect_diagonal_length = () => {
         const dx = rectangle_end_pos.x - rectangle_start_pos.x;
         const dy = rectangle_end_pos.y - rectangle_start_pos.y;
         return Math.sqrt(dx * dx + dy * dy);
@@ -198,14 +198,14 @@ const _draggable_rectangle = ({
             case HIGHLIGHT_DRAG_DIRECTION.BOTTOM_RIGHT:
             {
                 // calculate new width and height
-                _update_rectangle_end_pos(id, rectangle_end_pos.x + width_increase_pixels, rectangle_end_pos.y + width_increase_pixels);          
+                _update_rectangle_end_pos(id, rectangle_end_pos.x + width_increase_pixels, rectangle_end_pos.y + height_increase_pixels);          
                 taskboard_rerender_func();
                 break;
             }
             case HIGHLIGHT_DRAG_DIRECTION.TOP_LEFT:
             {
                 // calculate new width and height
-                _update_rectangle_start_pos(id, rectangle_start_pos.x - width_increase_pixels, rectangle_start_pos.y - width_increase_pixels);
+                _update_rectangle_start_pos(id, rectangle_start_pos.x - width_increase_pixels, rectangle_start_pos.y - height_increase_pixels);
                 taskboard_rerender_func();
                 break;
             }
@@ -347,8 +347,8 @@ const _draggable_rectangle = ({
 
     // calculate rectangle top left position
     const overall_top_left = {
-        x: (rectangle_start_pos.x + rectangle_end_pos.x) / 2 - (_get_rectangle_length() / 2),
-        y: (rectangle_start_pos.y + rectangle_end_pos.y) / 2 - (_get_rectangle_length() / 2)
+        x: Math.min(rectangle_start_pos.x, rectangle_end_pos.x),
+        y: Math.min(rectangle_start_pos.y, rectangle_end_pos.y)
     };
 
     return (
@@ -377,8 +377,8 @@ const _draggable_rectangle = ({
                         gap={HIGHLIGHT_PARAMS.highlight_gap} 
                         line_width={HIGHLIGHT_PARAMS.highlight_line_width} 
                         item_top_left_pos={{x: overall_top_left.x, y: overall_top_left.y}} 
-                        item_width={_get_rectangle_length()} 
-                        item_height={_get_rectangle_length()} 
+                        item_width={Math.abs(rectangle_end_pos.x - rectangle_start_pos.x)} 
+                        item_height={Math.abs(rectangle_end_pos.y - rectangle_start_pos.y)} 
                         z_index={z_index} 
                         highlighter_drag_mouse_down={_highlighter_drag_mouse_down}
                         highlighter_drag_mouse_up={_highlighter_drag_mouse_up} 
@@ -411,10 +411,10 @@ const _draggable_rectangle = ({
                 >
                     {/* Main rectangle */}
                     <rect
-                        x={((rectangle_start_pos.x + rectangle_end_pos.x) / 2) - (_get_rectangle_length() / 2)}
-                        y={((rectangle_start_pos.y + rectangle_end_pos.y) / 2) - (_get_rectangle_length() / 2)}
-                        width={_get_rectangle_length()}
-                        height={_get_rectangle_length()}
+                        x={Math.min(rectangle_start_pos.x, rectangle_end_pos.x)}
+                        y={Math.min(rectangle_start_pos.y, rectangle_end_pos.y)}
+                        width={Math.abs(rectangle_end_pos.x - rectangle_start_pos.x)}
+                        height={Math.abs(rectangle_end_pos.y - rectangle_start_pos.y)}
                         fill="none"
                         stroke={colour}
                         strokeWidth={stroke_width}
