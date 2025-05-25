@@ -68,7 +68,7 @@ const _draggable_rectangle = ({
 
     const rectangle_root_ref = useRef(null);
     
-    const HLIGHT_CIRC_RADIUS_RATIO_TO_STROKEWIDTH   = 2.0;
+    const HLIGHT_CIRC_RADIUS_RATIO_TO_STROKEWIDTH   = 0.02;
     const TOOLBAR_DISTANCE_TOP_PERC                 = 0.1; // percentage of the window height
     const RECT_FILLET_PERCENTAGE                    = 0.2; // percentage of the rectangle width/height for fillet radius
 
@@ -432,7 +432,7 @@ const _draggable_rectangle = ({
                             className="highlighter_rectangle"
                             cx={(rectangle_start_pos.x + rectangle_end_pos.x) / 2} 
                             cy={(rectangle_start_pos.y + rectangle_end_pos.y) / 2} 
-                            r={stroke_width * HLIGHT_CIRC_RADIUS_RATIO_TO_STROKEWIDTH} 
+                            r={_get_rect_diagonal_length() * HLIGHT_CIRC_RADIUS_RATIO_TO_STROKEWIDTH} 
                             fill={SELECTED_COLOR_THEME.highlight_colour}
                             style={{ cursor: "move", pointerEvents: "all" }}
                             onMouseDown={(e) => { _hlight_mid_mousedown(e); }}
