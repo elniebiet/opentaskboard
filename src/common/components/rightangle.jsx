@@ -2,9 +2,9 @@ import { useState, useEffect, useRef } from "react";
 import { _set_global_toolbar_items_active_state } from "../../taskboards/taskboard_globals";
 import { TASKBOARD_TOOLBAR_ITEMS } from "../../toolbars/toolbar_globals";
 import { _get_max_z_index, _use_max_z_index } from "../globals";
-import { _update_triangle_highlighted, _update_triangle_start_pos, _update_triangle_end_pos,
-    _update_triangle_colour, _update_triangle_toolbar_show, _update_triangle_toolbar_loc,
-    _delete_triangle, _increase_triangle_width, _decrease_triangle_width } from "../../taskboards/use_triangle";
+import { _update_rightangle_highlighted, _update_rightangle_start_pos, _update_rightangle_end_pos,
+    _update_rightangle_colour, _update_rightangle_toolbar_show, _update_rightangle_toolbar_loc,
+    _delete_rightangle, _increase_rightangle_width, _decrease_rightangle_width } from "../../taskboards/use_rightangle";
 import { SELECTED_COLOR_THEME, LINE_HLIGHT_DRAG_POS } from "../globals";
 import _line_toolbar from "../../toolbars/line_toolbar";
 import { RECTANGLE_TOOLBAR_ITEMS } from "../../toolbars/toolbar_globals";
@@ -17,32 +17,32 @@ import { HIGHLIGHT_PARAMS } from "../globals";
 
 /**
  * *****************************************************************************************
- * _draggable_triangle - Draggable triangle component
+ * _draggable_rightangle - Draggable rightangle component
  * *****************************************************************************************
  * PLEASE NOTE: This component uses the generic highlighter (Outside highlighter for 
- * joining and resizing the triangle)) as well as a custom highlighter (at the triangle mid point
- * useful for dragging the triangle around).)
+ * joining and resizing the rightangle)) as well as a custom highlighter (at the rightangle mid point
+ * useful for dragging the rightangle around).)
  * *****************************************************************************************
  * ***************************************************************************************** 
- * @param {int} id - triangle ID
- * @param {float} start_pos_x - triangle start x position
- * @param {float} start_pos_y - triangle start y position
- * @param {float} end_pos_x - triangle end x position
- * @param {float} end_pos_y - triangle end y position
- * @param {string} colour - triangle colour
- * @param {int} stroke_width - triangle stroke width
- * @param {boolean} is_highlighted - triangle highlighted state
+ * @param {int} id - rightangle ID
+ * @param {float} start_pos_x - rightangle start x position
+ * @param {float} start_pos_y - rightangle start y position
+ * @param {float} end_pos_x - rightangle end x position
+ * @param {float} end_pos_y - rightangle end y position
+ * @param {string} colour - rightangle colour
+ * @param {int} stroke_width - rightangle stroke width
+ * @param {boolean} is_highlighted - rightangle highlighted state
  * @param {function} taskboard_rerender_func - Function to trigger taskboard re-render
- * @param {boolean} show_toolbar - triangle toolbar visibility
+ * @param {boolean} show_toolbar - rightangle toolbar visibility
  * @param {int} win_width - Window width
  * @param {int} win_height - Window height
  * @param {function} request_taskboard_state - Function to request taskboard state
- * @param {boolean} active - triangle active state
+ * @param {boolean} active - rightangle active state
  * @param {array} join_arrow_ids - Array of join arrow IDs
  * @returns 
  */
 
-const _draggable_triangle = ({ 
+const _draggable_rightangle = ({ 
     id, start_pos_x, start_pos_y, end_pos_x, 
     end_pos_y, colour = "black", stroke_width = 2, 
     is_highlighted, taskboard_rerender_func, show_toolbar, 
@@ -51,54 +51,54 @@ const _draggable_triangle = ({
     main_page_click_counter, main_page_last_click_event_target,
     filleted }) => {
 
-    const [triangle_start_pos, _set_triangle_start_pos] = useState({ x: start_pos_x, y: start_pos_y });
-    const [triangle_end_pos, _set_triangle_end_pos] = useState({ x: end_pos_x, y: end_pos_y });
+    const [rightangle_start_pos, _set_rightangle_start_pos] = useState({ x: start_pos_x, y: start_pos_y });
+    const [rightangle_end_pos, _set_rightangle_end_pos] = useState({ x: end_pos_x, y: end_pos_y });
     const [z_index, _set_z_index] = useState(_get_max_z_index());
     const [arr_highlighted, _set_arr_highlighted] = useState(is_highlighted);   // arr_highlighted is the local version of is_highlighted
     const [display_toolbar, _set_display_toolbar] = useState(show_toolbar);     // display_toolbar is the local version of show_toolbar
-    const [is_dragging_triangle, _set_is_dragging_triangle] = useState(false); 
-    const [prevent_triangle_deactivation, _set_prevent_triangle_deactivation] = useState(false); 
+    const [is_dragging_rightangle, _set_is_dragging_rightangle] = useState(false); 
+    const [prevent_rightangle_deactivation, _set_prevent_rightangle_deactivation] = useState(false); 
     const [joining_show_highlighter, _set_joining_show_highlighter] = useState(false); 
-    const [local_param_triangle_active, _set_local_param_triangle_active] = useState(false); // local param to track triangle active state
+    const [local_param_rightangle_active, _set_local_param_rightangle_active] = useState(false); // local param to track rightangle active state
     
     // custom highlighter vars begin
     const [selected_hlight_pos, _set_selected_hlight_pos] = useState(LINE_HLIGHT_DRAG_POS.MID);
     const [is_dragging_hlighter, _set_is_dragging_hlighter] = useState(false);
     // custom highlighter vars end
 
-    const triangle_root_ref = useRef(null);
+    const rightangle_root_ref = useRef(null);
     
     const HLIGHT_CIRC_RADIUS_RATIO_TO_STROKEWIDTH   = 0.02;
     const TOOLBAR_DISTANCE_TOP_PERC                 = 0.1; // percentage of the window height
-    const RECT_FILLET_PERCENTAGE                    = 0.2; // percentage of the triangle width/height for fillet radius
+    const RECT_FILLET_PERCENTAGE                    = 0.2; // percentage of the rightangle width/height for fillet radius
 
     
-    // Update triangle props when they are changed change
+    // Update rightangle props when they are changed change
     useEffect(() => {
-        if(is_dragging_triangle === false)
+        if(is_dragging_rightangle === false)
         {
-            _set_triangle_start_pos({ x: start_pos_x, y: start_pos_y });
-            _set_triangle_end_pos({ x: end_pos_x, y: end_pos_y });
+            _set_rightangle_start_pos({ x: start_pos_x, y: start_pos_y });
+            _set_rightangle_end_pos({ x: end_pos_x, y: end_pos_y });
         }
     }, [start_pos_x , start_pos_y, end_pos_x, end_pos_y]);
 
-    const _deactivate_triangle = (event_target) => { 
+    const _deactivate_rightangle = (event_target) => { 
         // e.preventDefault();  // might be needed for some other component (need to pass in the event to use this
                                 // not the event target)
 
-        if(prevent_triangle_deactivation === false)
+        if(prevent_rightangle_deactivation === false)
         {
             _set_arr_highlighted(false);
-            _update_triangle_highlighted(id, false);
+            _update_rightangle_highlighted(id, false);
             _set_display_toolbar(false);
-            _update_triangle_toolbar_show(id, false);
+            _update_rightangle_toolbar_show(id, false);
             taskboard_rerender_func();
 
-            _set_local_param_triangle_active(false);
+            _set_local_param_rightangle_active(false);
         }
         else
         {
-            _set_prevent_triangle_deactivation(false);
+            _set_prevent_rightangle_deactivation(false);
         }
     };
 
@@ -109,13 +109,13 @@ const _draggable_triangle = ({
     };
 
     const _get_rect_diagonal_length = () => {
-        const dx = triangle_end_pos.x - triangle_start_pos.x;
-        const dy = triangle_end_pos.y - triangle_start_pos.y;
+        const dx = rightangle_end_pos.x - rightangle_start_pos.x;
+        const dy = rightangle_end_pos.y - rightangle_start_pos.y;
         return Math.sqrt(dx * dx + dy * dy);
     };
 
-    const _toolbar_item_clicked_notif = (triangle_tb_item_index) => {
-        switch(triangle_tb_item_index)
+    const _toolbar_item_clicked_notif = (rightangle_tb_item_index) => {
+        switch(rightangle_tb_item_index)
         {
             case RECTANGLE_TOOLBAR_ITEMS.ATBI_COLOUR:
             {
@@ -124,19 +124,19 @@ const _draggable_triangle = ({
             }
             case RECTANGLE_TOOLBAR_ITEMS.ATBI_INCREASE_RECTANGLE_WIDTH:
             {
-                _increase_triangle_width(id);
+                _increase_rightangle_width(id);
                 request_taskboard_state(TASKBOARD_STATES.TBS_NORMAL);
                 break;
             }
             case RECTANGLE_TOOLBAR_ITEMS.ATBI_DECREASE_RECTANGLE_WIDTH:
             {
-                _decrease_triangle_width(id);
+                _decrease_rightangle_width(id);
                 request_taskboard_state(TASKBOARD_STATES.TBS_NORMAL);
                 break;
             }
             case RECTANGLE_TOOLBAR_ITEMS.ATBI_DELETE:
             {
-                _delete_triangle(id);
+                _delete_rightangle(id);
                 break;
             }
             default:
@@ -149,23 +149,23 @@ const _draggable_triangle = ({
     };
 
     const _update_colour = (updated_hex_colour_val) => {
-        _update_triangle_colour(id, updated_hex_colour_val);
+        _update_rightangle_colour(id, updated_hex_colour_val);
         taskboard_rerender_func();
     };
 
     const _get_toolbar_position = () => {
         let toolbar_distance_top = TOOLBAR_DISTANCE_TOP_PERC * win_height;
         
-        let x = (triangle_start_pos.x + triangle_end_pos.x) / 2;
+        let x = (rightangle_start_pos.x + rightangle_end_pos.x) / 2;
         let y = 0; 
         
-        if(triangle_start_pos.y < triangle_end_pos.y)
+        if(rightangle_start_pos.y < rightangle_end_pos.y)
         {
-            y = triangle_start_pos.y - toolbar_distance_top;
+            y = rightangle_start_pos.y - toolbar_distance_top;
         }
         else
         {
-            y = triangle_end_pos.y - toolbar_distance_top;
+            y = rightangle_end_pos.y - toolbar_distance_top;
         } 
 
         y = (y < 0) ? 0 : y;
@@ -174,7 +174,7 @@ const _draggable_triangle = ({
     };
 
     const _highlighter_drag_mouse_down = (drag_direction) => {
-        _set_prevent_triangle_deactivation(true);
+        _set_prevent_rightangle_deactivation(true);
         taskboard_rerender_func();
 
         switch(drag_direction)
@@ -192,7 +192,7 @@ const _draggable_triangle = ({
 
     const _highlighter_drag_mouse_up = (drag_direction, width_increase_pixels, height_increase_pixels) => 
     {
-        _set_prevent_triangle_deactivation(true);
+        _set_prevent_rightangle_deactivation(true);
         taskboard_rerender_func();
 
         switch(drag_direction)
@@ -200,14 +200,14 @@ const _draggable_triangle = ({
             case HIGHLIGHT_DRAG_DIRECTION.BOTTOM_RIGHT:
             {
                 // calculate new width and height
-                _update_triangle_end_pos(id, triangle_end_pos.x + width_increase_pixels, triangle_end_pos.y + height_increase_pixels);          
+                _update_rightangle_end_pos(id, rightangle_end_pos.x + width_increase_pixels, rightangle_end_pos.y + height_increase_pixels);          
                 taskboard_rerender_func();
                 break;
             }
             case HIGHLIGHT_DRAG_DIRECTION.TOP_LEFT:
             {
                 // calculate new width and height
-                _update_triangle_start_pos(id, triangle_start_pos.x - width_increase_pixels, triangle_start_pos.y - height_increase_pixels);
+                _update_rightangle_start_pos(id, rightangle_start_pos.x - width_increase_pixels, rightangle_start_pos.y - height_increase_pixels);
                 taskboard_rerender_func();
                 break;
             }
@@ -236,7 +236,7 @@ const _draggable_triangle = ({
      * @param {*} arrow_id created arrow id
      */
     const _highlighter_join_started = (join_position, arrow_id) => {
-        _set_prevent_triangle_deactivation(true);
+        _set_prevent_rightangle_deactivation(true);
         // associate arrow id with note
         _otbf_update_item_join_arrow_id(id, join_position, arrow_id, ARROW_JOIN_POINT.START_POINT);
         taskboard_rerender_func();
@@ -255,22 +255,22 @@ const _draggable_triangle = ({
         _use_max_z_index();
         _set_global_toolbar_items_active_state(TASKBOARD_TOOLBAR_ITEMS.TBI_SHAPE, true, true);
         _set_arr_highlighted(true);
-        _update_triangle_highlighted(id, true);
-        _set_local_param_triangle_active(true);
+        _update_rightangle_highlighted(id, true);
+        _set_local_param_rightangle_active(true);
         
         _set_display_toolbar(true);
-        _update_triangle_toolbar_show(id, true);
+        _update_rightangle_toolbar_show(id, true);
         taskboard_rerender_func();
     };
 
     /********************* Effects block begins ***************************/
     // Subscribe for main page click event
     useEffect(() => {
-        if (triangle_root_ref.current && !triangle_root_ref.current.contains(main_page_last_click_event_target)) {
-            // clicked outside of the triangle component, deactivate triangle  
-            if(local_param_triangle_active === true)
+        if (rightangle_root_ref.current && !rightangle_root_ref.current.contains(main_page_last_click_event_target)) {
+            // clicked outside of the rightangle component, deactivate rightangle  
+            if(local_param_rightangle_active === true)
             {
-                _deactivate_triangle(main_page_last_click_event_target);
+                _deactivate_rightangle(main_page_last_click_event_target);
             }
         }
     }, [main_page_click_counter]);
@@ -291,16 +291,16 @@ const _draggable_triangle = ({
                 if(selected_hlight_pos === LINE_HLIGHT_DRAG_POS.MID)
                 {
                     const {clientX, clientY} = event;
-                    const mid_x = (triangle_start_pos.x + triangle_end_pos.x) / 2;
-                    const mid_y = (triangle_start_pos.y + triangle_end_pos.y) / 2;
+                    const mid_x = (rightangle_start_pos.x + rightangle_end_pos.x) / 2;
+                    const mid_y = (rightangle_start_pos.y + rightangle_end_pos.y) / 2;
                     const dx = clientX - mid_x;
                     const dy = clientY - mid_y;
 
-                    _set_triangle_start_pos({x: triangle_start_pos.x + dx, y: triangle_start_pos.y + dy});
-                    _set_triangle_end_pos({x: triangle_end_pos.x + dx, y: triangle_end_pos.y + dy});
+                    _set_rightangle_start_pos({x: rightangle_start_pos.x + dx, y: rightangle_start_pos.y + dy});
+                    _set_rightangle_end_pos({x: rightangle_end_pos.x + dx, y: rightangle_end_pos.y + dy});
                     _set_is_dragging_hlighter(false);
-                    _update_triangle_start_pos(id, triangle_start_pos.x + dx, triangle_start_pos.y + dy);
-                    _update_triangle_end_pos(id, triangle_end_pos.x + dx, triangle_end_pos.y + dy);
+                    _update_rightangle_start_pos(id, rightangle_start_pos.x + dx, rightangle_start_pos.y + dy);
+                    _update_rightangle_end_pos(id, rightangle_end_pos.x + dx, rightangle_end_pos.y + dy);
                 }
                 
                 taskboard_rerender_func();
@@ -321,15 +321,15 @@ const _draggable_triangle = ({
                 if(selected_hlight_pos === LINE_HLIGHT_DRAG_POS.MID)
                 {
                     const {clientX, clientY} = event;
-                    const mid_x = (triangle_start_pos.x + triangle_end_pos.x) / 2;
-                    const mid_y = (triangle_start_pos.y + triangle_end_pos.y) / 2;
+                    const mid_x = (rightangle_start_pos.x + rightangle_end_pos.x) / 2;
+                    const mid_y = (rightangle_start_pos.y + rightangle_end_pos.y) / 2;
                     const dx = clientX - mid_x;
                     const dy = clientY - mid_y;
 
-                    _set_triangle_start_pos({x: triangle_start_pos.x + dx, y: triangle_start_pos.y + dy});
-                    _set_triangle_end_pos({x: triangle_end_pos.x + dx, y: triangle_end_pos.y + dy});
-                    _update_triangle_start_pos(id, triangle_start_pos.x + dx, triangle_start_pos.y + dy);
-                    _update_triangle_end_pos(id, triangle_end_pos.x + dx, triangle_end_pos.y + dy);
+                    _set_rightangle_start_pos({x: rightangle_start_pos.x + dx, y: rightangle_start_pos.y + dy});
+                    _set_rightangle_end_pos({x: rightangle_end_pos.x + dx, y: rightangle_end_pos.y + dy});
+                    _update_rightangle_start_pos(id, rightangle_start_pos.x + dx, rightangle_start_pos.y + dy);
+                    _update_rightangle_end_pos(id, rightangle_end_pos.x + dx, rightangle_end_pos.y + dy);
                 }
                 
                 taskboard_rerender_func();
@@ -347,20 +347,20 @@ const _draggable_triangle = ({
     // calculate toolbar position
     const { toolbar_x_pos, toolbar_y_pos } = _get_toolbar_position();
 
-    // calculate triangle top left position
+    // calculate rightangle top left position
     const overall_top_left = {
-        x: Math.min(triangle_start_pos.x, triangle_end_pos.x),
-        y: Math.min(triangle_start_pos.y, triangle_end_pos.y)
+        x: Math.min(rightangle_start_pos.x, rightangle_end_pos.x),
+        y: Math.min(rightangle_start_pos.y, rightangle_end_pos.y)
     };
 
     return (
         <div 
-            ref={triangle_root_ref} 
-            id="triangle_root"
+            ref={rightangle_root_ref} 
+            id="rightangle_root"
             onMouseEnter={(e) => { _on_mouse_hover(e); }}    
             onMouseDown = {(e) => { _on_mouse_down(e); }}
         >
-            {/* display triangle toolbar */}
+            {/* display rightangle toolbar */}
             <div>
                 {(display_toolbar === true) ? (
                     <_line_toolbar id={id} win_width={win_width} win_height={win_height} 
@@ -379,8 +379,8 @@ const _draggable_triangle = ({
                         gap={HIGHLIGHT_PARAMS.highlight_gap} 
                         line_width={HIGHLIGHT_PARAMS.highlight_line_width} 
                         item_top_left_pos={{x: overall_top_left.x, y: overall_top_left.y}} 
-                        item_width={Math.abs(triangle_end_pos.x - triangle_start_pos.x)} 
-                        item_height={Math.abs(triangle_end_pos.y - triangle_start_pos.y)} 
+                        item_width={Math.abs(rightangle_end_pos.x - rightangle_start_pos.x)} 
+                        item_height={Math.abs(rightangle_end_pos.y - rightangle_start_pos.y)} 
                         z_index={z_index} 
                         highlighter_drag_mouse_down={_highlighter_drag_mouse_down}
                         highlighter_drag_mouse_up={_highlighter_drag_mouse_up} 
@@ -397,7 +397,7 @@ const _draggable_triangle = ({
                     ) : (<div></div>)}
             </div>
 
-            {/* display triangle */}
+            {/* display rightangle */}
             <div>
                 <svg 
                     width="100%" 
@@ -411,12 +411,12 @@ const _draggable_triangle = ({
                         zIndex: z_index, 
                     }}
                 >
-                    {/* Main triangle */}
+                    {/* Main rightangle */}
                     <polygon
                         points={`
-                            ${(triangle_start_pos.x + triangle_end_pos.x) / 2},${Math.min(triangle_start_pos.y, triangle_end_pos.y)} 
-                            ${Math.min(triangle_start_pos.x, triangle_end_pos.x)},${Math.max(triangle_start_pos.y, triangle_end_pos.y)} 
-                            ${Math.max(triangle_start_pos.x, triangle_end_pos.x)},${Math.max(triangle_start_pos.y, triangle_end_pos.y)}
+                            ${Math.min(rightangle_start_pos.x, rightangle_end_pos.x)},${Math.max(rightangle_start_pos.y, rightangle_end_pos.y)} 
+                            ${Math.max(rightangle_start_pos.x, rightangle_end_pos.x)},${Math.max(rightangle_start_pos.y, rightangle_end_pos.y)} 
+                            ${Math.min(rightangle_start_pos.x, rightangle_end_pos.x)},${Math.min(rightangle_start_pos.y, rightangle_end_pos.y)}
                         `}
                         fill="none"
                         stroke={colour}
@@ -428,9 +428,9 @@ const _draggable_triangle = ({
                     {/* Custom highlighter: Circle at the middle of the center line */}
                     {(arr_highlighted === true) ? (
                         <circle 
-                            className="highlighter_triangle"
-                            cx={(triangle_start_pos.x + triangle_end_pos.x) / 2} 
-                            cy={(triangle_start_pos.y + triangle_end_pos.y) / 2} 
+                            className="highlighter_rightangle"
+                            cx={(rightangle_start_pos.x + rightangle_end_pos.x) / 2} 
+                            cy={(rightangle_start_pos.y + rightangle_end_pos.y) / 2} 
                             r={_get_rect_diagonal_length() * HLIGHT_CIRC_RADIUS_RATIO_TO_STROKEWIDTH} 
                             fill={SELECTED_COLOR_THEME.highlight_colour}
                             style={{ cursor: "move", pointerEvents: "all" }}
@@ -444,4 +444,4 @@ const _draggable_triangle = ({
     );
 };
 
-export default _draggable_triangle;
+export default _draggable_rightangle;

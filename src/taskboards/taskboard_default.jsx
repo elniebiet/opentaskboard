@@ -14,6 +14,7 @@ import _draggable_line from '../common/components/line';
 import _draggable_circle from '../common/components/circle';
 import _draggable_rectangle from '../common/components/rectangle';
 import _draggable_triangle from '../common/components/triangle';
+import _draggable_rightangle from '../common/components/rightangle';
 import { _set_global_new_shape_id, _get_global_new_shape_id } from './taskboard_globals';
 import { _get_global_last_item_add_or_move_loc, _set_global_last_item_add_or_move_loc } from './taskboard_globals';
 import { _get_global_cursor_type, _set_global_cursor_type } from './taskboard_globals';
@@ -37,6 +38,7 @@ import lines from '../db/taskboards/lines_db_temp';              // temporary li
 import circles from '../db/taskboards/circles_db_temp';          // temporary circles storage
 import rectangles from '../db/taskboards/rectangles_db_temp';    // temporary rectangles storage
 import triangles from '../db/taskboards/triangles_db_temp';      // temporary triangles storage
+import rightangles from '../db/taskboards/rightangles_db_temp';  // temporary rightangles storage
 
 /**
  * Default taskboard componen
@@ -452,6 +454,18 @@ const _taskboard_default = () => {
                   active={triangle.active} join_arrow_ids={triangle.join_arrow_ids} 
                   show_toolbar={triangle.toolbar_show} win_width={width} win_height={height} request_taskboard_state={_request_taskboard_state} overall_taskboard_state={taskboard_state}
                   main_page_click_counter={click_counter} main_page_last_click_event_target={click_event_target} filleted={triangle.filleted}
+                  />
+                ))}
+              </div>
+
+              {/* display rightangle triangles */}
+              <div>
+                {rightangles.map((rightangle) => (
+                  <_draggable_rightangle key={rightangle.id} id={rightangle.id} start_pos_x={rightangle.x1_pos} start_pos_y={rightangle.y1_pos} end_pos_x={rightangle.x2_pos} end_pos_y={rightangle.y2_pos} 
+                  colour={rightangle.colour} stroke_width={rightangle.stroke_width} is_highlighted={rightangle.highlighted} taskboard_rerender_func={_trigger_taskboard_rerender}
+                  active={rightangle.active} join_arrow_ids={rightangle.join_arrow_ids} 
+                  show_toolbar={rightangle.toolbar_show} win_width={width} win_height={height} request_taskboard_state={_request_taskboard_state} overall_taskboard_state={taskboard_state}
+                  main_page_click_counter={click_counter} main_page_last_click_event_target={click_event_target} filleted={rightangle.filleted}
                   />
                 ))}
               </div>
