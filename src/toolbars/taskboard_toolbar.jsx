@@ -12,14 +12,16 @@ import shapes_img from '../../res/imgs/img_shapes_100x100.png';
 import fill_img from '../../res/imgs/img_fill2_100x100.png'; 
 import { useState, useEffect } from 'react';
 import { TASKBOARD_TOOLBAR_ITEMS } from './toolbar_globals';
-import { TOOLBAR_ITEM_TYPE } from '../common/globals';
+import { TOOLBAR_ITEM_TYPE, CLICK_OR_DRAG } from '../common/globals';
 import { SELECTED_COLOR_THEME } from '../common/globals';
 import { TASKBOARD_DEFAULT_TB_LOC } from './toolbar_globals';
 import { TASKBOARD_DEFAULT_TB_SIZE } from './toolbar_globals';
 import { TASKBOARD_STATES } from '../taskboards/taskboard_globals';
-import { _get_max_z_index, _use_max_z_index } from '../common/globals';
+import { _get_max_z_index, _use_max_z_index, _get_click_or_drag, 
+    _set_click_or_drag, CLICK_OR_DRAG_TIMEOUT } from '../common/globals';
 import { _set_global_cursor_type } from '../taskboards/taskboard_globals';
 import { _get_toolbar_z_index} from '../common/globals';
+import { _wait_until } from '../common/utils';
 
 const _add_toolbar_item = (props) => 
 {
@@ -40,6 +42,8 @@ const _add_toolbar_item = (props) =>
     const [is_dragging, _set_is_dragging] = useState(false);
 
     const _handle_drag_start = (e) => {
+        console.log("drag start called for item index: ", props.item_index);
+        _set_click_or_drag(CLICK_OR_DRAG.DRAG);
         _set_is_dragging(true);
         const { clientX, clientY } = e;
         e.dataTransfer.setDragImage(new Image(), 0, 0); // prevent the browser's default drag image
@@ -111,9 +115,18 @@ const _add_toolbar_item = (props) =>
         };
     }, [is_dragging]);
 
-    /*************************** dragging block ends *********************************/
-    const _handle_tb_item_click = (e) =>
+    /*************************** dragging block ends *********************************/    
+    async function _handle_tb_item_click(e)
     {
+        _set_click_or_drag(CLICK_OR_DRAG.CLICK);
+
+        await _wait_until(CLICK_OR_DRAG_TIMEOUT); // wait to see if this is a click or drag
+        
+        if(CLICK_OR_DRAG.CLICK !== _get_click_or_drag())
+        {
+            return;
+        }
+
         _on_tb_item_click(e, props.item_index);
     };
 
@@ -122,6 +135,7 @@ const _add_toolbar_item = (props) =>
         {
             case TASKBOARD_TOOLBAR_ITEMS.TBI_STKNOTE:
             {
+                console.log("on_stk_click called");
                 props.on_stk_click(true);
                 break;
             }
@@ -316,7 +330,7 @@ const _taskboard_toolbar = (props) => {
                     on_pointer_click={props.select_cursor_func}  tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} 
                     taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state} 
                     />
-                    <_add_toolbar_item item_index={TASKBOARD_TOOLBAR_ITEMS.TBI_STKNOTE} tbi_type={TOOLBAR_ITEM_TYPE.DRAGGABLE_CLICKABLE} img_src={sticky_notes_img} img_alt_txt={"Sticky Note"} 
+                    <_add_toolbar_item item_index={TASKBOARD_TOOLBAR_ITEMS.TBI_STKNOTE} tbi_type={TOOLBAR_ITEM_TYPE.CLICKABLE} img_src={sticky_notes_img} img_alt_txt={"Sticky Note"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} 
                     on_stk_click={props.add_note_func} item_loc_update_func={props.set_tb_item_loc_func} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state} 
                     />

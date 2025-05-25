@@ -10,9 +10,11 @@
 import notes from "../taskboards/notes_db_temp";
 import arrows from "../taskboards/arrows_db_temp";
 import circles from "../taskboards/circles_db_temp";
+import rectangles from "../taskboards/rectangles_db_temp";
 import { HIGHLIGHT_JOIN_POSITIONS, ARROW_JOIN_POINT } from "../common/globals";
 import { _update_note_active_state, _update_note_highlighted } from "../taskboards/use_note";
 import { _update_circle_active_state, _update_circle_highlighted } from "../taskboards/use_circle";
+import { _update_rectangle_active_state, _update_rectangle_highlighted } from "../taskboards/use_rectangle";
 
 /**
  * update join arrow id
@@ -92,6 +94,40 @@ const _otbf_update_item_join_arrow_id = (id, join_arrow_position, join_arrow_id,
 
     if(item_found) return;
 
+    // search rectangles for the item with the given id
+    for(let i=0; i<rectangles.length; i++)
+    {
+        if(rectangles[i].id === id)
+        {
+            item_found = true;
+            switch(join_arrow_position)
+            {
+                case HIGHLIGHT_JOIN_POSITIONS.TOP:
+                    rectangles[i].join_arrow_ids.top[0] = join_arrow_id;
+                    rectangles[i].join_arrow_ids.top[1] = arrow_join_point;
+                    break;
+                case HIGHLIGHT_JOIN_POSITIONS.BOTTOM:
+                    rectangles[i].join_arrow_ids.bottom[0] = join_arrow_id;
+                    rectangles[i].join_arrow_ids.bottom[1] = arrow_join_point;
+                    break;
+                case HIGHLIGHT_JOIN_POSITIONS.LEFT:
+                    rectangles[i].join_arrow_ids.left[0] = join_arrow_id;
+                    rectangles[i].join_arrow_ids.left[1] = arrow_join_point;
+                    break;
+                case HIGHLIGHT_JOIN_POSITIONS.RIGHT:
+                    rectangles[i].join_arrow_ids.right[0] = join_arrow_id;
+                    rectangles[i].join_arrow_ids.right[1] = arrow_join_point;
+                    break;
+                default:
+                    break;
+            }
+
+            break;
+        }
+    }
+
+    if(item_found) return;
+
 };
 
 /**
@@ -124,6 +160,21 @@ const _otbf_deactivate_item = (id) => {
             item_found = true;
             _update_circle_active_state(id, false);
             _update_circle_highlighted(id, false);
+            console.log("deactivate item id: ", id);
+            break;
+        }
+    }
+
+    if(item_found) return;
+
+    // search rectangles for the item with the given id
+    for(let i=0; i<rectangles.length; i++)
+    {
+        if(rectangles[i].id === id)
+        {
+            item_found = true;
+            _update_rectangle_active_state(id, false);
+            _update_rectangle_highlighted(id, false);
             console.log("deactivate item id: ", id);
             break;
         }

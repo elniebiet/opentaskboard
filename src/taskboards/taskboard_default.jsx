@@ -12,6 +12,7 @@ import { TASKBOARD_STATES } from './taskboard_globals';
 import _draggable_arrow from '../common/components/arrow';
 import _draggable_line from '../common/components/line';
 import _draggable_circle from '../common/components/circle';
+import _draggable_rectangle from '../common/components/rectangle';
 import { _set_global_new_shape_id, _get_global_new_shape_id } from './taskboard_globals';
 import { _get_global_last_item_add_or_move_loc, _set_global_last_item_add_or_move_loc } from './taskboard_globals';
 import { _get_global_cursor_type, _set_global_cursor_type } from './taskboard_globals';
@@ -28,11 +29,12 @@ import { _get_current_joining_arrow_id, _get_last_hovered_joining_item_id, _set_
         _get_last_hovered_joining_position, _set_last_hovered_joining_position } from '../common/globals';
 import { _otbf_update_item_join_arrow_id, _otbf_deactivate_item } from '../common/otb_finder';
 
-import notes from './notes_db_temp';        // temporary notes storage
-import comments from './comments_db_temp';  // temporary comments storage
-import arrows from './arrows_db_temp';      // temporary arrows storage
-import lines from './lines_db_temp';        // temporary lines storage
-import circles from './circles_db_temp';    // temporary circles storage
+import notes from './notes_db_temp';              // temporary notes storage
+import comments from './comments_db_temp';        // temporary comments storage
+import arrows from './arrows_db_temp';            // temporary arrows storage
+import lines from './lines_db_temp';              // temporary lines storage
+import circles from './circles_db_temp';          // temporary circles storage
+import rectangles from './rectangles_db_temp';    // temporary rectangles storage
 
 /**
  * Default taskboard componen
@@ -423,6 +425,18 @@ const _taskboard_default = () => {
                   colour={circle.colour} stroke_width={circle.stroke_width} is_highlighted={circle.highlighted} taskboard_rerender_func={_trigger_taskboard_rerender}
                   active={circle.active} join_arrow_ids={circle.join_arrow_ids} 
                   show_toolbar={circle.toolbar_show} win_width={width} win_height={height} request_taskboard_state={_request_taskboard_state} overall_taskboard_state={taskboard_state}
+                  main_page_click_counter={click_counter} main_page_last_click_event_target={click_event_target}
+                  />
+                ))}
+              </div>
+
+              {/* display rectangles */}
+              <div>
+                {rectangles.map((rectangle) => (
+                  <_draggable_rectangle key={rectangle.id} id={rectangle.id} start_pos_x={rectangle.x1_pos} start_pos_y={rectangle.y1_pos} end_pos_x={rectangle.x2_pos} end_pos_y={rectangle.y2_pos} 
+                  colour={rectangle.colour} stroke_width={rectangle.stroke_width} is_highlighted={rectangle.highlighted} taskboard_rerender_func={_trigger_taskboard_rerender}
+                  active={rectangle.active} join_arrow_ids={rectangle.join_arrow_ids} 
+                  show_toolbar={rectangle.toolbar_show} win_width={width} win_height={height} request_taskboard_state={_request_taskboard_state} overall_taskboard_state={taskboard_state}
                   main_page_click_counter={click_counter} main_page_last_click_event_target={click_event_target}
                   />
                 ))}

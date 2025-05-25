@@ -187,14 +187,30 @@ const CIRCLE_HLIGHT_DRAG_POS = {
 };
 
 // Circle line width increment and decrement factors
-const CIRCLE_LINE_WIDTH_INCR_FACTOR   = 0.1; // 10 percent of original width
-const CIRCLE_LINE_WIDTH_DECR_FACTOR   = 0.1; // 10 percent of original width
-const MAX_CIRCLE_LINE_WIDTH           = 100; // maximum circle width in pixels
-const MIN_CIRCLE_LINE_WIDTH           = 1;   // minimum circle width in pixels
-const MIN_CIRCLE_DIAMETER          = 30;  // minimum circle length in pixels
+const CIRCLE_LINE_WIDTH_INCR_FACTOR     = 0.1; // 10 percent of original width
+const CIRCLE_LINE_WIDTH_DECR_FACTOR     = 0.1; // 10 percent of original width
+const MAX_CIRCLE_LINE_WIDTH             = 100; // maximum circle width in pixels
+const MIN_CIRCLE_LINE_WIDTH             = 1;   // minimum circle width in pixels
+const MIN_CIRCLE_DIAMETER               = 30;  // minimum circle length in pixels
 /*********** Circle block ends ***************/
 
-/* Color Theme */
+/*********** Rectangle block begins ***************/
+// Rectangle highlighter drag positions
+const RECTANGLE_HLIGHT_DRAG_POS = {
+    START:  1,
+    MID:    2,
+    END:    3,
+};
+
+// Rectangle line width increment and decrement factors
+const RECTANGLE_LINE_WIDTH_INCR_FACTOR      = 0.1; // 10 percent of original width
+const RECTANGLE_LINE_WIDTH_DECR_FACTOR      = 0.1; // 10 percent of original width
+const MAX_RECTANGLE_LINE_WIDTH              = 100; // maximum rectangle width in pixels
+const MIN_RECTANGLE_LINE_WIDTH              = 1;   // minimum rectangle width in pixels
+const MIN_RECTANGLE_LENGTH                  = 30;  // minimum rectangle length in pixels
+/*********** Rectangle block ends ***************/
+
+/************* Color Theme block begins ************/
 const COLOR_THEMES = {
     white: {
         bg_colour: '#ffffff',
@@ -210,8 +226,39 @@ const COLOR_THEMES = {
 };
 
 let SELECTED_COLOR_THEME = COLOR_THEMES.white;
+/************* Color Theme block ends ***************/
+
+/********** click/drag block begins ****************/
+const CLICK_OR_DRAG = {
+    NONE:   0,
+    CLICK:  1,
+    DRAG:   2,
+};
+
+// parameter to track if the user is clicking or dragging
+let is_click_or_drag = CLICK_OR_DRAG.NONE;
+
+// timeout for click or drag detection
+const CLICK_OR_DRAG_TIMEOUT = 500; // milliseconds
+
+const _set_click_or_drag = (value) => {
+    if(value === CLICK_OR_DRAG.CLICK 
+        || value === CLICK_OR_DRAG.DRAG 
+        || value === CLICK_OR_DRAG.NONE)
+    {
+        is_click_or_drag = value;
+    }
+}
+
+const _get_click_or_drag = () => {
+    return is_click_or_drag;
+}
+/********** click/drag block ends ****************/
 
 
+/********** Misc block begins ****************/
+
+/********** Misc block ends ****************/
 
 
 /************************************************************/
@@ -273,13 +320,28 @@ export {
     MIN_CIRCLE_DIAMETER,
     CIRCLE_HLIGHT_DRAG_POS,
 
-    /* other exports */
+    /* Rectangle exports */
+    RECTANGLE_LINE_WIDTH_INCR_FACTOR,
+    RECTANGLE_LINE_WIDTH_DECR_FACTOR,
+    MAX_RECTANGLE_LINE_WIDTH,
+    MIN_RECTANGLE_LINE_WIDTH,
+    MIN_RECTANGLE_LENGTH,
+    RECTANGLE_HLIGHT_DRAG_POS,
+
+    /* click/drag exports */
+    _set_click_or_drag,
+    _get_click_or_drag,
+    CLICK_OR_DRAG,
+    CLICK_OR_DRAG_TIMEOUT,
+
+    /* other function exports */
     _get_current_joining_position,
     _set_current_joining_position,
     _get_last_hovered_joining_item_id,
     _set_last_hovered_joining_item_id,
     _get_last_hovered_joining_position,
     _set_last_hovered_joining_position,
-
+    
+    /* Other misc exports */
 };
 

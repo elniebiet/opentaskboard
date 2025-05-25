@@ -36,8 +36,19 @@ const _get_cursor_type = (element) => {
     return window.getComputedStyle(element).cursor;
 };
 
+/**
+ * Wait helper function to pause execution for a specified time.
+ *
+ * @param {integer} ms - waiting time.
+ */
+function _wait_until(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+  
+
 // export
 export {
     _get_complement_colour,
     _get_cursor_type,
+    _wait_until,
 };

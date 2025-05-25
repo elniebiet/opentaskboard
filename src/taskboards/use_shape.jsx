@@ -5,6 +5,7 @@ import { CURSOR_TYPES } from "./taskboard_globals";
 import { _add_arrow, _update_arrow_end_pos } from "./use_arrow";
 import { _add_line, _update_line_end_pos } from "./use_line";
 import { _add_circle, _update_circle_end_pos } from "./use_circle";
+import { _add_rectangle, _update_rectangle_end_pos } from "./use_rectangle";
 
 /**
  * Handler first called when a shape is selected
@@ -37,6 +38,11 @@ const _start_drawing = ({ shape_id, start_pos_x, start_pos_y, end_pos_x, end_pos
             _add_circle(shape_id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour, stroke_width);
             break;
         }
+        case SHAPES_TOOLBAR_ITEM_TYPE.STBI_RECT:
+        {
+            _add_rectangle(shape_id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour, stroke_width);
+            break;
+        }
         
         default:
         {
@@ -62,6 +68,11 @@ const _update_drawing = ({e, shape_type}) => {
         case SHAPES_TOOLBAR_ITEM_TYPE.STBI_CIRCLE:
         {
             _update_circle_end_pos(_get_global_new_shape_id(), e.clientX, e.clientY);
+            break;
+        }
+        case SHAPES_TOOLBAR_ITEM_TYPE.STBI_RECT:
+        {
+            _update_rectangle_end_pos(_get_global_new_shape_id(), e.clientX, e.clientY);
             break;
         }
         default:

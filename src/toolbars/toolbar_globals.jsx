@@ -100,8 +100,19 @@ const CIRCLE_TOOLBAR_ITEMS = {
     ATBI_DECREASE_CIRCLE_WIDTH:   3,
     ATBI_DELETE:                4,
 };
-/* Arrow toolbar item indices end */    
+/* Circle toolbar item indices end */    
 /******************************* Circle toolbar block ends *******************************/
+
+/******************************* Rectangle toolbar block begins *******************************/
+/* Rectangle toolbar item indices begin */
+const RECTANGLE_TOOLBAR_ITEMS = {
+    ATBI_COLOUR:                        1,
+    ATBI_INCREASE_RECTANGLE_WIDTH:      2,
+    ATBI_DECREASE_RECTANGLE_WIDTH:      3,
+    ATBI_DELETE:                        4,
+};
+/* Rectangle toolbar item indices end */    
+/******************************* Rectangle toolbar block ends *******************************/
 
 
 export { 
@@ -114,5 +125,6 @@ export {
     ARROW_TOOLBAR_ITEMS,
     LINE_TOOLBAR_ITEMS,
     CIRCLE_TOOLBAR_ITEMS,
+    RECTANGLE_TOOLBAR_ITEMS,
 };
 
