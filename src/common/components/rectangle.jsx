@@ -6,7 +6,7 @@ import { _update_rectangle_highlighted, _update_rectangle_start_pos, _update_rec
     _update_rectangle_colour, _update_rectangle_toolbar_show, _update_rectangle_toolbar_loc,
     _delete_rectangle, _increase_rectangle_width, _decrease_rectangle_width } from "../../taskboards/use_rectangle";
 import { SELECTED_COLOR_THEME, RECTANGLE_HLIGHT_DRAG_POS } from "../globals";
-import _rectangle_toolbar from "../../toolbars/rectangle_toolbar";
+import _line_toolbar from "../../toolbars/line_toolbar";
 import { RECTANGLE_TOOLBAR_ITEMS } from "../../toolbars/toolbar_globals";
 import { TASKBOARD_STATES } from "../../taskboards/taskboard_globals";
 import _highlighter from "./highlighter";
@@ -363,10 +363,10 @@ const _draggable_rectangle = ({
             {/* display rectangle toolbar */}
             <div>
                 {(display_toolbar === true) ? (
-                    <_rectangle_toolbar id={id} win_width={win_width} win_height={win_height} 
+                    <_line_toolbar id={id} win_width={win_width} win_height={win_height} 
                         x_pos={toolbar_x_pos} y_pos={toolbar_y_pos} taskboard_rerender_func={taskboard_rerender_func} 
-                        rectangle_toolbar_item_clicked={_toolbar_item_clicked_notif} rectangle_update_colour_func={_update_colour} 
-                        rectangle_bg_colour={colour}
+                        line_toolbar_item_clicked={_toolbar_item_clicked_notif} line_update_colour_func={_update_colour} 
+                        line_bg_colour={colour}
                     />
                     ) : (<div></div>)
                 }

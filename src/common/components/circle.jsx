@@ -6,7 +6,7 @@ import { _update_circle_highlighted, _update_circle_start_pos, _update_circle_en
     _update_circle_colour, _update_circle_toolbar_show, _update_circle_toolbar_loc,
     _delete_circle, _increase_circle_width, _decrease_circle_width } from "../../taskboards/use_circle";
 import { SELECTED_COLOR_THEME, CIRCLE_HLIGHT_DRAG_POS } from "../globals";
-import _circle_toolbar from "../../toolbars/circle_toolbar";
+import _line_toolbar from "../../toolbars/line_toolbar";
 import { CIRCLE_TOOLBAR_ITEMS } from "../../toolbars/toolbar_globals";
 import { TASKBOARD_STATES } from "../../taskboards/taskboard_globals";
 import _highlighter from "./highlighter";
@@ -361,10 +361,10 @@ const _draggable_circle = ({
             {/* display circle toolbar */}
             <div>
                 {(display_toolbar === true) ? (
-                    <_circle_toolbar id={id} win_width={win_width} win_height={win_height} 
+                    <_line_toolbar id={id} win_width={win_width} win_height={win_height} 
                         x_pos={toolbar_x_pos} y_pos={toolbar_y_pos} taskboard_rerender_func={taskboard_rerender_func} 
-                        circle_toolbar_item_clicked={_toolbar_item_clicked_notif} circle_update_colour_func={_update_colour} 
-                        circle_bg_colour={colour}
+                        line_toolbar_item_clicked={_toolbar_item_clicked_notif} line_update_colour_func={_update_colour} 
+                        line_bg_colour={colour}
                     />
                     ) : (<div></div>)
                 }

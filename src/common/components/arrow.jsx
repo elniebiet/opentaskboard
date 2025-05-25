@@ -6,7 +6,7 @@ import { _update_arrow_highlighted, _update_arrow_start_pos, _update_arrow_end_p
     _update_arrow_colour, _update_arrow_toolbar_show, _update_arrow_toolbar_loc,
     _delete_arrow, _increase_arrow_width, _decrease_arrow_width } from "../../taskboards/use_arrow";
 import { SELECTED_COLOR_THEME, ARROW_HLIGHT_DRAG_POS } from "../globals";
-import _arrow_toolbar from "../../toolbars/arrow_toolbar";
+import _line_toolbar from "../../toolbars/line_toolbar";
 import { ARROW_TOOLBAR_ITEMS } from "../../toolbars/toolbar_globals";
 import { TASKBOARD_STATES } from "../../taskboards/taskboard_globals";
 
@@ -266,10 +266,10 @@ const _draggable_arrow = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, 
             {/* display arrow toolbar */}
             <div>
                 {(display_toolbar === true) ? (
-                    <_arrow_toolbar id={id} win_width={win_width} win_height={win_height} 
+                    <_line_toolbar id={id} win_width={win_width} win_height={win_height} 
                         x_pos={toolbar_x_pos} y_pos={toolbar_y_pos} taskboard_rerender_func={taskboard_rerender_func} 
-                        arrow_toolbar_item_clicked={_toolbar_item_clicked_notif} arrow_update_colour_func={_update_colour} 
-                        arrow_bg_colour={colour}
+                        line_toolbar_item_clicked={_toolbar_item_clicked_notif} line_update_colour_func={_update_colour} 
+                        line_bg_colour={colour}
                     />
                     ) : (<div></div>)
                 }
