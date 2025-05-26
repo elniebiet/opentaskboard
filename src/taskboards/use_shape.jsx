@@ -8,6 +8,7 @@ import { _add_circle, _update_circle_end_pos } from "./use_circle";
 import { _add_rectangle, _update_rectangle_end_pos } from "./use_rectangle";
 import { _add_triangle, _update_triangle_end_pos } from "./use_triangle";
 import { _add_rightangle, _update_rightangle_end_pos } from "./use_rightangle";
+import { _add_leftangle, _update_leftangle_end_pos } from "./use_leftangle";
 
 /**
  * Handler first called when a shape is selected
@@ -64,6 +65,12 @@ const _start_drawing = ({ shape_id, start_pos_x, start_pos_y, end_pos_x, end_pos
             _add_rightangle(shape_id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour, stroke_width, filleted);
             break;
         }
+        case SHAPES_TOOLBAR_ITEM_TYPE.STBI_LEFT_TRIANGLE:
+        {
+            const filleted = 0;
+            _add_leftangle(shape_id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour, stroke_width, filleted);
+            break;
+        }
         default:
         {
             console.log("_start_drawing: dont know shape " + type_of_shape);
@@ -108,6 +115,11 @@ const _update_drawing = ({e, shape_type}) => {
         case SHAPES_TOOLBAR_ITEM_TYPE.STBI_RIGHT_TRIANGLE:
         {
             _update_rightangle_end_pos(_get_global_new_shape_id(), e.clientX, e.clientY);
+            break;
+        }
+        case SHAPES_TOOLBAR_ITEM_TYPE.STBI_LEFT_TRIANGLE:
+        {
+            _update_leftangle_end_pos(_get_global_new_shape_id(), e.clientX, e.clientY);
             break;
         }
         default:

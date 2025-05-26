@@ -19,6 +19,7 @@ import rect_img from '../../res/imgs/shapes_sub_toolbar/img_rect_100x100.png';
 import filleted_rect_img from '../../res/imgs/shapes_sub_toolbar/img_filleted_rect_100x100.png';
 import triangle_img from '../../res/imgs/shapes_sub_toolbar/img_triangle_100x100.png';
 import right_angle_img from '../../res/imgs/shapes_sub_toolbar/img_right_angle_100x100.png';
+import left_angle_img from '../../res/imgs/shapes_sub_toolbar/img_left_angle_100x100.png';
 import zIndex from '@mui/material/styles/zIndex';
 
 const _add_toolbar_item = (props) => 
@@ -137,6 +138,10 @@ const _add_toolbar_item = (props) =>
                 break;    
             }            
             case SHAPES_TOOLBAR_ITEM_TYPE.STBI_RIGHT_TRIANGLE:    
+            {
+                break;
+            }
+            case SHAPES_TOOLBAR_ITEM_TYPE.STBI_LEFT_TRIANGLE:    
             {
                 break;
             }                       
@@ -306,6 +311,10 @@ const _shapes_sub_toolbar = (props) => {
                     taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
                     />
                     <_add_toolbar_item shapes_tb_item_clicked={props.shapes_tb_item_clicked_func} item_index={SHAPES_TOOLBAR_ITEM_TYPE.STBI_TRIANGLE} tbi_type={TOOLBAR_ITEM_TYPE.CLICKABLE} img_src={triangle_img} img_alt_txt={"Triangle"} 
+                    tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} 
+                    taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
+                    />
+                    <_add_toolbar_item shapes_tb_item_clicked={props.shapes_tb_item_clicked_func} item_index={SHAPES_TOOLBAR_ITEM_TYPE.STBI_LEFT_TRIANGLE} tbi_type={TOOLBAR_ITEM_TYPE.CLICKABLE} img_src={left_angle_img} img_alt_txt={"Left angle triangle"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} 
                     taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
                     />

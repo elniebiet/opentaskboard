@@ -45,6 +45,7 @@ const SHAPES_TOOLBAR_ITEM_TYPE = {
     STBI_FOUR_POINT_STAR:   11,
     STBI_FIVE_POINT_STAR:   12,
     STBI_SIX_POINT_STAR:    13,
+    STBI_LEFT_TRIANGLE:     14,
 };
 
 /******************************* Note toolbar block begins *******************************/
