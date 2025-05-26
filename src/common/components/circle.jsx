@@ -58,7 +58,7 @@ const _draggable_circle = ({
     const [is_dragging_circle, _set_is_dragging_circle] = useState(false); 
     const [prevent_circle_deactivation, _set_prevent_circle_deactivation] = useState(false); 
     const [joining_show_highlighter, _set_joining_show_highlighter] = useState(false); 
-    const [local_param_circle_active, _set_local_param_circle_active] = useState(false); // local param to track circle active state
+    const [local_param_circle_active, _set_local_param_circle_active] = useState(true); // local param to track circle active state
     
     // custom highlighter vars begin
     const [selected_hlight_pos, _set_selected_hlight_pos] = useState(LINE_HLIGHT_DRAG_POS.MID);
