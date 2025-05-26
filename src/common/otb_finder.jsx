@@ -17,6 +17,7 @@ import { HIGHLIGHT_JOIN_POSITIONS, ARROW_JOIN_POINT } from "../common/globals";
 import { _update_note_active_state, _update_note_highlighted } from "../taskboards/use_note";
 import { _update_circle_active_state, _update_circle_highlighted } from "../taskboards/use_circle";
 import { _update_rectangle_active_state, _update_rectangle_highlighted } from "../taskboards/use_rectangle";
+import { _update_triangle_active_state, _update_triangle_highlighted } from "../taskboards/use_triangle";
 
 /**
  * update join arrow id

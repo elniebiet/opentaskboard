@@ -59,7 +59,7 @@ const _draggable_rightangle = ({
     const [is_dragging_rightangle, _set_is_dragging_rightangle] = useState(false); 
     const [prevent_rightangle_deactivation, _set_prevent_rightangle_deactivation] = useState(false); 
     const [joining_show_highlighter, _set_joining_show_highlighter] = useState(false); 
-    const [local_param_rightangle_active, _set_local_param_rightangle_active] = useState(false); // local param to track rightangle active state
+    const [local_param_rightangle_active, _set_local_param_rightangle_active] = useState(true); // local param to track rightangle active state
     
     // custom highlighter vars begin
     const [selected_hlight_pos, _set_selected_hlight_pos] = useState(LINE_HLIGHT_DRAG_POS.MID);

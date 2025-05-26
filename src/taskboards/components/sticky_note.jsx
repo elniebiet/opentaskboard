@@ -41,7 +41,7 @@ const _sticky_note = (props) => {
 
     const [joining_show_highlighter, _set_joining_show_highlighter] = useState(false); 
 
-    const [local_param_note_active, _set_local_param_note_active] = useState(false); // local param to track note active state
+    const [local_param_note_active, _set_local_param_note_active] = useState(true); // local param to track note active state
 
     const STKNOTE_MIN_WIDTH                             = 150;  //pixels
     const MENUBAR_HGT_PERC                              = 0.10; // 10% of stknote height 

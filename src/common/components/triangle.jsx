@@ -59,7 +59,7 @@ const _draggable_triangle = ({
     const [is_dragging_triangle, _set_is_dragging_triangle] = useState(false); 
     const [prevent_triangle_deactivation, _set_prevent_triangle_deactivation] = useState(false); 
     const [joining_show_highlighter, _set_joining_show_highlighter] = useState(false); 
-    const [local_param_triangle_active, _set_local_param_triangle_active] = useState(false); // local param to track triangle active state
+    const [local_param_triangle_active, _set_local_param_triangle_active] = useState(true); // local param to track triangle active state
     
     // custom highlighter vars begin
     const [selected_hlight_pos, _set_selected_hlight_pos] = useState(LINE_HLIGHT_DRAG_POS.MID);
