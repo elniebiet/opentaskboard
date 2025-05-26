@@ -12,6 +12,15 @@ import { _get_toolbar_z_index } from '../common/globals';
 import { TOP_RIGHT_STATIC_TOOLBAR_ITEMS } from './toolbar_globals';
 import { _colour_picker_no_button } from '../common/components/colour_picker';
 
+import Avatar from '@mui/joy/Avatar';
+import ListItemDecorator from '@mui/joy/ListItemDecorator';
+import IconButton from '@mui/joy/IconButton';
+import Menu from '@mui/joy/Menu';
+import MenuItem from '@mui/joy/MenuItem';
+import MenuButton from '@mui/joy/MenuButton';
+import Apps from '@mui/icons-material/Apps';
+import Dropdown from '@mui/joy/Dropdown';
+
 const _add_toolbar_item = (props) => 
 {
     let w = props.tb_root_width + 'px';
@@ -48,12 +57,6 @@ const _add_toolbar_item = (props) =>
                 props.trs_tb_item_clicked_notif(TOP_RIGHT_STATIC_TOOLBAR_ITEMS.TRTBI_PROFILE);
                 break;    
             }
-            case TOP_RIGHT_STATIC_TOOLBAR_ITEMS.TRTBI_SETTINGS:
-            {
-                // e.stopPropagation(); // to keep toolbar active
-                props.trs_tb_item_clicked_notif(TOP_RIGHT_STATIC_TOOLBAR_ITEMS.TRTBI_SETTINGS);
-                break;    
-            }
             default:
             {
                 break;
@@ -68,7 +71,7 @@ const _add_toolbar_item = (props) =>
 
     switch(props.item_index)
     {
-        case TOP_RIGHT_STATIC_TOOLBAR_ITEMS.TRTBI_SETTINGS:
+        case TOP_RIGHT_STATIC_TOOLBAR_ITEMS.TRTBI_HISTORY:
         default:
         {
             return (
@@ -139,11 +142,89 @@ const _top_right_static_toolbar = (props) => {
                     taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
                     trs_tb_item_clicked_notif={props.trs_toolbar_item_clicked}
                     />
-                    <_add_toolbar_item item_index={TOP_RIGHT_STATIC_TOOLBAR_ITEMS.TRTBI_SETTINGS} img_src={settings_img} img_alt_txt={"Settings"} 
-                    tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
-                    taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
-                    trs_tb_item_clicked_notif={props.trs_toolbar_item_clicked}
-                    />
+
+                    {/* Settings dropdown */}
+                    <Dropdown>
+                        <MenuButton
+                            slots={{ root: IconButton }}
+                            slotProps={{ root: { variant: 'plain', color: 'neutral' } }}
+                            sx={{ borderRadius: 40, width: item_width, height: item_height, p: 0 }}
+                        >
+                            <img 
+                                src={settings_img}
+                                alt="Settings"
+                                title="Settings"
+                                style={{ width: item_width, height: item_height }}
+                            />
+                        </MenuButton>
+                        <Menu
+                            aria-labelledby="settings-menu"
+                            variant="plain"
+                            sx={{
+                            '--List-padding': '0.5rem',
+                            minWidth: 150
+                            }}
+                        >
+                            <MenuItem onClick={() => props.trs_toolbar_item_clicked(TOP_RIGHT_STATIC_TOOLBAR_ITEMS.TRTBI_SETTINGS)}>Colour Theme</MenuItem>
+                            <MenuItem onClick={() => console.log("Preferences clicked")}>Preferences</MenuItem>
+                            <MenuItem onClick={() => console.log("Account clicked")}>Account</MenuItem>
+                        </Menu>
+                    </Dropdown>
+
+                    {/* Apps dropdown */}
+                    <Dropdown>
+                        <MenuButton
+                            slots={{ root: IconButton }}
+                            slotProps={{ root: { variant: 'plain', color: 'neutral' } }}
+                            sx={{ borderRadius: 40 }}
+                        >
+                            <Apps />
+                        </MenuButton>
+                        <Menu
+                            variant="solid"
+                            invertedColors
+                            aria-labelledby="apps-menu-demo"
+                            sx={{
+                            '--List-padding': '0.5rem',
+                            '--ListItemDecorator-size': '3rem',
+                            display: 'grid',
+                            gridTemplateColumns: 'repeat(3, 100px)',
+                            gridAutoRows: '100px',
+                            gap: 1,
+                            }}
+                        >
+                            <MenuItem orientation="vertical">
+                            <ListItemDecorator>
+                                <Avatar>S</Avatar>
+                            </ListItemDecorator>
+                            Share
+                            </MenuItem>
+                            <MenuItem orientation="vertical">
+                            <ListItemDecorator>
+                                <Avatar>R</Avatar>
+                            </ListItemDecorator>
+                            Record
+                            </MenuItem>
+                            <MenuItem orientation="vertical">
+                            <ListItemDecorator>
+                                <Avatar>M</Avatar>
+                            </ListItemDecorator>
+                            Mail
+                            </MenuItem>
+                            <MenuItem orientation="vertical">
+                            <ListItemDecorator>
+                                <Avatar>D</Avatar>
+                            </ListItemDecorator>
+                            Drive
+                            </MenuItem>
+                            <MenuItem orientation="vertical">
+                            <ListItemDecorator>
+                                <Avatar>C</Avatar>
+                            </ListItemDecorator>
+                            Calendar
+                            </MenuItem>
+                        </Menu>
+                    </Dropdown>
                 </Box>
             </div>            
         </div>
