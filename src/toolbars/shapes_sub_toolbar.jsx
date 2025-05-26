@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import Fab from '@mui/material/Fab';
 import { styled } from '@mui/system';
 import { useState, useEffect } from 'react';
+import { useRef } from 'react';
 import { TASKBOARD_TOOLBAR_ITEMS } from './toolbar_globals';
 import { TOOLBAR_ITEM_TYPE } from '../common/globals';
 import { SHAPES_TOOLBAR_ITEM_TYPE } from './toolbar_globals';
@@ -288,7 +289,7 @@ const _shapes_sub_toolbar = (props) => {
 
     return (
         <div>
-            <div id="sprint_planning_template_root" style={toolbar_styling}>
+            <div id="shapes_subtoolbar_root" style={toolbar_styling}>
                 <Box sx={{ '& > :not(style)': { m: 0.5 } }} display="flex" flexDirection={flex_dir}>
                     <_add_toolbar_item shapes_tb_item_clicked={props.shapes_tb_item_clicked_func} item_index={SHAPES_TOOLBAR_ITEM_TYPE.STBI_LINE} tbi_type={TOOLBAR_ITEM_TYPE.CLICKABLE} img_src={line_img} img_alt_txt={"Line"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} 

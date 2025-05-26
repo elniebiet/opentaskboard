@@ -173,6 +173,7 @@ const _taskboard_default = () => {
           }
           case (TASKBOARD_STATES.TBS_SUB_TOOLBAR_ACTIVE):
           {
+            _request_taskboard_state(TASKBOARD_STATES.TBS_NORMAL);
             break;
           }
           case (TASKBOARD_STATES.TBS_WAITING_DRAW_SHAPE):
@@ -369,12 +370,14 @@ const _taskboard_default = () => {
           
           {(taskboard_state === TASKBOARD_STATES.TBS_SUB_TOOLBAR_ACTIVE) && (
             <_shapes_sub_toolbar shapes_tb_item_clicked_func={_shape_selected_handler} pos={"top"} win_width={width} win_height={height} 
-            taskboard_rerender_func={_trigger_taskboard_rerender} request_taskboard_state={_request_taskboard_state} />
+            taskboard_rerender_func={_trigger_taskboard_rerender} request_taskboard_state={_request_taskboard_state}
+            />
           )}
 
           {(taskboard_state === TASKBOARD_STATES.TBS_SUB_TOOLBAR_ACTIVE) && (
             <_shapes_sub_toolbar shapes_tb_item_clicked_func={_shape_selected_handler} pos={"left"} win_width={width} win_height={height} 
-            taskboard_rerender_func={_trigger_taskboard_rerender} request_taskboard_state={_request_taskboard_state} />
+            taskboard_rerender_func={_trigger_taskboard_rerender} request_taskboard_state={_request_taskboard_state} 
+            />
           )}
 
           <div>
