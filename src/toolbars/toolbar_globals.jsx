@@ -96,10 +96,10 @@ const LINE_TOOLBAR_ITEMS = {
 /******************************* Circle toolbar block begins *******************************/
 /* Circle toolbar item indices begin */
 const CIRCLE_TOOLBAR_ITEMS = {
-    ATBI_COLOUR:                1,
-    ATBI_INCREASE_CIRCLE_WIDTH:   2,
-    ATBI_DECREASE_CIRCLE_WIDTH:   3,
-    ATBI_DELETE:                4,
+    ATBI_COLOUR:                    1,
+    ATBI_INCREASE_CIRCLE_WIDTH:     2,
+    ATBI_DECREASE_CIRCLE_WIDTH:     3,
+    ATBI_DELETE:                    4,
 };
 /* Circle toolbar item indices end */    
 /******************************* Circle toolbar block ends *******************************/
@@ -115,6 +115,14 @@ const RECTANGLE_TOOLBAR_ITEMS = {
 /* Rectangle toolbar item indices end */    
 /******************************* Rectangle toolbar block ends *******************************/
 
+/******************************* Top Right Static Toolbar begins ***************************************/
+const TOP_RIGHT_STATIC_TOOLBAR_ITEMS = {
+    TRTBI_HISTORY:            1,
+    TRTBI_PROFILE:            2,
+    TRTBI_SETTINGS:           3,
+};
+/******************************* Top Right Static Toolbar ends ****************************************/
+
 
 export { 
     TASKBOARD_DEFAULT_TB_LOC, 
@@ -127,5 +135,6 @@ export {
     LINE_TOOLBAR_ITEMS,
     CIRCLE_TOOLBAR_ITEMS,
     RECTANGLE_TOOLBAR_ITEMS,
+    TOP_RIGHT_STATIC_TOOLBAR_ITEMS,
 };
 
