@@ -5,7 +5,8 @@ import { _get_max_z_index, _use_max_z_index } from "../globals";
 import { _update_circle_highlighted, _update_circle_start_pos, _update_circle_end_pos,
     _update_circle_colour, _update_circle_toolbar_show, _update_circle_toolbar_loc,
     _delete_circle, _increase_circle_width, _decrease_circle_width } from "../../taskboards/use_circle";
-import { SELECTED_COLOR_THEME, LINE_HLIGHT_DRAG_POS } from "../globals";
+import { LINE_HLIGHT_DRAG_POS } from "../globals";
+import { SELECTED_COLOR_THEME } from "./use_colour_themes";
 import _line_toolbar from "../../toolbars/line_toolbar";
 import { CIRCLE_TOOLBAR_ITEMS } from "../../toolbars/toolbar_globals";
 import { TASKBOARD_STATES } from "../../taskboards/taskboard_globals";

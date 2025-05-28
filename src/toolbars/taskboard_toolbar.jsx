@@ -13,7 +13,6 @@ import fill_img from '../../res/imgs/img_fill2_100x100.png';
 import { useState, useEffect } from 'react';
 import { TASKBOARD_TOOLBAR_ITEMS } from './toolbar_globals';
 import { TOOLBAR_ITEM_TYPE, CLICK_OR_DRAG } from '../common/globals';
-import { SELECTED_COLOR_THEME } from '../common/globals';
 import { TASKBOARD_DEFAULT_TB_LOC } from './toolbar_globals';
 import { TASKBOARD_DEFAULT_TB_SIZE } from './toolbar_globals';
 import { TASKBOARD_STATES } from '../taskboards/taskboard_globals';
@@ -22,6 +21,7 @@ import { _get_max_z_index, _use_max_z_index, _get_click_or_drag,
 import { _set_global_cursor_type } from '../taskboards/taskboard_globals';
 import { _get_toolbar_z_index} from '../common/globals';
 import { _wait_until } from '../common/utils';
+import { SELECTED_COLOR_THEME } from '../common/components/use_colour_themes';
 
 const _add_toolbar_item = (props) => 
 {

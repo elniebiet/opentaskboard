@@ -14,13 +14,13 @@ import link_img from '../../res/imgs/note_toolbar/link_100x100.png';
 import emoji_img from '../../res/imgs/note_toolbar/emoji_100x100.png';
 import others_img from '../../res/imgs/note_toolbar/ellipsis_100x100.png';
 import { useState, useEffect } from 'react';
-import { SELECTED_COLOR_THEME } from '../common/globals';
 import { TASKBOARD_STATES } from '../taskboards/taskboard_globals';
 import { _get_max_z_index, _use_max_z_index } from '../common/globals';
 import { _set_global_cursor_type } from '../taskboards/taskboard_globals';
 import { _get_toolbar_z_index } from '../common/globals';
 import { NOTE_TOOLBAR_ITEMS } from './toolbar_globals';
 import { _colour_picker_no_button } from '../common/components/colour_picker';
+import { SELECTED_COLOR_THEME } from '../common/components/use_colour_themes';
 
 const _add_toolbar_item = (props) => 
 {

@@ -1,8 +1,8 @@
 import { _get_global_last_item_add_or_move_loc, _set_global_last_item_add_or_move_loc } from "./taskboard_globals";
 import { _set_global_cursor_type } from "./taskboard_globals";
-import { SELECTED_COLOR_THEME } from "../common/globals";
 import { STKNOTE_WIDTH_PERC_DEFAULT } from "./taskboard_globals";
 import { ARROW_JOIN_POINT } from "../common/globals";
+import { SELECTED_COLOR_THEME } from "../common/components/use_colour_themes";
 
 // temporary note database for testing
 import notes from "../db/taskboards/notes_db_temp";

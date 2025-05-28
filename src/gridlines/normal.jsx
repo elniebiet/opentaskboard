@@ -1,7 +1,7 @@
 import zIndex from "@mui/material/styles/zIndex";
 import React from "react";
-import { SELECTED_COLOR_THEME } from "../common/globals";
 import { _get_lowest_z_index } from "../common/globals";
+import { SELECTED_COLOR_THEME } from "../common/components/use_colour_themes";
 
 const _gridlines_normal = (props) => {
   const container_style = {

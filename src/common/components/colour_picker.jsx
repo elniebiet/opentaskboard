@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { SELECTED_COLOR_THEME } from "../globals";
+import { SELECTED_COLOR_THEME } from "./use_colour_themes";
 import { _get_complement_colour } from "../utils";
 
 /**

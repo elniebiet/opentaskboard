@@ -5,7 +5,8 @@ import { _get_max_z_index, _use_max_z_index } from "../globals";
 import { _update_leftangle_highlighted, _update_leftangle_start_pos, _update_leftangle_end_pos,
     _update_leftangle_colour, _update_leftangle_toolbar_show, _update_leftangle_toolbar_loc,
     _delete_leftangle, _increase_leftangle_width, _decrease_leftangle_width } from "../../taskboards/use_leftangle";
-import { SELECTED_COLOR_THEME, LINE_HLIGHT_DRAG_POS } from "../globals";
+import { LINE_HLIGHT_DRAG_POS } from "../globals";
+import { SELECTED_COLOR_THEME } from "./use_colour_themes";
 import _line_toolbar from "../../toolbars/line_toolbar";
 import { RECTANGLE_TOOLBAR_ITEMS } from "../../toolbars/toolbar_globals";
 import { TASKBOARD_STATES } from "../../taskboards/taskboard_globals";

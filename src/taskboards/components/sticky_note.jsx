@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import Draggable from "react-draggable";
-import { _get_max_z_index, _use_max_z_index, SELECTED_COLOR_THEME } from "../../common/globals";
+import { _get_max_z_index, _use_max_z_index } from "../../common/globals";
 import { _get_complement_colour } from "../../common/utils";
 import { _set_global_toolbar_items_active_state } from "../taskboard_globals";
 import { TASKBOARD_TOOLBAR_ITEMS } from "../../toolbars/toolbar_globals";
+import { SELECTED_COLOR_THEME } from "../../common/components/use_colour_themes";
 import { _delete_note, _update_note_loc, _update_note_text, _update_note_colour, _update_note_win_width_perc,
             _get_note_win_width_perc, _update_note_active_state, _update_note_toolbar_show, _update_note_toolbar_loc,
             _update_note_highlighted } from "../use_note";

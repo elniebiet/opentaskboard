@@ -5,7 +5,7 @@ import { _get_max_z_index, _use_max_z_index } from "../globals";
 import { _update_triangle_highlighted, _update_triangle_start_pos, _update_triangle_end_pos,
     _update_triangle_colour, _update_triangle_toolbar_show, _update_triangle_toolbar_loc,
     _delete_triangle, _increase_triangle_width, _decrease_triangle_width } from "../../taskboards/use_triangle";
-import { SELECTED_COLOR_THEME, LINE_HLIGHT_DRAG_POS } from "../globals";
+import { LINE_HLIGHT_DRAG_POS } from "../globals";
 import _line_toolbar from "../../toolbars/line_toolbar";
 import { RECTANGLE_TOOLBAR_ITEMS } from "../../toolbars/toolbar_globals";
 import { TASKBOARD_STATES } from "../../taskboards/taskboard_globals";
@@ -14,6 +14,7 @@ import { HIGHLIGHT_DRAG_DIRECTION } from "../globals";
 import { _otbf_update_item_join_arrow_id } from "../otb_finder";
 import { ARROW_JOIN_POINT } from "../globals";
 import { HIGHLIGHT_PARAMS } from "../globals";
+import { SELECTED_COLOR_THEME } from "./use_colour_themes";
 
 /**
  * *****************************************************************************************

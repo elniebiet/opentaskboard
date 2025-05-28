@@ -7,9 +7,9 @@ import _sticky_note from '../taskboards/components/sticky_note';
 import _comment from '../taskboards/components/comment';
 import board_marker_img_32 from '../../res/imgs/img_board_marker_32x32.png'; 
 import fill_img_32 from '../../res/imgs/img_fill2_32x32.png'; 
-import { SELECTED_COLOR_THEME } from '../common/globals';
 import { STKNOTE_WIDTH_PERC_DEFAULT } from '../taskboards/taskboard_globals';
 import { COMMENT_WIDTH_PERC_DEFAULT } from '../taskboards/taskboard_globals';
+import { SELECTED_COLOR_THEME } from '../common/components/use_colour_themes';
 
 
 /*********************** TEMPORARY SPRINT PLANNING COMPONENNT *************************************/

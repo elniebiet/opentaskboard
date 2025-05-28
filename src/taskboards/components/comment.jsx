@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import Box from '@mui/joy/Box';
 import Draggable from "react-draggable";
-import { SELECTED_COLOR_THEME } from "../../common/globals";
 import { IconButton } from "@mui/material";
 import { _get_max_z_index, _use_max_z_index } from "../../common/globals";
 import { _colour_picker_round } from "../../common/components/colour_picker";
@@ -10,6 +9,8 @@ import { Bold } from "lucide-react";
 import { _set_global_toolbar_items_active_state } from "../taskboard_globals";
 import { TASKBOARD_TOOLBAR_ITEMS } from "../../toolbars/toolbar_globals";
 import { _delete_comment, _update_comment_loc, _update_comment_text, _update_comment_colour, _update_comment_win_width_perc } from "../use_comment";
+import { SELECTED_COLOR_THEME } from "../../common/components/use_colour_themes";
+
 /**
  * Comment component
  */

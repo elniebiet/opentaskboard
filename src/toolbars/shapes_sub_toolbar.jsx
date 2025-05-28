@@ -7,11 +7,11 @@ import { useRef } from 'react';
 import { TASKBOARD_TOOLBAR_ITEMS } from './toolbar_globals';
 import { TOOLBAR_ITEM_TYPE } from '../common/globals';
 import { SHAPES_TOOLBAR_ITEM_TYPE } from './toolbar_globals';
-import { SELECTED_COLOR_THEME } from '../common/globals';
 import { TASKBOARD_DEFAULT_SHAPES_TB_LOC } from './toolbar_globals';
 import { TASKBOARD_DEFAULT_TB_SIZE } from './toolbar_globals';
 import { TASKBOARD_STATES } from '../taskboards/taskboard_globals';
 import { _get_subtoolbar_z_index } from '../common/globals';
+import { SELECTED_COLOR_THEME } from '../common/components/use_colour_themes';
 
 import line_img from '../../res/imgs/shapes_sub_toolbar/img_line_100x100.png';
 import arrow_img from '../../res/imgs/shapes_sub_toolbar/img_arrow_100x100.png';

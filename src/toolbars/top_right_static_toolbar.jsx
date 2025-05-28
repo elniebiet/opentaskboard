@@ -5,12 +5,12 @@ import { styled } from '@mui/system';
 import settings_img from '../../res/imgs/settings_100x100.png';
 import history_img from '../../res/imgs/history_100x100.png';
 import blank_profile_img from '../../res/imgs/blank_profile_100x100.png';
-import { SELECTED_COLOR_THEME } from '../common/globals';
 import { _get_max_z_index, _use_max_z_index } from '../common/globals';
 import { _set_global_cursor_type } from '../taskboards/taskboard_globals';
 import { _get_toolbar_z_index } from '../common/globals';
 import { TOP_RIGHT_STATIC_TOOLBAR_ITEMS } from './toolbar_globals';
 import { _colour_picker_no_button } from '../common/components/colour_picker';
+import { SELECTED_COLOR_THEME } from '../common/components/use_colour_themes';
 
 import _taskboard_history from '../taskboards/components/taskboard_history';
 import _taskboard_profile from '../taskboards/components/taskboard_profile';

@@ -11,7 +11,7 @@ import Testimonials from './components/Testimonials';
 import FAQ from './components/FAQ';
 import Footer from './components/Footer';
 import AppTheme from '../shared-theme/AppTheme';
-import { SELECTED_COLOR_THEME } from '../common/globals';
+import { SELECTED_COLOR_THEME } from '../common/components/use_colour_themes';
 
 export default function _homepage(props) {
   return (

@@ -178,24 +178,6 @@ const MIN_LINE_LENGTH          = 30;  // minimum line length in pixels
 
 /*********** Line block ends ***************/
 
-/************* Color Theme block begins ************/
-const COLOR_THEMES = {
-    white: {
-        bg_colour: '#ffffff',
-        text_colour: '#000000',
-        highlight_colour: '#1976d2',
-    },
-    
-    dark: {
-        bg_colour: '#000000',
-        text_colour: '#ffffff',
-        highlight_colour: '#1976d2',
-    }, 
-};
-
-let SELECTED_COLOR_THEME = COLOR_THEMES.white;
-/************* Color Theme block ends ***************/
-
 /********** click/drag block begins ****************/
 const CLICK_OR_DRAG = {
     NONE:   0,
@@ -243,10 +225,6 @@ export {
 
     /* Toolbar item exports */
     TOOLBAR_ITEM_TYPE, 
-
-    /* Color Theme exports */
-    COLOR_THEMES, 
-    SELECTED_COLOR_THEME,
     
     /* ZINDEX exports */
     _get_max_z_index,

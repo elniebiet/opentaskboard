@@ -6,12 +6,12 @@ import unused_colour_img from '../../res/imgs/line_toolbar/colour_100x100.png';
 import increase_line_width_img from '../../res/imgs/line_toolbar/increase_line_width_100x100.png';
 import reduce_line_width_img from '../../res/imgs/line_toolbar/reduce_line_width_100x100.png';
 import delete_img from '../../res/imgs/line_toolbar/delete_100x100.png';
-import { SELECTED_COLOR_THEME } from '../common/globals';
 import { _get_max_z_index, _use_max_z_index } from '../common/globals';
 import { _set_global_cursor_type } from '../taskboards/taskboard_globals';
 import { _get_toolbar_z_index } from '../common/globals';
 import { LINE_TOOLBAR_ITEMS } from './toolbar_globals';
 import { _colour_picker_no_button } from '../common/components/colour_picker';
+import { SELECTED_COLOR_THEME } from '../common/components/use_colour_themes';
 
 const _add_toolbar_item = (props) => 
 {

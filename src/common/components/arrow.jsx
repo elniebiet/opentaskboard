@@ -5,7 +5,8 @@ import { _get_max_z_index, _use_max_z_index } from "../globals";
 import { _update_arrow_highlighted, _update_arrow_start_pos, _update_arrow_end_pos,
     _update_arrow_colour, _update_arrow_toolbar_show, _update_arrow_toolbar_loc,
     _delete_arrow, _increase_arrow_width, _decrease_arrow_width } from "../../taskboards/use_arrow";
-import { SELECTED_COLOR_THEME, ARROW_HLIGHT_DRAG_POS } from "../globals";
+import { ARROW_HLIGHT_DRAG_POS } from "../globals";
+import { SELECTED_COLOR_THEME } from "./use_colour_themes";
 import _line_toolbar from "../../toolbars/line_toolbar";
 import { ARROW_TOOLBAR_ITEMS } from "../../toolbars/toolbar_globals";
 import { TASKBOARD_STATES } from "../../taskboards/taskboard_globals";

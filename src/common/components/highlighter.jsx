@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { ARROW_JOIN_POINT, SELECTED_COLOR_THEME, HIGHLIGHT_DRAG_DIRECTION, 
-    HIGHLIGHT_JOIN_POSITIONS } from "../globals";
+import { ARROW_JOIN_POINT, HIGHLIGHT_DRAG_DIRECTION, HIGHLIGHT_JOIN_POSITIONS } from "../globals";
+import { SELECTED_COLOR_THEME } from "./use_colour_themes";
 import { TASKBOARD_STATES } from "../../taskboards/taskboard_globals";
 import { _add_arrow, _update_arrow_start_pos, _update_arrow_end_pos } from "../../taskboards/use_arrow";
 import { _set_current_joining_arrow_id, _get_current_joining_arrow_id,
