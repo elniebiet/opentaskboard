@@ -8,13 +8,21 @@ import Divider from '@mui/joy/Divider';
 import Select from '@mui/joy/Select';
 import Option from '@mui/joy/Option';
 
+import { _get_all_themes, SELECTED_COLOR_THEME, _set_selected_color_theme } from '../../common/components/use_colour_themes';
+
 const _taskboard_settings = ({ trigger_width, trigger_height, img_src, on_theme_change }) => {
   const [open, set_open] = useState(false);
-  const [selected_theme, _set_selected_theme] = useState('light');
 
   const _handle_theme_change = (event, new_value) => {
-    _set_selected_theme(new_value);
-    on_theme_change(new_value); // call your callback with new theme
+    let res = _set_selected_color_theme(new_value);
+    on_theme_change(new_value); // inform calling component
+  };
+
+  const _load_themes = () => {
+    const themes = _get_all_themes();
+    return Object.keys(themes).map((theme) => (
+      <Option key={themes[theme].name} value={themes[theme].name}> {themes[theme].name}</Option>
+    ));
   };
 
   return (
@@ -40,12 +48,11 @@ const _taskboard_settings = ({ trigger_width, trigger_height, img_src, on_theme_
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             <Typography level="body-md">Theme</Typography>
             <Select
-              value={selected_theme}
+              value={SELECTED_COLOR_THEME.name}
               onChange={_handle_theme_change}
               sx={{ width: '100%' }}
             >
-              <Option value="light">Light</Option>
-              <Option value="dark">Dark</Option>
+                { _load_themes() }
             </Select>
 
             <Typography level="body-md" sx={{ mt: 2, cursor: 'pointer' }}>

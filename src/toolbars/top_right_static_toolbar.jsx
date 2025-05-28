@@ -57,6 +57,10 @@ const _top_right_static_toolbar = (props) => {
         return;
     }
 
+    const _theme_changed = (new_theme) => {
+        props.taskboard_rerender_func();
+    }
+
     return (
         <div>
             <div id="top_right_static_toolbar_root" style={toolbar_styling_top}>
@@ -75,7 +79,7 @@ const _top_right_static_toolbar = (props) => {
                     <_taskboard_settings trigger_width={item_width} trigger_height={item_height} img_src={settings_img} 
                         item_index={TOP_RIGHT_STATIC_TOOLBAR_ITEMS.TRTBI_SETTINGS} win_width={props.win_width} img_alt_txt={"Settings"} 
                         taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
-                        on_theme_change={_do_nothing}    
+                        on_theme_change={_theme_changed}    
                     />
 
                     {/* Apps dropdown */}
