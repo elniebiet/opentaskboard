@@ -186,7 +186,7 @@ const COLOR_THEMES = {
         highlight_colour: '#1976d2',
     },
     
-    black: {
+    dark: {
         bg_colour: '#000000',
         text_colour: '#ffffff',
         highlight_colour: '#1976d2',

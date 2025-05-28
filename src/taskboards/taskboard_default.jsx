@@ -364,9 +364,7 @@ const _taskboard_default = () => {
 
           <_gridlines_normal grid_size={50} line_color="#E6E6E6" />
 
-          <_top_right_static_toolbar id={1} win_width={width} win_height={height} taskboard_rerender_func={_trigger_taskboard_rerender} 
-            trs_toolbar_item_clicked={_do_nothing}
-          />
+          <_top_right_static_toolbar id={1} win_width={width} win_height={height} taskboard_rerender_func={_trigger_taskboard_rerender} />
 
           <_taskboard_toolbar pos={"top"} win_width={width} win_height={height} add_note_func={_add_note} set_tb_item_loc_func={_set_tb_item_loc_func} 
             select_cursor_func={_select_pointer} marker_draw_func={_draw_with_marker} add_fill_func={_add_fill} add_comment_func={_add_comment} 
