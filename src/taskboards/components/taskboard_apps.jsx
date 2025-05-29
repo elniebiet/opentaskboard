@@ -7,6 +7,7 @@ import MenuItem from '@mui/joy/MenuItem';
 import MenuButton from '@mui/joy/MenuButton';
 import Apps from '@mui/icons-material/Apps';
 import Dropdown from '@mui/joy/Dropdown';
+import { SELECTED_COLOR_THEME } from '../../common/components/use_colour_themes';
 
 const _taskboard_apps = ({ }) => {
   
@@ -14,8 +15,13 @@ const _taskboard_apps = ({ }) => {
     <Dropdown>
         <MenuButton
             slots={{ root: IconButton }}
-            slotProps={{ root: { variant: 'plain', color: 'neutral' } }}
-            sx={{ borderRadius: 40 }}
+            slotProps={{ root: { variant: 'plain' } }}
+            sx={{
+                //TODO: SET COMPLEMENTARY COLOUR FROM THEME
+                borderRadius: 40,
+                backgroundColor: '#FF5733', // sets the button background
+                color: '#FFFFFF',           // optional: sets text/icon color for contrast
+            }}
         >
             <Apps />
         </MenuButton>

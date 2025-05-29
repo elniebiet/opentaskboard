@@ -8,6 +8,7 @@ let COLOR_THEMES = {
         disabled_text: '#BDBDBD',
         border_colour: '#E0E0E0',
         highlight_colour: '#1976D2',
+        complementary_colour: '#000000',
     },
     
     Dark: {
@@ -19,6 +20,7 @@ let COLOR_THEMES = {
         disabled_text: '#666666',
         border_colour: '#2C2C2C',
         highlight_colour: '#1976D2',
+        complementary_colour: '#FFFFFF',
     }, 
 };
 
