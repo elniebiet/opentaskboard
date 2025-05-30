@@ -17,10 +17,8 @@ const _taskboard_apps = ({ }) => {
             slots={{ root: IconButton }}
             slotProps={{ root: { variant: 'plain' } }}
             sx={{
-                //TODO: SET COMPLEMENTARY COLOUR FROM THEME
                 borderRadius: 40,
-                backgroundColor: '#FF5733', // sets the button background
-                color: '#FFFFFF',           // optional: sets text/icon color for contrast
+                backgroundColor: '#f0f0f0', 
             }}
         >
             <Apps />

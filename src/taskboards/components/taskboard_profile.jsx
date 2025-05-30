@@ -6,6 +6,7 @@ import Typography from '@mui/joy/Typography';
 import Avatar from '@mui/joy/Avatar';
 import Box from '@mui/joy/Box';
 import Divider from '@mui/joy/Divider';
+import { SELECTED_COLOR_THEME } from '../../common/components/use_colour_themes';
 
 const _taskboard_profile = ({ trigger_width, trigger_height, img_src }) => {
   const [open, _set_open] = useState(false);
@@ -15,7 +16,13 @@ const _taskboard_profile = ({ trigger_width, trigger_height, img_src }) => {
       <IconButton
         variant="plain"
         onClick={() => _set_open(true)}
-        sx={{ borderRadius: 40, width: trigger_width, height: trigger_height, p: 0 }}
+        sx={{ 
+          borderRadius: 40, 
+          width: trigger_width, 
+          height: trigger_height, 
+          p: 0,
+          backgroundColor: '#f0f0f0', 
+        }}
       >
         <img 
           src={img_src}

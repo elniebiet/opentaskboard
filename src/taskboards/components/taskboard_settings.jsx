@@ -30,7 +30,13 @@ const _taskboard_settings = ({ trigger_width, trigger_height, img_src, on_theme_
       <IconButton
         variant="plain"
         onClick={() => set_open(true)}
-        sx={{ borderRadius: 40, width: trigger_width, height: trigger_height, p: 0 }}
+        sx={{ 
+          borderRadius: 40, 
+          width: trigger_width, 
+          height: trigger_height, 
+          p: 0,
+          backgroundColor: '#f0f0f0', 
+        }}
       >
         <img 
           src={img_src}
