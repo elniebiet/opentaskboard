@@ -7,6 +7,7 @@ import Table from '@mui/joy/Table';
 import Avatar from '@mui/joy/Avatar';
 import Box from '@mui/joy/Box';
 import Link from '@mui/joy/Link';
+import { _get_toolbar_z_index } from '../../common/globals';
 import { SELECTED_COLOR_THEME } from '../../common/components/use_colour_themes';
 
 const _taskboard_history = ({ trigger_width, trigger_height, img_src }) => {
@@ -33,7 +34,11 @@ const _taskboard_history = ({ trigger_width, trigger_height, img_src }) => {
         />
       </IconButton>
 
-      <Modal open={open} onClose={() => _set_open(false)}>
+      <Modal 
+        open={open} 
+        onClose={() => _set_open(false)}
+        sx={{ zIndex: _get_toolbar_z_index() + 1 }}
+      >
         <ModalDialog sx={{ maxWidth: 600 }}>
           <Typography level="h4" sx={{ mb: 2 }}>History</Typography>
           <Table aria-label="table with ellipsis texts" noWrap>

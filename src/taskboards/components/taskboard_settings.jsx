@@ -9,6 +9,7 @@ import Select from '@mui/joy/Select';
 import Option from '@mui/joy/Option';
 
 import { _get_all_themes, SELECTED_COLOR_THEME, _set_selected_color_theme } from '../../common/components/use_colour_themes';
+import { _get_toolbar_z_index } from '../../common/globals';
 
 const _taskboard_settings = ({ trigger_width, trigger_height, img_src, on_theme_change }) => {
   const [open, set_open] = useState(false);

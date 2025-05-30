@@ -6,6 +6,7 @@ import Typography from '@mui/joy/Typography';
 import Avatar from '@mui/joy/Avatar';
 import Box from '@mui/joy/Box';
 import Divider from '@mui/joy/Divider';
+import { _get_toolbar_z_index } from '../../common/globals';
 import { SELECTED_COLOR_THEME } from '../../common/components/use_colour_themes';
 
 const _taskboard_profile = ({ trigger_width, trigger_height, img_src }) => {
@@ -32,7 +33,11 @@ const _taskboard_profile = ({ trigger_width, trigger_height, img_src }) => {
         />
       </IconButton>
 
-      <Modal open={open} onClose={() => _set_open(false)}>
+      <Modal 
+        open={open} 
+        onClose={() => _set_open(false)}
+        sx={{ zIndex: _get_toolbar_z_index() + 1 }}
+      >
         <ModalDialog sx={{ maxWidth: 400, p: 3 }}>
           <Box sx={{ textAlign: 'center' }}>
             <Avatar 

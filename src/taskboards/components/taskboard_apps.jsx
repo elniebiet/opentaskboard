@@ -7,6 +7,7 @@ import MenuItem from '@mui/joy/MenuItem';
 import MenuButton from '@mui/joy/MenuButton';
 import Apps from '@mui/icons-material/Apps';
 import Dropdown from '@mui/joy/Dropdown';
+import { _get_toolbar_z_index } from '../../common/globals';
 import { SELECTED_COLOR_THEME } from '../../common/components/use_colour_themes';
 
 const _taskboard_apps = ({ }) => {
@@ -34,6 +35,7 @@ const _taskboard_apps = ({ }) => {
                 gridTemplateColumns: 'repeat(3, 100px)',
                 gridAutoRows: '100px',
                 gap: 1,
+                zIndex: _get_toolbar_z_index() + 1,
             }}
         >
             <MenuItem orientation="vertical">
