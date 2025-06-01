@@ -47,7 +47,11 @@ const _taskboard_settings = ({ trigger_width, trigger_height, img_src, on_theme_
         />
       </IconButton>
 
-      <Modal open={open} onClose={() => set_open(false)}>
+      <Modal 
+        open={open} 
+        onClose={() => set_open(false)} 
+        sx={{ zIndex: _get_toolbar_z_index() }}
+      >
         <ModalDialog sx={{ maxWidth: 400, p: 3 }}>
           <Typography level="h5" sx={{ mb: 2 }}>Settings</Typography>
           <Divider sx={{ mb: 2 }} />
@@ -58,10 +62,17 @@ const _taskboard_settings = ({ trigger_width, trigger_height, img_src, on_theme_
               value={SELECTED_COLOR_THEME.name}
               onChange={_handle_theme_change}
               sx={{ width: '100%' }}
+              slotProps={{
+                listbox: {
+                  sx: {
+                    zIndex: _get_toolbar_z_index() + 1,  // Ensure it's above the modal
+                  },
+                },
+              }}
             >
-                { _load_themes() }
+              { _load_themes() }
             </Select>
-
+            
             <Typography level="body-md" sx={{ mt: 2, cursor: 'pointer' }}>
               Preferences
             </Typography>
@@ -71,6 +82,7 @@ const _taskboard_settings = ({ trigger_width, trigger_height, img_src, on_theme_
           </Box>
         </ModalDialog>
       </Modal>
+
     </>
   );
 };
