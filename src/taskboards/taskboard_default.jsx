@@ -362,7 +362,7 @@ const _taskboard_default = () => {
       >
           <_page_mouse_down_listener />
 
-          <_gridlines_normal grid_size={50} line_color="#E6E6E6" />
+          <_gridlines_normal grid_size={30} />
 
           <_top_right_static_toolbar id={1} win_width={width} win_height={height} taskboard_rerender_func={_trigger_taskboard_rerender} />
 

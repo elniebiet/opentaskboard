@@ -9,6 +9,7 @@ let COLOR_THEMES = {
         border_colour: '#E0E0E0',
         highlight_colour: '#1976D2',
         complementary_colour: '#000000',
+        gridline_colour: '#E6E6E6',
     },
     
     Dark: {
@@ -21,6 +22,7 @@ let COLOR_THEMES = {
         border_colour: '#2C2C2C',
         highlight_colour: '#1976D2',
         complementary_colour: '#FFFFFF',
+        gridline_colour: '#787878'
     }, 
 };
 

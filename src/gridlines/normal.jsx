@@ -26,7 +26,7 @@ const _gridlines_normal = (props) => {
             left: x,
             width: 1,
             height: "100%",
-            backgroundColor: props.line_color,
+            backgroundColor: SELECTED_COLOR_THEME.gridline_colour,
             zIndex: _get_lowest_z_index(),
             }}
         >
@@ -45,7 +45,7 @@ const _gridlines_normal = (props) => {
             top: y,
             width: "100%",
             height: 1,
-            backgroundColor: props.line_color,
+            backgroundColor: SELECTED_COLOR_THEME.gridline_colour,
             zIndex: _get_lowest_z_index(),
             }}
         >
