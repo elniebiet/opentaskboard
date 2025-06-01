@@ -1,5 +1,5 @@
 import * as React from 'react';
-import _get_window_size from '../common/components/window_size';
+import {_get_window_size, _get_screen_size} from '../common/components/window_size';
 import _taskboard_toolbar from '../toolbars/taskboard_toolbar';
 import _shapes_sub_toolbar from '../toolbars/shapes_sub_toolbar';
 import { useState, useEffect } from 'react';
@@ -49,7 +49,19 @@ import leftangles from '../db/taskboards/leftangles_db_temp';    // temporary le
 const _taskboard_default = () => {
 
   /***************** Misc block begins *************************/
-  const { width, height } = _get_window_size();
+  let { width, height } = _get_window_size();
+  let screen_size = _get_screen_size(); 
+  
+  // ensure the window width and height are less than the screen size
+  if(width >= screen_size.width)
+  {
+    width = screen_size.width - 10;
+  }
+
+  if(height >= screen_size.height)
+  {
+    height = screen_size.height - 10;
+  }
 
   // Taskboard state
   const [taskboard_state, _set_taskboard_state] = useState(TASKBOARD_STATES.TBS_NORMAL);

@@ -26,4 +26,15 @@ const _get_window_size = () => {
     return window_size;
 };
 
-export default _get_window_size;
+const _get_screen_size = () => {
+  return {
+        width: window.screen.width,  
+        height: window.screen.height,
+    };
+};
+
+export
+{ 
+  _get_window_size,
+  _get_screen_size,
+};
