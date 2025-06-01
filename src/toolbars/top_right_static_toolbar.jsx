@@ -66,19 +66,19 @@ const _top_right_static_toolbar = (props) => {
             <div id="top_right_static_toolbar_root" style={toolbar_styling_top}>
                 <Box sx={{ '& > :not(style)': { m: 0.5 } }} display="flex" flexDirection={"row"}>
                     <_taskboard_history trigger_width={item_width} trigger_height={item_height} img_src={history_img} 
-                        item_index={TOP_RIGHT_STATIC_TOOLBAR_ITEMS.TRTBI_HISTORY} win_width={props.win_width} img_alt_txt={"History"} 
-                        taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
+                        win_width={props.win_width} img_alt_txt={"History"} taskboard_rerender_func={props.taskboard_rerender_func} 
+                        request_taskboard_state_func={props.request_taskboard_state}
                     />
 
                     <_taskboard_profile trigger_width={item_width} trigger_height={item_height} img_src={profile_image} 
-                        item_index={TOP_RIGHT_STATIC_TOOLBAR_ITEMS.TRTBI_PROFILE} win_width={props.win_width} img_alt_txt={"Profile"} 
-                        taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}    
+                        win_width={props.win_width} img_alt_txt={"Profile"} taskboard_rerender_func={props.taskboard_rerender_func} 
+                        request_taskboard_state_func={props.request_taskboard_state}    
                     />
 
                     {/* Settings dropdown */}
                     <_taskboard_settings trigger_width={item_width} trigger_height={item_height} img_src={settings_img} 
-                        item_index={TOP_RIGHT_STATIC_TOOLBAR_ITEMS.TRTBI_SETTINGS} win_width={props.win_width} img_alt_txt={"Settings"} 
-                        taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
+                        win_width={props.win_width} img_alt_txt={"Settings"} taskboard_rerender_func={props.taskboard_rerender_func} 
+                        request_taskboard_state_func={props.request_taskboard_state}
                         on_theme_change={_theme_changed}    
                     />
 

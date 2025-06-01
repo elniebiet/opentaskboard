@@ -9,7 +9,8 @@ import Divider from '@mui/joy/Divider';
 import { _get_toolbar_z_index } from '../../common/globals';
 import { SELECTED_COLOR_THEME } from '../../common/components/use_colour_themes';
 
-const _taskboard_profile = ({ trigger_width, trigger_height, img_src }) => {
+const _taskboard_profile = ({ trigger_width, trigger_height, img_src, win_width, 
+                            img_alt_txt, taskboard_rerender_func, request_taskboard_state_func }) => {
   const [open, _set_open] = useState(false);
 
   return (
