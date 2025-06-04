@@ -65,7 +65,7 @@ const _taskboard_settings = ({ trigger_width, trigger_height, img_src, on_theme_
               slotProps={{
                 listbox: {
                   sx: {
-                    zIndex: _get_toolbar_z_index() + 1,  // Ensure it's above the modal
+                    zIndex: _get_toolbar_z_index() + 1,
                   },
                 },
               }}
