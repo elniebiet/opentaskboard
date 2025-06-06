@@ -11,13 +11,16 @@ import MenuItem from '@mui/material/MenuItem';
 import Drawer from '@mui/material/Drawer';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
-import _opentaskboard_icon from './opentaskboard_icon';
 import ColorModeIconDropdown from '../../shared-theme/ColorModeIconDropdown';
 import _template_menu from './MenuTemplate';
 import _taskboard_menu from './MenuTaskBoard';
 import _pricing_menu from './MenuPricing';
 import _FAQ_menu from './MenuFAQ';
 import _about_menu from './MenuAbout';
+import { _get_window_size } from '../../common/components/window_size';
+import otb_logo from '../../../res/imgs/otb_logo/otb_logo_200x72.png';
+import _logo from '../../common/components/logo';
+import { Icon } from 'lucide-react';
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: 'flex',
@@ -42,6 +45,14 @@ export default function AppAppBar(props) {
     setOpen(newOpen);
   };
 
+  const LOGO_WIDTH_PERC = 0.06;
+  const LOGO_HEIGHT_PERC = LOGO_WIDTH_PERC / 3;
+
+  const window_size = _get_window_size();
+  const logo_width = window_size.width * LOGO_WIDTH_PERC;
+  const logo_height = window_size.width * LOGO_HEIGHT_PERC;
+
+
   return (
     <AppBar
       position="fixed"
@@ -56,7 +67,26 @@ export default function AppAppBar(props) {
       <Container maxWidth="lg">
         <StyledToolbar variant="dense" disableGutters>
           <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0 }}>
-            <_opentaskboard_icon />
+            <IconButton
+              variant="plain"
+              onClick={() => {/* go home*/}}
+              sx={{
+                borderRadius: 20,
+                width: logo_width,
+                height: logo_height,
+                p: 0,
+                backgroundColor: '#ffffff',
+              }}
+            >
+              <img
+                src={otb_logo}
+                alt={"OpenTaskBoard"}
+                title={"OpenTaskBoard"}
+                style={{ width: logo_width, height: logo_height, borderRadius: 20, }}
+              />
+
+            </IconButton>
+
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <Box sx={{ minWidth: 120 }}>
               <_taskboard_menu _on_update_route={props._on_update_route} />
