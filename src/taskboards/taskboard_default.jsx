@@ -32,6 +32,7 @@ import { _get_current_joining_arrow_id, _get_last_hovered_joining_item_id, _set_
         ARROW_JOIN_POINT } from '../common/globals';
 import { _otbf_update_item_join_arrow_id, _otbf_deactivate_item } from '../common/otb_finder';
 import _top_right_static_toolbar from '../toolbars/top_right_static_toolbar';
+import _top_left_bar from '../toolbars/top_left_bar';
 
 import notes from '../db/taskboards/notes_db_temp';              // temporary notes storage
 import comments from '../db/taskboards/comments_db_temp';        // temporary comments storage
@@ -377,6 +378,8 @@ const _taskboard_default = () => {
           <_gridlines_normal grid_size={30} />
 
           <_top_right_static_toolbar id={1} win_width={width} win_height={height} taskboard_rerender_func={_trigger_taskboard_rerender} />
+          
+          <_top_left_bar id={1} win_width={width} win_height={height} taskboard_rerender_func={_trigger_taskboard_rerender} />
 
           <_taskboard_toolbar pos={"top"} win_width={width} win_height={height} add_note_func={_add_note} set_tb_item_loc_func={_set_tb_item_loc_func} 
             select_cursor_func={_select_pointer} marker_draw_func={_draw_with_marker} add_fill_func={_add_fill} add_comment_func={_add_comment} 
