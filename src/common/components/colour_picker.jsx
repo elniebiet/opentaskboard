@@ -5,30 +5,39 @@ import { _get_complement_colour } from "../utils";
 /**
  * round colour picker with button component.
  * @param {variable} props - includes {
- *  - props.id, 
- *  - props.update_colour_func(), 
- *  - props.colour  (default colour)
- *  - props.update_colour_func (colour update function)
- *  - props.id  (colour picker id)
- *  - props.onclick_func (colour picker button clicked handler)
- *  - props.width ( colour picker button width)
- *  - props.height ( colour picker button height )
- *  - props.x_pos (colour picker x location)
- *  - props.y_pos (colour picker y location)
+ *  - id, 
+ *  - update_colour_func(), 
+ *  - colour  (default colour)
+ *  - update_colour_func (colour update function)
+ *  - id  (colour picker id)
+ *  - onclick_func (colour picker button clicked handler)
+ *  - width ( colour picker button width)
+ *  - height ( colour picker button height )
+ *  - x_pos (colour picker x location)
+ *  - y_pos (colour picker y location)
  *  - }
  */
-const _colour_picker_round = (props) => {
-    const [color, _set_colour] = useState(props.colour);
+const _colour_picker_round = ({
+    id, 
+    colour, 
+    width,
+    height, 
+    x_pos, 
+    y_pos, 
+    update_colour_func, 
+    onclick_func,
+}) => {
+    const [color, _set_colour] = useState(colour);
 
-    const colour_picker_id = props.id;
+    const colour_picker_id = id;
     
     const _update_colour = (hex_colour_val) => {
         _set_colour(hex_colour_val);
-        props.update_colour_func(hex_colour_val);
+        update_colour_func(hex_colour_val);
     };
 
     const _cp_btn_clicked = () => {
-        props.onclick_func();
+        onclick_func();
         document.getElementById(colour_picker_id).click()
     };
 
@@ -41,8 +50,8 @@ const _colour_picker_round = (props) => {
     >
         <button
             style={{
-                width: props.width + 'px',
-                height: props.height + 'px',
+                width: width + 'px',
+                height: height + 'px',
                 padding: "0",
                 borderRadius: "50%",
                 backgroundColor: color,
@@ -60,8 +69,8 @@ const _colour_picker_round = (props) => {
             onChange={(e) => _update_colour(e.target.value)}
             style={{ 
                 position: "absolute",
-                left: props.x_pos,
-                top: props.y_pos, 
+                left: x_pos,
+                top: y_pos, 
                 opacity: 0,
             }}
         />
@@ -71,21 +80,28 @@ const _colour_picker_round = (props) => {
 
 /**
  * colour picker to use with external button from caller
- * @param {variable} props - includes {props.id, props.update_colour_func(), 
- *  props.onclick_func(), props.width, props.height}
+ * @param {variable} props - includes {id, update_colour_func(), 
+ *  onclick_func(), width, height}
  * @returns 
  */
-const _colour_picker_no_button = (props) => {
-    const [color, _set_colour] = useState(props.colour);
-    const colour_picker_id = props.id;
+const _colour_picker_no_button = ({
+    id, 
+    colour, 
+    width, 
+    height,
+    update_colour_func,
+    onclick_func, 
+ }) => {
+    const [color, _set_colour] = useState(colour);
+    const colour_picker_id = id;
 
     const _update_colour = (hex_colour_val) => {
         _set_colour(hex_colour_val);
-        props.update_colour_func(hex_colour_val);
+        update_colour_func(hex_colour_val);
     };
     
     const _cp_btn_clicked = () => {
-        props.onclick_func();
+        onclick_func();
         document.getElementById(colour_picker_id).click()
     };
 
@@ -103,8 +119,8 @@ const _colour_picker_no_button = (props) => {
                 value={color}
                 onChange={(e) => _update_colour(e.target.value)}
                 style={{ 
-                    width: props.width + 'px',
-                    height: props.height + 'px',
+                    width: width + 'px',
+                    height: height + 'px',
                     opacity: 1,
                     border: 0,
                     margin: 0,
