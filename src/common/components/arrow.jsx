@@ -26,12 +26,12 @@ import { TASKBOARD_STATES } from "../../taskboards/taskboard_globals";
  * @param {boolean} show_toolbar - Arrow toolbar visibility
  * @param {int} win_width - Window width
  * @param {int} win_height - Window height
- * @param {function} request_taskboard_state - Function to request taskboard state
+ * @param {function} request_taskboard_state_func - Function to request taskboard state
  * @returns 
  */
 
 const _draggable_arrow = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour = "black", stroke_width = 2, 
-    is_highlighted, taskboard_rerender_func, show_toolbar, win_width, win_height, request_taskboard_state }) => {
+    is_highlighted, taskboard_rerender_func, show_toolbar, win_width, win_height, request_taskboard_state_func }) => {
 
     const [line_start_pos, _set_line_start_pos] = useState({ x: start_pos_x, y: start_pos_y });
     const [line_end_pos, _set_line_end_pos] = useState({ x: end_pos_x, y: end_pos_y });
@@ -90,19 +90,19 @@ const _draggable_arrow = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, 
         {
             case ARROW_TOOLBAR_ITEMS.ATBI_COLOUR:
             {
-                request_taskboard_state(TASKBOARD_STATES.TBS_NORMAL);
+                request_taskboard_state_func(TASKBOARD_STATES.TBS_NORMAL);
                 break;
             }
             case ARROW_TOOLBAR_ITEMS.ATBI_INCREASE_LINE_WIDTH:
             {
                 _increase_arrow_width(id);
-                request_taskboard_state(TASKBOARD_STATES.TBS_NORMAL);
+                request_taskboard_state_func(TASKBOARD_STATES.TBS_NORMAL);
                 break;
             }
             case ARROW_TOOLBAR_ITEMS.ATBI_DECREASE_LINE_WIDTH:
             {
                 _decrease_arrow_width(id);
-                request_taskboard_state(TASKBOARD_STATES.TBS_NORMAL);
+                request_taskboard_state_func(TASKBOARD_STATES.TBS_NORMAL);
                 break;
             }
             case ARROW_TOOLBAR_ITEMS.ATBI_DELETE:

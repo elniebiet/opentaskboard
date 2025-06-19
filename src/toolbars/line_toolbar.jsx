@@ -149,25 +149,25 @@ const _line_toolbar = (props) => {
                 <Box sx={{ '& > :not(style)': { m: 0.5 } }} display="flex" flexDirection={"row"}>
                     <_add_toolbar_item item_index={LINE_TOOLBAR_ITEMS.ATBI_INCREASE_LINE_WIDTH} img_src={increase_line_width_img} img_alt_txt={"Increase Line Width"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
-                    taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
+                    taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state_func}
                     line_tb_item_clicked_notif={props.line_toolbar_item_clicked} line_update_colour_func={props.line_update_colour_func} 
                     line_bg_colour={props.line_bg_colour}
                     />
                     <_add_toolbar_item item_index={LINE_TOOLBAR_ITEMS.ATBI_DECREASE_LINE_WIDTH} img_src={reduce_line_width_img} img_alt_txt={"Reduce Line Width"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
-                    taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
+                    taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state_func}
                     line_tb_item_clicked_notif={props.line_toolbar_item_clicked} line_update_colour_func={props.line_update_colour_func} 
                     line_bg_colour={props.line_bg_colour}
                     />
                     <_add_toolbar_item item_index={LINE_TOOLBAR_ITEMS.ATBI_COLOUR} img_src={unused_colour_img} img_alt_txt={"Colour"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
-                    taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
+                    taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state_func}
                     line_tb_item_clicked_notif={props.line_toolbar_item_clicked} line_update_colour_func={props.line_update_colour_func} 
                     line_bg_colour={props.line_bg_colour}
                     />
                     <_add_toolbar_item item_index={LINE_TOOLBAR_ITEMS.ATBI_DELETE} img_src={delete_img} img_alt_txt={"Delete"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
-                    taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
+                    taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state_func}
                     line_tb_item_clicked_notif={props.line_toolbar_item_clicked}
                     />
                 </Box>

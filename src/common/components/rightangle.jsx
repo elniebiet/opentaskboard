@@ -37,7 +37,7 @@ import { SELECTED_COLOR_THEME } from "./use_colour_themes";
  * @param {boolean} show_toolbar - rightangle toolbar visibility
  * @param {int} win_width - Window width
  * @param {int} win_height - Window height
- * @param {function} request_taskboard_state - Function to request taskboard state
+ * @param {function} request_taskboard_state_func - Function to request taskboard state
  * @param {boolean} active - rightangle active state
  * @param {array} join_arrow_ids - Array of join arrow IDs
  * @returns 
@@ -47,7 +47,7 @@ const _draggable_rightangle = ({
     id, start_pos_x, start_pos_y, end_pos_x, 
     end_pos_y, colour = "black", stroke_width = 2, 
     is_highlighted, taskboard_rerender_func, show_toolbar, 
-    win_width, win_height, request_taskboard_state, 
+    win_width, win_height, request_taskboard_state_func, 
     active, join_arrow_ids, overall_taskboard_state, 
     main_page_click_counter, main_page_last_click_event_target,
     filleted }) => {
@@ -120,19 +120,19 @@ const _draggable_rightangle = ({
         {
             case RECTANGLE_TOOLBAR_ITEMS.ATBI_COLOUR:
             {
-                request_taskboard_state(TASKBOARD_STATES.TBS_NORMAL);
+                request_taskboard_state_func(TASKBOARD_STATES.TBS_NORMAL);
                 break;
             }
             case RECTANGLE_TOOLBAR_ITEMS.ATBI_INCREASE_RECTANGLE_WIDTH:
             {
                 _increase_rightangle_width(id);
-                request_taskboard_state(TASKBOARD_STATES.TBS_NORMAL);
+                request_taskboard_state_func(TASKBOARD_STATES.TBS_NORMAL);
                 break;
             }
             case RECTANGLE_TOOLBAR_ITEMS.ATBI_DECREASE_RECTANGLE_WIDTH:
             {
                 _decrease_rightangle_width(id);
-                request_taskboard_state(TASKBOARD_STATES.TBS_NORMAL);
+                request_taskboard_state_func(TASKBOARD_STATES.TBS_NORMAL);
                 break;
             }
             case RECTANGLE_TOOLBAR_ITEMS.ATBI_DELETE:
@@ -387,7 +387,7 @@ const _draggable_rightangle = ({
                         highlighter_drag_mouse_up={_highlighter_drag_mouse_up} 
                         highlighter_join_started={_highlighter_join_started} 
                         join_arrow_ids={join_arrow_ids} 
-                        request_taskboard_state={request_taskboard_state} 
+                        request_taskboard_state_func={request_taskboard_state_func} 
                         overall_taskboard_state={overall_taskboard_state} 
                         taskboard_rerender_func={taskboard_rerender_func}
                         show_top_left_resizer={true}

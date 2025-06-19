@@ -189,58 +189,58 @@ const _note_toolbar = (props) => {
                 <Box sx={{ '& > :not(style)': { m: 0.5 } }} display="flex" flexDirection={"row"}>
                     <_add_toolbar_item item_index={NOTE_TOOLBAR_ITEMS.NTBI_BOLD} img_src={bold_img} img_alt_txt={"Bold"} 
                     on_bold_click={_do_nothing}  tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br}
-                    taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state} 
+                    taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state_func} 
                     note_tb_item_clicked_notif={props.note_toolbar_item_clicked}
                     />
                     <_add_toolbar_item item_index={NOTE_TOOLBAR_ITEMS.NTBI_ITALIC} img_src={italic_img} img_alt_txt={"Italic"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
-                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
+                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state_func}
                     note_tb_item_clicked_notif={props.note_toolbar_item_clicked} 
                     />
                     <_add_toolbar_item item_index={NOTE_TOOLBAR_ITEMS.NTBI_UNDERLINE} img_src={underline_img} img_alt_txt={"Underline"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
-                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
+                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state_func}
                     note_tb_item_clicked_notif={props.note_toolbar_item_clicked} 
                     />
                     <_add_toolbar_item item_index={NOTE_TOOLBAR_ITEMS.NTBI_STRIKETHROUGH} img_src={strikethrough_img} img_alt_txt={"StrikeThrough"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
-                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
+                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state_func}
                     note_tb_item_clicked_notif={props.note_toolbar_item_clicked} 
                     />
                     <_add_toolbar_item item_index={NOTE_TOOLBAR_ITEMS.NTBI_FONT_FAMILY} img_src={font_family_img} img_alt_txt={"Font Family"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
-                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
+                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state_func}
                     note_tb_item_clicked_notif={props.note_toolbar_item_clicked} 
                     />
                     <_add_toolbar_item item_index={NOTE_TOOLBAR_ITEMS.NTBI_FONT_SIZE} img_src={font_size_img} img_alt_txt={"Font Size"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
-                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
+                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state_func}
                     note_tb_item_clicked_notif={props.note_toolbar_item_clicked} 
                     />
                     <_add_toolbar_item item_index={NOTE_TOOLBAR_ITEMS.NTBI_FONT_COLOUR} img_src={font_colour_img} img_alt_txt={"Font Colour"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
-                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
+                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state_func}
                     note_tb_item_clicked_notif={props.note_toolbar_item_clicked} note_colour_picker_btn_clicked_func={props.note_colour_picker_btn_clicked_func}
                     note_update_colour_func={props.note_update_colour_func} note_bg_colour={props.note_bg_colour}
                     />
                     <_add_toolbar_item item_index={NOTE_TOOLBAR_ITEMS.NTBI_ALIGNMENT} img_src={alignment_img} img_alt_txt={"Alignment"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
-                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
+                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state_func}
                     note_tb_item_clicked_notif={props.note_toolbar_item_clicked} 
                     />
                     <_add_toolbar_item item_index={NOTE_TOOLBAR_ITEMS.NTBI_LINK} img_src={link_img} img_alt_txt={"Link"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
-                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
+                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state_func}
                     note_tb_item_clicked_notif={props.note_toolbar_item_clicked} 
                     />
                     <_add_toolbar_item item_index={NOTE_TOOLBAR_ITEMS.NTBI_EMOJI} img_src={emoji_img} img_alt_txt={"Emoji"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
-                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
+                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state_func}
                     note_tb_item_clicked_notif={props.note_toolbar_item_clicked} 
                     />
                     <_add_toolbar_item item_index={NOTE_TOOLBAR_ITEMS.NTBI_OTHERS} img_src={others_img} img_alt_txt={"Other options"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
-                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state}
+                    on_italic_click={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state_func}
                     note_tb_item_clicked_notif={props.note_toolbar_item_clicked} 
                     />
                 </Box>

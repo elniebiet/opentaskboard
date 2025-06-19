@@ -27,7 +27,7 @@ import { _set_current_joining_arrow_id, _get_current_joining_arrow_id,
  * @param {function}   highlighter_drag_mouse_down(func params: HIGHLIGHT_DRAG_DIRECTION) function to call when mouse down on highlighter edge circle - used to start resizing    
  * @param {function}   highlighter_join_started(func params: HIGHLIGHT_JOIN_POSITIONS, arrow_id) function to call when mouse down on join position - used to start joining
  * @param {TASKBOARD_STATES} overall_taskboard_state overall taskboard state
- * @param {function} request_taskboard_state(func params: TASKBOARD_STATES) function to call to request taskboard state change
+ * @param {function} request_taskboard_state_func(func params: TASKBOARD_STATES) function to call to request taskboard state change
  * @param {function} taskboard_rerender_func(func params: none) function to call to rerender taskboard
  * @param {function} highlighter_drag_mouse_up(func params: HIGHLIGHT_DRAG_DIRECTION, width_change, height_change) function to call when mouse up on highlighter edge circle - used to stop resizing
  * @param {boolean} show_top_left_resizer show top left resizer
@@ -39,7 +39,7 @@ import { _set_current_joining_arrow_id, _get_current_joining_arrow_id,
 const _highlighter = ({
     item_top_left_pos, item_width, item_height, gap, z_index, line_width, caller_id, 
     join_arrow_ids, highlighter_drag_mouse_down, highlighter_join_started, highlighter_drag_mouse_up,
-    overall_taskboard_state, request_taskboard_state, taskboard_rerender_func, show_top_left_resizer,
+    overall_taskboard_state, request_taskboard_state_func, taskboard_rerender_func, show_top_left_resizer,
     show_top_right_resizer, show_bottom_left_resizer, show_bottom_right_resizer
 }) => {
 
@@ -193,7 +193,7 @@ const _highlighter = ({
         _set_current_joining_position(position); // set the current join position for access by another component
         highlighter_join_started(position, arrow_id);
 
-        request_taskboard_state(TASKBOARD_STATES.TBS_JOINING_STARTED);
+        request_taskboard_state_func(TASKBOARD_STATES.TBS_JOINING_STARTED);
     };
 
     /**

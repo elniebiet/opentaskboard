@@ -67,18 +67,18 @@ const _top_right_static_toolbar = (props) => {
                 <Box sx={{ '& > :not(style)': { m: 0.5 } }} display="flex" flexDirection={"row"}>
                     <_taskboard_history trigger_width={item_width} trigger_height={item_height} img_src={history_img} 
                         win_width={props.win_width} img_alt_txt={"History"} taskboard_rerender_func={props.taskboard_rerender_func} 
-                        request_taskboard_state_func={props.request_taskboard_state}
+                        request_taskboard_state_func={props.request_taskboard_state_func}
                     />
 
                     <_taskboard_profile trigger_width={item_width} trigger_height={item_height} img_src={profile_image} 
                         win_width={props.win_width} img_alt_txt={"Profile"} taskboard_rerender_func={props.taskboard_rerender_func} 
-                        request_taskboard_state_func={props.request_taskboard_state}    
+                        request_taskboard_state_func={props.request_taskboard_state_func}    
                     />
 
                     {/* Settings dropdown */}
                     <_taskboard_settings trigger_width={item_width} trigger_height={item_height} img_src={settings_img} 
                         win_width={props.win_width} img_alt_txt={"Settings"} taskboard_rerender_func={props.taskboard_rerender_func} 
-                        request_taskboard_state_func={props.request_taskboard_state}
+                        request_taskboard_state_func={props.request_taskboard_state_func}
                         on_theme_change={_theme_changed}    
                     />
 

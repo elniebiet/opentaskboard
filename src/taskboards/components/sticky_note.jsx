@@ -37,7 +37,7 @@ const _sticky_note = ({
     taskboard_rerender_func,
     highlighted, 
     show_toolbar, 
-    request_taskboard_state 
+    request_taskboard_state_func 
 }) => {
 
     const [is_editing, _set_is_editing] = useState(false);
@@ -380,7 +380,7 @@ const _sticky_note = ({
                 {(show_toolbar === true) ? (
                     <_note_toolbar note_id={id} note_width={stknote_width} note_height={stknote_width} 
                         x_pos={toolbar_x_pos} y_pos={toolbar_y_pos} taskboard_rerender_func={taskboard_rerender_func} 
-                        request_taskboard_state={request_taskboard_state} note_toolbar_item_clicked={_toolbar_item_clicked_notif}
+                        request_taskboard_state_func={request_taskboard_state_func} note_toolbar_item_clicked={_toolbar_item_clicked_notif}
                         note_colour_picker_btn_clicked_func={_colour_picker_btn_clicked} note_update_colour_func={_update_colour} 
                         note_bg_colour={colour}
                     />) : (<div></div>)
@@ -401,7 +401,7 @@ const _sticky_note = ({
                         highlighter_drag_mouse_up={_highlighter_drag_mouse_up} 
                         highlighter_join_started={_highlighter_join_started} 
                         join_arrow_ids={join_arrow_ids} 
-                        request_taskboard_state={request_taskboard_state} 
+                        request_taskboard_state_func={request_taskboard_state_func} 
                         overall_taskboard_state={overall_taskboard_state} 
                         taskboard_rerender_func={taskboard_rerender_func}
                         show_top_left_resizer={true}
