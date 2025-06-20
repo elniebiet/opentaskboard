@@ -45,7 +45,11 @@ import rightangles from '../db/taskboards/rightangles_db_temp';  // temporary ri
 import leftangles from '../db/taskboards/leftangles_db_temp';    // temporary leftangles storage
 
 /**
- * Default taskboard componen
+ * Default taskboard component
+ *  // Task boards must implement the following functions
+    // - _load_all_components
+    // - _undo
+    // - _redo
  */
 const _taskboard_default = () => {
 
@@ -250,6 +254,12 @@ const _taskboard_default = () => {
     );
   };
   /**************** Page listener ends **************************/
+
+  /************ Generic Taskboard functions begins **************/
+  const  _load_all_components = () => {
+    
+  };
+  /************ Generic Taskboard functions ends ****************/
 
 
   /*************** Effects Begin ***************************/  

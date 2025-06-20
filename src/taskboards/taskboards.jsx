@@ -21,6 +21,11 @@ const _get_taskboard = (taskboard_code) =>
     }
 }
 const _taskboard = (props) => {
+    // Task boards must implement the following functions
+    // - _load_all_components
+    // - _undo
+    // - _redo
+    
     return (
         <div>
             { _get_taskboard(props.taskboard_code) }

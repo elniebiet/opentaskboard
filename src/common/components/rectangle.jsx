@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { _set_global_toolbar_items_active_state } from "../../taskboards/taskboard_globals";
-import { TASKBOARD_TOOLBAR_ITEMS } from "../../toolbars/toolbar_globals";
+import { TASKBOARD_COMPONENT_TYPE } from "../../toolbars/toolbar_globals";
 import { _get_max_z_index, _use_max_z_index } from "../globals";
 import { _update_rectangle_highlighted, _update_rectangle_start_pos, _update_rectangle_end_pos,
     _update_rectangle_colour, _update_rectangle_toolbar_show, _update_rectangle_toolbar_loc,
@@ -254,7 +254,7 @@ const _draggable_rectangle = ({
         e.preventDefault();
         _set_z_index(_get_max_z_index());
         _use_max_z_index();
-        _set_global_toolbar_items_active_state(TASKBOARD_TOOLBAR_ITEMS.TBI_SHAPE, true, true);
+        _set_global_toolbar_items_active_state(TASKBOARD_COMPONENT_TYPE.TCT_SHAPE, true, true);
         _set_arr_highlighted(true);
         _update_rectangle_highlighted(id, true);
         _set_local_param_rectangle_active(true);
