@@ -50,6 +50,9 @@ import leftangles from '../db/taskboards/leftangles_db_temp';    // temporary le
     // - _load_all_components
     // - _undo
     // - _redo
+    // - _add_component(component type, component data))
+    // - _delete_component(component type, component id)
+
  */
 const _taskboard_default = () => {
 
@@ -257,7 +260,118 @@ const _taskboard_default = () => {
 
   /************ Generic Taskboard functions begins **************/
   const  _load_all_components = () => {
-    
+    return (
+      <div>
+        <div>
+            {/* display notes and comments */}
+            <div>
+              {notes.map((note) => (
+                <div>
+                  <div>
+                    <_sticky_note key={note.id} id={note.id} text={note.text} win_width_perc={note.win_width_perc} tb_item_loc_update_func={_set_tb_item_loc_func} 
+                      x_pos={note.x_pos} y_pos={note.y_pos} win_width={width} win_height={height} colour={note.colour} taskboard_rerender_func={_trigger_taskboard_rerender}
+                      show_toolbar={note.toolbar_show} highlighted={note.highlighted} join_arrow_ids={note.join_arrow_ids} request_taskboard_state_func={_request_taskboard_state} 
+                      overall_taskboard_state={taskboard_state} main_page_click_counter={click_counter} main_page_last_click_event_target={click_event_target}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div>
+              {comments.map((comment) => (
+                <_comment key={comment.id} id={comment.id} text={comment.text} win_width_perc={comment.win_width_perc} tb_item_loc_update_func={_set_tb_item_loc_func} 
+                x_pos={comment.x_pos} y_pos={comment.y_pos} win_width={width} win_height={height} colour={comment.colour} taskboard_rerender_func={_trigger_taskboard_rerender}
+                request_taskboard_state_func={_request_taskboard_state} overall_taskboard_state={taskboard_state} />
+              ))}
+            </div>
+          </div>
+          
+          {/* display shapes */}
+          <div>
+              {/* display arrows */}
+              <div>
+                {arrows.map((arrow) => (
+                  <_draggable_arrow key={arrow.id} id={arrow.id} start_pos_x={arrow.x1_pos} start_pos_y={arrow.y1_pos} end_pos_x={arrow.x2_pos} end_pos_y={arrow.y2_pos} 
+                  colour={arrow.colour} stroke_width={arrow.stroke_width} is_highlighted={arrow.highlighted} taskboard_rerender_func={_trigger_taskboard_rerender} 
+                  show_toolbar={arrow.toolbar_show} win_width={width} win_height={height} request_taskboard_state_func={_request_taskboard_state} overall_taskboard_state={taskboard_state}
+                  />
+                ))}
+              </div>
+
+              {/* display lines */}
+              <div>
+                {lines.map((line) => (
+                  <_draggable_line key={line.id} id={line.id} start_pos_x={line.x1_pos} start_pos_y={line.y1_pos} end_pos_x={line.x2_pos} end_pos_y={line.y2_pos} 
+                  colour={line.colour} stroke_width={line.stroke_width} is_highlighted={line.highlighted} taskboard_rerender_func={_trigger_taskboard_rerender} 
+                  show_toolbar={line.toolbar_show} win_width={width} win_height={height} request_taskboard_state_func={_request_taskboard_state} overall_taskboard_state={taskboard_state}
+                  />
+                ))}
+              </div>
+
+              {/* display circles */}
+              <div>
+                {circles.map((circle) => (
+                  <_draggable_circle key={circle.id} id={circle.id} start_pos_x={circle.x1_pos} start_pos_y={circle.y1_pos} end_pos_x={circle.x2_pos} end_pos_y={circle.y2_pos} 
+                  colour={circle.colour} stroke_width={circle.stroke_width} is_highlighted={circle.highlighted} taskboard_rerender_func={_trigger_taskboard_rerender}
+                  active={circle.active} join_arrow_ids={circle.join_arrow_ids} 
+                  show_toolbar={circle.toolbar_show} win_width={width} win_height={height} request_taskboard_state_func={_request_taskboard_state} overall_taskboard_state={taskboard_state}
+                  main_page_click_counter={click_counter} main_page_last_click_event_target={click_event_target}
+                  />
+                ))}
+              </div>
+
+              {/* display rectangles */}
+              <div>
+                {rectangles.map((rectangle) => (
+                  <_draggable_rectangle key={rectangle.id} id={rectangle.id} start_pos_x={rectangle.x1_pos} start_pos_y={rectangle.y1_pos} end_pos_x={rectangle.x2_pos} end_pos_y={rectangle.y2_pos} 
+                  colour={rectangle.colour} stroke_width={rectangle.stroke_width} is_highlighted={rectangle.highlighted} taskboard_rerender_func={_trigger_taskboard_rerender}
+                  active={rectangle.active} join_arrow_ids={rectangle.join_arrow_ids} 
+                  show_toolbar={rectangle.toolbar_show} win_width={width} win_height={height} request_taskboard_state_func={_request_taskboard_state} overall_taskboard_state={taskboard_state}
+                  main_page_click_counter={click_counter} main_page_last_click_event_target={click_event_target} filleted={rectangle.filleted}
+                  />
+                ))}
+              </div>
+
+              {/* display triangles */}
+              <div>
+                {triangles.map((triangle) => (
+                  <_draggable_triangle key={triangle.id} id={triangle.id} start_pos_x={triangle.x1_pos} start_pos_y={triangle.y1_pos} end_pos_x={triangle.x2_pos} end_pos_y={triangle.y2_pos} 
+                  colour={triangle.colour} stroke_width={triangle.stroke_width} is_highlighted={triangle.highlighted} taskboard_rerender_func={_trigger_taskboard_rerender}
+                  active={triangle.active} join_arrow_ids={triangle.join_arrow_ids} 
+                  show_toolbar={triangle.toolbar_show} win_width={width} win_height={height} request_taskboard_state_func={_request_taskboard_state} overall_taskboard_state={taskboard_state}
+                  main_page_click_counter={click_counter} main_page_last_click_event_target={click_event_target} filleted={triangle.filleted}
+                  />
+                ))}
+              </div>
+
+              {/* display rightangle triangles */}
+              <div>
+                {rightangles.map((rightangle) => (
+                  <_draggable_rightangle key={rightangle.id} id={rightangle.id} start_pos_x={rightangle.x1_pos} start_pos_y={rightangle.y1_pos} end_pos_x={rightangle.x2_pos} end_pos_y={rightangle.y2_pos} 
+                  colour={rightangle.colour} stroke_width={rightangle.stroke_width} is_highlighted={rightangle.highlighted} taskboard_rerender_func={_trigger_taskboard_rerender}
+                  active={rightangle.active} join_arrow_ids={rightangle.join_arrow_ids} 
+                  show_toolbar={rightangle.toolbar_show} win_width={width} win_height={height} request_taskboard_state_func={_request_taskboard_state} overall_taskboard_state={taskboard_state}
+                  main_page_click_counter={click_counter} main_page_last_click_event_target={click_event_target} filleted={rightangle.filleted}
+                  />
+                ))}
+              </div>
+
+              {/* display leftangle triangles */}
+              <div>
+                {leftangles.map((leftangle) => (
+                  <_draggable_leftangle key={leftangle.id} id={leftangle.id} start_pos_x={leftangle.x1_pos} start_pos_y={leftangle.y1_pos} end_pos_x={leftangle.x2_pos} end_pos_y={leftangle.y2_pos} 
+                  colour={leftangle.colour} stroke_width={leftangle.stroke_width} is_highlighted={leftangle.highlighted} taskboard_rerender_func={_trigger_taskboard_rerender}
+                  active={leftangle.active} join_arrow_ids={leftangle.join_arrow_ids} 
+                  show_toolbar={leftangle.toolbar_show} win_width={width} win_height={height} request_taskboard_state_func={_request_taskboard_state} overall_taskboard_state={taskboard_state}
+                  main_page_click_counter={click_counter} main_page_last_click_event_target={click_event_target} filleted={leftangle.filleted}
+                  />
+                ))}
+              </div>
+
+          </div>
+      </div>
+    );
   };
   /************ Generic Taskboard functions ends ****************/
 
@@ -414,113 +528,9 @@ const _taskboard_default = () => {
           )}
 
           <div>
-            {/* display notes and comments */}
-            <div>
-              {notes.map((note) => (
-                <div>
-                  <div>
-                    <_sticky_note key={note.id} id={note.id} text={note.text} win_width_perc={note.win_width_perc} tb_item_loc_update_func={_set_tb_item_loc_func} 
-                      x_pos={note.x_pos} y_pos={note.y_pos} win_width={width} win_height={height} colour={note.colour} taskboard_rerender_func={_trigger_taskboard_rerender}
-                      show_toolbar={note.toolbar_show} highlighted={note.highlighted} join_arrow_ids={note.join_arrow_ids} request_taskboard_state_func={_request_taskboard_state} 
-                      overall_taskboard_state={taskboard_state} main_page_click_counter={click_counter} main_page_last_click_event_target={click_event_target}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div>
-              {comments.map((comment) => (
-                <_comment key={comment.id} id={comment.id} text={comment.text} win_width_perc={comment.win_width_perc} tb_item_loc_update_func={_set_tb_item_loc_func} 
-                x_pos={comment.x_pos} y_pos={comment.y_pos} win_width={width} win_height={height} colour={comment.colour} taskboard_rerender_func={_trigger_taskboard_rerender}
-                request_taskboard_state_func={_request_taskboard_state} overall_taskboard_state={taskboard_state} />
-              ))}
-            </div>
+            {_load_all_components()}
           </div>
           
-          {/* display shapes */}
-          <div>
-              {/* display arrows */}
-              <div>
-                {arrows.map((arrow) => (
-                  <_draggable_arrow key={arrow.id} id={arrow.id} start_pos_x={arrow.x1_pos} start_pos_y={arrow.y1_pos} end_pos_x={arrow.x2_pos} end_pos_y={arrow.y2_pos} 
-                  colour={arrow.colour} stroke_width={arrow.stroke_width} is_highlighted={arrow.highlighted} taskboard_rerender_func={_trigger_taskboard_rerender} 
-                  show_toolbar={arrow.toolbar_show} win_width={width} win_height={height} request_taskboard_state_func={_request_taskboard_state} overall_taskboard_state={taskboard_state}
-                  />
-                ))}
-              </div>
-
-              {/* display lines */}
-              <div>
-                {lines.map((line) => (
-                  <_draggable_line key={line.id} id={line.id} start_pos_x={line.x1_pos} start_pos_y={line.y1_pos} end_pos_x={line.x2_pos} end_pos_y={line.y2_pos} 
-                  colour={line.colour} stroke_width={line.stroke_width} is_highlighted={line.highlighted} taskboard_rerender_func={_trigger_taskboard_rerender} 
-                  show_toolbar={line.toolbar_show} win_width={width} win_height={height} request_taskboard_state_func={_request_taskboard_state} overall_taskboard_state={taskboard_state}
-                  />
-                ))}
-              </div>
-
-              {/* display circles */}
-              <div>
-                {circles.map((circle) => (
-                  <_draggable_circle key={circle.id} id={circle.id} start_pos_x={circle.x1_pos} start_pos_y={circle.y1_pos} end_pos_x={circle.x2_pos} end_pos_y={circle.y2_pos} 
-                  colour={circle.colour} stroke_width={circle.stroke_width} is_highlighted={circle.highlighted} taskboard_rerender_func={_trigger_taskboard_rerender}
-                  active={circle.active} join_arrow_ids={circle.join_arrow_ids} 
-                  show_toolbar={circle.toolbar_show} win_width={width} win_height={height} request_taskboard_state_func={_request_taskboard_state} overall_taskboard_state={taskboard_state}
-                  main_page_click_counter={click_counter} main_page_last_click_event_target={click_event_target}
-                  />
-                ))}
-              </div>
-
-              {/* display rectangles */}
-              <div>
-                {rectangles.map((rectangle) => (
-                  <_draggable_rectangle key={rectangle.id} id={rectangle.id} start_pos_x={rectangle.x1_pos} start_pos_y={rectangle.y1_pos} end_pos_x={rectangle.x2_pos} end_pos_y={rectangle.y2_pos} 
-                  colour={rectangle.colour} stroke_width={rectangle.stroke_width} is_highlighted={rectangle.highlighted} taskboard_rerender_func={_trigger_taskboard_rerender}
-                  active={rectangle.active} join_arrow_ids={rectangle.join_arrow_ids} 
-                  show_toolbar={rectangle.toolbar_show} win_width={width} win_height={height} request_taskboard_state_func={_request_taskboard_state} overall_taskboard_state={taskboard_state}
-                  main_page_click_counter={click_counter} main_page_last_click_event_target={click_event_target} filleted={rectangle.filleted}
-                  />
-                ))}
-              </div>
-
-              {/* display triangles */}
-              <div>
-                {triangles.map((triangle) => (
-                  <_draggable_triangle key={triangle.id} id={triangle.id} start_pos_x={triangle.x1_pos} start_pos_y={triangle.y1_pos} end_pos_x={triangle.x2_pos} end_pos_y={triangle.y2_pos} 
-                  colour={triangle.colour} stroke_width={triangle.stroke_width} is_highlighted={triangle.highlighted} taskboard_rerender_func={_trigger_taskboard_rerender}
-                  active={triangle.active} join_arrow_ids={triangle.join_arrow_ids} 
-                  show_toolbar={triangle.toolbar_show} win_width={width} win_height={height} request_taskboard_state_func={_request_taskboard_state} overall_taskboard_state={taskboard_state}
-                  main_page_click_counter={click_counter} main_page_last_click_event_target={click_event_target} filleted={triangle.filleted}
-                  />
-                ))}
-              </div>
-
-              {/* display rightangle triangles */}
-              <div>
-                {rightangles.map((rightangle) => (
-                  <_draggable_rightangle key={rightangle.id} id={rightangle.id} start_pos_x={rightangle.x1_pos} start_pos_y={rightangle.y1_pos} end_pos_x={rightangle.x2_pos} end_pos_y={rightangle.y2_pos} 
-                  colour={rightangle.colour} stroke_width={rightangle.stroke_width} is_highlighted={rightangle.highlighted} taskboard_rerender_func={_trigger_taskboard_rerender}
-                  active={rightangle.active} join_arrow_ids={rightangle.join_arrow_ids} 
-                  show_toolbar={rightangle.toolbar_show} win_width={width} win_height={height} request_taskboard_state_func={_request_taskboard_state} overall_taskboard_state={taskboard_state}
-                  main_page_click_counter={click_counter} main_page_last_click_event_target={click_event_target} filleted={rightangle.filleted}
-                  />
-                ))}
-              </div>
-
-              {/* display leftangle triangles */}
-              <div>
-                {leftangles.map((leftangle) => (
-                  <_draggable_leftangle key={leftangle.id} id={leftangle.id} start_pos_x={leftangle.x1_pos} start_pos_y={leftangle.y1_pos} end_pos_x={leftangle.x2_pos} end_pos_y={leftangle.y2_pos} 
-                  colour={leftangle.colour} stroke_width={leftangle.stroke_width} is_highlighted={leftangle.highlighted} taskboard_rerender_func={_trigger_taskboard_rerender}
-                  active={leftangle.active} join_arrow_ids={leftangle.join_arrow_ids} 
-                  show_toolbar={leftangle.toolbar_show} win_width={width} win_height={height} request_taskboard_state_func={_request_taskboard_state} overall_taskboard_state={taskboard_state}
-                  main_page_click_counter={click_counter} main_page_last_click_event_target={click_event_target} filleted={leftangle.filleted}
-                  />
-                ))}
-              </div>
-
-          </div>
       </div>
   );
 };

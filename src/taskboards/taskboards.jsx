@@ -25,7 +25,9 @@ const _taskboard = (props) => {
     // - _load_all_components
     // - _undo
     // - _redo
-    
+    // - _add_component(component type, component data))
+    // - _delete_component(component type, component id)
+
     return (
         <div>
             { _get_taskboard(props.taskboard_code) }
