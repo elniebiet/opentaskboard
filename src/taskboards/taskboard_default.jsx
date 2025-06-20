@@ -74,7 +74,7 @@ const _taskboard_default = () => {
   // Taskboard state
   const [taskboard_state, _set_taskboard_state] = useState(TASKBOARD_STATES.TBS_NORMAL);
   
-  const [start_draw_pos, _set_start_draw_pos] = useState({x_pos: 100, y_pos: 100});
+  const [start_draw_pos, _set_start_draw_pos] = useState({x1_pos: 100, y1_pos: 100});
   
   const [, _re_render_page] = useState(0);
 
@@ -216,7 +216,7 @@ const _taskboard_default = () => {
               break;
             }
 
-            _set_start_draw_pos({x_pos: e.clientX, y_pos: e.clientY});
+            _set_start_draw_pos({x1_pos: e.clientX, y1_pos: e.clientY});
             _set_global_new_shape_id(Date.now());
             _start_drawing({
               shape_id: _get_global_new_shape_id(), 
@@ -269,7 +269,7 @@ const _taskboard_default = () => {
                 <div>
                   <div>
                     <_sticky_note key={note.id} id={note.id} text={note.text} win_width_perc={note.win_width_perc} tb_item_loc_update_func={_set_tb_item_loc_func} 
-                      x_pos={note.x_pos} y_pos={note.y_pos} win_width={width} win_height={height} colour={note.colour} taskboard_rerender_func={_trigger_taskboard_rerender}
+                      x1_pos={note.x1_pos} y1_pos={note.y1_pos} win_width={width} win_height={height} colour={note.colour} taskboard_rerender_func={_trigger_taskboard_rerender}
                       show_toolbar={note.toolbar_show} highlighted={note.highlighted} join_arrow_ids={note.join_arrow_ids} request_taskboard_state_func={_request_taskboard_state} 
                       overall_taskboard_state={taskboard_state} main_page_click_counter={click_counter} main_page_last_click_event_target={click_event_target}
                     />
@@ -281,7 +281,7 @@ const _taskboard_default = () => {
             <div>
               {comments.map((comment) => (
                 <_comment key={comment.id} id={comment.id} text={comment.text} win_width_perc={comment.win_width_perc} tb_item_loc_update_func={_set_tb_item_loc_func} 
-                x_pos={comment.x_pos} y_pos={comment.y_pos} win_width={width} win_height={height} colour={comment.colour} taskboard_rerender_func={_trigger_taskboard_rerender}
+                x1_pos={comment.x1_pos} y1_pos={comment.y1_pos} win_width={width} win_height={height} colour={comment.colour} taskboard_rerender_func={_trigger_taskboard_rerender}
                 request_taskboard_state_func={_request_taskboard_state} overall_taskboard_state={taskboard_state} />
               ))}
             </div>
@@ -411,10 +411,10 @@ const _taskboard_default = () => {
         {
           // draw shape
           _update_drawing({e: e, shape_type: _get_global_new_shape_type()});
-          console.log("drew " + _get_global_new_shape_type() + " at this point: " + start_draw_pos.x_pos + ", " + start_draw_pos.y_pos + " to this point: " + e.clientX  + ", " + e.clientY);
+          console.log("drew " + _get_global_new_shape_type() + " at this point: " + start_draw_pos.x1_pos + ", " + start_draw_pos.y1_pos + " to this point: " + e.clientX  + ", " + e.clientY);
 
           // done drawing
-          _set_start_draw_pos({x_pos: 100, y_pos: 100});
+          _set_start_draw_pos({x1_pos: 100, y1_pos: 100});
           _set_global_new_shape_id(0);
           _request_taskboard_state(TASKBOARD_STATES.TBS_BEGIN_DRAWING_SHAPE);
         }

@@ -13,8 +13,8 @@ import { _get_complement_colour } from "../utils";
  *  - onclick_func (colour picker button clicked handler)
  *  - width ( colour picker button width)
  *  - height ( colour picker button height )
- *  - x_pos (colour picker x location)
- *  - y_pos (colour picker y location)
+ *  - x1_pos (colour picker x location)
+ *  - y1_pos (colour picker y location)
  *  - }
  */
 const _colour_picker_round = ({
@@ -22,8 +22,8 @@ const _colour_picker_round = ({
     colour, 
     width,
     height, 
-    x_pos, 
-    y_pos, 
+    x1_pos, 
+    y1_pos, 
     update_colour_func, 
     onclick_func,
 }) => {
@@ -69,8 +69,8 @@ const _colour_picker_round = ({
             onChange={(e) => _update_colour(e.target.value)}
             style={{ 
                 position: "absolute",
-                left: x_pos,
-                top: y_pos, 
+                left: x1_pos,
+                top: y1_pos, 
                 opacity: 0,
             }}
         />

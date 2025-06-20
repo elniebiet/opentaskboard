@@ -23,8 +23,8 @@ import { _otbf_update_item_join_arrow_id } from "../../common/otb_finder";
 const _sticky_note = ({
     id, 
     colour, 
-    x_pos, 
-    y_pos, 
+    x1_pos, 
+    y1_pos, 
     win_width, 
     win_height, 
     win_width_perc, 
@@ -51,10 +51,10 @@ const _sticky_note = ({
 
     const textarea_ref = useRef(null);
 
-    const [root_div_position, _set_root_div_position] = useState({x: x_pos, y: y_pos});
+    const [root_div_position, _set_root_div_position] = useState({x: x1_pos, y: y1_pos});
 
     // cordinates for the actual top-left origin of the note
-    const [overall_top_left, _set_overall_top_left] = useState({x: x_pos, y: y_pos});
+    const [overall_top_left, _set_overall_top_left] = useState({x: x1_pos, y: y1_pos});
 
     const [prevent_note_deactivation, _set_prevent_note_deactivation] = useState(false); 
 
@@ -196,7 +196,7 @@ const _sticky_note = ({
         }
         else
         {
-            return {x: x_pos, y: y_pos}
+            return {x: x1_pos, y: y1_pos}
         }
     };
 
@@ -379,7 +379,7 @@ const _sticky_note = ({
             <div>
                 {(show_toolbar === true) ? (
                     <_note_toolbar note_id={id} note_width={stknote_width} note_height={stknote_width} 
-                        x_pos={toolbar_x_pos} y_pos={toolbar_y_pos} taskboard_rerender_func={taskboard_rerender_func} 
+                        x1_pos={toolbar_x_pos} y1_pos={toolbar_y_pos} taskboard_rerender_func={taskboard_rerender_func} 
                         request_taskboard_state_func={request_taskboard_state_func} note_toolbar_item_clicked={_toolbar_item_clicked_notif}
                         note_colour_picker_btn_clicked_func={_colour_picker_btn_clicked} note_update_colour_func={_update_colour} 
                         note_bg_colour={colour}

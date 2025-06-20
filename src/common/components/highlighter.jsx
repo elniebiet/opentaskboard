@@ -203,24 +203,24 @@ const _highlighter = ({
         
         let arrow_id = 0;
         let arrow_join_point = ARROW_JOIN_POINT.START_POINT;
-        let x_pos = 0;
-        let y_pos = 0;
+        let x1_pos = 0;
+        let y1_pos = 0;
 
         // top position
         if(join_arrow_ids.top[0] !== -1)
         {
             arrow_id = join_arrow_ids.top[0];
             arrow_join_point = join_arrow_ids.top[1];
-            x_pos = hlight_left_pos + (hlight_width / 2);
-            y_pos = hlight_top_pos - 10;
+            x1_pos = hlight_left_pos + (hlight_width / 2);
+            y1_pos = hlight_top_pos - 10;
 
             if(arrow_join_point === ARROW_JOIN_POINT.START_POINT)
             {
-                _update_arrow_start_pos(arrow_id, x_pos, y_pos);
+                _update_arrow_start_pos(arrow_id, x1_pos, y1_pos);
             }
             else if(arrow_join_point === ARROW_JOIN_POINT.END_POINT)
             {
-                _update_arrow_end_pos(arrow_id, x_pos, y_pos);
+                _update_arrow_end_pos(arrow_id, x1_pos, y1_pos);
             }
         }
 
@@ -229,16 +229,16 @@ const _highlighter = ({
         {
             arrow_id = join_arrow_ids.bottom[0];
             arrow_join_point = join_arrow_ids.bottom[1];
-            x_pos = hlight_left_pos + (hlight_width / 2);
-            y_pos = hlight_top_pos + hlight_height + 15; //10
+            x1_pos = hlight_left_pos + (hlight_width / 2);
+            y1_pos = hlight_top_pos + hlight_height + 15; //10
 
             if(arrow_join_point === ARROW_JOIN_POINT.START_POINT)
             {
-                _update_arrow_start_pos(arrow_id, x_pos, y_pos);
+                _update_arrow_start_pos(arrow_id, x1_pos, y1_pos);
             }
             else if(arrow_join_point === ARROW_JOIN_POINT.END_POINT)
             {
-                _update_arrow_end_pos(arrow_id, x_pos, y_pos);
+                _update_arrow_end_pos(arrow_id, x1_pos, y1_pos);
             }
         }
 
@@ -247,16 +247,16 @@ const _highlighter = ({
         {
             arrow_id = join_arrow_ids.left[0];
             arrow_join_point = join_arrow_ids.left[1];
-            x_pos = hlight_left_pos - 10;
-            y_pos = hlight_top_pos + (hlight_height / 2);
+            x1_pos = hlight_left_pos - 10;
+            y1_pos = hlight_top_pos + (hlight_height / 2);
 
             if(arrow_join_point === ARROW_JOIN_POINT.START_POINT)
             {
-                _update_arrow_start_pos(arrow_id, x_pos, y_pos);
+                _update_arrow_start_pos(arrow_id, x1_pos, y1_pos);
             }
             else if(arrow_join_point === ARROW_JOIN_POINT.END_POINT)
             {
-                _update_arrow_end_pos(arrow_id, x_pos, y_pos);
+                _update_arrow_end_pos(arrow_id, x1_pos, y1_pos);
             }
         }
 
@@ -265,16 +265,16 @@ const _highlighter = ({
         {
             arrow_id = join_arrow_ids.right[0];
             arrow_join_point = join_arrow_ids.right[1];
-            x_pos = hlight_left_pos + hlight_width + 10;
-            y_pos = hlight_top_pos + (hlight_height / 2);
+            x1_pos = hlight_left_pos + hlight_width + 10;
+            y1_pos = hlight_top_pos + (hlight_height / 2);
 
             if(arrow_join_point === ARROW_JOIN_POINT.START_POINT)
             {
-                _update_arrow_start_pos(arrow_id, x_pos, y_pos);
+                _update_arrow_start_pos(arrow_id, x1_pos, y1_pos);
             }
             else if(arrow_join_point === ARROW_JOIN_POINT.END_POINT)
             {
-                _update_arrow_end_pos(arrow_id, x_pos, y_pos);
+                _update_arrow_end_pos(arrow_id, x1_pos, y1_pos);
             }
         }
 

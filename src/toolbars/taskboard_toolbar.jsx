@@ -296,8 +296,8 @@ const _taskboard_toolbar = (props) => {
     {
         let hoover_tb_styling = {
             position: 'fixed', 
-            top: props_1.y_pos, 
-            left: props_1.x_pos, 
+            top: props_1.y1_pos, 
+            left: props_1.x1_pos, 
             width: props_1.tb_hover_w * 2,
             height: props_1.tb_hover_h * 2,
             opacity: 0.5, // Makes it slightly transparent
@@ -362,11 +362,11 @@ const _taskboard_toolbar = (props) => {
             {/* Draggable Items begin */}
             
             { (is_dragging_tb_item.is_dragging) && (is_dragging_tb_item.item_index === TASKBOARD_COMPONENT_TYPE.TCT_STKNOTE) && (
-                <_on_drag_hover_display tb_img={sticky_notes_img} tb_title={"Sticky Note"} tb_hover_w={item_width} tb_hover_h={item_height} x_pos={is_dragging_tb_item.x} y_pos={is_dragging_tb_item.y} />
+                <_on_drag_hover_display tb_img={sticky_notes_img} tb_title={"Sticky Note"} tb_hover_w={item_width} tb_hover_h={item_height} x1_pos={is_dragging_tb_item.x} y1_pos={is_dragging_tb_item.y} />
             )}
 
             { (is_dragging_tb_item.is_dragging) && (is_dragging_tb_item.item_index === TASKBOARD_COMPONENT_TYPE.TCT_COMMENT) && (
-                <_on_drag_hover_display tb_img={comment_img} tb_title={"Comment"} tb_hover_w={item_width} tb_hover_h={item_height} x_pos={is_dragging_tb_item.x} y_pos={is_dragging_tb_item.y} />
+                <_on_drag_hover_display tb_img={comment_img} tb_title={"Comment"} tb_hover_w={item_width} tb_hover_h={item_height} x1_pos={is_dragging_tb_item.x} y1_pos={is_dragging_tb_item.y} />
             )}
 
             {/* Draggable Items end */}

@@ -1,6 +1,6 @@
 import lines from "../db/taskboards/lines_db_temp";
 import { LINE_WIDTH_INCR_FACTOR, LINE_WIDTH_DECR_FACTOR, MAX_LINE_WIDTH, MIN_LINE_WIDTH,
-  MIN_LINE_LENGTH } from "../common/globals";
+  MIN_LINE_LENGTH, UNUSED} from "../common/globals";
 
 const _calculate_line_length = (line_start_pos_x, line_start_pos_y, line_end_pos_x, line_end_pos_y) => {
   const dx = line_end_pos_x - line_start_pos_x;
@@ -21,14 +21,19 @@ const _add_line = (id, x1_pos, y1_pos, x2_pos, y2_pos, colour, stroke_width) => 
   const new_line = { 
       id: id,
       x1_pos: x1_pos,
-      x2_pos: x2_pos,
       y1_pos: y1_pos,
+      x2_pos: x2_pos,
       y2_pos: y2_pos,
       colour: colour,
       stroke_width: stroke_width, 
+      win_width_perc: UNUSED,
+      text: UNUSED,
       highlighted: true,
+      active: UNUSED,
       toolbar_show: true,
       toolbar_display_loc: {x: 200, y: 200},
+      join_arrow_ids: UNUSED,
+      filleted: UNUSED,
   };
   lines.push(new_line);
 };

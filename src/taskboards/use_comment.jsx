@@ -33,8 +33,8 @@ const _add_comment = (clicked = true, pos_x = 100, pos_y = 100) => {
       const new_comment = { 
         id: Date.now(), 
         text: "", 
-        x_pos: new_loc_x, 
-        y_pos: new_loc_y, 
+        x1_pos: new_loc_x, 
+        y1_pos: new_loc_y, 
         colour: SELECTED_COLOR_THEME,
         win_width_perc: COMMENT_WIDTH_PERC_DEFAULT, 
       };
@@ -47,8 +47,8 @@ const _add_comment = (clicked = true, pos_x = 100, pos_y = 100) => {
       const new_comment = { 
         id: Date.now(), 
         text: "", 
-        x_pos: pos_x, 
-        y_pos: pos_y, 
+        x1_pos: pos_x, 
+        y1_pos: pos_y, 
         colour: SELECTED_COLOR_THEME,
         win_width_perc: COMMENT_WIDTH_PERC_DEFAULT, 
       };
@@ -122,8 +122,8 @@ const _update_comment_loc = (int_id, int_x_cord, int_y_cord) => {
     {
         if(comments[i].id === int_id)
         {
-            comments[i].x_pos = int_x_cord;
-            comments[i].y_pos = int_y_cord;
+            comments[i].x1_pos = int_x_cord;
+            comments[i].y1_pos = int_y_cord;
             break;
         }
     }

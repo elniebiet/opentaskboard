@@ -268,7 +268,7 @@ const _draggable_arrow = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, 
             <div>
                 {(display_toolbar === true) ? (
                     <_line_toolbar id={id} win_width={win_width} win_height={win_height} 
-                        x_pos={toolbar_x_pos} y_pos={toolbar_y_pos} taskboard_rerender_func={taskboard_rerender_func} 
+                        x1_pos={toolbar_x_pos} y1_pos={toolbar_y_pos} taskboard_rerender_func={taskboard_rerender_func} 
                         line_toolbar_item_clicked={_toolbar_item_clicked_notif} line_update_colour_func={_update_colour} 
                         line_bg_colour={colour}
                     />

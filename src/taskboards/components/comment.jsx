@@ -28,7 +28,7 @@ const _comment = (props) => {
 
     const comments_root_location_ref = useRef(null);
 
-    const [root_div_position, _set_root_div_position] = useState({x: props.x_pos, y: props.y_pos});
+    const [root_div_position, _set_root_div_position] = useState({x: props.x1_pos, y: props.y1_pos});
     
     const COMMENT_MIN_WIDTH             = 150;  //pixels
     const FLEXBOX_GAP_PERC              = 0.02; // 2% of comment height
@@ -114,7 +114,7 @@ const _comment = (props) => {
         }
         else
         {
-            return {x: props.x_pos, y: props.y_pos}
+            return {x: props.x1_pos, y: props.y1_pos}
         }
     };
 
@@ -218,7 +218,7 @@ const _comment = (props) => {
                             color: complement_colour 
                         }}
                     >
-                        <_colour_picker_round id={props.id} width={menubar_item_width} height={menubar_item_width} colour={complement_colour} x_pos={props.x_pos - comment_width} y_pos={props.y_pos - comment_width} 
+                        <_colour_picker_round id={props.id} width={menubar_item_width} height={menubar_item_width} colour={complement_colour} x1_pos={props.x1_pos - comment_width} y1_pos={props.y1_pos - comment_width} 
                             update_colour_func={_update_colour} onclick_func={_colour_picker_btn_clicked}/>
                     </div>
                     <div

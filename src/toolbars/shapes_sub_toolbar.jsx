@@ -261,8 +261,8 @@ const _shapes_sub_toolbar = (props) => {
     {
         let hoover_tb_styling = {
             position: 'fixed', 
-            top: props_1.y_pos, 
-            left: props_1.x_pos, 
+            top: props_1.y1_pos, 
+            left: props_1.x1_pos, 
             width: props_1.tb_hover_w * 2,
             height: props_1.tb_hover_h * 2,
             opacity: 0.5, // Makes it slightly transparent

@@ -1,7 +1,6 @@
 import rightangles from "../db/taskboards/rightangles_db_temp";
 import { LINE_WIDTH_INCR_FACTOR, LINE_WIDTH_DECR_FACTOR, MAX_LINE_WIDTH, MIN_LINE_WIDTH,
-  MIN_LINE_LENGTH } from "../common/globals";
-import { ARROW_JOIN_POINT } from "../common/globals";
+  MIN_LINE_LENGTH, UNUSED, ARROW_JOIN_POINT } from "../common/globals";
 
 const _calculate_rightangle_length = (rightangle_start_pos_x, rightangle_start_pos_y, rightangle_end_pos_x, rightangle_end_pos_y) => {
   const dx = rightangle_end_pos_x - rightangle_start_pos_x;
@@ -21,15 +20,17 @@ const _add_rightangle = (id, x1_pos, y1_pos, x2_pos, y2_pos, colour, stroke_widt
   const new_rightangle = { 
       id: id,
       x1_pos: x1_pos,
-      x2_pos: x2_pos,
       y1_pos: y1_pos,
+      x2_pos: x2_pos,
       y2_pos: y2_pos,
       colour: colour,
       stroke_width: stroke_width, 
+      win_width_perc: UNUSED,
+      text: UNUSED,
       highlighted: true,
+      active: false,
       toolbar_show: true,
       toolbar_display_loc: {x: 200, y: 200},
-      active: false,
       join_arrow_ids: {top: [-1, ARROW_JOIN_POINT.START_POINT], bottom: [-1, ARROW_JOIN_POINT.START_POINT], left: [-1, ARROW_JOIN_POINT.START_POINT], right: [-1, ARROW_JOIN_POINT.START_POINT]},
       filleted: filleted,
   };

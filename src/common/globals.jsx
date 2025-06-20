@@ -207,7 +207,7 @@ const _get_click_or_drag = () => {
 
 
 /********** Misc block begins ****************/
-
+const UNUSED = null; // placeholder for unused variables
 /********** Misc block ends ****************/
 
 
@@ -273,5 +273,6 @@ export {
     _set_last_hovered_joining_position,
     
     /* Other misc exports */
+    UNUSED,
 };
 

@@ -126,8 +126,8 @@ const _line_toolbar = (props) => {
     /**************************** Toolbar Stylings begin ***************************/
     let toolbar_styling_top = {
         position: 'fixed', 
-        top: props.y_pos + 'px',
-        left: props.x_pos + 'px',
+        top: props.y1_pos + 'px',
+        left: props.x1_pos + 'px',
         backgroundColor: SELECTED_COLOR_THEME,
         color: 'white',
         padding: '5px 10px',

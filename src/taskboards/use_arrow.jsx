@@ -1,6 +1,6 @@
 import arrows from "../db/taskboards/arrows_db_temp";
 import { ARROW_WIDTH_INCR_FACTOR, ARROW_WIDTH_DECR_FACTOR, MAX_ARROW_WIDTH, MIN_ARROW_WIDTH,
-  MIN_ARROW_LENGTH } from "../common/globals";
+  MIN_ARROW_LENGTH, UNUSED } from "../common/globals";
 
 const _calculate_arrow_length = (line_start_pos_x, line_start_pos_y, line_end_pos_x, line_end_pos_y) => {
   const dx = line_end_pos_x - line_start_pos_x;
@@ -21,14 +21,19 @@ const _add_arrow = (id, x1_pos, y1_pos, x2_pos, y2_pos, colour, stroke_width) =>
   const new_arrow = { 
       id: id,
       x1_pos: x1_pos,
-      x2_pos: x2_pos,
       y1_pos: y1_pos,
+      x2_pos: x2_pos,
       y2_pos: y2_pos,
       colour: colour,
       stroke_width: stroke_width, 
+      win_width_perc: UNUSED,
+      text: UNUSED,
       highlighted: true,
+      active: UNUSED,
       toolbar_show: true,
       toolbar_display_loc: {x: 200, y: 200},
+      join_arrow_ids: UNUSED,
+      filleted: UNUSED,
   };
   arrows.push(new_arrow);
 };

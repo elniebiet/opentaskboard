@@ -90,8 +90,8 @@ const _sprint_planning_template = () => {
       const new_note = { 
         id: Date.now(),
         text: "",
-        x_pos: new_loc_x,
-        y_pos: new_loc_y,
+        x1_pos: new_loc_x,
+        y1_pos: new_loc_y,
         colour: SELECTED_COLOR_THEME.bg_colour,
         win_width_perc: STKNOTE_WIDTH_PERC_DEFAULT 
       };
@@ -104,8 +104,8 @@ const _sprint_planning_template = () => {
       const new_note = { 
         id: Date.now(), 
         text: "", 
-        x_pos: pos_x, 
-        y_pos: pos_y, 
+        x1_pos: pos_x, 
+        y1_pos: pos_y, 
         colour: SELECTED_COLOR_THEME.bg_colour, 
         win_width_perc: STKNOTE_WIDTH_PERC_DEFAULT 
       };
@@ -222,8 +222,8 @@ const _sprint_planning_template = () => {
       const new_comment = { 
         id: Date.now(), 
         text: "", 
-        x_pos: new_loc_x, 
-        y_pos: new_loc_y, 
+        x1_pos: new_loc_x, 
+        y1_pos: new_loc_y, 
         colour: SELECTED_COLOR_THEME.bg_colour,
         win_width_perc: COMMENT_WIDTH_PERC_DEFAULT, 
       };
@@ -236,8 +236,8 @@ const _sprint_planning_template = () => {
       const new_comment = { 
         id: Date.now(), 
         text: "", 
-        x_pos: pos_x, 
-        y_pos: pos_y, 
+        x1_pos: pos_x, 
+        y1_pos: pos_y, 
         colour: SELECTED_COLOR_THEME.bg_colour,
         win_width_perc: COMMENT_WIDTH_PERC_DEFAULT, 
       };
@@ -343,14 +343,14 @@ const _sprint_planning_template = () => {
       //       <div>
       //         {notes.map((note) => (
       //           <_sticky_note key={note.id} id={note.id} text={note.text} win_width_perc={note.win_width_perc} on_delete={_delete_note} tb_item_loc_update_func={_set_tb_item_loc_func} 
-      //             note_update_func={_update_note} x_pos={note.x_pos} y_pos={note.y_pos} win_width={width} win_height={height} colour={note.colour}/>
+      //             note_update_func={_update_note} x1_pos={note.x1_pos} y1_pos={note.y1_pos} win_width={width} win_height={height} colour={note.colour}/>
       //         ))}
       //       </div>
 
       //       <div>
       //         {comments.map((comment) => (
       //           <_comment key={comment.id} id={comment.id} text={comment.text} win_width_perc={comment.win_width_perc} on_delete={_delete_comment} tb_item_loc_update_func={_set_tb_item_loc_func} 
-      //           comment_update_func={_update_comment}  x_pos={comment.x_pos} y_pos={comment.y_pos} win_width={width} win_height={height} colour={comment.colour}/>
+      //           comment_update_func={_update_comment}  x1_pos={comment.x1_pos} y1_pos={comment.y1_pos} win_width={width} win_height={height} colour={comment.colour}/>
       //         ))}
       //       </div>
       //     </div>
