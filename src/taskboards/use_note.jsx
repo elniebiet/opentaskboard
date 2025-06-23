@@ -23,6 +23,8 @@ const _add_note = (clicked = true, pos_x = 100, pos_y = 100) => {
         const {loc_x, loc_y} = _get_global_last_item_add_or_move_loc();  
         let new_loc_x = loc_x + 20;
         let new_loc_y = loc_y + 20;
+
+        // this structure definition follows the format defined in taskboard_components_data_structure.txt 
         const new_note = { 
             id: Date.now(),
             x1_pos: new_loc_x,

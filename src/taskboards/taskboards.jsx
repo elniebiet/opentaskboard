@@ -1,6 +1,6 @@
 import * as React from 'react';
 import _taskboard_default from './taskboard_default';
-import { TASKBOARD_DEFAULT } from '../common/globals';
+import { TASKBOARD_TYPES } from '../common/globals';
 
 /**
  * Taskboard base component
@@ -10,7 +10,7 @@ const _get_taskboard = (taskboard_code) =>
 {
     switch(taskboard_code)
     {
-        case TASKBOARD_DEFAULT:
+        case TASKBOARD_TYPES.TASKBOARD_DEFAULT:
         {
             return <_taskboard_default />;
         }

@@ -24,6 +24,7 @@ const TASKBOARD_STATES = {
     TBS_LAST:                   1000, // please add any new state before this item
 };
 
+// Taskboard cursor types
 const CURSOR_TYPES = {
     CT_DEFAULT:        'default',
     CT_DRAW_SHAPE:     `url(${cross_pointer}) 5 5, auto`,   // draw shape cursor type in assignment

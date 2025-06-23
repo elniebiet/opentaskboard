@@ -52,6 +52,7 @@ import leftangles from '../db/taskboards/leftangles_db_temp';    // temporary le
     // - _redo
     // - _add_component(component type, component data))
     // - _delete_component(component type, component id)
+    // - _update_component(component type, component id);
 
  */
 const _taskboard_default = () => {
@@ -373,6 +374,14 @@ const _taskboard_default = () => {
       </div>
     );
   };
+
+  // TODO: Implement the following functions
+    // - _undo
+    // - _redo
+    // - _add_component(component type, component data))
+    // - _delete_component(component type, component id)
+    // - _update_component(component type, component id);
+
   /************ Generic Taskboard functions ends ****************/
 
 

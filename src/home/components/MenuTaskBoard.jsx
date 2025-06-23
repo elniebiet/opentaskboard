@@ -3,7 +3,7 @@ import Button from '@mui/material/Button';
 import { Menu } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
-import { TASKBOARD_DEFAULT, URL_MAIN } from '../../common/globals';
+import { TASKBOARD_TYPES, URL_MAIN } from '../../common/globals';
 
 const _taskboard_menu = (props) => 
 {
@@ -14,7 +14,7 @@ const _taskboard_menu = (props) =>
         _set_taskboard_type(event.target.value);
     
         switch (event.target.value) {
-            case TASKBOARD_DEFAULT:
+            case TASKBOARD_TYPES.TASKBOARD_DEFAULT:
                 props._on_update_route("taskboard/default");
                 break;
             
@@ -32,7 +32,7 @@ const _taskboard_menu = (props) =>
                 TaskBoards
                 </Button>
                 <Menu {...bindMenu(popupState)}>
-                    <MenuItem onClick={_taskboard_type_selected} value={TASKBOARD_DEFAULT}>Default</MenuItem>
+                    <MenuItem onClick={_taskboard_type_selected} value={TASKBOARD_TYPES.TASKBOARD_DEFAULT}>Default</MenuItem>
                     <MenuItem onClick={_taskboard_type_selected} value={0}>Sample Taskboard</MenuItem>
                 </Menu>
             </React.Fragment>

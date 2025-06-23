@@ -1,7 +1,11 @@
 const URL_MAIN = "http://localhost:5173/";
 
-/* TaskBoard codes begin */
-const TASKBOARD_DEFAULT = 1;
+/* TaskBoard Types begin */
+const TASKBOARD_TYPES =
+{
+    TASKBOARD_DEFAULT:  1,
+}
+
 /* TaskBoard codes end */
 
 /* Template codes begin */
@@ -208,6 +212,13 @@ const _get_click_or_drag = () => {
 
 /********** Misc block begins ****************/
 const UNUSED = null; // placeholder for unused variables
+
+const ACTIONS = {
+    NONE:           0,
+    ADD:            1,
+    DELETE:         2,
+    UPDATE:         3,
+};
 /********** Misc block ends ****************/
 
 
@@ -217,8 +228,8 @@ const UNUSED = null; // placeholder for unused variables
 export {
     URL_MAIN, 
 
-    /* TaskBoard code exports */
-    TASKBOARD_DEFAULT,
+    /* TaskBoard types export */
+    TASKBOARD_TYPES,
 
     /* Template code exports  */
     SPRINT_PLANNING,
@@ -274,5 +285,6 @@ export {
     
     /* Other misc exports */
     UNUSED,
+    ACTIONS,
 };
 

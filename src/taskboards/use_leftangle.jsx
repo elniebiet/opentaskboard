@@ -17,6 +17,7 @@ const _add_leftangle = (id, x1_pos, y1_pos, x2_pos, y2_pos, colour, stroke_width
     y2_pos = y1_pos + MIN_LINE_LENGTH;
   }
 
+  // this structure definition follows the format defined in taskboard_components_data_structure.txt 
   const new_leftangle = { 
       id: id,
       x1_pos: x1_pos,

@@ -16,7 +16,7 @@ const _add_rectangle = (id, x1_pos, y1_pos, x2_pos, y2_pos, colour, stroke_width
     x2_pos = x1_pos + MIN_LINE_LENGTH;
     y2_pos = y1_pos + MIN_LINE_LENGTH;
   }
-
+  // this structure definition follows the format defined in taskboard_components_data_structure.txt 
   const new_rectangle = { 
       id: id,
       x1_pos: x1_pos,
