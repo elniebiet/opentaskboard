@@ -3,6 +3,8 @@ import { _set_global_cursor_type } from "./taskboard_globals";
 import { STKNOTE_WIDTH_PERC_DEFAULT } from "./taskboard_globals";
 import { ARROW_JOIN_POINT, UNUSED } from "../common/globals";
 import { SELECTED_COLOR_THEME } from "../common/components/use_colour_themes";
+import { COMPONENT_CLSID_PREFIXES } from "../common/otb_component_class_id_prefixes";
+import { _otb_generate_uuid } from "../common/otb_id_generator";
 
 // temporary note database for testing
 import notes from "../db/taskboards/notes_db_temp";
@@ -24,9 +26,12 @@ const _add_note = (clicked = true, pos_x = 100, pos_y = 100) => {
         let new_loc_x = loc_x + 20;
         let new_loc_y = loc_y + 20;
 
+        let note_id = _otb_generate_uuid(COMPONENT_CLSID_PREFIXES.STICKY_NOTE);
+        if(null == note_id) return;
+
         // this structure definition follows the format defined in taskboard_components_data_structure.txt 
         const new_note = { 
-            id: Date.now(),
+            id: note_id,
             x1_pos: new_loc_x,
             y1_pos: new_loc_y,
             x2_pos: UNUSED,
@@ -48,9 +53,12 @@ const _add_note = (clicked = true, pos_x = 100, pos_y = 100) => {
     else
     {
 
+        let note_id = _otb_generate_uuid(COMPONENT_CLSID_PREFIXES.STICKY_NOTE);
+        if(null == note_id) return;
+
         // dragged
         const new_note = { 
-            id: Date.now(),
+            id: note_id,
             x1_pos: pos_x, 
             y1_pos: pos_y, 
             x2_pos: UNUSED,

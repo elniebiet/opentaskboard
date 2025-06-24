@@ -23,7 +23,7 @@ import { _set_global_new_shape_id, _get_global_new_shape_id,
         CURSOR_TYPES } from './taskboard_globals';
 import { _add_note } from './use_note';
 import { _add_comment } from './use_comment';
-import { _shape_selected_handler, _start_drawing, _update_drawing } from './use_shape';
+import { _shape_selected_handler, _start_drawing, _update_drawing, _create_new_shape_id } from './use_shape';
 import { _get_cursor_type } from '../common/utils';
 import _note_toolbar from '../toolbars/note_toolbar';
 import { _update_arrow_end_pos } from './use_arrow';
@@ -218,7 +218,8 @@ const _taskboard_default = () => {
             }
 
             _set_start_draw_pos({x1_pos: e.clientX, y1_pos: e.clientY});
-            _set_global_new_shape_id(Date.now());
+            let new_shape_id = _create_new_shape_id(_get_global_new_shape_type());
+            _set_global_new_shape_id(new_shape_id);
             _start_drawing({
               shape_id: _get_global_new_shape_id(), 
               start_pos_x: e.clientX, 

@@ -7,6 +7,8 @@ import { _set_current_joining_arrow_id, _get_current_joining_arrow_id,
     _set_current_joining_position, _get_current_joining_position,
     _get_last_hovered_joining_item_id, _set_last_hovered_joining_item_id,
     _get_last_hovered_joining_position, _set_last_hovered_joining_position } from "../globals";
+import { COMPONENT_CLSID_PREFIXES } from "../otb_component_class_id_prefixes";
+import { _otb_generate_uuid } from "../otb_id_generator";
 
 /**
  * Generic highlighter component for displaying active/selected element
@@ -187,7 +189,9 @@ const _highlighter = ({
      * @param {HIGHLIGHT_JOIN_POSITIONS} position join position
      */
     const _on_join_position_mouse_down = (e, position) => {
-        let arrow_id = Date.now();
+        let arrow_id = _otb_generate_uuid(COMPONENT_CLSID_PREFIXES.ARROW);
+        if(arrow_id == null) return;
+
         _add_arrow(arrow_id, e.clientX, e.clientY, e.clientX + 10, e.clientY+10, SELECTED_COLOR_THEME.highlight_colour, 2);
         _set_current_joining_arrow_id(arrow_id); // set current joining arrow id for access by another component
         _set_current_joining_position(position); // set the current join position for access by another component

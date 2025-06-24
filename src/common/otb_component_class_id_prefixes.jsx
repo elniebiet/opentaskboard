@@ -13,6 +13,8 @@ const COMPONENT_CLSID_PREFIXES = {
     LEFT_ANGLE:                             "00000006",
     RIGHT_ANGLE:                            "00000007",
     TRIANGLE:                               "00000008",
+    RECT:                                   "00000009",
+    FILLETED_RECT:                          "00000010",
     
     LAST:                                   "11111111",
 };

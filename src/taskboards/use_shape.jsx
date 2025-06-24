@@ -9,6 +9,8 @@ import { _add_rectangle, _update_rectangle_end_pos } from "./use_rectangle";
 import { _add_triangle, _update_triangle_end_pos } from "./use_triangle";
 import { _add_rightangle, _update_rightangle_end_pos } from "./use_rightangle";
 import { _add_leftangle, _update_leftangle_end_pos } from "./use_leftangle";
+import { COMPONENT_CLSID_PREFIXES } from "../common/otb_component_class_id_prefixes";
+import { _otb_generate_uuid } from "../common/otb_id_generator";
 
 /**
  * Handler first called when a shape is selected
@@ -130,8 +132,64 @@ const _update_drawing = ({e, shape_type}) => {
     }
 };
 
+const _create_new_shape_id = (shape_type) => {
+    
+    let new_shape_id = null;
+
+    switch(shape_type)
+    {
+        case SHAPES_TOOLBAR_ITEM_TYPE.STBI_ARROW:
+        {
+            new_shape_id = _otb_generate_uuid(COMPONENT_CLSID_PREFIXES.ARROW);
+            break;
+        }
+        case SHAPES_TOOLBAR_ITEM_TYPE.STBI_LINE:
+        {
+            new_shape_id = _otb_generate_uuid(COMPONENT_CLSID_PREFIXES.LINE);
+            break;
+        }
+        case SHAPES_TOOLBAR_ITEM_TYPE.STBI_CIRCLE:
+        {
+            new_shape_id = _otb_generate_uuid(COMPONENT_CLSID_PREFIXES.CIRCLE);
+            break;
+        }
+        case SHAPES_TOOLBAR_ITEM_TYPE.STBI_RECT:
+        {
+            new_shape_id = _otb_generate_uuid(COMPONENT_CLSID_PREFIXES.RECT);
+            break;
+        }
+        case SHAPES_TOOLBAR_ITEM_TYPE.STBI_FILLETED_RECT:
+        {
+            new_shape_id = _otb_generate_uuid(COMPONENT_CLSID_PREFIXES.FILLETED_RECT);
+            break;
+        }
+        case SHAPES_TOOLBAR_ITEM_TYPE.STBI_TRIANGLE:
+        {
+            new_shape_id = _otb_generate_uuid(COMPONENT_CLSID_PREFIXES.TRIANGLE);
+            break;
+        }
+        case SHAPES_TOOLBAR_ITEM_TYPE.STBI_RIGHT_TRIANGLE:
+        {
+            new_shape_id = _otb_generate_uuid(COMPONENT_CLSID_PREFIXES.RIGHT_ANGLE);
+            break;
+        }
+        case SHAPES_TOOLBAR_ITEM_TYPE.STBI_LEFT_TRIANGLE:
+        {
+            new_shape_id = _otb_generate_uuid(COMPONENT_CLSID_PREFIXES.LEFT_ANGLE);
+            break;
+        }
+        default:
+        {
+            new_shape_id = null;
+        }
+    }
+
+    return new_shape_id;
+};
+
 export {
     _shape_selected_handler,
     _start_drawing,
     _update_drawing,
+    _create_new_shape_id,
 };
