@@ -33,6 +33,8 @@ import { _get_current_joining_arrow_id, _get_last_hovered_joining_item_id, _set_
 import { _otbf_update_item_join_arrow_id, _otbf_deactivate_item } from '../common/otb_finder';
 import _top_right_static_toolbar from '../toolbars/top_right_static_toolbar';
 import _top_left_bar from '../toolbars/top_left_bar';
+import _keypress_listener from '../common/components/keypress_listener';
+import { KEYPRESSES } from '../common/components/keypress_list';
 
 import notes from '../db/taskboards/notes_db_temp';              // temporary notes storage
 import comments from '../db/taskboards/comments_db_temp';        // temporary comments storage
@@ -382,6 +384,22 @@ const _taskboard_default = () => {
     // - _add_component(component type, component data))
     // - _delete_component(component type, component id)
     // - _update_component(component type, component id);
+    const _undo = () => {
+      console.log("undoing action");
+    };
+
+    const _redo = () => {
+      console.log("redoing action");
+    };
+
+    const _load_keypress_listeners = () => {
+      return (
+        <>
+          <_keypress_listener keypress_handler_func={_undo} key1={KEYPRESSES.ctrl} key2={KEYPRESSES.z} />
+          <_keypress_listener keypress_handler_func={_redo} key1={KEYPRESSES.ctrl} key2={KEYPRESSES.y} />
+        </>
+      );
+    };
 
   /************ Generic Taskboard functions ends ****************/
 
@@ -508,6 +526,8 @@ const _taskboard_default = () => {
         }}
       >
           <_page_mouse_down_listener />
+
+          <_load_keypress_listeners />
 
           <_gridlines_normal grid_size={30} />
 
