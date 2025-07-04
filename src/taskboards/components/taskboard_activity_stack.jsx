@@ -44,14 +44,45 @@ export class Taskboard_Activity_Stack {
       this.#activities_main.shift();
     }
 
-    this.#activities_main.push(item);
-    this.#activities_copy[this.#activities_main.length - 1] = item;
+    this.#activities_main.push(activity);
+    this.#activities_copy[this.#activities_main.length - 1] = activity;
 
+    console.log("activity stack");
+    console.log(this.#activities_main);
     return true;
   }
 
   pop() {
-    return this.#activities_main.pop();
+    let item = this.#activities_main.pop();
+    
+    if(item == undefined)
+    {
+      return null;
+    }
+
+    return item;
+  }
+
+  restore()
+  {
+    let restored_activity = null;
+    let main_len = this.#activities_main.length;
+    let copy_len = this.#activities_copy.length;
+    
+    if(main_len < copy_len)
+    {
+      restored_activity = this.#activities_copy[main_len];
+      if(restored_activity !== null)
+      {
+        this.push(restored_activity);
+      }
+    }
+    else
+    {
+      restored_activity = null;
+    }
+
+    return restored_activity;
   }
 
   peek() {

@@ -10,7 +10,7 @@ const _calculate_triangle_length = (triangle_start_pos_x, triangle_start_pos_y, 
   return Math.sqrt(dx * dx + dy * dy);
 };
 
-const _add_triangle = (id, x1_pos, y1_pos, x2_pos, y2_pos, colour, stroke_width, filleted) => {
+const _add_triangle = (id, x1_pos, y1_pos, x2_pos, y2_pos, colour, stroke_width, filleted, taskboard_type, taskboard_id) => {
   let triangle_length = _calculate_triangle_length(x1_pos, y1_pos, x2_pos, y2_pos);
   
   if(triangle_length < MIN_LINE_LENGTH)

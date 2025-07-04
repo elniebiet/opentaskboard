@@ -9,6 +9,9 @@ import { _set_current_joining_arrow_id, _get_current_joining_arrow_id,
     _get_last_hovered_joining_position, _set_last_hovered_joining_position } from "../globals";
 import { COMPONENT_CLSID_PREFIXES } from "../otb_component_class_id_prefixes";
 import { _otb_generate_uuid } from "../otb_id_generator";
+import { Taskboard_Comp_DS } from "../../taskboards/taskboard_components_data_structure";
+import { TASKBOARD_TYPES, UNUSED} from "../globals";
+import { META_ACTIONS } from "../globals";
 
 /**
  * Generic highlighter component for displaying active/selected element
@@ -36,13 +39,15 @@ import { _otb_generate_uuid } from "../otb_id_generator";
  * @param {boolean} show_top_right_resizer show top right resizer
  * @param {boolean} show_bottom_left_resizer show bottom left resizer
  * @param {boolean} show_bottom_right_resizer show bottom right resizer
+ * @param {TASKBOARD_TYPES} taskboard_type
+ * @param {string} taskboard_id
  * @returns 
  */
 const _highlighter = ({
     item_top_left_pos, item_width, item_height, gap, z_index, line_width, caller_id, 
     join_arrow_ids, highlighter_drag_mouse_down, highlighter_join_started, highlighter_drag_mouse_up,
     overall_taskboard_state, request_taskboard_state_func, taskboard_rerender_func, show_top_left_resizer,
-    show_top_right_resizer, show_bottom_left_resizer, show_bottom_right_resizer
+    show_top_right_resizer, show_bottom_left_resizer, show_bottom_right_resizer, taskboard_type, taskboard_id
 }) => {
 
     let hlight_left_pos = item_top_left_pos.x - gap;
@@ -192,7 +197,27 @@ const _highlighter = ({
         let arrow_id = _otb_generate_uuid(COMPONENT_CLSID_PREFIXES.ARROW);
         if(arrow_id == null) return;
 
-        _add_arrow(arrow_id, e.clientX, e.clientY, e.clientX + 10, e.clientY+10, SELECTED_COLOR_THEME.highlight_colour, 2);
+        // this structure definition follows the format defined in Taskboard_Comp_DS class
+        const new_arrow = new Taskboard_Comp_DS(); 
+        new_arrow.id = arrow_id;
+        new_arrow.x1_pos = e.clientX;
+        new_arrow.y1_pos = e.clientY;
+        new_arrow.x2_pos = e.clientX + 10;
+        new_arrow.y2_pos = e.clientY + 10;
+        new_arrow.colour = SELECTED_COLOR_THEME.highlight_colour;
+        new_arrow.stroke_width = 2; 
+        new_arrow.win_width_perc = UNUSED;
+        new_arrow.text = UNUSED;
+        new_arrow.highlighted = true;
+        new_arrow.active = UNUSED;
+        new_arrow.toolbar_show = true;
+        new_arrow.toolbar_display_loc = {x: 0, y: 0};
+        new_arrow.join_arrow_ids = UNUSED;
+        new_arrow.filleted = UNUSED;
+        new_arrow.taskboard_type = taskboard_type;
+        new_arrow.taskboard_id = taskboard_id;
+
+        _add_arrow(new_arrow, META_ACTIONS.NONE);
         _set_current_joining_arrow_id(arrow_id); // set current joining arrow id for access by another component
         _set_current_joining_position(position); // set the current join position for access by another component
         highlighter_join_started(position, arrow_id);

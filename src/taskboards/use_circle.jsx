@@ -1,6 +1,10 @@
 import circles from "../db/taskboards/circles_db_temp";
 import { LINE_WIDTH_INCR_FACTOR, LINE_WIDTH_DECR_FACTOR, MAX_LINE_WIDTH, MIN_LINE_WIDTH,
   MIN_LINE_LENGTH, ARROW_JOIN_POINT, UNUSED  } from "../common/globals";
+import { META_ACTIONS } from "../common/globals";
+import { Taskboard_Activity_Tracker } from "./components/taskboard_activity_tracker";
+import { Taskboard_Activity } from "./components/taskboard_activity";
+import { ACTIONS } from "../common/globals";
 
 const _calculate_circle_length = (circle_start_pos_x, circle_start_pos_y, circle_end_pos_x, circle_end_pos_y) => {
   const dx = circle_end_pos_x - circle_start_pos_x;
@@ -8,35 +12,37 @@ const _calculate_circle_length = (circle_start_pos_x, circle_start_pos_y, circle
   return Math.sqrt(dx * dx + dy * dy);
 };
 
-const _add_circle = (id, x1_pos, y1_pos, x2_pos, y2_pos, colour, stroke_width) => {
 
-  let circle_length = _calculate_circle_length(x1_pos, y1_pos, x2_pos, y2_pos);
+/**
+ * add new circle
+ * @param {Taskboard_Comp_DS} new_circle 
+ * @param {META_ACTIONS} meta_action - meta action (e.g., undo, redo etc.)
+ * @returns true if circle added successfully, false otherwise
+ */
+const _add_circle = (new_circle, meta_action = META_ACTIONS.NONE) => {
+
+  if(typeof new_circle !== "object" || new_circle == null) return false;
+
+  let circle_length = _calculate_circle_length(new_circle.x1_pos, new_circle.y1_pos, new_circle.x2_pos, new_circle.y2_pos);
   
   if(circle_length < MIN_LINE_LENGTH)
   {
-    x2_pos = x1_pos + MIN_LINE_LENGTH;
-    y2_pos = y1_pos + MIN_LINE_LENGTH;
+    new_circle.x2_pos = new_circle.x1_pos + MIN_LINE_LENGTH;
+    new_circle.y2_pos = new_circle.y1_pos + MIN_LINE_LENGTH;
   }
+  
+  new_circle.win_width_perc = UNUSED,
+  new_circle.text = UNUSED,
+  new_circle.highlighted = true,
+  new_circle.active = false,
+  new_circle.toolbar_show = true,
+  new_circle.toolbar_display_loc = {x: 200, y: 200},
+  new_circle.join_arrow_ids = {top: [-1, ARROW_JOIN_POINT.START_POINT], bottom: [-1, ARROW_JOIN_POINT.START_POINT], left: [-1, ARROW_JOIN_POINT.START_POINT], right: [-1, ARROW_JOIN_POINT.START_POINT]},
+  new_circle.filleted = UNUSED;
 
-  // this structure definition follows the format defined in taskboard_components_data_structure.txt 
-  const new_circle = { 
-      id: id,
-      x1_pos: x1_pos,
-      y1_pos: y1_pos,
-      x2_pos: x2_pos,
-      y2_pos: y2_pos,
-      colour: colour,
-      stroke_width: stroke_width, 
-      win_width_perc: UNUSED,
-      text: UNUSED,
-      highlighted: true,
-      active: false,
-      toolbar_show: true,
-      toolbar_display_loc: {x: 200, y: 200},
-      join_arrow_ids: {top: [-1, ARROW_JOIN_POINT.START_POINT], bottom: [-1, ARROW_JOIN_POINT.START_POINT], left: [-1, ARROW_JOIN_POINT.START_POINT], right: [-1, ARROW_JOIN_POINT.START_POINT]},
-      filleted: UNUSED,
-  };
   circles.push(new_circle);
+
+  return true;
 };
 
 /**
@@ -44,8 +50,9 @@ const _add_circle = (id, x1_pos, y1_pos, x2_pos, y2_pos, colour, stroke_width) =
  * @param {int} id - circle id
  * @param {int} new_x2_pos - new x cordinate
  * @param {int} new_y2_pos - new y cordinate
+ * @param {boolean} b_drawing_over - true if drawing is finished for a circle
  */
-const _update_circle_end_pos = (id, new_x2_pos, new_y2_pos) => {    
+const _update_circle_end_pos = (id, new_x2_pos, new_y2_pos, b_drawing_over) => {    
     for(let i=0; i<circles.length; i++)
     {
       if(circles[i].id === id)
@@ -60,6 +67,15 @@ const _update_circle_end_pos = (id, new_x2_pos, new_y2_pos) => {
 
         circles[i].x2_pos = new_x2_pos;
         circles[i].y2_pos = new_y2_pos;
+
+        if(b_drawing_over)
+        {
+          // add action to activity tracker
+          const activity = new Taskboard_Activity(circles[i].taskboard_id, ACTIONS.ADD, circles[i]);
+          const activity_tracker = new Taskboard_Activity_Tracker(circles[i].taskboard_type);
+          let b_result = activity_tracker._add_activity(circles[i].taskboard_type, activity);
+        }
+
         break;
       }
     }
@@ -151,12 +167,30 @@ const _update_circle_toolbar_loc = (id, int_loc_x, int_loc_y) => {
 /**
  * delete circle
  * @param {int} id - circle id
+ * @param {META_ACTIONS} meta_action - meta action (e.g., undo, redo etc.)
  */
-const _delete_circle = (id) => {
+const _delete_circle = (id, meta_action = META_ACTIONS.NONE) => {
+  let b_result = false;
+
   const index = circles.findIndex(circle => circle.id === id);
+
   if (index !== -1) {
-      circles.splice(index, 1); 
+    b_result = true; 
+    
+    let circle = circles[index];
+
+    circles.splice(index, 1); 
+
+    if(meta_action === META_ACTIONS.NONE)
+    {
+      // add action to activity tracker
+      const delete_activity = new Taskboard_Activity(circle.taskboard_id, ACTIONS.DELETE, circle);
+      const activity_tracker = new Taskboard_Activity_Tracker(circle.taskboard_type);
+      b_result = activity_tracker._add_activity(circle.taskboard_type, delete_activity);
+    }
   }
+
+  return b_result;
 };
 
 /**

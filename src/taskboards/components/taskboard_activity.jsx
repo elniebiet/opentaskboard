@@ -13,7 +13,7 @@ export class Taskboard_Activity {
     let act_type = ACTIONS.NONE;
 
     // validate action type
-    if((!Object.values(ACTIONS).includes(action)))
+    if((Object.values(ACTIONS).includes(action)))
     {
       act_type = action;
     }
@@ -38,9 +38,15 @@ export class Taskboard_Activity {
           toolbar_display_loc: activity_taskboard_component_structure.toolbar_display_loc,
           join_arrow_ids: activity_taskboard_component_structure.join_arrow_ids,
           filleted: activity_taskboard_component_structure.filleted,
+          taskboard_type: activity_taskboard_component_structure.taskboard_type,
+          taskboard_id: activity_taskboard_component_structure.taskboard_id,
         }
     };
 
     this.#activity = item;
+  }
+
+  _get_activity(){
+    return this.#activity;
   }
 }

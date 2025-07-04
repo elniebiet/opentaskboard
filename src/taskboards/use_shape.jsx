@@ -11,6 +11,9 @@ import { _add_rightangle, _update_rightangle_end_pos } from "./use_rightangle";
 import { _add_leftangle, _update_leftangle_end_pos } from "./use_leftangle";
 import { COMPONENT_CLSID_PREFIXES } from "../common/otb_component_class_id_prefixes";
 import { _otb_generate_uuid } from "../common/otb_id_generator";
+import { Taskboard_Comp_DS } from "./taskboard_components_data_structure";
+import { UNUSED } from "../common/globals";
+import { META_ACTIONS } from "../common/globals";
 
 /**
  * Handler first called when a shape is selected
@@ -24,53 +27,74 @@ const _shape_selected_handler = (e, sel_shape_type) =>
     _set_global_new_shape_type(sel_shape_type);
 };
 
-const _start_drawing = ({ shape_id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour, stroke_width}) => {
+const _start_drawing = ({ shape_id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour, stroke_width, taskboard_type, taskboard_id}) => {
     let type_of_shape = _get_global_new_shape_type(); 
+
+    // this structure definition follows the format defined in Taskboard_Comp_DS class
+    const new_shape = new Taskboard_Comp_DS(); 
+    new_shape.id = shape_id;
+    new_shape.x1_pos = start_pos_x;
+    new_shape.y1_pos = start_pos_y;
+    new_shape.x2_pos = end_pos_x;
+    new_shape.y2_pos = end_pos_y;
+    new_shape.colour = colour;
+    new_shape.stroke_width = stroke_width; 
+    new_shape.win_width_perc = UNUSED;
+    new_shape.text = UNUSED;
+    new_shape.highlighted = true;
+    new_shape.active = UNUSED;
+    new_shape.toolbar_show = true;
+    new_shape.toolbar_display_loc = {x: 200, y: 200};
+    new_shape.join_arrow_ids = UNUSED;
+    new_shape.filleted = UNUSED;
+    new_shape.taskboard_type = taskboard_type;
+    new_shape.taskboard_id = taskboard_id;
+
     switch(type_of_shape)
     {
         case SHAPES_TOOLBAR_ITEM_TYPE.STBI_ARROW:
         {
-            _add_arrow(shape_id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour, stroke_width);
+            _add_arrow(new_shape, META_ACTIONS.NONE);
             break;
         }
         case SHAPES_TOOLBAR_ITEM_TYPE.STBI_LINE:
         {
-            _add_line(shape_id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour, stroke_width);
+            _add_line(shape_id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour, stroke_width, taskboard_type, taskboard_id);
             break;
         }
         case SHAPES_TOOLBAR_ITEM_TYPE.STBI_CIRCLE:
         {
-            _add_circle(shape_id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour, stroke_width);
+            _add_circle(new_shape);
             break;
         }
         case SHAPES_TOOLBAR_ITEM_TYPE.STBI_RECT:
         {
             const filleted = 0;
-            _add_rectangle(shape_id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour, stroke_width, filleted);
+            _add_rectangle(shape_id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour, stroke_width, filleted, taskboard_type, taskboard_id);
             break;
         }
         case SHAPES_TOOLBAR_ITEM_TYPE.STBI_FILLETED_RECT:
         {
             const filleted = 1;
-            _add_rectangle(shape_id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour, stroke_width, filleted);
+            _add_rectangle(shape_id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour, stroke_width, filleted, taskboard_type, taskboard_id);
             break;
         }
         case SHAPES_TOOLBAR_ITEM_TYPE.STBI_TRIANGLE:
         {
             const filleted = 0;
-            _add_triangle(shape_id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour, stroke_width, filleted);
+            _add_triangle(shape_id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour, stroke_width, filleted, taskboard_type, taskboard_id);
             break;
         }
         case SHAPES_TOOLBAR_ITEM_TYPE.STBI_RIGHT_TRIANGLE:
         {
             const filleted = 0;
-            _add_rightangle(shape_id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour, stroke_width, filleted);
+            _add_rightangle(shape_id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour, stroke_width, filleted, taskboard_type, taskboard_id);
             break;
         }
         case SHAPES_TOOLBAR_ITEM_TYPE.STBI_LEFT_TRIANGLE:
         {
             const filleted = 0;
-            _add_leftangle(shape_id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour, stroke_width, filleted);
+            _add_leftangle(shape_id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour, stroke_width, filleted, taskboard_type, taskboard_id);
             break;
         }
         default:
@@ -81,12 +105,12 @@ const _start_drawing = ({ shape_id, start_pos_x, start_pos_y, end_pos_x, end_pos
     }
 };
 
-const _update_drawing = ({e, shape_type}) => {
+const _update_drawing = ({e, shape_type, b_drawing_over}) => {
     switch(shape_type)
     {
         case SHAPES_TOOLBAR_ITEM_TYPE.STBI_ARROW:
         {
-            _update_arrow_end_pos(_get_global_new_shape_id(), e.clientX, e.clientY);
+            _update_arrow_end_pos(_get_global_new_shape_id(), e.clientX, e.clientY, b_drawing_over);
             break;
         }
         case SHAPES_TOOLBAR_ITEM_TYPE.STBI_LINE:
@@ -96,7 +120,7 @@ const _update_drawing = ({e, shape_type}) => {
         }
         case SHAPES_TOOLBAR_ITEM_TYPE.STBI_CIRCLE:
         {
-            _update_circle_end_pos(_get_global_new_shape_id(), e.clientX, e.clientY);
+            _update_circle_end_pos(_get_global_new_shape_id(), e.clientX, e.clientY, b_drawing_over);
             break;
         }
         case SHAPES_TOOLBAR_ITEM_TYPE.STBI_RECT:

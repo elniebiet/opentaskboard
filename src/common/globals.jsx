@@ -219,6 +219,12 @@ const ACTIONS = {
     DELETE:         2,
     UPDATE:         3,
 };
+
+const META_ACTIONS = {
+    NONE:          0,
+    UNDO:          1,
+    REDO:          2,
+};
 /********** Misc block ends ****************/
 
 
@@ -286,5 +292,6 @@ export {
     /* Other misc exports */
     UNUSED,
     ACTIONS,
+    META_ACTIONS,
 };
 

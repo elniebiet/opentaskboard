@@ -8,7 +8,7 @@ const _calculate_leftangle_length = (leftangle_start_pos_x, leftangle_start_pos_
   return Math.sqrt(dx * dx + dy * dy);
 };
 
-const _add_leftangle = (id, x1_pos, y1_pos, x2_pos, y2_pos, colour, stroke_width, filleted) => {
+const _add_leftangle = (id, x1_pos, y1_pos, x2_pos, y2_pos, colour, stroke_width, filleted, taskboard_type, taskboard_id) => {
   let leftangle_length = _calculate_leftangle_length(x1_pos, y1_pos, x2_pos, y2_pos);
   
   if(leftangle_length < MIN_LINE_LENGTH)

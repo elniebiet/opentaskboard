@@ -7,6 +7,8 @@ const COMPONENT_CLSID_PREFIXES = {
     NONE:                                   "00000000",
     TASKBOARD:                              "00000001",
     STICKY_NOTE:                            "00000002",
+
+    // Shapes
     ARROW:                                  "00000003",
     LINE:                                   "00000004",
     CIRCLE:                                 "00000005",
@@ -16,6 +18,7 @@ const COMPONENT_CLSID_PREFIXES = {
     RECT:                                   "00000009",
     FILLETED_RECT:                          "00000010",
     
+    // Last item
     LAST:                                   "11111111",
 };
 

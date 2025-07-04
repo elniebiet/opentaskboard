@@ -4,7 +4,7 @@ import Fab from '@mui/material/Fab';
 import { styled } from '@mui/system';
 import { useState, useEffect } from 'react';
 import { useRef } from 'react';
-import { TASKBOARD_COMPONENT_TYPE } from './toolbar_globals';
+import { TASKBOARD_TOOLBAR_ITEM } from './toolbar_globals';
 import { TOOLBAR_ITEM_TYPE } from '../common/globals';
 import { SHAPES_TOOLBAR_ITEM_TYPE } from './toolbar_globals';
 import { TASKBOARD_DEFAULT_SHAPES_TB_LOC } from './toolbar_globals';

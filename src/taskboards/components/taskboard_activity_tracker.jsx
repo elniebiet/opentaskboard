@@ -27,6 +27,7 @@ export class Taskboard_Activity_Tracker {
 
     /**
      * add activity to activity stack 
+     * @param {TASKBOARD_TYPES} taskboard_type
      * @param {Taskboard_Activity} activity 
      */
     _add_activity = (taskboard_type, activity) => {
@@ -41,6 +42,7 @@ export class Taskboard_Activity_Tracker {
             case TASKBOARD_TYPES.TASKBOARD_DEFAULT:
             {
                 b_result = Taskboard_Default_Activity_Stack.push(activity);
+                break;
             }
             default:
             {
@@ -50,5 +52,97 @@ export class Taskboard_Activity_Tracker {
         }
 
         return b_result;
+    };
+
+    /**
+     * delete latest activity from stack 
+     * @param {TASKBOARD_TYPES} taskboard_type
+     * @param {Taskboard_Activity} activity 
+     */
+    _delete_latest = (taskboard_type, activity) => {
+        if(taskboard_type != this.#taskboard_type)
+        {
+            return false;
+        }
+
+        let b_result = true;
+        switch(taskboard_type)
+        {
+            case TASKBOARD_TYPES.TASKBOARD_DEFAULT:
+            {
+                let popped_activity = Taskboard_Default_Activity_Stack.pop();
+                if((activity == null) || 
+                    (popped_activity._get_activity().taskboard_component_structure.id !== activity._get_activity().taskboard_component_structure.id))
+                {
+                    b_result = false;
+                }
+                break;
+            }
+            default:
+            {
+                b_result = false;
+                break;
+            }
+        }
+
+        return b_result;
+    };
+
+    /**
+     * undo last action by removing from the activity stack
+     * @param {*} taskboard_type 
+     * @returns undone activity or null 
+     */
+    _undo = (taskboard_type) => {
+        if(taskboard_type != this.#taskboard_type)
+        {
+            return null;
+        }
+
+        let activity = null;
+        switch(taskboard_type)
+        {
+            case TASKBOARD_TYPES.TASKBOARD_DEFAULT:
+            {
+                activity = Taskboard_Default_Activity_Stack.pop();
+                break;
+            }
+            default:
+            {
+                activity = null;
+                break;
+            }
+        }
+
+        return activity;
+    };
+
+    /**
+     * redo an activity by copying back into the main activity stack list
+     * @param {*} taskboard_type 
+     * @returns redone activity or null
+     */
+    _redo = (taskboard_type) => {
+        if(taskboard_type != this.#taskboard_type)
+        {
+            return null;
+        }
+
+        let activity = null;
+        switch(taskboard_type)
+        {
+            case TASKBOARD_TYPES.TASKBOARD_DEFAULT:
+            {
+                activity = Taskboard_Default_Activity_Stack.restore();
+                break;
+            }
+            default:
+            {
+                activity = null;
+                break;
+            }
+        }
+
+        return activity;
     };
 }

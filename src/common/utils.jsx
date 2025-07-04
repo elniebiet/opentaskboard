@@ -44,11 +44,23 @@ const _get_cursor_type = (element) => {
 function _wait_until(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
-  
+
+/**
+ * Get component clsid prefix from supplied id e.g., all component ids are prefixed with a component class id
+ * @param {*} id 
+ * @return {string} COMPONENT_CLSID_PREFIXES : component class id prefix
+ */
+const _get_component_clsid_prefix = (id) => {
+    if ((id == null ) || (typeof id !== "string")) return "";
+
+    const parts = id.split("-");
+    return parts.length > 1 ? parts[0] : "";
+};
 
 // export
 export {
     _get_complement_colour,
     _get_cursor_type,
     _wait_until,
+    _get_component_clsid_prefix,
 };

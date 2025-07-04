@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { _set_global_toolbar_items_active_state } from "../../taskboards/taskboard_globals";
-import { TASKBOARD_COMPONENT_TYPE } from "../../toolbars/toolbar_globals";
+import { TASKBOARD_TOOLBAR_ITEM } from "../../toolbars/toolbar_globals";
 import { _get_max_z_index, _use_max_z_index } from "../globals";
 import { _update_line_highlighted, _update_line_start_pos, _update_line_end_pos,
     _update_line_colour, _update_line_toolbar_show, _update_line_toolbar_loc,
@@ -10,6 +10,7 @@ import { SELECTED_COLOR_THEME } from "./use_colour_themes";
 import _line_toolbar from "../../toolbars/line_toolbar";
 import { LINE_TOOLBAR_ITEMS } from "../../toolbars/toolbar_globals";
 import { TASKBOARD_STATES } from "../../taskboards/taskboard_globals";
+import { TASKBOARD_TYPES } from "../globals";
 
 /**
  * _draggable_line - Draggable line component (functions very similar to the draggable line component)
@@ -27,11 +28,14 @@ import { TASKBOARD_STATES } from "../../taskboards/taskboard_globals";
  * @param {int} win_width - Window width
  * @param {int} win_height - Window height
  * @param {function} request_taskboard_state_func - Function to request taskboard state
+ * @param {TASKBOARD_TYPES} taskboard_type
+ * @param {string} taskboard_id
  * @returns 
  */
 
 const _draggable_line = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour = "black", stroke_width = 2, 
-    is_highlighted, taskboard_rerender_func, show_toolbar, win_width, win_height, request_taskboard_state_func }) => {
+    is_highlighted, taskboard_rerender_func, show_toolbar, win_width, win_height, request_taskboard_state_func, 
+    taskboard_type, taskboard_id }) => {
 
     const [line_start_pos, _set_line_start_pos] = useState({ x: start_pos_x, y: start_pos_y });
     const [line_end_pos, _set_line_end_pos] = useState({ x: end_pos_x, y: end_pos_y });
@@ -156,7 +160,7 @@ const _draggable_line = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, c
             {
                 _set_z_index(_get_max_z_index());
                 _use_max_z_index();
-                _set_global_toolbar_items_active_state(TASKBOARD_COMPONENT_TYPE.TCT_SHAPE, true, true);
+                _set_global_toolbar_items_active_state(TASKBOARD_TOOLBAR_ITEM.TTI_SHAPE, true, true);
                 _set_arr_highlighted(true);
                 _update_line_highlighted(id, true);
                 

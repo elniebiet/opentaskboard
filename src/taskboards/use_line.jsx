@@ -8,7 +8,7 @@ const _calculate_line_length = (line_start_pos_x, line_start_pos_y, line_end_pos
   return Math.sqrt(dx * dx + dy * dy);
 };
 
-const _add_line = (id, x1_pos, y1_pos, x2_pos, y2_pos, colour, stroke_width) => {
+const _add_line = (id, x1_pos, y1_pos, x2_pos, y2_pos, colour, stroke_width, taskboard_type, taskboard_id) => {
 
   let line_length = _calculate_line_length(x1_pos, y1_pos, x2_pos, y2_pos);
   
@@ -18,6 +18,7 @@ const _add_line = (id, x1_pos, y1_pos, x2_pos, y2_pos, colour, stroke_width) => 
     y2_pos = y1_pos + MIN_LINE_LENGTH;
   }
 
+  // this structure definition follows the format defined in taskboard_components_data_structure.txt 
   const new_line = { 
       id: id,
       x1_pos: x1_pos,

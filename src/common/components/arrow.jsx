@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { _set_global_toolbar_items_active_state } from "../../taskboards/taskboard_globals";
-import { TASKBOARD_COMPONENT_TYPE } from "../../toolbars/toolbar_globals";
+import { TASKBOARD_TOOLBAR_ITEM } from "../../toolbars/toolbar_globals";
 import { _get_max_z_index, _use_max_z_index } from "../globals";
 import { _update_arrow_highlighted, _update_arrow_start_pos, _update_arrow_end_pos,
     _update_arrow_colour, _update_arrow_toolbar_show, _update_arrow_toolbar_loc,
@@ -31,7 +31,8 @@ import { TASKBOARD_STATES } from "../../taskboards/taskboard_globals";
  */
 
 const _draggable_arrow = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour = "black", stroke_width = 2, 
-    is_highlighted, taskboard_rerender_func, show_toolbar, win_width, win_height, request_taskboard_state_func }) => {
+    is_highlighted, taskboard_rerender_func, show_toolbar, win_width, win_height, request_taskboard_state_func, 
+    taskboard_type, taskboard_id }) => {
 
     const [line_start_pos, _set_line_start_pos] = useState({ x: start_pos_x, y: start_pos_y });
     const [line_end_pos, _set_line_end_pos] = useState({ x: end_pos_x, y: end_pos_y });
@@ -156,7 +157,7 @@ const _draggable_arrow = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, 
             {
                 _set_z_index(_get_max_z_index());
                 _use_max_z_index();
-                _set_global_toolbar_items_active_state(TASKBOARD_COMPONENT_TYPE.TCT_SHAPE, true, true);
+                _set_global_toolbar_items_active_state(TASKBOARD_TOOLBAR_ITEM.TTI_SHAPE, true, true);
                 _set_arr_highlighted(true);
                 _update_arrow_highlighted(id, true);
                 

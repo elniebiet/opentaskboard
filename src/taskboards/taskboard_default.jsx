@@ -29,12 +29,14 @@ import _note_toolbar from '../toolbars/note_toolbar';
 import { _update_arrow_end_pos } from './use_arrow';
 import { _get_current_joining_arrow_id, _get_last_hovered_joining_item_id, _set_last_hovered_joining_item_id, 
         _get_last_hovered_joining_position, _set_last_hovered_joining_position,
-        ARROW_JOIN_POINT } from '../common/globals';
+        ARROW_JOIN_POINT, TASKBOARD_TYPES } from '../common/globals';
 import { _otbf_update_item_join_arrow_id, _otbf_deactivate_item } from '../common/otb_finder';
 import _top_right_static_toolbar from '../toolbars/top_right_static_toolbar';
 import _top_left_bar from '../toolbars/top_left_bar';
 import _keypress_listener from '../common/components/keypress_listener';
 import { KEYPRESSES } from '../common/components/keypress_list';
+import { Taskboard_Activity_Tracker } from './components/taskboard_activity_tracker';
+import { _undo_action, _redo_action } from './components/taskboard_undo_redo';
 
 import notes from '../db/taskboards/notes_db_temp';              // temporary notes storage
 import comments from '../db/taskboards/comments_db_temp';        // temporary comments storage
@@ -57,8 +59,8 @@ import leftangles from '../db/taskboards/leftangles_db_temp';    // temporary le
     // - _update_component(component type, component id);
 
  */
-const _taskboard_default = () => {
-
+const _taskboard_default = ({taskboard_id = 0, /* taskboard id should be supplied by caller*/ taskboard_type = TASKBOARD_TYPES.TASKBOARD_DEFAULT}) => {
+  
   /***************** Misc block begins *************************/
   let { width, height } = _get_window_size();
   let screen_size = _get_screen_size(); 
@@ -229,7 +231,9 @@ const _taskboard_default = () => {
               end_pos_x: e.clientX, 
               end_pos_y: e.clientY, 
               colour: "#0000ff", 
-              stroke_width: 3
+              stroke_width: 3,
+              taskboard_type: TASKBOARD_TYPES.TASKBOARD_DEFAULT,
+              taskboard_id: taskboard_id,
             });
             _trigger_taskboard_rerender();
             _request_taskboard_state(TASKBOARD_STATES.TBS_DRAWING_SHAPE);
@@ -263,6 +267,50 @@ const _taskboard_default = () => {
   /**************** Page listener ends **************************/
 
   /************ Generic Taskboard functions begins **************/
+  // TODO: Implement the following functions
+  // - _undo
+  // - _redo
+  // - _add_component(component type, component data))
+  // - _delete_component(component type, component id)
+  // - _update_component(component type, component id);
+  const _undo = () => {
+    const activity_tracker = new Taskboard_Activity_Tracker(TASKBOARD_TYPES.TASKBOARD_DEFAULT);
+    let undone_activity = activity_tracker._undo(TASKBOARD_TYPES.TASKBOARD_DEFAULT);
+    console.log("removed activity: ");
+    console.log(undone_activity);
+    
+    let b_result = _undo_action(taskboard_id, taskboard_type, undone_activity);
+    if(b_result)
+    {
+      _trigger_taskboard_rerender();
+    }
+    else
+    {
+      console.error("Failed to undo action: " + undone_activity);
+    }
+  };
+
+  const _redo = () => {
+    const activity_tracker = new Taskboard_Activity_Tracker(TASKBOARD_TYPES.TASKBOARD_DEFAULT);
+    let restored_activity = activity_tracker._redo(TASKBOARD_TYPES.TASKBOARD_DEFAULT);
+    console.log("restored activity: ");
+    console.log(restored_activity);
+    
+    if(restored_activity !== null)
+    {
+      let b_result = _redo_action(taskboard_id, taskboard_type, restored_activity);
+      if(b_result)
+      {
+        _trigger_taskboard_rerender();
+      }
+      else
+      {
+        // failed to restore after adding to tracker, remove activity from tracker/stack
+        activity_tracker._delete_latest(TASKBOARD_TYPES.TASKBOARD_DEFAULT, restored_activity);
+      }
+    }
+  };
+
   const  _load_all_components = () => {
     return (
       <div>
@@ -276,19 +324,20 @@ const _taskboard_default = () => {
                       x1_pos={note.x1_pos} y1_pos={note.y1_pos} win_width={width} win_height={height} colour={note.colour} taskboard_rerender_func={_trigger_taskboard_rerender}
                       show_toolbar={note.toolbar_show} highlighted={note.highlighted} join_arrow_ids={note.join_arrow_ids} request_taskboard_state_func={_request_taskboard_state} 
                       overall_taskboard_state={taskboard_state} main_page_click_counter={click_counter} main_page_last_click_event_target={click_event_target}
+                      taskboard_type={taskboard_type} taskboard_id={taskboard_id}
                     />
                   </div>
                 </div>
               ))}
             </div>
 
-            <div>
+            {/* <div>
               {comments.map((comment) => (
                 <_comment key={comment.id} id={comment.id} text={comment.text} win_width_perc={comment.win_width_perc} tb_item_loc_update_func={_set_tb_item_loc_func} 
                 x1_pos={comment.x1_pos} y1_pos={comment.y1_pos} win_width={width} win_height={height} colour={comment.colour} taskboard_rerender_func={_trigger_taskboard_rerender}
                 request_taskboard_state_func={_request_taskboard_state} overall_taskboard_state={taskboard_state} />
               ))}
-            </div>
+            </div> */}
           </div>
           
           {/* display shapes */}
@@ -299,6 +348,7 @@ const _taskboard_default = () => {
                   <_draggable_arrow key={arrow.id} id={arrow.id} start_pos_x={arrow.x1_pos} start_pos_y={arrow.y1_pos} end_pos_x={arrow.x2_pos} end_pos_y={arrow.y2_pos} 
                   colour={arrow.colour} stroke_width={arrow.stroke_width} is_highlighted={arrow.highlighted} taskboard_rerender_func={_trigger_taskboard_rerender} 
                   show_toolbar={arrow.toolbar_show} win_width={width} win_height={height} request_taskboard_state_func={_request_taskboard_state} overall_taskboard_state={taskboard_state}
+                  taskboard_type={taskboard_type} taskboard_id={taskboard_id}
                   />
                 ))}
               </div>
@@ -309,6 +359,7 @@ const _taskboard_default = () => {
                   <_draggable_line key={line.id} id={line.id} start_pos_x={line.x1_pos} start_pos_y={line.y1_pos} end_pos_x={line.x2_pos} end_pos_y={line.y2_pos} 
                   colour={line.colour} stroke_width={line.stroke_width} is_highlighted={line.highlighted} taskboard_rerender_func={_trigger_taskboard_rerender} 
                   show_toolbar={line.toolbar_show} win_width={width} win_height={height} request_taskboard_state_func={_request_taskboard_state} overall_taskboard_state={taskboard_state}
+                  taskboard_type={taskboard_type} taskboard_id={taskboard_id}
                   />
                 ))}
               </div>
@@ -320,7 +371,7 @@ const _taskboard_default = () => {
                   colour={circle.colour} stroke_width={circle.stroke_width} is_highlighted={circle.highlighted} taskboard_rerender_func={_trigger_taskboard_rerender}
                   active={circle.active} join_arrow_ids={circle.join_arrow_ids} 
                   show_toolbar={circle.toolbar_show} win_width={width} win_height={height} request_taskboard_state_func={_request_taskboard_state} overall_taskboard_state={taskboard_state}
-                  main_page_click_counter={click_counter} main_page_last_click_event_target={click_event_target}
+                  main_page_click_counter={click_counter} main_page_last_click_event_target={click_event_target} taskboard_type={taskboard_type} taskboard_id={taskboard_id}
                   />
                 ))}
               </div>
@@ -332,7 +383,7 @@ const _taskboard_default = () => {
                   colour={rectangle.colour} stroke_width={rectangle.stroke_width} is_highlighted={rectangle.highlighted} taskboard_rerender_func={_trigger_taskboard_rerender}
                   active={rectangle.active} join_arrow_ids={rectangle.join_arrow_ids} 
                   show_toolbar={rectangle.toolbar_show} win_width={width} win_height={height} request_taskboard_state_func={_request_taskboard_state} overall_taskboard_state={taskboard_state}
-                  main_page_click_counter={click_counter} main_page_last_click_event_target={click_event_target} filleted={rectangle.filleted}
+                  main_page_click_counter={click_counter} main_page_last_click_event_target={click_event_target} filleted={rectangle.filleted} taskboard_type={taskboard_type} taskboard_id={taskboard_id}
                   />
                 ))}
               </div>
@@ -344,7 +395,7 @@ const _taskboard_default = () => {
                   colour={triangle.colour} stroke_width={triangle.stroke_width} is_highlighted={triangle.highlighted} taskboard_rerender_func={_trigger_taskboard_rerender}
                   active={triangle.active} join_arrow_ids={triangle.join_arrow_ids} 
                   show_toolbar={triangle.toolbar_show} win_width={width} win_height={height} request_taskboard_state_func={_request_taskboard_state} overall_taskboard_state={taskboard_state}
-                  main_page_click_counter={click_counter} main_page_last_click_event_target={click_event_target} filleted={triangle.filleted}
+                  main_page_click_counter={click_counter} main_page_last_click_event_target={click_event_target} filleted={triangle.filleted} taskboard_type={taskboard_type} taskboard_id={taskboard_id}
                   />
                 ))}
               </div>
@@ -356,7 +407,7 @@ const _taskboard_default = () => {
                   colour={rightangle.colour} stroke_width={rightangle.stroke_width} is_highlighted={rightangle.highlighted} taskboard_rerender_func={_trigger_taskboard_rerender}
                   active={rightangle.active} join_arrow_ids={rightangle.join_arrow_ids} 
                   show_toolbar={rightangle.toolbar_show} win_width={width} win_height={height} request_taskboard_state_func={_request_taskboard_state} overall_taskboard_state={taskboard_state}
-                  main_page_click_counter={click_counter} main_page_last_click_event_target={click_event_target} filleted={rightangle.filleted}
+                  main_page_click_counter={click_counter} main_page_last_click_event_target={click_event_target} filleted={rightangle.filleted} taskboard_type={taskboard_type} taskboard_id={taskboard_id}
                   />
                 ))}
               </div>
@@ -368,7 +419,7 @@ const _taskboard_default = () => {
                   colour={leftangle.colour} stroke_width={leftangle.stroke_width} is_highlighted={leftangle.highlighted} taskboard_rerender_func={_trigger_taskboard_rerender}
                   active={leftangle.active} join_arrow_ids={leftangle.join_arrow_ids} 
                   show_toolbar={leftangle.toolbar_show} win_width={width} win_height={height} request_taskboard_state_func={_request_taskboard_state} overall_taskboard_state={taskboard_state}
-                  main_page_click_counter={click_counter} main_page_last_click_event_target={click_event_target} filleted={leftangle.filleted}
+                  main_page_click_counter={click_counter} main_page_last_click_event_target={click_event_target} filleted={leftangle.filleted} taskboard_type={taskboard_type} taskboard_id={taskboard_id}
                   />
                 ))}
               </div>
@@ -378,28 +429,14 @@ const _taskboard_default = () => {
     );
   };
 
-  // TODO: Implement the following functions
-    // - _undo
-    // - _redo
-    // - _add_component(component type, component data))
-    // - _delete_component(component type, component id)
-    // - _update_component(component type, component id);
-    const _undo = () => {
-      console.log("undoing action");
-    };
-
-    const _redo = () => {
-      console.log("redoing action");
-    };
-
-    const _load_keypress_listeners = () => {
-      return (
-        <>
-          <_keypress_listener keypress_handler_func={_undo} key1={KEYPRESSES.ctrl} key2={KEYPRESSES.z} />
-          <_keypress_listener keypress_handler_func={_redo} key1={KEYPRESSES.ctrl} key2={KEYPRESSES.y} />
-        </>
-      );
-    };
+  const _load_keypress_listeners = () => {
+    return (
+      <>
+        <_keypress_listener keypress_handler_func={_undo} key1={KEYPRESSES.ctrl} key2={KEYPRESSES.z} />
+        <_keypress_listener keypress_handler_func={_redo} key1={KEYPRESSES.ctrl} key2={KEYPRESSES.y} />
+      </>
+    );
+  };
 
   /************ Generic Taskboard functions ends ****************/
 
@@ -416,7 +453,7 @@ const _taskboard_default = () => {
         if(taskboard_state === TASKBOARD_STATES.TBS_DRAWING_SHAPE)
         {
           // draw shape
-          _update_drawing({e: e, shape_type: _get_global_new_shape_type()});
+          _update_drawing({e: e, shape_type: _get_global_new_shape_type(), b_drawing_over: false});
           _trigger_taskboard_rerender();
         }
     };
@@ -437,11 +474,10 @@ const _taskboard_default = () => {
     const _drawing_shape_over_mouseup = (e) => {
         if(taskboard_state === TASKBOARD_STATES.TBS_DRAWING_SHAPE)
         {
-          // draw shape
-          _update_drawing({e: e, shape_type: _get_global_new_shape_type()});
-          console.log("drew " + _get_global_new_shape_type() + " at this point: " + start_draw_pos.x1_pos + ", " + start_draw_pos.y1_pos + " to this point: " + e.clientX  + ", " + e.clientY);
+          // done drawing: final update
+          _update_drawing({e: e, shape_type: _get_global_new_shape_type(),  b_drawing_over: true});
 
-          // done drawing
+          // reset the global new shape type
           _set_start_draw_pos({x1_pos: 100, y1_pos: 100});
           _set_global_new_shape_id(0);
           _request_taskboard_state(TASKBOARD_STATES.TBS_BEGIN_DRAWING_SHAPE);

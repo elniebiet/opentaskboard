@@ -20,14 +20,14 @@ const TASKBOARD_DEFAULT_SHAPES_TB_LOC =
 const TASKBOARD_DEFAULT_TB_SIZE = 0.02;
 
 // Taskboard Toolbar item indices
-const TASKBOARD_COMPONENT_TYPE = {
-    TCT_CURSOR:             1,
-    TCT_STKNOTE:            2,
-    TCT_COMMENT:            3,
-    TCT_MARKER:             4,
-    TCT_SHAPE:              5,
-    TCT_FILL:               6,
-    TCT_ERASER:             7,
+const TASKBOARD_TOOLBAR_ITEM = {
+    TTI_CURSOR:             1,
+    TTI_STKNOTE:            2,
+    TTI_COMMENT:            3,
+    TTI_MARKER:             4,
+    TTI_SHAPE:              5,
+    TTI_FILL:               6,
+    TTI_ERASER:             7,
 };
 
 // Shapes Toolbar sub-item list begin
@@ -128,7 +128,7 @@ export {
     TASKBOARD_DEFAULT_TB_LOC, 
     TASKBOARD_DEFAULT_SHAPES_TB_LOC, 
     TASKBOARD_DEFAULT_TB_SIZE,
-    TASKBOARD_COMPONENT_TYPE, 
+    TASKBOARD_TOOLBAR_ITEM, 
     NOTE_TOOLBAR_ITEMS,
     SHAPES_TOOLBAR_ITEM_TYPE,
     ARROW_TOOLBAR_ITEMS,

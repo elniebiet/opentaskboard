@@ -3,7 +3,7 @@ import Draggable from "react-draggable";
 import { _get_max_z_index, _use_max_z_index } from "../../common/globals";
 import { _get_complement_colour } from "../../common/utils";
 import { _set_global_toolbar_items_active_state } from "../taskboard_globals";
-import { TASKBOARD_COMPONENT_TYPE } from "../../toolbars/toolbar_globals";
+import { TASKBOARD_TOOLBAR_ITEM } from "../../toolbars/toolbar_globals";
 import { SELECTED_COLOR_THEME } from "../../common/components/use_colour_themes";
 import { _delete_note, _update_note_loc, _update_note_text, _update_note_colour, _update_note_win_width_perc,
             _get_note_win_width_perc, _update_note_active_state, _update_note_toolbar_show, _update_note_toolbar_loc,
@@ -37,7 +37,9 @@ const _sticky_note = ({
     taskboard_rerender_func,
     highlighted, 
     show_toolbar, 
-    request_taskboard_state_func 
+    request_taskboard_state_func,
+    taskboard_type,
+    taskboard_id, 
 }) => {
 
     const [is_editing, _set_is_editing] = useState(false);
@@ -408,6 +410,8 @@ const _sticky_note = ({
                         show_top_right_resizer={true}
                         show_bottom_left_resizer={true}
                         show_bottom_right_resizer={true}
+                        taskboard_type={taskboard_type} 
+                        taskboard_id={taskboard_id}
                     />
                     ) : (<div></div>)}
             </div>
@@ -436,7 +440,7 @@ const _sticky_note = ({
                                 flexDirection: "column",
                                 gap: (FLEXBOX_GAP_PERC * stknote_width) + 'px',
                             }}
-                            onClick={() => {_set_global_toolbar_items_active_state(TASKBOARD_COMPONENT_TYPE.TCT_STKNOTE, true, true)}}
+                            onClick={() => {_set_global_toolbar_items_active_state(TASKBOARD_TOOLBAR_ITEM.TTI_STKNOTE, true, true)}}
                         >
                             <div
                                 id="stknote_menu_bar" 

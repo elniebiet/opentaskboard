@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { _set_global_toolbar_items_active_state } from "../../taskboards/taskboard_globals";
-import { TASKBOARD_COMPONENT_TYPE } from "../../toolbars/toolbar_globals";
+import { TASKBOARD_TOOLBAR_ITEM } from "../../toolbars/toolbar_globals";
 import { _get_max_z_index, _use_max_z_index } from "../globals";
 import { _update_rightangle_highlighted, _update_rightangle_start_pos, _update_rightangle_end_pos,
     _update_rightangle_colour, _update_rightangle_toolbar_show, _update_rightangle_toolbar_loc,
@@ -15,6 +15,7 @@ import { _otbf_update_item_join_arrow_id } from "../otb_finder";
 import { ARROW_JOIN_POINT } from "../globals";
 import { HIGHLIGHT_PARAMS } from "../globals";
 import { SELECTED_COLOR_THEME } from "./use_colour_themes";
+import { TASKBOARD_TYPES } from "../globals";
 
 /**
  * *****************************************************************************************
@@ -40,6 +41,8 @@ import { SELECTED_COLOR_THEME } from "./use_colour_themes";
  * @param {function} request_taskboard_state_func - Function to request taskboard state
  * @param {boolean} active - rightangle active state
  * @param {array} join_arrow_ids - Array of join arrow IDs
+ * @param {TASKBOARD_TYPES} taskboard_type
+ * @param {string} taskboard_id
  * @returns 
  */
 
@@ -50,7 +53,7 @@ const _draggable_rightangle = ({
     win_width, win_height, request_taskboard_state_func, 
     active, join_arrow_ids, overall_taskboard_state, 
     main_page_click_counter, main_page_last_click_event_target,
-    filleted }) => {
+    filleted, taskboard_type, taskboard_id }) => {
 
     const [rightangle_start_pos, _set_rightangle_start_pos] = useState({ x: start_pos_x, y: start_pos_y });
     const [rightangle_end_pos, _set_rightangle_end_pos] = useState({ x: end_pos_x, y: end_pos_y });
@@ -254,7 +257,7 @@ const _draggable_rightangle = ({
         e.preventDefault();
         _set_z_index(_get_max_z_index());
         _use_max_z_index();
-        _set_global_toolbar_items_active_state(TASKBOARD_COMPONENT_TYPE.TCT_SHAPE, true, true);
+        _set_global_toolbar_items_active_state(TASKBOARD_TOOLBAR_ITEM.TTI_SHAPE, true, true);
         _set_arr_highlighted(true);
         _update_rightangle_highlighted(id, true);
         _set_local_param_rightangle_active(true);
@@ -394,6 +397,8 @@ const _draggable_rightangle = ({
                         show_top_right_resizer={false}
                         show_bottom_left_resizer={false}
                         show_bottom_right_resizer={true}
+                        taskboard_type={taskboard_type} 
+                        taskboard_id={taskboard_id}
                     />
                     ) : (<div></div>)}
             </div>

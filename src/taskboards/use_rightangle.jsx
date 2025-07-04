@@ -8,7 +8,7 @@ const _calculate_rightangle_length = (rightangle_start_pos_x, rightangle_start_p
   return Math.sqrt(dx * dx + dy * dy);
 };
 
-const _add_rightangle = (id, x1_pos, y1_pos, x2_pos, y2_pos, colour, stroke_width, filleted) => {
+const _add_rightangle = (id, x1_pos, y1_pos, x2_pos, y2_pos, colour, stroke_width, filleted, taskboard_type, taskboard_id) => {
   let rightangle_length = _calculate_rightangle_length(x1_pos, y1_pos, x2_pos, y2_pos);
   
   if(rightangle_length < MIN_LINE_LENGTH)

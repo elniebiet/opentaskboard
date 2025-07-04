@@ -7,7 +7,7 @@ import { _colour_picker_round } from "../../common/components/colour_picker";
 import { _get_complement_colour } from "../../common/utils";
 import { Bold } from "lucide-react";
 import { _set_global_toolbar_items_active_state } from "../taskboard_globals";
-import { TASKBOARD_COMPONENT_TYPE } from "../../toolbars/toolbar_globals";
+import { TASKBOARD_TOOLBAR_ITEM } from "../../toolbars/toolbar_globals";
 import { _delete_comment, _update_comment_loc, _update_comment_text, _update_comment_colour, _update_comment_win_width_perc } from "../use_comment";
 import { SELECTED_COLOR_THEME } from "../../common/components/use_colour_themes";
 
@@ -181,7 +181,7 @@ const _comment = (props) => {
                     flexDirection: "column",
                     gap: (FLEXBOX_GAP_PERC * comment_width) + 'px',
                 }}
-                onClick={(e) => {_set_global_toolbar_items_active_state(TASKBOARD_COMPONENT_TYPE.TCT_COMMENT, true, true)}}
+                onClick={(e) => {_set_global_toolbar_items_active_state(TASKBOARD_TOOLBAR_ITEM.TTI_COMMENT, true, true)}}
             >
                 {/* Resizer Handle */}
                 <div 

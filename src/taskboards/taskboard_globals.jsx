@@ -1,7 +1,7 @@
 import { SHAPES_TOOLBAR_ITEM_TYPE } from '../toolbars/toolbar_globals';
 import cross_pointer from '../../res/imgs/plus_sign_16x16.png'; 
 import { URL_MAIN } from "../common/globals";
-import { TASKBOARD_COMPONENT_TYPE } from '../toolbars/toolbar_globals';
+import { TASKBOARD_TOOLBAR_ITEM } from '../toolbars/toolbar_globals';
 
 /************************************ TASKBOARD CONST DEFINITIONS *************************************************/
 // Default sticky note width percentage ratio
@@ -37,17 +37,17 @@ let global_last_item_add_or_move_loc            = {loc_x: 100, loc_y: 100}; // l
 let global_cursor_type                          = "default";                // cursor type in use
 let global_new_shape_type                       = SHAPES_TOOLBAR_ITEM_TYPE.STBI_LINE; // currently selected type of shape to be drawn, default is line
 
-let global_last_selected_tb_item_type           = TASKBOARD_COMPONENT_TYPE.TCT_CURSOR; // last selected toolbar item type
+let global_last_selected_tb_item_type           = TASKBOARD_TOOLBAR_ITEM.TTI_CURSOR; // last selected toolbar item type
 
 // map of currently active/selected toolbar items
 let global_toolbar_items_active                 = new Map([
-    [TASKBOARD_COMPONENT_TYPE.TCT_CURSOR,             false],
-    [TASKBOARD_COMPONENT_TYPE.TCT_STKNOTE,            false],
-    [TASKBOARD_COMPONENT_TYPE.TCT_COMMENT,            false],
-    [TASKBOARD_COMPONENT_TYPE.TCT_MARKER,             false],
-    [TASKBOARD_COMPONENT_TYPE.TCT_SHAPE,              false],
-    [TASKBOARD_COMPONENT_TYPE.TCT_FILL,               false],
-    [TASKBOARD_COMPONENT_TYPE.TCT_ERASER,             false],
+    [TASKBOARD_TOOLBAR_ITEM.TTI_CURSOR,             false],
+    [TASKBOARD_TOOLBAR_ITEM.TTI_STKNOTE,            false],
+    [TASKBOARD_TOOLBAR_ITEM.TTI_COMMENT,            false],
+    [TASKBOARD_TOOLBAR_ITEM.TTI_MARKER,             false],
+    [TASKBOARD_TOOLBAR_ITEM.TTI_SHAPE,              false],
+    [TASKBOARD_TOOLBAR_ITEM.TTI_FILL,               false],
+    [TASKBOARD_TOOLBAR_ITEM.TTI_ERASER,             false],
 ]); 
 
 /************************************ TASKBOARD GLOBAL FUNCTION DEFINITIONS *************************************************/

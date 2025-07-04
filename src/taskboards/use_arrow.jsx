@@ -1,42 +1,40 @@
 import arrows from "../db/taskboards/arrows_db_temp";
 import { ARROW_WIDTH_INCR_FACTOR, ARROW_WIDTH_DECR_FACTOR, MAX_ARROW_WIDTH, MIN_ARROW_WIDTH,
-  MIN_ARROW_LENGTH, UNUSED } from "../common/globals";
+  MIN_ARROW_LENGTH, UNUSED, 
+  META_ACTIONS} from "../common/globals";
+import { Taskboard_Activity } from "./components/taskboard_activity";
+import { Taskboard_Activity_Tracker } from "./components/taskboard_activity_tracker";
+import { ACTIONS } from "../common/globals";
+import { Taskboard_Comp_DS } from "./taskboard_components_data_structure";
 
+//TODO: CAN HAVE ONE INSTANCE OF THE ACTIVITY TRACKER
 const _calculate_arrow_length = (line_start_pos_x, line_start_pos_y, line_end_pos_x, line_end_pos_y) => {
   const dx = line_end_pos_x - line_start_pos_x;
   const dy = line_end_pos_y - line_start_pos_y;
   return Math.sqrt(dx * dx + dy * dy);
 };
 
-const _add_arrow = (id, x1_pos, y1_pos, x2_pos, y2_pos, colour, stroke_width) => {
+/**
+ * add new arrow
+ * @param {Taskboard_Comp_DS} new_arrow 
+ * @param {META_ACTIONS} meta_action - meta action (e.g., undo, redo etc.)
+ * @returns true if arrow added successfully, false otherwise
+ */
+const _add_arrow = (new_arrow, meta_action = META_ACTIONS.NONE) => {
 
-  let line_length = _calculate_arrow_length(x1_pos, y1_pos, x2_pos, y2_pos);
+  if(typeof new_arrow !== "object" || new_arrow == null) return false;
+
+  let line_length = _calculate_arrow_length(new_arrow.x1_pos, new_arrow.y1_pos, new_arrow.x2_pos, new_arrow.y2_pos);
   
   if(line_length < MIN_ARROW_LENGTH)
   {
-    x2_pos = x1_pos + MIN_ARROW_LENGTH;
-    y2_pos = y1_pos + MIN_ARROW_LENGTH;
+    new_arrow.x2_pos = new_arrow.x1_pos + MIN_ARROW_LENGTH;
+    new_arrow.y2_pos = new_arrow.y1_pos + MIN_ARROW_LENGTH;
   }
 
-  // this structure definition follows the format defined in taskboard_components_data_structure.txt 
-  const new_arrow = { 
-      id: id,
-      x1_pos: x1_pos,
-      y1_pos: y1_pos,
-      x2_pos: x2_pos,
-      y2_pos: y2_pos,
-      colour: colour,
-      stroke_width: stroke_width, 
-      win_width_perc: UNUSED,
-      text: UNUSED,
-      highlighted: true,
-      active: UNUSED,
-      toolbar_show: true,
-      toolbar_display_loc: {x: 200, y: 200},
-      join_arrow_ids: UNUSED,
-      filleted: UNUSED,
-  };
   arrows.push(new_arrow);
+
+  return true;
 };
 
 /**
@@ -44,8 +42,9 @@ const _add_arrow = (id, x1_pos, y1_pos, x2_pos, y2_pos, colour, stroke_width) =>
  * @param {int} id - arrow id
  * @param {int} new_x2_pos - new x cordinate
  * @param {int} new_y2_pos - new y cordinate
+ * @param {boolean} b_drawing_over - true if drawing is finished for an arrow
  */
-const _update_arrow_end_pos = (id, new_x2_pos, new_y2_pos) => {    
+const _update_arrow_end_pos = (id, new_x2_pos, new_y2_pos, b_drawing_over) => {    
     for(let i=0; i<arrows.length; i++)
     {
       if(arrows[i].id === id)
@@ -60,6 +59,15 @@ const _update_arrow_end_pos = (id, new_x2_pos, new_y2_pos) => {
 
         arrows[i].x2_pos = new_x2_pos;
         arrows[i].y2_pos = new_y2_pos;
+
+        if(b_drawing_over)
+        {
+          // add action to activity tracker
+          const activity = new Taskboard_Activity(arrows[i].taskboard_id, ACTIONS.ADD, arrows[i]);
+          const activity_tracker = new Taskboard_Activity_Tracker(arrows[i].taskboard_type);
+          let b_result = activity_tracker._add_activity(arrows[i].taskboard_type, activity);
+        }
+
         break;
       }
     }
@@ -151,12 +159,29 @@ const _update_arrow_toolbar_loc = (id, int_loc_x, int_loc_y) => {
 /**
  * delete arrow
  * @param {int} id - arrow id
+ * @param {META_ACTIONS} meta_action - meta action (e.g., undo, redo etc.)
+ * @returns true if arrow deleted successfully, false otherwise
  */
-const _delete_arrow = (id) => {
+const _delete_arrow = (id, meta_action = META_ACTIONS.NONE) => {
+  let b_result = false;
   const index = arrows.findIndex(arrow => arrow.id === id);
+
   if (index !== -1) {
-      arrows.splice(index, 1); 
+    b_result = true;
+    
+    let arrow = arrows[index];
+    arrows.splice(index, 1); 
+
+    if(meta_action === META_ACTIONS.NONE)
+    {
+      // add action to activity tracker
+      const delete_activity = new Taskboard_Activity(arrow.taskboard_id, ACTIONS.DELETE, arrow);
+      const activity_tracker = new Taskboard_Activity_Tracker(arrow.taskboard_type);
+      b_result = activity_tracker._add_activity(arrow.taskboard_type, delete_activity);
+    }
   }
+
+  return b_result;
 };
 
 /**

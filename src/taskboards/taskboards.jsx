@@ -12,11 +12,11 @@ const _get_taskboard = (taskboard_code) =>
     {
         case TASKBOARD_TYPES.TASKBOARD_DEFAULT:
         {
-            return <_taskboard_default />;
+            return <_taskboard_default taskboard_type={TASKBOARD_TYPES.TASKBOARD_DEFAULT} taskboard_id={0} />;
         }
         default:
         {
-            return <_taskboard_default />;    
+            return <_taskboard_default taskboard_type={TASKBOARD_TYPES.TASKBOARD_DEFAULT} taskboard_id={0} />;    
         }
     }
 }
