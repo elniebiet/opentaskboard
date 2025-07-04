@@ -1,6 +1,10 @@
 import rightangles from "../db/taskboards/rightangles_db_temp";
 import { LINE_WIDTH_INCR_FACTOR, LINE_WIDTH_DECR_FACTOR, MAX_LINE_WIDTH, MIN_LINE_WIDTH,
-  MIN_LINE_LENGTH, UNUSED, ARROW_JOIN_POINT } from "../common/globals";
+  MIN_LINE_LENGTH, UNUSED, ARROW_JOIN_POINT, META_ACTIONS } from "../common/globals";
+import { Taskboard_Activity } from "./components/taskboard_activity";
+import { Taskboard_Activity_Tracker } from "./components/taskboard_activity_tracker";
+import { ACTIONS } from "../common/globals";
+import { Taskboard_Comp_DS } from "./taskboard_components_data_structure";
 
 const _calculate_rightangle_length = (rightangle_start_pos_x, rightangle_start_pos_y, rightangle_end_pos_x, rightangle_end_pos_y) => {
   const dx = rightangle_end_pos_x - rightangle_start_pos_x;
@@ -8,33 +12,36 @@ const _calculate_rightangle_length = (rightangle_start_pos_x, rightangle_start_p
   return Math.sqrt(dx * dx + dy * dy);
 };
 
-const _add_rightangle = (id, x1_pos, y1_pos, x2_pos, y2_pos, colour, stroke_width, filleted, taskboard_type, taskboard_id) => {
-  let rightangle_length = _calculate_rightangle_length(x1_pos, y1_pos, x2_pos, y2_pos);
-  
-  if(rightangle_length < MIN_LINE_LENGTH)
-  {
-    x2_pos = x1_pos + MIN_LINE_LENGTH;
-    y2_pos = y1_pos + MIN_LINE_LENGTH;
-  }
-  // this structure definition follows the format defined in taskboard_components_data_structure.txt 
-  const new_rightangle = { 
-      id: id,
-      x1_pos: x1_pos,
-      y1_pos: y1_pos,
-      x2_pos: x2_pos,
-      y2_pos: y2_pos,
-      colour: colour,
-      stroke_width: stroke_width, 
-      win_width_perc: UNUSED,
-      text: UNUSED,
-      highlighted: true,
-      active: false,
-      toolbar_show: true,
-      toolbar_display_loc: {x: 200, y: 200},
-      join_arrow_ids: {top: [-1, ARROW_JOIN_POINT.START_POINT], bottom: [-1, ARROW_JOIN_POINT.START_POINT], left: [-1, ARROW_JOIN_POINT.START_POINT], right: [-1, ARROW_JOIN_POINT.START_POINT]},
-      filleted: filleted,
-  };
-  rightangles.push(new_rightangle);
+/**
+ * add new rightangle
+ * @param {Taskboard_Comp_DS} new_rightangle 
+ * @param {META_ACTIONS} meta_action - meta action (e.g., undo, redo etc.)
+ * @returns true if rightangle added successfully, false otherwise
+ */
+const _add_rightangle = (new_rightangle, meta_action = META_ACTIONS.NONE) => {
+
+    if(typeof new_rightangle !== "object" || new_rightangle == null) return false;
+
+    let rightangle_length = _calculate_rightangle_length(new_rightangle.x1_pos, new_rightangle.y1_pos, new_rightangle.x2_pos, new_rightangle.y2_pos);
+    
+    if(rightangle_length < MIN_LINE_LENGTH)
+    {
+      new_rightangle.x2_pos = new_rightangle.x1_pos + MIN_LINE_LENGTH;
+      new_rightangle.y2_pos = new_rightangle.y1_pos + MIN_LINE_LENGTH;
+    }
+    
+    new_rightangle.win_width_perc = UNUSED,
+    new_rightangle.text = UNUSED,
+    new_rightangle.highlighted = true,
+    new_rightangle.active = false,
+    new_rightangle.toolbar_show = true,
+    new_rightangle.toolbar_display_loc = {x: 200, y: 200},
+    new_rightangle.join_arrow_ids = {top: [-1, ARROW_JOIN_POINT.START_POINT], bottom: [-1, ARROW_JOIN_POINT.START_POINT], left: [-1, ARROW_JOIN_POINT.START_POINT], right: [-1, ARROW_JOIN_POINT.START_POINT]},
+    new_rightangle.filleted = UNUSED;
+
+    rightangles.push(new_rightangle);
+
+    return true;
 };
 
 /**
@@ -42,25 +49,35 @@ const _add_rightangle = (id, x1_pos, y1_pos, x2_pos, y2_pos, colour, stroke_widt
  * @param {int} id - rightangle id
  * @param {int} new_x2_pos - new x cordinate
  * @param {int} new_y2_pos - new y cordinate
+ * @param {boolean} b_drawing_over - true if drawing is finished for a rightangle
  */
-const _update_rightangle_end_pos = (id, new_x2_pos, new_y2_pos) => {    
-    for(let i=0; i<rightangles.length; i++)
+const _update_rightangle_end_pos = (id, new_x2_pos, new_y2_pos, b_drawing_over) => {    
+  for(let i=0; i<rightangles.length; i++)
+  {
+    if(rightangles[i].id === id)
     {
-      if(rightangles[i].id === id)
-      {
-        let rightangle_length = _calculate_rightangle_length(rightangles[i].x1_pos, rightangles[i].y1_pos, new_x2_pos, new_y2_pos);
-
-        if(rightangle_length < MIN_LINE_LENGTH)
-        {
-          new_x2_pos = new_x2_pos + MIN_LINE_LENGTH;
-          new_y2_pos = new_y2_pos + MIN_LINE_LENGTH;
-        }
-
-        rightangles[i].x2_pos = new_x2_pos;
-        rightangles[i].y2_pos = new_y2_pos;
-        break;
-      }
+    let rightangle_length = _calculate_rightangle_length(rightangles[i].x1_pos, rightangles[i].y1_pos, new_x2_pos, new_y2_pos);
+  
+    if(rightangle_length < MIN_LINE_LENGTH)
+    {
+      new_x2_pos = new_x2_pos + MIN_LINE_LENGTH;
+      new_y2_pos = new_y2_pos + MIN_LINE_LENGTH;
     }
+
+    rightangles[i].x2_pos = new_x2_pos;
+    rightangles[i].y2_pos = new_y2_pos;
+
+    if(b_drawing_over)
+    {
+      // add action to activity tracker
+      const activity = new Taskboard_Activity(rightangles[i].taskboard_id, ACTIONS.ADD, rightangles[i]);
+      const activity_tracker = new Taskboard_Activity_Tracker(rightangles[i].taskboard_type);
+      let b_result = activity_tracker._add_activity(rightangles[i].taskboard_type, activity);
+    }
+
+    break;
+    }
+  }
 };
 
 /**
@@ -149,12 +166,30 @@ const _update_rightangle_toolbar_loc = (id, int_loc_x, int_loc_y) => {
 /**
  * delete rightangle
  * @param {int} id - rightangle id
+ * @param {META_ACTIONS} meta_action - meta action (e.g., undo, redo etc.)
  */
-const _delete_rightangle = (id) => {
+const _delete_rightangle = (id, meta_action = META_ACTIONS.NONE) => {
+  let b_result = false;
+
   const index = rightangles.findIndex(rightangle => rightangle.id === id);
+
   if (index !== -1) {
-      rightangles.splice(index, 1); 
+    b_result = true; 
+    
+    let rightangle = rightangles[index];
+
+    rightangles.splice(index, 1); 
+
+    if(meta_action === META_ACTIONS.NONE)
+    {
+      // add action to activity tracker
+      const delete_activity = new Taskboard_Activity(rightangle.taskboard_id, ACTIONS.DELETE, rightangle);
+      const activity_tracker = new Taskboard_Activity_Tracker(rightangle.taskboard_type);
+      b_result = activity_tracker._add_activity(rightangle.taskboard_type, delete_activity);
+    }
   }
+
+  return b_result;
 };
 
 /**

@@ -6,6 +6,10 @@ import { _get_component_clsid_prefix } from "../../common/utils";
 import { Taskboard_Comp_DS } from "../taskboard_components_data_structure";
 import { _add_circle, _delete_circle } from "../use_circle";
 import { _add_leftangle, _delete_leftangle } from "../use_leftangle";
+import { _add_rectangle, _delete_rectangle } from "../use_rectangle";
+import { _add_rightangle, _delete_rightangle } from "../use_rightangle";
+import { _add_triangle, _delete_triangle } from "../use_triangle";
+import { _add_line, _delete_line } from "../use_line";
 
 /**
  * 
@@ -56,6 +60,19 @@ const _undo_action = (taskboard_id, taskboard_type, taskboard_activity) => {
         }
         case COMPONENT_CLSID_PREFIXES.LINE:
         {
+            if (action === ACTIONS.ADD) 
+            {
+                b_result = _delete_line(id, META_ACTIONS.UNDO);
+            } 
+            else if (action === ACTIONS.DELETE) 
+            {
+                b_result = _add_line(taskboard_activity._get_activity().taskboard_component_structure, META_ACTIONS.UNDO);
+            } 
+            else if(action === ACTIONS.UPDATE) 
+            {
+                ;
+            }
+
             break;
         }
         case COMPONENT_CLSID_PREFIXES.CIRCLE:
@@ -92,20 +109,54 @@ const _undo_action = (taskboard_id, taskboard_type, taskboard_activity) => {
         }
         case COMPONENT_CLSID_PREFIXES.RIGHT_ANGLE:
         {
+            if (action === ACTIONS.ADD) 
+            {
+                b_result = _delete_rightangle(id, META_ACTIONS.UNDO);
+            } 
+            else if (action === ACTIONS.DELETE) 
+            {
+                b_result = _add_rightangle(taskboard_activity._get_activity().taskboard_component_structure, META_ACTIONS.UNDO);
+            } 
+            else if(action === ACTIONS.UPDATE) 
+            {
+                ;
+            }
             break;
         }
         case COMPONENT_CLSID_PREFIXES.TRIANGLE:
         {
+            if (action === ACTIONS.ADD) 
+            {
+                b_result = _delete_triangle(id, META_ACTIONS.UNDO);
+            } 
+            else if (action === ACTIONS.DELETE) 
+            {
+                b_result = _add_triangle(taskboard_activity._get_activity().taskboard_component_structure, META_ACTIONS.UNDO);
+            } 
+            else if(action === ACTIONS.UPDATE) 
+            {
+                ;
+            }
             break;
         }
         case COMPONENT_CLSID_PREFIXES.RECT:
-        {
-            break;
-        }
         case COMPONENT_CLSID_PREFIXES.FILLETED_RECT:
         {
+            if (action === ACTIONS.ADD) 
+            {
+                b_result = _delete_rectangle(id, META_ACTIONS.UNDO);
+            } 
+            else if (action === ACTIONS.DELETE) 
+            {
+                b_result = _add_rectangle(taskboard_activity._get_activity().taskboard_component_structure, META_ACTIONS.UNDO);
+            } 
+            else if(action === ACTIONS.UPDATE) 
+            {
+                ;
+            }
             break;
         }
+ 
         default:
         {
             console.warn(`Unknown component type: ${component_clsid_prefix}`);
@@ -167,6 +218,18 @@ const _redo_action = (taskboard_id, taskboard_type, taskboard_activity) => {
         }
         case COMPONENT_CLSID_PREFIXES.LINE:
         {
+            if (action === ACTIONS.ADD) 
+            {
+                b_result = _add_line(taskboard_activity._get_activity().taskboard_component_structure, META_ACTIONS.REDO);
+            } 
+            else if (action === ACTIONS.DELETE) 
+            {
+                b_result = _delete_line(id, META_ACTIONS.REDO);
+            } 
+            else if(action === ACTIONS.UPDATE) 
+            {
+                ;
+            }
             break;
         }
         case COMPONENT_CLSID_PREFIXES.CIRCLE:
@@ -204,18 +267,51 @@ const _redo_action = (taskboard_id, taskboard_type, taskboard_activity) => {
         }
         case COMPONENT_CLSID_PREFIXES.RIGHT_ANGLE:
         {
+            if (action === ACTIONS.ADD) 
+            {
+                b_result = _add_rightangle(taskboard_activity._get_activity().taskboard_component_structure, META_ACTIONS.REDO);
+            } 
+            else if (action === ACTIONS.DELETE) 
+            {
+                b_result = _delete_rightangle(id, META_ACTIONS.REDO);
+            } 
+            else if(action === ACTIONS.UPDATE) 
+            {
+                ;
+            }
             break;
         }
         case COMPONENT_CLSID_PREFIXES.TRIANGLE:
         {
+            if (action === ACTIONS.ADD) 
+            {
+                b_result = _add_triangle(taskboard_activity._get_activity().taskboard_component_structure, META_ACTIONS.REDO);
+            } 
+            else if (action === ACTIONS.DELETE) 
+            {
+                b_result = _delete_triangle(id, META_ACTIONS.REDO);
+            } 
+            else if(action === ACTIONS.UPDATE) 
+            {
+                ;
+            }
             break;
         }
         case COMPONENT_CLSID_PREFIXES.RECT:
-        {
-            break;
-        }
         case COMPONENT_CLSID_PREFIXES.FILLETED_RECT:
         {
+            if (action === ACTIONS.ADD) 
+            {
+                b_result = _add_rectangle(taskboard_activity._get_activity().taskboard_component_structure, META_ACTIONS.REDO);
+            } 
+            else if (action === ACTIONS.DELETE) 
+            {
+                b_result = _delete_rectangle(id, META_ACTIONS.REDO);
+            } 
+            else if(action === ACTIONS.UPDATE) 
+            {
+                ;
+            }
             break;
         }
         default:

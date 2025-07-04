@@ -43,6 +43,8 @@ import { TASKBOARD_TYPES } from "../globals";
  * @param {array} join_arrow_ids - Array of join arrow IDs
  * @param {TASKBOARD_TYPES} taskboard_type
  * @param {string} taskboard_id
+ * @param {TASKBOARD_TYPES} taskboard_type
+ * @param {string} taskboard_id
  * @returns 
  */
 

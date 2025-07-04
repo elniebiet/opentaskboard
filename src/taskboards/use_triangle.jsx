@@ -1,8 +1,10 @@
 import triangles from "../db/taskboards/triangles_db_temp";
 import { LINE_WIDTH_INCR_FACTOR, LINE_WIDTH_DECR_FACTOR, MAX_LINE_WIDTH, MIN_LINE_WIDTH,
-  MIN_LINE_LENGTH, 
-  UNUSED} from "../common/globals";
-import { ARROW_JOIN_POINT } from "../common/globals";
+  MIN_LINE_LENGTH, UNUSED, ARROW_JOIN_POINT, META_ACTIONS} from "../common/globals";
+import { Taskboard_Activity } from "./components/taskboard_activity";
+import { Taskboard_Activity_Tracker } from "./components/taskboard_activity_tracker";
+import { ACTIONS } from "../common/globals";
+import { Taskboard_Comp_DS } from "./taskboard_components_data_structure";
 
 const _calculate_triangle_length = (triangle_start_pos_x, triangle_start_pos_y, triangle_end_pos_x, triangle_end_pos_y) => {
   const dx = triangle_end_pos_x - triangle_start_pos_x;
@@ -10,34 +12,36 @@ const _calculate_triangle_length = (triangle_start_pos_x, triangle_start_pos_y, 
   return Math.sqrt(dx * dx + dy * dy);
 };
 
-const _add_triangle = (id, x1_pos, y1_pos, x2_pos, y2_pos, colour, stroke_width, filleted, taskboard_type, taskboard_id) => {
-  let triangle_length = _calculate_triangle_length(x1_pos, y1_pos, x2_pos, y2_pos);
+/**
+ * add new triangle
+ * @param {Taskboard_Comp_DS} new_triangle 
+ * @param {META_ACTIONS} meta_action - meta action (e.g., undo, redo etc.)
+ * @returns true if triangle added successfully, false otherwise
+ */
+const _add_triangle = (new_triangle, meta_action = META_ACTIONS.NONE) => {
+
+  if(typeof new_triangle !== "object" || new_triangle == null) return false;
+
+  let triangle_length = _calculate_triangle_length(new_triangle.x1_pos, new_triangle.y1_pos, new_triangle.x2_pos, new_triangle.y2_pos);
   
   if(triangle_length < MIN_LINE_LENGTH)
   {
-    x2_pos = x1_pos + MIN_LINE_LENGTH;
-    y2_pos = y1_pos + MIN_LINE_LENGTH;
+    new_triangle.x2_pos = new_triangle.x1_pos + MIN_LINE_LENGTH;
+    new_triangle.y2_pos = new_triangle.y1_pos + MIN_LINE_LENGTH;
   }
+  
+  new_triangle.win_width_perc = UNUSED,
+  new_triangle.text = UNUSED,
+  new_triangle.highlighted = true,
+  new_triangle.active = false,
+  new_triangle.toolbar_show = true,
+  new_triangle.toolbar_display_loc = {x: 200, y: 200},
+  new_triangle.join_arrow_ids = {top: [-1, ARROW_JOIN_POINT.START_POINT], bottom: [-1, ARROW_JOIN_POINT.START_POINT], left: [-1, ARROW_JOIN_POINT.START_POINT], right: [-1, ARROW_JOIN_POINT.START_POINT]},
+  new_triangle.filleted = UNUSED;
 
-  // this structure definition follows the format defined in taskboard_components_data_structure.txt 
-  const new_triangle = { 
-      id: id,
-      x1_pos: x1_pos,
-      y1_pos: y1_pos,
-      x2_pos: x2_pos,
-      y2_pos: y2_pos,
-      colour: colour,
-      stroke_width: stroke_width, 
-      win_width_perc: UNUSED,
-      text: UNUSED,
-      highlighted: true,
-      active: false,
-      toolbar_show: true,
-      toolbar_display_loc: {x: 200, y: 200},
-      join_arrow_ids: {top: [-1, ARROW_JOIN_POINT.START_POINT], bottom: [-1, ARROW_JOIN_POINT.START_POINT], left: [-1, ARROW_JOIN_POINT.START_POINT], right: [-1, ARROW_JOIN_POINT.START_POINT]},
-      filleted: filleted,
-  };
   triangles.push(new_triangle);
+
+  return true;
 };
 
 /**
@@ -45,25 +49,35 @@ const _add_triangle = (id, x1_pos, y1_pos, x2_pos, y2_pos, colour, stroke_width,
  * @param {int} id - triangle id
  * @param {int} new_x2_pos - new x cordinate
  * @param {int} new_y2_pos - new y cordinate
+ * @param {boolean} b_drawing_over - true if drawing is finished for a triangle
  */
-const _update_triangle_end_pos = (id, new_x2_pos, new_y2_pos) => {    
-    for(let i=0; i<triangles.length; i++)
+const _update_triangle_end_pos = (id, new_x2_pos, new_y2_pos, b_drawing_over) => {    
+  for(let i=0; i<triangles.length; i++)
+  {
+    if(triangles[i].id === id)
     {
-      if(triangles[i].id === id)
+      let triangle_length = _calculate_triangle_length(triangles[i].x1_pos, triangles[i].y1_pos, new_x2_pos, new_y2_pos);
+    
+      if(triangle_length < MIN_LINE_LENGTH)
       {
-        let triangle_length = _calculate_triangle_length(triangles[i].x1_pos, triangles[i].y1_pos, new_x2_pos, new_y2_pos);
-
-        if(triangle_length < MIN_LINE_LENGTH)
-        {
-          new_x2_pos = new_x2_pos + MIN_LINE_LENGTH;
-          new_y2_pos = new_y2_pos + MIN_LINE_LENGTH;
-        }
-
-        triangles[i].x2_pos = new_x2_pos;
-        triangles[i].y2_pos = new_y2_pos;
-        break;
+        new_x2_pos = new_x2_pos + MIN_LINE_LENGTH;
+        new_y2_pos = new_y2_pos + MIN_LINE_LENGTH;
       }
+
+      triangles[i].x2_pos = new_x2_pos;
+      triangles[i].y2_pos = new_y2_pos;
+
+      if(b_drawing_over)
+      {
+        // add action to activity tracker
+        const activity = new Taskboard_Activity(triangles[i].taskboard_id, ACTIONS.ADD, triangles[i]);
+        const activity_tracker = new Taskboard_Activity_Tracker(triangles[i].taskboard_type);
+        let b_result = activity_tracker._add_activity(triangles[i].taskboard_type, activity);
+      }
+
+      break;
     }
+  }
 };
 
 /**
@@ -152,12 +166,30 @@ const _update_triangle_toolbar_loc = (id, int_loc_x, int_loc_y) => {
 /**
  * delete triangle
  * @param {int} id - triangle id
+ * @param {META_ACTIONS} meta_action - meta action (e.g., undo, redo etc.)
  */
-const _delete_triangle = (id) => {
+const _delete_triangle = (id, meta_action = META_ACTIONS.NONE) => {
+  let b_result = false;
+
   const index = triangles.findIndex(triangle => triangle.id === id);
+
   if (index !== -1) {
-      triangles.splice(index, 1); 
+    b_result = true; 
+    
+    let triangle = triangles[index];
+
+    triangles.splice(index, 1); 
+
+    if(meta_action === META_ACTIONS.NONE)
+    {
+      // add action to activity tracker
+      const delete_activity = new Taskboard_Activity(triangle.taskboard_id, ACTIONS.DELETE, triangle);
+      const activity_tracker = new Taskboard_Activity_Tracker(triangle.taskboard_type);
+      b_result = activity_tracker._add_activity(triangle.taskboard_type, delete_activity);
+    }
   }
+
+  return b_result;
 };
 
 /**

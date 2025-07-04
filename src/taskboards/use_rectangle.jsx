@@ -1,6 +1,10 @@
 import rectangles from "../db/taskboards/rectangles_db_temp";
 import { LINE_WIDTH_INCR_FACTOR, LINE_WIDTH_DECR_FACTOR, MAX_LINE_WIDTH, MIN_LINE_WIDTH,
-MIN_LINE_LENGTH, ARROW_JOIN_POINT, UNUSED } from "../common/globals";
+MIN_LINE_LENGTH, ARROW_JOIN_POINT, UNUSED, META_ACTIONS } from "../common/globals";
+import { Taskboard_Activity } from "./components/taskboard_activity";
+import { Taskboard_Activity_Tracker } from "./components/taskboard_activity_tracker";
+import { ACTIONS } from "../common/globals";
+import { Taskboard_Comp_DS } from "./taskboard_components_data_structure";
 
 const _calculate_rectangle_length = (rectangle_start_pos_x, rectangle_start_pos_y, rectangle_end_pos_x, rectangle_end_pos_y) => {
   const dx = rectangle_end_pos_x - rectangle_start_pos_x;
@@ -8,33 +12,35 @@ const _calculate_rectangle_length = (rectangle_start_pos_x, rectangle_start_pos_
   return Math.sqrt(dx * dx + dy * dy);
 };
 
-const _add_rectangle = (id, x1_pos, y1_pos, x2_pos, y2_pos, colour, stroke_width, filleted, taskboard_type, taskboard_id) => {
-  let rectangle_length = _calculate_rectangle_length(x1_pos, y1_pos, x2_pos, y2_pos);
-  
-  if(rectangle_length < MIN_LINE_LENGTH)
-  {
-    x2_pos = x1_pos + MIN_LINE_LENGTH;
-    y2_pos = y1_pos + MIN_LINE_LENGTH;
-  }
-  // this structure definition follows the format defined in taskboard_components_data_structure.txt 
-  const new_rectangle = { 
-      id: id,
-      x1_pos: x1_pos,
-      y1_pos: y1_pos,
-      x2_pos: x2_pos,
-      y2_pos: y2_pos,
-      colour: colour,
-      stroke_width: stroke_width, 
-      win_width_perc: UNUSED,
-      text: UNUSED,
-      highlighted: true,
-      active: false,
-      toolbar_show: true,
-      toolbar_display_loc: {x: 200, y: 200},
-      join_arrow_ids: {top: [-1, ARROW_JOIN_POINT.START_POINT], bottom: [-1, ARROW_JOIN_POINT.START_POINT], left: [-1, ARROW_JOIN_POINT.START_POINT], right: [-1, ARROW_JOIN_POINT.START_POINT]},
-      filleted: filleted,
-  };
-  rectangles.push(new_rectangle);
+/**
+ * add new rectangle
+ * @param {Taskboard_Comp_DS} new_rectangle 
+ * @param {META_ACTIONS} meta_action - meta action (e.g., undo, redo etc.)
+ * @returns true if rectangle added successfully, false otherwise
+ */
+const _add_rectangle = (new_rectangle, meta_action = META_ACTIONS.NONE) => {
+
+    if(typeof new_rectangle !== "object" || new_rectangle == null) return false;
+
+    let rectangle_length = _calculate_rectangle_length(new_rectangle.x1_pos, new_rectangle.y1_pos, new_rectangle.x2_pos, new_rectangle.y2_pos);
+    
+    if(rectangle_length < MIN_LINE_LENGTH)
+    {
+        new_rectangle.x2_pos = new_rectangle.x1_pos + MIN_LINE_LENGTH;
+        new_rectangle.y2_pos = new_rectangle.y1_pos + MIN_LINE_LENGTH;
+    }
+    
+    new_rectangle.win_width_perc = UNUSED,
+    new_rectangle.text = UNUSED,
+    new_rectangle.highlighted = true,
+    new_rectangle.active = false,
+    new_rectangle.toolbar_show = true,
+    new_rectangle.toolbar_display_loc = {x: 200, y: 200},
+    new_rectangle.join_arrow_ids = {top: [-1, ARROW_JOIN_POINT.START_POINT], bottom: [-1, ARROW_JOIN_POINT.START_POINT], left: [-1, ARROW_JOIN_POINT.START_POINT], right: [-1, ARROW_JOIN_POINT.START_POINT]},
+
+    rectangles.push(new_rectangle);
+
+    return true;
 };
 
 /**
@@ -42,14 +48,15 @@ const _add_rectangle = (id, x1_pos, y1_pos, x2_pos, y2_pos, colour, stroke_width
  * @param {int} id - rectangle id
  * @param {int} new_x2_pos - new x cordinate
  * @param {int} new_y2_pos - new y cordinate
+ * @param {boolean} b_drawing_over - true if drawing is finished for a rectangle
  */
-const _update_rectangle_end_pos = (id, new_x2_pos, new_y2_pos) => {    
-    for(let i=0; i<rectangles.length; i++)
+const _update_rectangle_end_pos = (id, new_x2_pos, new_y2_pos, b_drawing_over) => {    
+  for(let i=0; i<rectangles.length; i++)
+  {
+    if(rectangles[i].id === id)
     {
-      if(rectangles[i].id === id)
-      {
         let rectangle_length = _calculate_rectangle_length(rectangles[i].x1_pos, rectangles[i].y1_pos, new_x2_pos, new_y2_pos);
-
+      
         if(rectangle_length < MIN_LINE_LENGTH)
         {
           new_x2_pos = new_x2_pos + MIN_LINE_LENGTH;
@@ -58,9 +65,18 @@ const _update_rectangle_end_pos = (id, new_x2_pos, new_y2_pos) => {
 
         rectangles[i].x2_pos = new_x2_pos;
         rectangles[i].y2_pos = new_y2_pos;
+
+        if(b_drawing_over)
+        {
+          // add action to activity tracker
+          const activity = new Taskboard_Activity(rectangles[i].taskboard_id, ACTIONS.ADD, rectangles[i]);
+          const activity_tracker = new Taskboard_Activity_Tracker(rectangles[i].taskboard_type);
+          let b_result = activity_tracker._add_activity(rectangles[i].taskboard_type, activity);
+        }
+
         break;
-      }
     }
+  }
 };
 
 /**
@@ -149,12 +165,30 @@ const _update_rectangle_toolbar_loc = (id, int_loc_x, int_loc_y) => {
 /**
  * delete rectangle
  * @param {int} id - rectangle id
+ * @param {META_ACTIONS} meta_action - meta action (e.g., undo, redo etc.)
  */
-const _delete_rectangle = (id) => {
+const _delete_rectangle = (id, meta_action = META_ACTIONS.NONE) => {
+  let b_result = false;
+
   const index = rectangles.findIndex(rectangle => rectangle.id === id);
+
   if (index !== -1) {
+      b_result = true; 
+      
+      let rectangle = rectangles[index];
+
       rectangles.splice(index, 1); 
+
+      if(meta_action === META_ACTIONS.NONE)
+      {
+        // add action to activity tracker
+        const delete_activity = new Taskboard_Activity(rectangle.taskboard_id, ACTIONS.DELETE, rectangle);
+        const activity_tracker = new Taskboard_Activity_Tracker(rectangle.taskboard_type);
+        b_result = activity_tracker._add_activity(rectangle.taskboard_type, delete_activity);
+      }
   }
+
+  return b_result;
 };
 
 /**

@@ -59,37 +59,34 @@ const _start_drawing = ({ shape_id, start_pos_x, start_pos_y, end_pos_x, end_pos
         }
         case SHAPES_TOOLBAR_ITEM_TYPE.STBI_LINE:
         {
-            _add_line(shape_id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour, stroke_width, taskboard_type, taskboard_id);
+            _add_line(new_shape, META_ACTIONS.NONE);
             break;
         }
         case SHAPES_TOOLBAR_ITEM_TYPE.STBI_CIRCLE:
         {
-            _add_circle(new_shape);
+            _add_circle(new_shape, META_ACTIONS.NONE);
             break;
         }
         case SHAPES_TOOLBAR_ITEM_TYPE.STBI_RECT:
         {
-            const filleted = 0;
-            _add_rectangle(shape_id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour, stroke_width, filleted, taskboard_type, taskboard_id);
+            new_shape.filleted = false;
+            _add_rectangle(new_shape, META_ACTIONS.NONE);
             break;
         }
         case SHAPES_TOOLBAR_ITEM_TYPE.STBI_FILLETED_RECT:
         {
             new_shape.filleted = true;
-            const filleted = 1;
-            _add_rectangle(shape_id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour, stroke_width, filleted, taskboard_type, taskboard_id);
+            _add_rectangle(new_shape, META_ACTIONS.NONE);
             break;
         }
         case SHAPES_TOOLBAR_ITEM_TYPE.STBI_TRIANGLE:
         {
-            const filleted = 0;
-            _add_triangle(shape_id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour, stroke_width, filleted, taskboard_type, taskboard_id);
+            _add_triangle(new_shape, META_ACTIONS.NONE);
             break;
         }
         case SHAPES_TOOLBAR_ITEM_TYPE.STBI_RIGHT_TRIANGLE:
         {
-            const filleted = 0;
-            _add_rightangle(shape_id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour, stroke_width, filleted, taskboard_type, taskboard_id);
+            _add_rightangle(new_shape, META_ACTIONS.NONE);
             break;
         }
         case SHAPES_TOOLBAR_ITEM_TYPE.STBI_LEFT_TRIANGLE:
@@ -115,7 +112,7 @@ const _update_drawing = ({e, shape_type, b_drawing_over}) => {
         }
         case SHAPES_TOOLBAR_ITEM_TYPE.STBI_LINE:
         {
-            _update_line_end_pos(_get_global_new_shape_id(), e.clientX, e.clientY);
+            _update_line_end_pos(_get_global_new_shape_id(), e.clientX, e.clientY, b_drawing_over);
             break;
         }
         case SHAPES_TOOLBAR_ITEM_TYPE.STBI_CIRCLE:
@@ -125,22 +122,22 @@ const _update_drawing = ({e, shape_type, b_drawing_over}) => {
         }
         case SHAPES_TOOLBAR_ITEM_TYPE.STBI_RECT:
         {
-            _update_rectangle_end_pos(_get_global_new_shape_id(), e.clientX, e.clientY);
+            _update_rectangle_end_pos(_get_global_new_shape_id(), e.clientX, e.clientY, b_drawing_over);
             break;
         }
         case SHAPES_TOOLBAR_ITEM_TYPE.STBI_FILLETED_RECT:
         {
-            _update_rectangle_end_pos(_get_global_new_shape_id(), e.clientX, e.clientY);
+            _update_rectangle_end_pos(_get_global_new_shape_id(), e.clientX, e.clientY, b_drawing_over);
             break;
         }
         case SHAPES_TOOLBAR_ITEM_TYPE.STBI_TRIANGLE:
         {
-            _update_triangle_end_pos(_get_global_new_shape_id(), e.clientX, e.clientY);
+            _update_triangle_end_pos(_get_global_new_shape_id(), e.clientX, e.clientY, b_drawing_over);
             break;
         }
         case SHAPES_TOOLBAR_ITEM_TYPE.STBI_RIGHT_TRIANGLE:
         {
-            _update_rightangle_end_pos(_get_global_new_shape_id(), e.clientX, e.clientY);
+            _update_rightangle_end_pos(_get_global_new_shape_id(), e.clientX, e.clientY, b_drawing_over);
             break;
         }
         case SHAPES_TOOLBAR_ITEM_TYPE.STBI_LEFT_TRIANGLE:
