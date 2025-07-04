@@ -5,6 +5,7 @@ import { ACTIONS, META_ACTIONS } from "../../common/globals";
 import { _get_component_clsid_prefix } from "../../common/utils";
 import { Taskboard_Comp_DS } from "../taskboard_components_data_structure";
 import { _add_circle, _delete_circle } from "../use_circle";
+import { _add_leftangle, _delete_leftangle } from "../use_leftangle";
 
 /**
  * 
@@ -75,6 +76,18 @@ const _undo_action = (taskboard_id, taskboard_type, taskboard_activity) => {
         }
         case COMPONENT_CLSID_PREFIXES.LEFT_ANGLE:
         {
+            if (action === ACTIONS.ADD) 
+            {
+                b_result = _delete_leftangle(id, META_ACTIONS.UNDO);
+            } 
+            else if (action === ACTIONS.DELETE) 
+            {
+                b_result = _add_leftangle(taskboard_activity._get_activity().taskboard_component_structure, META_ACTIONS.UNDO);
+            } 
+            else if(action === ACTIONS.UPDATE) 
+            {
+                ;
+            }
             break;
         }
         case COMPONENT_CLSID_PREFIXES.RIGHT_ANGLE:
@@ -175,6 +188,18 @@ const _redo_action = (taskboard_id, taskboard_type, taskboard_activity) => {
         }
         case COMPONENT_CLSID_PREFIXES.LEFT_ANGLE:
         {
+            if (action === ACTIONS.ADD) 
+            {
+                b_result = _add_leftangle(taskboard_activity._get_activity().taskboard_component_structure, META_ACTIONS.REDO);
+            } 
+            else if (action === ACTIONS.DELETE) 
+            {
+                b_result = _delete_leftangle(id, META_ACTIONS.REDO);
+            } 
+            else if(action === ACTIONS.UPDATE) 
+            {
+                ;
+            }
             break;
         }
         case COMPONENT_CLSID_PREFIXES.RIGHT_ANGLE:

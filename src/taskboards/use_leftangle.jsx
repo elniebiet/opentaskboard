@@ -1,6 +1,12 @@
 import leftangles from "../db/taskboards/leftangles_db_temp";
 import { LINE_WIDTH_INCR_FACTOR, LINE_WIDTH_DECR_FACTOR, MAX_LINE_WIDTH, MIN_LINE_WIDTH,
   MIN_LINE_LENGTH, ARROW_JOIN_POINT, UNUSED } from "../common/globals";
+import { TASKBOARD_TYPES } from "../common/globals";
+import { Taskboard_Comp_DS } from "./taskboard_components_data_structure";
+import { META_ACTIONS } from "../common/globals";
+import { Taskboard_Activity } from "./components/taskboard_activity";
+import { Taskboard_Activity_Tracker } from "./components/taskboard_activity_tracker";
+import { ACTIONS } from "../common/globals";
 
 const _calculate_leftangle_length = (leftangle_start_pos_x, leftangle_start_pos_y, leftangle_end_pos_x, leftangle_end_pos_y) => {
   const dx = leftangle_end_pos_x - leftangle_start_pos_x;
@@ -8,34 +14,35 @@ const _calculate_leftangle_length = (leftangle_start_pos_x, leftangle_start_pos_
   return Math.sqrt(dx * dx + dy * dy);
 };
 
-const _add_leftangle = (id, x1_pos, y1_pos, x2_pos, y2_pos, colour, stroke_width, filleted, taskboard_type, taskboard_id) => {
-  let leftangle_length = _calculate_leftangle_length(x1_pos, y1_pos, x2_pos, y2_pos);
-  
-  if(leftangle_length < MIN_LINE_LENGTH)
-  {
-    x2_pos = x1_pos + MIN_LINE_LENGTH;
-    y2_pos = y1_pos + MIN_LINE_LENGTH;
-  }
+/**
+ * add new leftangle
+ * @param {Taskboard_Comp_DS} new_leftangle 
+ * @param {META_ACTIONS} meta_action - meta action (e.g., undo, redo etc.)
+ * @returns true if leftangle added successfully, false otherwise
+ */
+const _add_leftangle = (new_leftangle, meta_action = META_ACTIONS.NONE) => {
+    if(typeof new_leftangle !== "object" || new_leftangle == null) return false;
 
-  // this structure definition follows the format defined in taskboard_components_data_structure.txt 
-  const new_leftangle = { 
-      id: id,
-      x1_pos: x1_pos,
-      y1_pos: y1_pos,
-      x2_pos: x2_pos,
-      y2_pos: y2_pos,
-      colour: colour,
-      stroke_width: stroke_width, 
-      win_width_perc: UNUSED,
-      text: UNUSED,
-      highlighted: true,
-      active: false,
-      toolbar_show: true,
-      toolbar_display_loc: {x: 200, y: 200},
-      join_arrow_ids: {top: [-1, ARROW_JOIN_POINT.START_POINT], bottom: [-1, ARROW_JOIN_POINT.START_POINT], left: [-1, ARROW_JOIN_POINT.START_POINT], right: [-1, ARROW_JOIN_POINT.START_POINT]},
-      filleted: filleted,
-  };
-  leftangles.push(new_leftangle);
+    let leftangle_length = _calculate_leftangle_length(new_leftangle.x1_pos, new_leftangle.y1_pos, new_leftangle.x2_pos, new_leftangle.y2_pos);
+
+    if(leftangle_length < MIN_LINE_LENGTH)
+    {
+      new_leftangle.x2_pos = new_leftangle.x1_pos + MIN_LINE_LENGTH;
+      new_leftangle.y2_pos = new_leftangle.y1_pos + MIN_LINE_LENGTH;
+    }
+
+    new_leftangle.win_width_perc = UNUSED,
+    new_leftangle.text = UNUSED,
+    new_leftangle.highlighted = true,
+    new_leftangle.active = false,
+    new_leftangle.toolbar_show = true,
+    new_leftangle.toolbar_display_loc = {x: 200, y: 200},
+    new_leftangle.join_arrow_ids = {top: [-1, ARROW_JOIN_POINT.START_POINT], bottom: [-1, ARROW_JOIN_POINT.START_POINT], left: [-1, ARROW_JOIN_POINT.START_POINT], right: [-1, ARROW_JOIN_POINT.START_POINT]},
+    new_leftangle.filleted = UNUSED;
+
+    leftangles.push(new_leftangle);
+
+return true;
 };
 
 /**
@@ -43,25 +50,35 @@ const _add_leftangle = (id, x1_pos, y1_pos, x2_pos, y2_pos, colour, stroke_width
  * @param {int} id - leftangle id
  * @param {int} new_x2_pos - new x cordinate
  * @param {int} new_y2_pos - new y cordinate
+ * @param {boolean} b_drawing_over - true if drawing is finished for a leftangle
  */
-const _update_leftangle_end_pos = (id, new_x2_pos, new_y2_pos) => {    
-    for(let i=0; i<leftangles.length; i++)
+const _update_leftangle_end_pos = (id, new_x2_pos, new_y2_pos, b_drawing_over) => {    
+  for(let i=0; i<leftangles.length; i++)
+  {
+    if(leftangles[i].id === id)
     {
-      if(leftangles[i].id === id)
-      {
-        let leftangle_length = _calculate_leftangle_length(leftangles[i].x1_pos, leftangles[i].y1_pos, new_x2_pos, new_y2_pos);
-
-        if(leftangle_length < MIN_LINE_LENGTH)
-        {
-          new_x2_pos = new_x2_pos + MIN_LINE_LENGTH;
-          new_y2_pos = new_y2_pos + MIN_LINE_LENGTH;
-        }
-
-        leftangles[i].x2_pos = new_x2_pos;
-        leftangles[i].y2_pos = new_y2_pos;
-        break;
-      }
+    let leftangle_length = _calculate_leftangle_length(leftangles[i].x1_pos, leftangles[i].y1_pos, new_x2_pos, new_y2_pos);
+  
+    if(leftangle_length < MIN_LINE_LENGTH)
+    {
+      new_x2_pos = new_x2_pos + MIN_LINE_LENGTH;
+      new_y2_pos = new_y2_pos + MIN_LINE_LENGTH;
     }
+
+    leftangles[i].x2_pos = new_x2_pos;
+    leftangles[i].y2_pos = new_y2_pos;
+
+    if(b_drawing_over)
+    {
+      // add action to activity tracker
+      const activity = new Taskboard_Activity(leftangles[i].taskboard_id, ACTIONS.ADD, leftangles[i]);
+      const activity_tracker = new Taskboard_Activity_Tracker(leftangles[i].taskboard_type);
+      let b_result = activity_tracker._add_activity(leftangles[i].taskboard_type, activity);
+    }
+
+    break;
+    }
+  }
 };
 
 /**
@@ -150,12 +167,30 @@ const _update_leftangle_toolbar_loc = (id, int_loc_x, int_loc_y) => {
 /**
  * delete leftangle
  * @param {int} id - leftangle id
+ * @param {META_ACTIONS} meta_action - meta action (e.g., undo, redo etc.)
  */
-const _delete_leftangle = (id) => {
+const _delete_leftangle = (id, meta_action = META_ACTIONS.NONE) => {
+  let b_result = false;
+
   const index = leftangles.findIndex(leftangle => leftangle.id === id);
+
   if (index !== -1) {
-      leftangles.splice(index, 1); 
+  b_result = true; 
+  
+  let leftangle = leftangles[index];
+
+  leftangles.splice(index, 1); 
+
+  if(meta_action === META_ACTIONS.NONE)
+  {
+    // add action to activity tracker
+    const delete_activity = new Taskboard_Activity(leftangle.taskboard_id, ACTIONS.DELETE, leftangle);
+    const activity_tracker = new Taskboard_Activity_Tracker(leftangle.taskboard_type);
+    b_result = activity_tracker._add_activity(leftangle.taskboard_type, delete_activity);
   }
+  }
+
+  return b_result;
 };
 
 /**

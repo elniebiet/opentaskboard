@@ -41,6 +41,8 @@ import { TASKBOARD_TYPES } from "../globals";
  * @param {function} request_taskboard_state_func - Function to request taskboard state
  * @param {boolean} active - leftangle active state
  * @param {array} join_arrow_ids - Array of join arrow IDs
+ * @param {TASKBOARD_TYPES} taskboard_type
+ * @param {string} taskboard_id
  * @returns 
  */
 

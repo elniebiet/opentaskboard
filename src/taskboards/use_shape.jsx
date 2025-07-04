@@ -75,6 +75,7 @@ const _start_drawing = ({ shape_id, start_pos_x, start_pos_y, end_pos_x, end_pos
         }
         case SHAPES_TOOLBAR_ITEM_TYPE.STBI_FILLETED_RECT:
         {
+            new_shape.filleted = true;
             const filleted = 1;
             _add_rectangle(shape_id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour, stroke_width, filleted, taskboard_type, taskboard_id);
             break;
@@ -93,8 +94,7 @@ const _start_drawing = ({ shape_id, start_pos_x, start_pos_y, end_pos_x, end_pos
         }
         case SHAPES_TOOLBAR_ITEM_TYPE.STBI_LEFT_TRIANGLE:
         {
-            const filleted = 0;
-            _add_leftangle(shape_id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, colour, stroke_width, filleted, taskboard_type, taskboard_id);
+            _add_leftangle(new_shape, META_ACTIONS.NONE);
             break;
         }
         default:
@@ -145,7 +145,7 @@ const _update_drawing = ({e, shape_type, b_drawing_over}) => {
         }
         case SHAPES_TOOLBAR_ITEM_TYPE.STBI_LEFT_TRIANGLE:
         {
-            _update_leftangle_end_pos(_get_global_new_shape_id(), e.clientX, e.clientY);
+            _update_leftangle_end_pos(_get_global_new_shape_id(), e.clientX, e.clientY, b_drawing_over);
             break;
         }
         default:
