@@ -72,8 +72,8 @@ const _update_circle_end_pos = (id, new_x2_pos, new_y2_pos, b_drawing_over) => {
         {
           // add action to activity tracker
           const activity = new Taskboard_Activity(circles[i].taskboard_id, ACTIONS.ADD, circles[i]);
-          const activity_tracker = new Taskboard_Activity_Tracker(circles[i].taskboard_type);
-          let b_result = activity_tracker._add_activity(circles[i].taskboard_type, activity);
+          const activity_tracker = new Taskboard_Activity_Tracker(circles[i].taskboard_id);
+          let b_result = activity_tracker._add_activity(circles[i].taskboard_id, activity);
         }
 
         break;
@@ -185,8 +185,8 @@ const _delete_circle = (id, meta_action = META_ACTIONS.NONE) => {
     {
       // add action to activity tracker
       const delete_activity = new Taskboard_Activity(circle.taskboard_id, ACTIONS.DELETE, circle);
-      const activity_tracker = new Taskboard_Activity_Tracker(circle.taskboard_type);
-      b_result = activity_tracker._add_activity(circle.taskboard_type, delete_activity);
+      const activity_tracker = new Taskboard_Activity_Tracker(circle.taskboard_id);
+      b_result = activity_tracker._add_activity(circle.taskboard_id, delete_activity);
     }
   }
 

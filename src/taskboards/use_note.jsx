@@ -60,8 +60,8 @@ const _add_note = (new_note, meta_action, clicked = true) => {
         if(meta_action === META_ACTIONS.NONE)
         {
             const activity = new Taskboard_Activity(new_note.taskboard_id, ACTIONS.ADD, new_note);
-            const activity_tracker = new Taskboard_Activity_Tracker(new_note.taskboard_type);
-            b_result = activity_tracker._add_activity(new_note.taskboard_type, activity);
+            const activity_tracker = new Taskboard_Activity_Tracker(new_note.taskboard_id);
+            b_result = activity_tracker._add_activity(new_note.taskboard_id, activity);
         } 
 
     }
@@ -90,8 +90,8 @@ const _add_note = (new_note, meta_action, clicked = true) => {
 
             // add activity to activity tracker
             const activity = new Taskboard_Activity(new_note.taskboard_id, ACTIONS.ADD, new_note);
-            const activity_tracker = new Taskboard_Activity_Tracker(new_note.taskboard_type);
-            b_result = activity_tracker._add_activity(new_note.taskboard_type, activity);
+            const activity_tracker = new Taskboard_Activity_Tracker(new_note.taskboard_id);
+            b_result = activity_tracker._add_activity(new_note.taskboard_id, activity);
         }
         else if(meta_action === META_ACTIONS.REDO || meta_action === META_ACTIONS.UNDO)
         {
@@ -127,8 +127,8 @@ const _delete_note = (id, meta_action) => {
         {
             // add action to activity tracker
             const delete_activity = new Taskboard_Activity(note.taskboard_id, ACTIONS.DELETE, note);
-            const activity_tracker = new Taskboard_Activity_Tracker(note.taskboard_type);
-            b_result = activity_tracker._add_activity(note.taskboard_type, delete_activity);
+            const activity_tracker = new Taskboard_Activity_Tracker(note.taskboard_id);
+            b_result = activity_tracker._add_activity(note.taskboard_id, delete_activity);
         }
     }
 

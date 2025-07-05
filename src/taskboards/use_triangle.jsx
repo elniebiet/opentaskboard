@@ -71,8 +71,8 @@ const _update_triangle_end_pos = (id, new_x2_pos, new_y2_pos, b_drawing_over) =>
       {
         // add action to activity tracker
         const activity = new Taskboard_Activity(triangles[i].taskboard_id, ACTIONS.ADD, triangles[i]);
-        const activity_tracker = new Taskboard_Activity_Tracker(triangles[i].taskboard_type);
-        let b_result = activity_tracker._add_activity(triangles[i].taskboard_type, activity);
+        const activity_tracker = new Taskboard_Activity_Tracker(triangles[i].taskboard_id);
+        let b_result = activity_tracker._add_activity(triangles[i].taskboard_id, activity);
       }
 
       break;
@@ -184,8 +184,8 @@ const _delete_triangle = (id, meta_action = META_ACTIONS.NONE) => {
     {
       // add action to activity tracker
       const delete_activity = new Taskboard_Activity(triangle.taskboard_id, ACTIONS.DELETE, triangle);
-      const activity_tracker = new Taskboard_Activity_Tracker(triangle.taskboard_type);
-      b_result = activity_tracker._add_activity(triangle.taskboard_type, delete_activity);
+      const activity_tracker = new Taskboard_Activity_Tracker(triangle.taskboard_id);
+      b_result = activity_tracker._add_activity(triangle.taskboard_id, delete_activity);
     }
   }
 

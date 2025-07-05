@@ -274,12 +274,12 @@ const _taskboard_default = ({taskboard_id = 0, /* taskboard id should be supplie
   // - _delete_component(component type, component id)
   // - _update_component(component type, component id);
   const _undo = () => {
-    const activity_tracker = new Taskboard_Activity_Tracker(TASKBOARD_TYPES.TASKBOARD_DEFAULT);
-    let undone_activity = activity_tracker._undo(TASKBOARD_TYPES.TASKBOARD_DEFAULT);
+    const activity_tracker = new Taskboard_Activity_Tracker(taskboard_id);
+    let undone_activity = activity_tracker._undo(taskboard_id);
     console.log("removed activity: ");
     console.log(undone_activity);
     
-    let b_result = _undo_action(taskboard_id, taskboard_type, undone_activity);
+    let b_result = _undo_action(taskboard_id, undone_activity);
     if(b_result)
     {
       _trigger_taskboard_rerender();
@@ -291,14 +291,14 @@ const _taskboard_default = ({taskboard_id = 0, /* taskboard id should be supplie
   };
 
   const _redo = () => {
-    const activity_tracker = new Taskboard_Activity_Tracker(TASKBOARD_TYPES.TASKBOARD_DEFAULT);
-    let restored_activity = activity_tracker._redo(TASKBOARD_TYPES.TASKBOARD_DEFAULT);
+    const activity_tracker = new Taskboard_Activity_Tracker(taskboard_id);
+    let restored_activity = activity_tracker._redo(taskboard_id);
     console.log("restored activity: ");
     console.log(restored_activity);
     
     if(restored_activity !== null)
     {
-      let b_result = _redo_action(taskboard_id, taskboard_type, restored_activity);
+      let b_result = _redo_action(taskboard_id, restored_activity);
       if(b_result)
       {
         _trigger_taskboard_rerender();
@@ -306,7 +306,7 @@ const _taskboard_default = ({taskboard_id = 0, /* taskboard id should be supplie
       else
       {
         // failed to restore after adding to tracker, remove activity from tracker/stack
-        activity_tracker._delete_latest(TASKBOARD_TYPES.TASKBOARD_DEFAULT, restored_activity);
+        activity_tracker._delete_latest(taskboard_id);
       }
     }
   };

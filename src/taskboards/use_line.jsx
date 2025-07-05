@@ -65,8 +65,8 @@ const _update_line_end_pos = (id, new_x2_pos, new_y2_pos, b_drawing_over) => {
         {
           // add action to activity tracker
           const activity = new Taskboard_Activity(lines[i].taskboard_id, ACTIONS.ADD, lines[i]);
-          const activity_tracker = new Taskboard_Activity_Tracker(lines[i].taskboard_type);
-          let b_result = activity_tracker._add_activity(lines[i].taskboard_type, activity);
+          const activity_tracker = new Taskboard_Activity_Tracker(lines[i].taskboard_id);
+          let b_result = activity_tracker._add_activity(lines[i].taskboard_id, activity);
         }
 
         break;
@@ -177,8 +177,8 @@ const _delete_line = (id, meta_action = META_ACTIONS.NONE) => {
     {
       // add action to activity tracker
       const delete_activity = new Taskboard_Activity(line.taskboard_id, ACTIONS.DELETE, line);
-      const activity_tracker = new Taskboard_Activity_Tracker(line.taskboard_type);
-      b_result = activity_tracker._add_activity(line.taskboard_type, delete_activity);
+      const activity_tracker = new Taskboard_Activity_Tracker(line.taskboard_id);
+      b_result = activity_tracker._add_activity(line.taskboard_id, delete_activity);
     }
   }
 

@@ -15,11 +15,10 @@ import { _add_note, _delete_note } from "../use_note";
 /**
  * 
  * @param {*} taskboard_id 
- * @param {*} taskboard_type 
  * @param {Taskboard_Activity} taskboard_activity 
  * @returns {boolean} true if undo action was successful, false otherwise
  */
-const _undo_action = (taskboard_id, taskboard_type, taskboard_activity) => {
+const _undo_action = (taskboard_id, taskboard_activity) => {
     let b_result = false;
 
     if(typeof taskboard_activity !== "object" || !(taskboard_activity instanceof Taskboard_Activity)) {
@@ -185,11 +184,10 @@ const _undo_action = (taskboard_id, taskboard_type, taskboard_activity) => {
 /**
  * redo a taskboard activity by adding it back to the taskboard
  * @param {*} taskboard_id 
- * @param {*} taskboard_type 
  * @param {Taskboard_Activity} taskboard_activity 
  * @returns {boolean} true if redo action was successful, false otherwise
  */
-const _redo_action = (taskboard_id, taskboard_type, taskboard_activity) => {
+const _redo_action = (taskboard_id, taskboard_activity) => {
     let b_result = false;
 
     if(typeof taskboard_activity !== "object" || !(taskboard_activity instanceof Taskboard_Activity)) {
