@@ -22,6 +22,8 @@ import { _set_global_cursor_type } from '../taskboards/taskboard_globals';
 import { _get_toolbar_z_index} from '../common/globals';
 import { _wait_until } from '../common/utils';
 import { SELECTED_COLOR_THEME } from '../common/components/use_colour_themes';
+import { Taskboard_Comp_DS } from '../taskboards/taskboard_components_data_structure';
+import { META_ACTIONS } from '../common/globals';
 
 const _add_toolbar_item = (props) => 
 {
@@ -71,8 +73,14 @@ const _add_toolbar_item = (props) =>
         {
             case TASKBOARD_TOOLBAR_ITEM.TTI_STKNOTE:
             {
+                const new_note = new Taskboard_Comp_DS();
+                new_note.x1_pos = clientX;
+                new_note.y1_pos = clientY;
+                new_note.taskboard_type= props.taskboard_type;
+                new_note.taskboard_id = props.taskboard_id;
+
                 props.item_loc_update_func(clientX, clientY);
-                props.on_stk_click(false, clientX, clientY);
+                props.on_stk_click(new_note, META_ACTIONS.NONE, false);
                 break;
             }
             case TASKBOARD_TOOLBAR_ITEM.TTI_COMMENT:
@@ -136,7 +144,10 @@ const _add_toolbar_item = (props) =>
             case TASKBOARD_TOOLBAR_ITEM.TTI_STKNOTE:
             {
                 console.log("on_stk_click called");
-                props.on_stk_click(true);
+                const new_note = new Taskboard_Comp_DS();
+                new_note.taskboard_type= props.taskboard_type;
+                new_note.taskboard_id = props.taskboard_id;
+                props.on_stk_click(new_note, META_ACTIONS.NONE, true);
                 break;
             }
             case TASKBOARD_TOOLBAR_ITEM.TTI_MARKER:
@@ -329,10 +340,12 @@ const _taskboard_toolbar = (props) => {
                     <_add_toolbar_item item_index={TASKBOARD_TOOLBAR_ITEM.TTI_CURSOR} tbi_type={TOOLBAR_ITEM_TYPE.CLICKABLE} img_src={pointer_img} img_alt_txt={"Cursor"} 
                     on_pointer_click={props.select_cursor_func}  tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} 
                     taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state_func} 
+                    taskboard_type={props.taskboard_type} taskboard_id={props.taskboard_id}
                     />
                     <_add_toolbar_item item_index={TASKBOARD_TOOLBAR_ITEM.TTI_STKNOTE} tbi_type={TOOLBAR_ITEM_TYPE.CLICKABLE} img_src={sticky_notes_img} img_alt_txt={"Sticky Note"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} drag_update_func={update_dragged_item_info} 
                     on_stk_click={props.add_note_func} item_loc_update_func={props.set_tb_item_loc_func} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state_func} 
+                    taskboard_type={props.taskboard_type} taskboard_id={props.taskboard_id}
                     />
                     {/* uncomment when component is ready */}
                     {/* <_add_toolbar_item item_index={TASKBOARD_TOOLBAR_ITEM.TTI_COMMENT} tbi_type={TASKBOARD_TOOLBAR_ITEM.DRAGGABLE_CLICKABLE} img_src={comment_img} img_alt_txt={"Comment"} 
@@ -342,18 +355,22 @@ const _taskboard_toolbar = (props) => {
                     <_add_toolbar_item item_index={TASKBOARD_TOOLBAR_ITEM.TTI_SHAPE} tbi_type={TOOLBAR_ITEM_TYPE.CLICKABLE} img_src={shapes_img} img_alt_txt={"Shape"} 
                     tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
                     drag_update_func={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state_func}
+                    taskboard_type={props.taskboard_type} taskboard_id={props.taskboard_id}
                     />
                     <_add_toolbar_item item_index={TASKBOARD_TOOLBAR_ITEM.TTI_FILL} tbi_type={TOOLBAR_ITEM_TYPE.CLICKABLE} img_src={fill_img} img_alt_txt={"Fill"} 
                     on_fill_click={props.add_fill_func} tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
                     drag_update_func={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state_func}
+                    taskboard_type={props.taskboard_type} taskboard_id={props.taskboard_id}
                     />
                     <_add_toolbar_item item_index={TASKBOARD_TOOLBAR_ITEM.TTI_MARKER} tbi_type={TOOLBAR_ITEM_TYPE.CLICKABLE} img_src={board_marker_img} img_alt_txt={"Marker"} 
                     on_marker_click={props.marker_draw_func} tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
                     drag_update_func={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state_func}
+                    taskboard_type={props.taskboard_type} taskboard_id={props.taskboard_id}
                     />
                     <_add_toolbar_item item_index={TASKBOARD_TOOLBAR_ITEM.TTI_ERASER} tbi_type={TOOLBAR_ITEM_TYPE.CLICKABLE} img_src={eraser_img} img_alt_txt={"Eraser"} 
                     on_eraser_click={props.select_cursor_func} tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
                     drag_update_func={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state_func}
+                    taskboard_type={props.taskboard_type} taskboard_id={props.taskboard_id}
                     />
                 </Box>
             </div>

@@ -10,6 +10,7 @@ import { _add_rectangle, _delete_rectangle } from "../use_rectangle";
 import { _add_rightangle, _delete_rightangle } from "../use_rightangle";
 import { _add_triangle, _delete_triangle } from "../use_triangle";
 import { _add_line, _delete_line } from "../use_line";
+import { _add_note, _delete_note } from "../use_note";
 
 /**
  * 
@@ -39,6 +40,18 @@ const _undo_action = (taskboard_id, taskboard_type, taskboard_activity) => {
     switch (component_clsid_prefix) {
         case COMPONENT_CLSID_PREFIXES.STICKY_NOTE:
         {
+            if (action === ACTIONS.ADD) 
+            {
+                b_result = _delete_note(id, META_ACTIONS.UNDO);
+            } 
+            else if (action === ACTIONS.DELETE) 
+            {
+                b_result = _add_note(taskboard_activity._get_activity().taskboard_component_structure, META_ACTIONS.UNDO, false);
+            } 
+            else if(action === ACTIONS.UPDATE) 
+            {
+                ;
+            }
             break;
         }
         case COMPONENT_CLSID_PREFIXES.ARROW:
@@ -197,6 +210,18 @@ const _redo_action = (taskboard_id, taskboard_type, taskboard_activity) => {
     switch (component_clsid_prefix) {
         case COMPONENT_CLSID_PREFIXES.STICKY_NOTE:
         {
+            if (action === ACTIONS.ADD) 
+            {
+                b_result = _add_note(taskboard_activity._get_activity().taskboard_component_structure, META_ACTIONS.REDO, false);
+            } 
+            else if (action === ACTIONS.DELETE) 
+            {
+                b_result = _delete_note(id, META_ACTIONS.REDO);
+            } 
+            else if(action === ACTIONS.UPDATE) 
+            {
+                ;
+            }
             break;
         }
         case COMPONENT_CLSID_PREFIXES.ARROW:

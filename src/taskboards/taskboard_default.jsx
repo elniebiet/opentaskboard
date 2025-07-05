@@ -574,11 +574,13 @@ const _taskboard_default = ({taskboard_id = 0, /* taskboard id should be supplie
           <_taskboard_toolbar pos={"top"} win_width={width} win_height={height} add_note_func={_add_note} set_tb_item_loc_func={_set_tb_item_loc_func} 
             select_cursor_func={_select_pointer} marker_draw_func={_draw_with_marker} add_fill_func={_add_fill} add_comment_func={_add_comment} 
             taskboard_rerender_func={_trigger_taskboard_rerender} request_taskboard_state_func={_request_taskboard_state}
+            taskboard_type={taskboard_type} taskboard_id={taskboard_id}
           />
           
           <_taskboard_toolbar pos={"left"} win_width={width} win_height={height} add_note_func={_add_note} set_tb_item_loc_func={_set_tb_item_loc_func} 
             select_cursor_func={_select_pointer} marker_draw_func={_draw_with_marker} add_fill_func={_add_fill} add_comment_func={_add_comment} 
             taskboard_rerender_func={_trigger_taskboard_rerender} request_taskboard_state_func={_request_taskboard_state}
+            taskboard_type={taskboard_type} taskboard_id={taskboard_id}
           />
           
           {(taskboard_state === TASKBOARD_STATES.TBS_SUB_TOOLBAR_ACTIVE) && (

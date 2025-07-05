@@ -1,21 +1,28 @@
 import { _get_global_last_item_add_or_move_loc, _set_global_last_item_add_or_move_loc } from "./taskboard_globals";
 import { _set_global_cursor_type } from "./taskboard_globals";
 import { STKNOTE_WIDTH_PERC_DEFAULT } from "./taskboard_globals";
-import { ARROW_JOIN_POINT, UNUSED } from "../common/globals";
+import { ARROW_JOIN_POINT, UNUSED, META_ACTIONS } from "../common/globals";
 import { SELECTED_COLOR_THEME } from "../common/components/use_colour_themes";
 import { COMPONENT_CLSID_PREFIXES } from "../common/otb_component_class_id_prefixes";
 import { _otb_generate_uuid } from "../common/otb_id_generator";
+import { Taskboard_Activity } from "./components/taskboard_activity";
+import { Taskboard_Activity_Tracker } from "./components/taskboard_activity_tracker";
+import { ACTIONS } from "../common/globals";
+import { Taskboard_Comp_DS } from "./taskboard_components_data_structure";
 
 // temporary note database for testing
 import notes from "../db/taskboards/notes_db_temp";
 
 /**
- * add sticky note
+ * add new note
+ * @param {Taskboard_Comp_DS} new_note 
+ * @param {META_ACTIONS} meta_action - meta action (e.g., undo, redo etc.)
  * @param {bool} clicked - item was clicked
- * @param {float} pos_x - x cord to add note
- * @param {float} pos_y - y cord to add note   
+ * @returns true if note added successfully, false otherwise
  */
-const _add_note = (clicked = true, pos_x = 100, pos_y = 100) => {
+const _add_note = (new_note, meta_action, clicked = true) => {
+    let b_result = true;
+
     if(clicked)
     {  
         // set cursor type
@@ -27,62 +34,105 @@ const _add_note = (clicked = true, pos_x = 100, pos_y = 100) => {
         let new_loc_y = loc_y + 20;
 
         let note_id = _otb_generate_uuid(COMPONENT_CLSID_PREFIXES.STICKY_NOTE);
-        if(null == note_id) return;
+        if(null == note_id) return false;
 
         // this structure definition follows the format defined in taskboard_components_data_structure.txt 
-        const new_note = { 
-            id: note_id,
-            x1_pos: new_loc_x,
-            y1_pos: new_loc_y,
-            x2_pos: UNUSED,
-            y2_pos: UNUSED,
-            colour: SELECTED_COLOR_THEME.bg_colour,
-            stroke_width: UNUSED,
-            win_width_perc: STKNOTE_WIDTH_PERC_DEFAULT,
-            text: "",
-            highlighted: true,
-            active: false,
-            toolbar_show: true,
-            toolbar_display_loc: {x: 200, y: 200},
-            join_arrow_ids: {top: [-1, ARROW_JOIN_POINT.START_POINT], bottom: [-1, ARROW_JOIN_POINT.START_POINT], left: [-1, ARROW_JOIN_POINT.START_POINT], right: [-1, ARROW_JOIN_POINT.START_POINT]},
-            filleted: UNUSED,
-        };
+        new_note.id = note_id;
+        new_note.x1_pos = new_loc_x;
+        new_note.y1_pos = new_loc_y;
+        new_note.x2_pos = UNUSED;
+        new_note.y2_pos = UNUSED;
+        new_note.colour = SELECTED_COLOR_THEME.bg_colour;
+        new_note.stroke_width = UNUSED;
+        new_note.win_width_perc = STKNOTE_WIDTH_PERC_DEFAULT;
+        new_note.text = "";
+        new_note.highlighted = true;
+        new_note.active = false;
+        new_note.toolbar_show = true;
+        new_note.toolbar_display_loc = {x: 200, y: 200};
+        new_note.join_arrow_ids = {top: [-1, ARROW_JOIN_POINT.START_POINT], bottom: [-1, ARROW_JOIN_POINT.START_POINT], left: [-1, ARROW_JOIN_POINT.START_POINT], right: [-1, ARROW_JOIN_POINT.START_POINT]};
+        new_note.filleted = UNUSED;
+
         _set_global_last_item_add_or_move_loc(new_loc_x, new_loc_y); // update last added location
         notes.push(new_note);
+        
+        // check for meta action and add activity
+        if(meta_action === META_ACTIONS.NONE)
+        {
+            const activity = new Taskboard_Activity(new_note.taskboard_id, ACTIONS.ADD, new_note);
+            const activity_tracker = new Taskboard_Activity_Tracker(new_note.taskboard_type);
+            b_result = activity_tracker._add_activity(new_note.taskboard_type, activity);
+        } 
+
     }
     else
     {
-
-        let note_id = _otb_generate_uuid(COMPONENT_CLSID_PREFIXES.STICKY_NOTE);
-        if(null == note_id) return;
-
         // dragged
-        const new_note = { 
-            id: note_id,
-            x1_pos: pos_x, 
-            y1_pos: pos_y, 
-            x2_pos: UNUSED,
-            y2_pos: UNUSED,
-            colour: SELECTED_COLOR_THEME.bg_colour,
-            stroke_width: UNUSED,
-            win_width_perc: STKNOTE_WIDTH_PERC_DEFAULT,
-            text: "",
-            highlighted: true,
-            active: false,
-            toolbar_show: true,
-            toolbar_display_loc: {x: 200, y: 200},
-            join_arrow_ids: {top: [-1, ARROW_JOIN_POINT.START_POINT], bottom: [-1, ARROW_JOIN_POINT.START_POINT], left: [-1, ARROW_JOIN_POINT.START_POINT], right: [-1, ARROW_JOIN_POINT.START_POINT]},
-            filleted: UNUSED,
-        };
-        notes.push(new_note);
+        if(meta_action === META_ACTIONS.NONE)
+        {
+            let note_id = _otb_generate_uuid(COMPONENT_CLSID_PREFIXES.STICKY_NOTE);
+            if(null == note_id) return false;
+            new_note.id = note_id;
+            new_note.x2_pos = UNUSED;
+            new_note.y2_pos = UNUSED;
+            new_note.colour = SELECTED_COLOR_THEME.bg_colour;
+            new_note.stroke_width = UNUSED;
+            new_note.win_width_perc = STKNOTE_WIDTH_PERC_DEFAULT;
+            new_note.text = "";
+            new_note.highlighted = true;
+            new_note.active = false;
+            new_note.toolbar_show = true;
+            new_note.toolbar_display_loc = {x: 200, y: 200};
+            new_note.join_arrow_ids = {top: [-1, ARROW_JOIN_POINT.START_POINT], bottom: [-1, ARROW_JOIN_POINT.START_POINT], left: [-1, ARROW_JOIN_POINT.START_POINT], right: [-1, ARROW_JOIN_POINT.START_POINT]};
+            new_note.filleted = UNUSED;
+            
+            notes.push(new_note);
+
+            // add activity to activity tracker
+            const activity = new Taskboard_Activity(new_note.taskboard_id, ACTIONS.ADD, new_note);
+            const activity_tracker = new Taskboard_Activity_Tracker(new_note.taskboard_type);
+            b_result = activity_tracker._add_activity(new_note.taskboard_type, activity);
+        }
+        else if(meta_action === META_ACTIONS.REDO || meta_action === META_ACTIONS.UNDO)
+        {
+            if(new_note.id !== null)
+            {
+                notes.push(new_note);
+            }
+        }
     }
+
+    return b_result;
 };
 
-const _delete_note = (id) => {
+/**
+ * delete note
+ * @param {int} id - note id
+ * @param {META_ACTIONS} meta_action - meta action (e.g., undo, redo etc.)
+ * @return true if note deleted successfully, false otherwise
+ */
+const _delete_note = (id, meta_action) => {
+    let b_result = false;
+
     const index = notes.findIndex(note => note.id === id);
+    
     if (index !== -1) {
-        notes.splice(index, 1); 
+        b_result = true;
+
+        let note = notes[index];
+
+        notes.splice(index, 1);
+        
+        if(meta_action === META_ACTIONS.NONE)
+        {
+            // add action to activity tracker
+            const delete_activity = new Taskboard_Activity(note.taskboard_id, ACTIONS.DELETE, note);
+            const activity_tracker = new Taskboard_Activity_Tracker(note.taskboard_type);
+            b_result = activity_tracker._add_activity(note.taskboard_type, delete_activity);
+        }
     }
+
+    return b_result;
 };
 
 /**

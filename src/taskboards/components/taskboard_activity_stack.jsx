@@ -35,7 +35,6 @@ export class Taskboard_Activity_Stack {
   push(activity) {
     if (!(this._validate_activity(activity))) 
     {
-      console.log("invalid taskboard activity stack item");
       return false;
     }
 

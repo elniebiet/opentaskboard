@@ -12,7 +12,7 @@ import _note_toolbar from "../../toolbars/note_toolbar";
 import { _colour_picker_no_button } from "../../common/components/colour_picker";
 import _highlighter from "../../common/components/highlighter";
 import { HIGHLIGHT_DRAG_DIRECTION, HIGHLIGHT_JOIN_POSITIONS, ARROW_JOIN_POINT, 
-    HIGHLIGHT_PARAMS } from "../../common/globals";
+    HIGHLIGHT_PARAMS, TASKBOARD_TYPES, META_ACTIONS } from "../../common/globals";
 import { TASKBOARD_STATES } from "../taskboard_globals";
 import { _set_last_hovered_joining_item_id } from "../../common/globals";
 import { _otbf_update_item_join_arrow_id } from "../../common/otb_finder";
@@ -183,7 +183,7 @@ const _sticky_note = ({
 
     const _delete = () => {
         _update_note_toolbar_show(id, false);
-        _delete_note(id);
+        _delete_note(id, META_ACTIONS.NONE);
         taskboard_rerender_func();
     };
 
