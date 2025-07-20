@@ -83,6 +83,7 @@ export default function AppAppBar(props) {
                 alt={"OpenTaskBoard"}
                 title={"OpenTaskBoard"}
                 style={{ width: logo_width, height: logo_height, borderRadius: 20, }}
+                onClick={() => props._on_update_route('/')}
               />
 
             </IconButton>

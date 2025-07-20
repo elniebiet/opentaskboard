@@ -16,6 +16,7 @@ const _router = (props) => {
     {
         case "/":
             {
+                console.log("current route is homepage");
                 return < _homepage _on_update_route={ props._on_update_route } />;
             }
         case "templates/sprint_planning":

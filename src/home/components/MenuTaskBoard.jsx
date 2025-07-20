@@ -32,8 +32,8 @@ const _taskboard_menu = (props) =>
                 TaskBoards
                 </Button>
                 <Menu {...bindMenu(popupState)}>
-                    <MenuItem onClick={_taskboard_type_selected} value={TASKBOARD_TYPES.TASKBOARD_DEFAULT}>Default</MenuItem>
-                    <MenuItem onClick={_taskboard_type_selected} value={0}>Sample Taskboard</MenuItem>
+                    <MenuItem onClick={_taskboard_type_selected} value={TASKBOARD_TYPES.TASKBOARD_DEFAULT}>Create New Taskboard*</MenuItem>
+                    <MenuItem onClick={_taskboard_type_selected} value={0}>Taskboard 1</MenuItem>
                 </Menu>
             </React.Fragment>
             )}

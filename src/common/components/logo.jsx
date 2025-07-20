@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Modal from '@mui/joy/Modal';
 import ModalDialog from '@mui/joy/ModalDialog';
 import IconButton from '@mui/joy/IconButton';
@@ -9,6 +9,7 @@ import Box from '@mui/joy/Box';
 import Link from '@mui/joy/Link';
 import { _get_toolbar_z_index } from '../globals';
 import _opentaskboard_icon from '../../home/components/opentaskboard_icon';
+import { _global_state_context } from '../global_state_context';
 
 const _logo = ({
   logo_width,
@@ -18,6 +19,9 @@ const _logo = ({
   img_alt_txt,
 }) => {
   const [open, _set_open] = useState(false);
+
+  // Use the global state context to get the current route and the function to update it
+  const { global_route, _set_global_route } = useContext(_global_state_context);
 
   const modalWidth = Math.min(0.8 * win_width, 1000); // max 600px
   const avatarSize = Math.max(win_width * 0.02, 16);  // min 32px
@@ -42,6 +46,7 @@ const _logo = ({
           alt={img_alt_txt}
           title={img_alt_txt}
           style={{ width: logo_width, height: logo_height }}
+          onClick={() => _set_global_route('/')}
         />
 
       </IconButton>
