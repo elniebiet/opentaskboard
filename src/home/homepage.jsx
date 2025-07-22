@@ -9,6 +9,7 @@ import Pricing from './components/Pricing';
 import Features from './components/Features';
 import Testimonials from './components/Testimonials';
 import FAQ from './components/FAQ';
+import Demo  from './components/Demo';
 import Footer from './components/Footer';
 import AppTheme from '../shared-theme/AppTheme';
 import { SELECTED_COLOR_THEME } from '../common/components/use_colour_themes';
@@ -29,6 +30,7 @@ export default function _homepage(props) {
         <div>
           {/* <LogoCollection /> */}
           {/* <Features /> */}
+          <Demo />
           <Divider />
           {/* <Testimonials /> */}
           <Divider />

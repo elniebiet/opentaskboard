@@ -113,10 +113,10 @@ export default function AppAppBar(props) {
               alignItems: 'center',
             }}
           >
-            <Button color="primary" variant="text" size="small">
+            <Button color="primary" style={{ fontWeight: 'bold' }} variant="text" size="small">
               Sign in
             </Button>
-            <Button color="primary" variant="contained" size="small">
+            <Button color="primary" style={{ fontWeight: 'bold' }} variant="contained" size="small">
               Sign up
             </Button>
             <ColorModeIconDropdown />

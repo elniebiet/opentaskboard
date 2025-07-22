@@ -28,7 +28,7 @@ const _taskboard_menu = (props) =>
         <PopupState variant="popover" popupId="demo-popup-menu">
             {(popupState) => (
             <React.Fragment>
-                <Button variant="text" {...bindTrigger(popupState)}>
+                <Button variant="text" style={{ fontWeight: 'bold' }} {...bindTrigger(popupState)}>
                 TaskBoards
                 </Button>
                 <Menu {...bindMenu(popupState)}>
