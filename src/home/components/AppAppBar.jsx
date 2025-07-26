@@ -21,8 +21,8 @@ import _about_menu from './MenuAbout';
 import { _get_window_size } from '../../common/components/window_size';
 import otb_logo from '../../../res/imgs/otb_logo/otb_logo_200x72.png';
 import _logo from '../../common/components/logo';
-import _login from './Login';
-import _sign_up from './Signup';
+import _login from '../components/Login';
+import _sign_up from '../components/Signup';
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: 'flex',
