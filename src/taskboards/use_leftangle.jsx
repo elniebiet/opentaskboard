@@ -7,6 +7,7 @@ import { META_ACTIONS } from "../common/globals";
 import { Taskboard_Activity } from "./components/taskboard_activity";
 import { Taskboard_Activity_Tracker } from "./components/taskboard_activity_tracker";
 import { ACTIONS } from "../common/globals";
+import { _add_activity_to_tracker } from "./components/taskboard_activity_tracker_mgt";
 
 const _calculate_leftangle_length = (leftangle_start_pos_x, leftangle_start_pos_y, leftangle_end_pos_x, leftangle_end_pos_y) => {
   const dx = leftangle_end_pos_x - leftangle_start_pos_x;
@@ -71,9 +72,7 @@ const _update_leftangle_end_pos = (id, new_x2_pos, new_y2_pos, b_drawing_over) =
     if(b_drawing_over)
     {
       // add action to activity tracker
-      const activity = new Taskboard_Activity(leftangles[i].taskboard_id, ACTIONS.ADD, leftangles[i]);
-      const activity_tracker = new Taskboard_Activity_Tracker(leftangles[i].taskboard_id);
-      let b_result = activity_tracker._add_activity(leftangles[i].taskboard_id, activity);
+      let b_result = _add_activity_to_tracker({taskboard_id: leftangles[i].taskboard_id, action_type: ACTIONS.ADD, component_data: leftangles[i]});
     }
 
     break;
@@ -126,6 +125,11 @@ const _update_leftangle_colour = (id, colour) => {
     if(leftangles[i].id === id)
     {
       leftangles[i].colour = colour;
+
+      let leftangle = leftangles[i];
+
+      let b_result = _add_activity_to_tracker({taskboard_id: leftangle.taskboard_id, action_type: ACTIONS.UPDATE, component_data: leftangle});
+
       break;
     }
   }
@@ -175,19 +179,17 @@ const _delete_leftangle = (id, meta_action = META_ACTIONS.NONE) => {
   const index = leftangles.findIndex(leftangle => leftangle.id === id);
 
   if (index !== -1) {
-  b_result = true; 
-  
-  let leftangle = leftangles[index];
+    b_result = true; 
+    
+    let leftangle = leftangles[index];
 
-  leftangles.splice(index, 1); 
+    leftangles.splice(index, 1); 
 
-  if(meta_action === META_ACTIONS.NONE)
-  {
-    // add action to activity tracker
-    const delete_activity = new Taskboard_Activity(leftangle.taskboard_id, ACTIONS.DELETE, leftangle);
-    const activity_tracker = new Taskboard_Activity_Tracker(leftangle.taskboard_id);
-    b_result = activity_tracker._add_activity(leftangle.taskboard_id, delete_activity);
-  }
+    if(meta_action === META_ACTIONS.NONE)
+    {
+      // add action to activity tracker
+      b_result = _add_activity_to_tracker({taskboard_id: leftangle.taskboard_id, action_type: ACTIONS.DELETE, component_data: leftangle});
+    }
   }
 
   return b_result;
@@ -259,6 +261,44 @@ const _update_leftangle_active_state = (id, b_is_active) => {
   }
 };
 
+/**
+ * general update leftangle function
+ * @param {int} id - leftangle id
+ * @param {Taskboard_Comp_DS} updated_leftangle - update leftangle data   
+ */
+const _update_leftangle_general = (updated_leftangle, meta_action) => {
+        
+    if(meta_action === META_ACTIONS.REDO || meta_action === META_ACTIONS.UNDO)
+    {
+        for(let i=0; i<leftangles.length; i++)
+        {
+            if(leftangles[i].id === updated_leftangle.id)
+            {
+                leftangles[i].x1_pos = updated_leftangle.x1_pos;
+                leftangles[i].y1_pos = updated_leftangle.y1_pos;
+                leftangles[i].x2_pos = updated_leftangle.x2_pos;
+                leftangles[i].y2_pos = updated_leftangle.y2_pos;
+                leftangles[i].colour = updated_leftangle.colour;
+                leftangles[i].stroke_width = updated_leftangle.stroke_width; 
+                leftangles[i].win_width_perc = updated_leftangle.win_width_perc;
+                leftangles[i].text = updated_leftangle.text;
+                leftangles[i].highlighted = false;
+                leftangles[i].active = false;
+                leftangles[i].toolbar_show = updated_leftangle.toolbar_show;
+                leftangles[i].toolbar_display_loc = updated_leftangle.toolbar_display_loc;
+                leftangles[i].join_arrow_ids = updated_leftangle.join_arrow_ids;
+                leftangles[i].filleted = updated_leftangle.filleted;
+                leftangles[i].taskboard_type = updated_leftangle.taskboard_type;
+                leftangles[i].taskboard_id = updated_leftangle.taskboard_id;
+                
+                return true;
+            }
+        }
+    }
+
+    return false;
+};
+
 export {
     _add_leftangle,
     _update_leftangle_end_pos,
@@ -271,4 +311,5 @@ export {
     _increase_leftangle_width,
     _decrease_leftangle_width,
     _update_leftangle_active_state,
+    _update_leftangle_general,
 };

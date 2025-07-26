@@ -1,16 +1,17 @@
 import { COMPONENT_CLSID_PREFIXES } from "../../common/otb_component_class_id_prefixes";
-import { _add_arrow, _delete_arrow } from "../use_arrow";
+import { _add_arrow, _delete_arrow, _update_arrow_general } from "../use_arrow";
 import { Taskboard_Activity } from "./taskboard_activity";
 import { ACTIONS, META_ACTIONS } from "../../common/globals";
 import { _get_component_clsid_prefix } from "../../common/utils";
 import { Taskboard_Comp_DS } from "../taskboard_components_data_structure";
-import { _add_circle, _delete_circle } from "../use_circle";
-import { _add_leftangle, _delete_leftangle } from "../use_leftangle";
-import { _add_rectangle, _delete_rectangle } from "../use_rectangle";
-import { _add_rightangle, _delete_rightangle } from "../use_rightangle";
-import { _add_triangle, _delete_triangle } from "../use_triangle";
-import { _add_line, _delete_line } from "../use_line";
-import { _add_note, _delete_note } from "../use_note";
+import { _add_circle, _delete_circle, _update_circle_general } from "../use_circle";
+import { _add_leftangle, _delete_leftangle, _update_leftangle_general } from "../use_leftangle";
+import { _add_rectangle, _delete_rectangle, _update_rectangle_general } from "../use_rectangle";
+import { _add_rightangle, _delete_rightangle, _update_rightangle_general } from "../use_rightangle";
+import { _add_triangle, _delete_triangle, _update_triangle_general } from "../use_triangle";
+import { _add_line, _delete_line, _update_line_general } from "../use_line";
+import { _add_note, _delete_note, _update_note_general } from "../use_note";
+import { _get_latest_activity_from_stack } from "./taskboard_activity_stacks_list";
 
 /**
  * 
@@ -19,6 +20,12 @@ import { _add_note, _delete_note } from "../use_note";
  * @returns {boolean} true if undo action was successful, false otherwise
  */
 const _undo_action = (taskboard_id, taskboard_activity) => {
+
+    // NOTE:  
+    // for the update condition we have just undone an update activity, we need to get the current latest activity 
+    // if the current latest is also an update, proceed to restore this update
+    // if it is an add or delete, do nothing for now, we should change this behaviour in the future
+
     let b_result = false;
 
     if(typeof taskboard_activity !== "object" || !(taskboard_activity instanceof Taskboard_Activity)) {
@@ -49,7 +56,12 @@ const _undo_action = (taskboard_id, taskboard_activity) => {
             } 
             else if(action === ACTIONS.UPDATE) 
             {
-                ;
+                let latest_activity = _get_latest_activity_from_stack(taskboard_id);
+                let latest_activity_action = latest_activity._get_activity().action_type;
+                if(latest_activity_action === ACTIONS.UPDATE)
+                {
+                    b_result = _update_note_general(latest_activity._get_activity().taskboard_component_structure, META_ACTIONS.UNDO);
+                }
             }
             break;
         }
@@ -65,7 +77,12 @@ const _undo_action = (taskboard_id, taskboard_activity) => {
             } 
             else if(action === ACTIONS.UPDATE) 
             {
-                ;
+                let latest_activity = _get_latest_activity_from_stack(taskboard_id);
+                let latest_activity_action = latest_activity._get_activity().action_type;
+                if(latest_activity_action === ACTIONS.UPDATE)
+                {
+                    b_result = _update_arrow_general(latest_activity._get_activity().taskboard_component_structure, META_ACTIONS.UNDO);
+                }
             }
 
             break;
@@ -82,7 +99,12 @@ const _undo_action = (taskboard_id, taskboard_activity) => {
             } 
             else if(action === ACTIONS.UPDATE) 
             {
-                ;
+                let latest_activity = _get_latest_activity_from_stack(taskboard_id);
+                let latest_activity_action = latest_activity._get_activity().action_type;
+                if(latest_activity_action === ACTIONS.UPDATE)
+                {
+                    b_result = _update_line_general(latest_activity._get_activity().taskboard_component_structure, META_ACTIONS.UNDO);
+                }
             }
 
             break;
@@ -99,7 +121,12 @@ const _undo_action = (taskboard_id, taskboard_activity) => {
             } 
             else if(action === ACTIONS.UPDATE) 
             {
-                ;
+                let latest_activity = _get_latest_activity_from_stack(taskboard_id);
+                let latest_activity_action = latest_activity._get_activity().action_type;
+                if(latest_activity_action === ACTIONS.UPDATE)
+                {
+                    b_result = _update_circle_general(latest_activity._get_activity().taskboard_component_structure, META_ACTIONS.UNDO);
+                }
             }
             break;
         }
@@ -115,7 +142,12 @@ const _undo_action = (taskboard_id, taskboard_activity) => {
             } 
             else if(action === ACTIONS.UPDATE) 
             {
-                ;
+                let latest_activity = _get_latest_activity_from_stack(taskboard_id);
+                let latest_activity_action = latest_activity._get_activity().action_type;
+                if(latest_activity_action === ACTIONS.UPDATE)
+                {
+                    b_result = _update_leftangle_general(latest_activity._get_activity().taskboard_component_structure, META_ACTIONS.UNDO);
+                }
             }
             break;
         }
@@ -131,7 +163,12 @@ const _undo_action = (taskboard_id, taskboard_activity) => {
             } 
             else if(action === ACTIONS.UPDATE) 
             {
-                ;
+                let latest_activity = _get_latest_activity_from_stack(taskboard_id);
+                let latest_activity_action = latest_activity._get_activity().action_type;
+                if(latest_activity_action === ACTIONS.UPDATE)
+                {
+                    b_result = _update_rightangle_general(latest_activity._get_activity().taskboard_component_structure, META_ACTIONS.UNDO);
+                }
             }
             break;
         }
@@ -147,7 +184,12 @@ const _undo_action = (taskboard_id, taskboard_activity) => {
             } 
             else if(action === ACTIONS.UPDATE) 
             {
-                ;
+                let latest_activity = _get_latest_activity_from_stack(taskboard_id);
+                let latest_activity_action = latest_activity._get_activity().action_type;
+                if(latest_activity_action === ACTIONS.UPDATE)
+                {
+                    b_result = _update_triangle_general(latest_activity._get_activity().taskboard_component_structure, META_ACTIONS.UNDO);
+                }
             }
             break;
         }
@@ -164,7 +206,12 @@ const _undo_action = (taskboard_id, taskboard_activity) => {
             } 
             else if(action === ACTIONS.UPDATE) 
             {
-                ;
+                let latest_activity = _get_latest_activity_from_stack(taskboard_id);
+                let latest_activity_action = latest_activity._get_activity().action_type;
+                if(latest_activity_action === ACTIONS.UPDATE)
+                {
+                    b_result = _update_rectangle_general(latest_activity._get_activity().taskboard_component_structure, META_ACTIONS.UNDO);
+                }
             }
             break;
         }
@@ -218,7 +265,7 @@ const _redo_action = (taskboard_id, taskboard_activity) => {
             } 
             else if(action === ACTIONS.UPDATE) 
             {
-                ;
+                b_result = _update_note_general(taskboard_activity._get_activity().taskboard_component_structure, META_ACTIONS.REDO);
             }
             break;
         }
@@ -234,7 +281,7 @@ const _redo_action = (taskboard_id, taskboard_activity) => {
             } 
             else if(action === ACTIONS.UPDATE) 
             {
-                ;
+                b_result = _update_arrow_general(taskboard_activity._get_activity().taskboard_component_structure, META_ACTIONS.REDO);
             }
 
             break;
@@ -251,7 +298,7 @@ const _redo_action = (taskboard_id, taskboard_activity) => {
             } 
             else if(action === ACTIONS.UPDATE) 
             {
-                ;
+                b_result = _update_line_general(taskboard_activity._get_activity().taskboard_component_structure, META_ACTIONS.REDO);
             }
             break;
         }
@@ -267,7 +314,7 @@ const _redo_action = (taskboard_id, taskboard_activity) => {
             } 
             else if(action === ACTIONS.UPDATE) 
             {
-                ;
+                b_result = _update_circle_general(taskboard_activity._get_activity().taskboard_component_structure, META_ACTIONS.REDO);
             }
 
             break;
@@ -284,7 +331,7 @@ const _redo_action = (taskboard_id, taskboard_activity) => {
             } 
             else if(action === ACTIONS.UPDATE) 
             {
-                ;
+                b_result = _update_leftangle_general(taskboard_activity._get_activity().taskboard_component_structure, META_ACTIONS.REDO);
             }
             break;
         }
@@ -300,7 +347,7 @@ const _redo_action = (taskboard_id, taskboard_activity) => {
             } 
             else if(action === ACTIONS.UPDATE) 
             {
-                ;
+                b_result = _update_rightangle_general(taskboard_activity._get_activity().taskboard_component_structure, META_ACTIONS.REDO);
             }
             break;
         }
@@ -316,7 +363,7 @@ const _redo_action = (taskboard_id, taskboard_activity) => {
             } 
             else if(action === ACTIONS.UPDATE) 
             {
-                ;
+                b_result = _update_triangle_general(taskboard_activity._get_activity().taskboard_component_structure, META_ACTIONS.REDO);
             }
             break;
         }
@@ -333,7 +380,7 @@ const _redo_action = (taskboard_id, taskboard_activity) => {
             } 
             else if(action === ACTIONS.UPDATE) 
             {
-                ;
+                b_result = _update_rectangle_general(taskboard_activity._get_activity().taskboard_component_structure, META_ACTIONS.REDO);
             }
             break;
         }

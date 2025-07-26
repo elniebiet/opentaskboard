@@ -9,6 +9,7 @@ import { Taskboard_Activity } from "./components/taskboard_activity";
 import { Taskboard_Activity_Tracker } from "./components/taskboard_activity_tracker";
 import { ACTIONS } from "../common/globals";
 import { Taskboard_Comp_DS } from "./taskboard_components_data_structure";
+import { _add_activity_to_tracker } from "./components/taskboard_activity_tracker_mgt";
 
 // temporary note database for testing
 import notes from "../db/taskboards/notes_db_temp";
@@ -59,9 +60,8 @@ const _add_note = (new_note, meta_action, clicked = true) => {
         // check for meta action and add activity
         if(meta_action === META_ACTIONS.NONE)
         {
-            const activity = new Taskboard_Activity(new_note.taskboard_id, ACTIONS.ADD, new_note);
-            const activity_tracker = new Taskboard_Activity_Tracker(new_note.taskboard_id);
-            b_result = activity_tracker._add_activity(new_note.taskboard_id, activity);
+
+            b_result = _add_activity_to_tracker({taskboard_id: new_note.taskboard_id, action_type: ACTIONS.ADD, component_data: new_note});
         } 
 
     }
@@ -89,9 +89,7 @@ const _add_note = (new_note, meta_action, clicked = true) => {
             notes.push(new_note);
 
             // add activity to activity tracker
-            const activity = new Taskboard_Activity(new_note.taskboard_id, ACTIONS.ADD, new_note);
-            const activity_tracker = new Taskboard_Activity_Tracker(new_note.taskboard_id);
-            b_result = activity_tracker._add_activity(new_note.taskboard_id, activity);
+            b_result = _add_activity_to_tracker({taskboard_id: new_note.taskboard_id, action_type: ACTIONS.ADD, component_data: new_note});
         }
         else if(meta_action === META_ACTIONS.REDO || meta_action === META_ACTIONS.UNDO)
         {
@@ -126,9 +124,7 @@ const _delete_note = (id, meta_action) => {
         if(meta_action === META_ACTIONS.NONE)
         {
             // add action to activity tracker
-            const delete_activity = new Taskboard_Activity(note.taskboard_id, ACTIONS.DELETE, note);
-            const activity_tracker = new Taskboard_Activity_Tracker(note.taskboard_id);
-            b_result = activity_tracker._add_activity(note.taskboard_id, delete_activity);
+            b_result = _add_activity_to_tracker({taskboard_id: note.taskboard_id, action_type: ACTIONS.DELETE, component_data: note});
         }
     }
 
@@ -162,6 +158,11 @@ const _update_note_colour = (id, colour) => {
         if(notes[i].id === id)
         {
             notes[i].colour = colour;
+
+            let note = notes[i];
+
+            let b_result = _add_activity_to_tracker({taskboard_id: note.taskboard_id, action_type: ACTIONS.UPDATE, component_data: note});
+
             break;
         }
     }
@@ -284,6 +285,45 @@ const _update_note_highlighted = (id, note_highlighted) => {
     }
 };
 
+/**
+ * general update note function
+ * @param {int} id - note id
+ * @param {Taskboard_Comp_DS} updated_note - update note data   
+ */
+const _update_note_general = (updated_note, meta_action) => {
+        
+    if(meta_action === META_ACTIONS.REDO || meta_action === META_ACTIONS.UNDO)
+    {
+        for(let i=0; i<notes.length; i++)
+        {
+            if(notes[i].id === updated_note.id)
+            {
+                notes[i].x1_pos = updated_note.x1_pos;
+                notes[i].y1_pos = updated_note.y1_pos;
+                notes[i].x2_pos = updated_note.x2_pos;
+                notes[i].y2_pos = updated_note.y2_pos;
+                notes[i].colour = updated_note.colour;
+                notes[i].stroke_width = updated_note.stroke_width; 
+                notes[i].win_width_perc = updated_note.win_width_perc;
+                notes[i].text = updated_note.text;
+                notes[i].highlighted = false;
+                notes[i].active = false;
+                notes[i].toolbar_show = updated_note.toolbar_show;
+                notes[i].toolbar_display_loc = updated_note.toolbar_display_loc;
+                notes[i].join_arrow_ids = updated_note.join_arrow_ids;
+                notes[i].filleted = updated_note.filleted;
+                notes[i].taskboard_type = updated_note.taskboard_type;
+                notes[i].taskboard_id = updated_note.taskboard_id;
+                
+                return true;
+            }
+        }
+    }
+
+    return false;
+};
+
+
 export {
     _add_note,
     _delete_note,
@@ -296,4 +336,5 @@ export {
     _update_note_toolbar_show,
     _update_note_toolbar_loc,
     _update_note_highlighted,
+    _update_note_general
 };

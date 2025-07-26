@@ -79,6 +79,21 @@ const _restore_last_removed_to_stack = (taskboard_id) => {
     return null;
 };
 
+const _get_latest_activity_from_stack = (taskboard_id) => {
+
+    for (let i = 0; i < Object.keys(Taskboard_Activity_Stacks).length; i++) 
+    {
+        if (Taskboard_Activity_Stacks[i].taskboard_id === taskboard_id) {
+            if(Taskboard_Activity_Stacks[i].taskboard_activity_stack !== null)
+            {
+                return Taskboard_Activity_Stacks[i].taskboard_activity_stack.peek();
+            }
+        }
+    }
+
+    return null;
+};
+
 
 export {
     Taskboard_Activity_Stacks,
@@ -86,5 +101,6 @@ export {
     _add_taskboard_activity_stack,
     _add_activity_to_stack,
     _delete_latest_activity_from_stack,
-    _restore_last_removed_to_stack
+    _restore_last_removed_to_stack,
+    _get_latest_activity_from_stack,
 };

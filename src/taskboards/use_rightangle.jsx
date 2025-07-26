@@ -5,6 +5,7 @@ import { Taskboard_Activity } from "./components/taskboard_activity";
 import { Taskboard_Activity_Tracker } from "./components/taskboard_activity_tracker";
 import { ACTIONS } from "../common/globals";
 import { Taskboard_Comp_DS } from "./taskboard_components_data_structure";
+import { _add_activity_to_tracker } from "./components/taskboard_activity_tracker_mgt";
 
 const _calculate_rightangle_length = (rightangle_start_pos_x, rightangle_start_pos_y, rightangle_end_pos_x, rightangle_end_pos_y) => {
   const dx = rightangle_end_pos_x - rightangle_start_pos_x;
@@ -70,9 +71,7 @@ const _update_rightangle_end_pos = (id, new_x2_pos, new_y2_pos, b_drawing_over) 
     if(b_drawing_over)
     {
       // add action to activity tracker
-      const activity = new Taskboard_Activity(rightangles[i].taskboard_id, ACTIONS.ADD, rightangles[i]);
-      const activity_tracker = new Taskboard_Activity_Tracker(rightangles[i].taskboard_id);
-      let b_result = activity_tracker._add_activity(rightangles[i].taskboard_id, activity);
+      let b_result = _add_activity_to_tracker({taskboard_id: rightangles[i].taskboard_id, action_type: ACTIONS.ADD, component_data: rightangles[i]});
     }
 
     break;
@@ -125,6 +124,11 @@ const _update_rightangle_colour = (id, colour) => {
     if(rightangles[i].id === id)
     {
       rightangles[i].colour = colour;
+
+      let rightangle = rightangles[i];
+
+      let b_result = _add_activity_to_tracker({taskboard_id: rightangle.taskboard_id, action_type: ACTIONS.UPDATE, component_data: rightangle});
+
       break;
     }
   }
@@ -183,9 +187,7 @@ const _delete_rightangle = (id, meta_action = META_ACTIONS.NONE) => {
     if(meta_action === META_ACTIONS.NONE)
     {
       // add action to activity tracker
-      const delete_activity = new Taskboard_Activity(rightangle.taskboard_id, ACTIONS.DELETE, rightangle);
-      const activity_tracker = new Taskboard_Activity_Tracker(rightangle.taskboard_id);
-      b_result = activity_tracker._add_activity(rightangle.taskboard_id, delete_activity);
+      b_result = _add_activity_to_tracker({taskboard_id: rightangle.taskboard_id, action_type: ACTIONS.DELETE, component_data: rightangle});
     }
   }
 
@@ -258,6 +260,44 @@ const _update_rightangle_active_state = (id, b_is_active) => {
   }
 };
 
+/**
+ * general update rightangle function
+ * @param {int} id - rightangle id
+ * @param {Taskboard_Comp_DS} updated_rightangle - update rightangle data   
+ */
+const _update_rightangle_general = (updated_rightangle, meta_action) => {
+        
+    if(meta_action === META_ACTIONS.REDO || meta_action === META_ACTIONS.UNDO)
+    {
+        for(let i=0; i<rightangles.length; i++)
+        {
+            if(rightangles[i].id === updated_rightangle.id)
+            {
+                rightangles[i].x1_pos = updated_rightangle.x1_pos;
+                rightangles[i].y1_pos = updated_rightangle.y1_pos;
+                rightangles[i].x2_pos = updated_rightangle.x2_pos;
+                rightangles[i].y2_pos = updated_rightangle.y2_pos;
+                rightangles[i].colour = updated_rightangle.colour;
+                rightangles[i].stroke_width = updated_rightangle.stroke_width; 
+                rightangles[i].win_width_perc = updated_rightangle.win_width_perc;
+                rightangles[i].text = updated_rightangle.text;
+                rightangles[i].highlighted = false;
+                rightangles[i].active = false;
+                rightangles[i].toolbar_show = updated_rightangle.toolbar_show;
+                rightangles[i].toolbar_display_loc = updated_rightangle.toolbar_display_loc;
+                rightangles[i].join_arrow_ids = updated_rightangle.join_arrow_ids;
+                rightangles[i].filleted = updated_rightangle.filleted;
+                rightangles[i].taskboard_type = updated_rightangle.taskboard_type;
+                rightangles[i].taskboard_id = updated_rightangle.taskboard_id;
+                
+                return true;
+            }
+        }
+    }
+
+    return false;
+};
+
 export {
     _add_rightangle,
     _update_rightangle_end_pos,
@@ -270,4 +310,5 @@ export {
     _increase_rightangle_width,
     _decrease_rightangle_width,
     _update_rightangle_active_state,
+    _update_rightangle_general,
 };

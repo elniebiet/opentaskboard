@@ -5,6 +5,7 @@ import { META_ACTIONS } from "../common/globals";
 import { Taskboard_Activity_Tracker } from "./components/taskboard_activity_tracker";
 import { Taskboard_Activity } from "./components/taskboard_activity";
 import { ACTIONS } from "../common/globals";
+import { _add_activity_to_tracker } from "./components/taskboard_activity_tracker_mgt";
 
 const _calculate_circle_length = (circle_start_pos_x, circle_start_pos_y, circle_end_pos_x, circle_end_pos_y) => {
   const dx = circle_end_pos_x - circle_start_pos_x;
@@ -71,9 +72,7 @@ const _update_circle_end_pos = (id, new_x2_pos, new_y2_pos, b_drawing_over) => {
         if(b_drawing_over)
         {
           // add action to activity tracker
-          const activity = new Taskboard_Activity(circles[i].taskboard_id, ACTIONS.ADD, circles[i]);
-          const activity_tracker = new Taskboard_Activity_Tracker(circles[i].taskboard_id);
-          let b_result = activity_tracker._add_activity(circles[i].taskboard_id, activity);
+          let b_result = _add_activity_to_tracker({taskboard_id: circles[i].taskboard_id, action_type: ACTIONS.ADD, component_data: circles[i]});
         }
 
         break;
@@ -126,6 +125,11 @@ const _update_circle_colour = (id, colour) => {
     if(circles[i].id === id)
     {
       circles[i].colour = colour;
+
+      let circle = circles[i];
+
+      let b_result = _add_activity_to_tracker({taskboard_id: circle.taskboard_id, action_type: ACTIONS.UPDATE, component_data: circle});
+
       break;
     }
   }
@@ -184,9 +188,7 @@ const _delete_circle = (id, meta_action = META_ACTIONS.NONE) => {
     if(meta_action === META_ACTIONS.NONE)
     {
       // add action to activity tracker
-      const delete_activity = new Taskboard_Activity(circle.taskboard_id, ACTIONS.DELETE, circle);
-      const activity_tracker = new Taskboard_Activity_Tracker(circle.taskboard_id);
-      b_result = activity_tracker._add_activity(circle.taskboard_id, delete_activity);
+      b_result = _add_activity_to_tracker({taskboard_id: circle.taskboard_id, action_type: ACTIONS.DELETE, component_data: circle});
     }
   }
 
@@ -259,6 +261,44 @@ const _update_circle_active_state = (id, b_is_active) => {
   }
 };
 
+/**
+ * general update circle function
+ * @param {int} id - circle id
+ * @param {Taskboard_Comp_DS} updated_circle - update circle data   
+ */
+const _update_circle_general = (updated_circle, meta_action) => {
+        
+    if(meta_action === META_ACTIONS.REDO || meta_action === META_ACTIONS.UNDO)
+    {
+        for(let i=0; i<circles.length; i++)
+        {
+            if(circles[i].id === updated_circle.id)
+            {
+                circles[i].x1_pos = updated_circle.x1_pos;
+                circles[i].y1_pos = updated_circle.y1_pos;
+                circles[i].x2_pos = updated_circle.x2_pos;
+                circles[i].y2_pos = updated_circle.y2_pos;
+                circles[i].colour = updated_circle.colour;
+                circles[i].stroke_width = updated_circle.stroke_width; 
+                circles[i].win_width_perc = updated_circle.win_width_perc;
+                circles[i].text = updated_circle.text;
+                circles[i].highlighted = false;
+                circles[i].active = false;
+                circles[i].toolbar_show = updated_circle.toolbar_show;
+                circles[i].toolbar_display_loc = updated_circle.toolbar_display_loc;
+                circles[i].join_arrow_ids = updated_circle.join_arrow_ids;
+                circles[i].filleted = updated_circle.filleted;
+                circles[i].taskboard_type = updated_circle.taskboard_type;
+                circles[i].taskboard_id = updated_circle.taskboard_id;
+                
+                return true;
+            }
+        }
+    }
+
+    return false;
+};
+
 export {
     _add_circle,
     _update_circle_end_pos,
@@ -271,4 +311,5 @@ export {
     _increase_circle_width,
     _decrease_circle_width,
     _update_circle_active_state,
+    _update_circle_general,
 };

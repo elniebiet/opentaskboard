@@ -6,6 +6,7 @@ import { Taskboard_Activity_Tracker } from "./components/taskboard_activity_trac
 import { ACTIONS } from "../common/globals";
 import { Taskboard_Comp_DS } from "./taskboard_components_data_structure";
 import { MIN_ARROW_LENGTH } from "../common/globals";
+import { _add_activity_to_tracker } from "./components/taskboard_activity_tracker_mgt";
 
 const _calculate_line_length = (line_start_pos_x, line_start_pos_y, line_end_pos_x, line_end_pos_y) => {
   const dx = line_end_pos_x - line_start_pos_x;
@@ -64,9 +65,7 @@ const _update_line_end_pos = (id, new_x2_pos, new_y2_pos, b_drawing_over) => {
         if(b_drawing_over)
         {
           // add action to activity tracker
-          const activity = new Taskboard_Activity(lines[i].taskboard_id, ACTIONS.ADD, lines[i]);
-          const activity_tracker = new Taskboard_Activity_Tracker(lines[i].taskboard_id);
-          let b_result = activity_tracker._add_activity(lines[i].taskboard_id, activity);
+          let b_result = _add_activity_to_tracker({taskboard_id: lines[i].taskboard_id, action_type: ACTIONS.ADD, component_data: lines[i]});
         }
 
         break;
@@ -119,6 +118,11 @@ const _update_line_colour = (id, colour) => {
     if(lines[i].id === id)
     {
       lines[i].colour = colour;
+
+      let line = lines[i];
+
+      let b_result = _add_activity_to_tracker({taskboard_id: line.taskboard_id, action_type: ACTIONS.UPDATE, component_data: line});
+
       break;
     }
   }
@@ -176,9 +180,7 @@ const _delete_line = (id, meta_action = META_ACTIONS.NONE) => {
     if(meta_action === META_ACTIONS.NONE)
     {
       // add action to activity tracker
-      const delete_activity = new Taskboard_Activity(line.taskboard_id, ACTIONS.DELETE, line);
-      const activity_tracker = new Taskboard_Activity_Tracker(line.taskboard_id);
-      b_result = activity_tracker._add_activity(line.taskboard_id, delete_activity);
+      b_result = _add_activity_to_tracker({taskboard_id: line.taskboard_id, action_type: ACTIONS.DELETE, component_data: line});
     }
   }
 
@@ -235,6 +237,44 @@ const _decrease_line_width = (id) => {
   }
 };
 
+/**
+ * general update line function
+ * @param {int} id - line id
+ * @param {Taskboard_Comp_DS} updated_line - update line data   
+ */
+const _update_line_general = (updated_line, meta_action) => {
+        
+    if(meta_action === META_ACTIONS.REDO || meta_action === META_ACTIONS.UNDO)
+    {
+        for(let i=0; i<lines.length; i++)
+        {
+            if(lines[i].id === updated_line.id)
+            {
+                lines[i].x1_pos = updated_line.x1_pos;
+                lines[i].y1_pos = updated_line.y1_pos;
+                lines[i].x2_pos = updated_line.x2_pos;
+                lines[i].y2_pos = updated_line.y2_pos;
+                lines[i].colour = updated_line.colour;
+                lines[i].stroke_width = updated_line.stroke_width; 
+                lines[i].win_width_perc = updated_line.win_width_perc;
+                lines[i].text = updated_line.text;
+                lines[i].highlighted = false;
+                lines[i].active = false;
+                lines[i].toolbar_show = updated_line.toolbar_show;
+                lines[i].toolbar_display_loc = updated_line.toolbar_display_loc;
+                lines[i].join_arrow_ids = updated_line.join_arrow_ids;
+                lines[i].filleted = updated_line.filleted;
+                lines[i].taskboard_type = updated_line.taskboard_type;
+                lines[i].taskboard_id = updated_line.taskboard_id;
+                
+                return true;
+            }
+        }
+    }
+
+    return false;
+};
+
 export {
     _add_line,
     _update_line_end_pos,
@@ -246,4 +286,5 @@ export {
     _delete_line,
     _increase_line_width,
     _decrease_line_width,
+    _update_line_general,
 };

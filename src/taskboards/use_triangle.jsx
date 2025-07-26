@@ -5,6 +5,7 @@ import { Taskboard_Activity } from "./components/taskboard_activity";
 import { Taskboard_Activity_Tracker } from "./components/taskboard_activity_tracker";
 import { ACTIONS } from "../common/globals";
 import { Taskboard_Comp_DS } from "./taskboard_components_data_structure";
+import { _add_activity_to_tracker } from "./components/taskboard_activity_tracker_mgt";
 
 const _calculate_triangle_length = (triangle_start_pos_x, triangle_start_pos_y, triangle_end_pos_x, triangle_end_pos_y) => {
   const dx = triangle_end_pos_x - triangle_start_pos_x;
@@ -70,9 +71,7 @@ const _update_triangle_end_pos = (id, new_x2_pos, new_y2_pos, b_drawing_over) =>
       if(b_drawing_over)
       {
         // add action to activity tracker
-        const activity = new Taskboard_Activity(triangles[i].taskboard_id, ACTIONS.ADD, triangles[i]);
-        const activity_tracker = new Taskboard_Activity_Tracker(triangles[i].taskboard_id);
-        let b_result = activity_tracker._add_activity(triangles[i].taskboard_id, activity);
+        let b_result = _add_activity_to_tracker({taskboard_id: triangles[i].taskboard_id, action_type: ACTIONS.ADD, component_data: triangles[i]});
       }
 
       break;
@@ -125,6 +124,11 @@ const _update_triangle_colour = (id, colour) => {
     if(triangles[i].id === id)
     {
       triangles[i].colour = colour;
+
+      let triangle = triangles[i];
+
+      let b_result = _add_activity_to_tracker({taskboard_id: triangle.taskboard_id, action_type: ACTIONS.UPDATE, component_data: triangle});
+
       break;
     }
   }
@@ -183,9 +187,7 @@ const _delete_triangle = (id, meta_action = META_ACTIONS.NONE) => {
     if(meta_action === META_ACTIONS.NONE)
     {
       // add action to activity tracker
-      const delete_activity = new Taskboard_Activity(triangle.taskboard_id, ACTIONS.DELETE, triangle);
-      const activity_tracker = new Taskboard_Activity_Tracker(triangle.taskboard_id);
-      b_result = activity_tracker._add_activity(triangle.taskboard_id, delete_activity);
+      b_result = _add_activity_to_tracker({taskboard_id: triangle.taskboard_id, action_type: ACTIONS.DELETE, component_data: triangle});
     }
   }
 
@@ -258,6 +260,44 @@ const _update_triangle_active_state = (id, b_is_active) => {
   }
 };
 
+/**
+ * general update triangle function
+ * @param {int} id - triangle id
+ * @param {Taskboard_Comp_DS} updated_triangle - update triangle data   
+ */
+const _update_triangle_general = (updated_triangle, meta_action) => {
+        
+    if(meta_action === META_ACTIONS.REDO || meta_action === META_ACTIONS.UNDO)
+    {
+        for(let i=0; i<triangles.length; i++)
+        {
+            if(triangles[i].id === updated_triangle.id)
+            {
+                triangles[i].x1_pos = updated_triangle.x1_pos;
+                triangles[i].y1_pos = updated_triangle.y1_pos;
+                triangles[i].x2_pos = updated_triangle.x2_pos;
+                triangles[i].y2_pos = updated_triangle.y2_pos;
+                triangles[i].colour = updated_triangle.colour;
+                triangles[i].stroke_width = updated_triangle.stroke_width; 
+                triangles[i].win_width_perc = updated_triangle.win_width_perc;
+                triangles[i].text = updated_triangle.text;
+                triangles[i].highlighted = false;
+                triangles[i].active = false;
+                triangles[i].toolbar_show = updated_triangle.toolbar_show;
+                triangles[i].toolbar_display_loc = updated_triangle.toolbar_display_loc;
+                triangles[i].join_arrow_ids = updated_triangle.join_arrow_ids;
+                triangles[i].filleted = updated_triangle.filleted;
+                triangles[i].taskboard_type = updated_triangle.taskboard_type;
+                triangles[i].taskboard_id = updated_triangle.taskboard_id;
+                
+                return true;
+            }
+        }
+    }
+
+    return false;
+};
+
 export {
     _add_triangle,
     _update_triangle_end_pos,
@@ -270,4 +310,5 @@ export {
     _increase_triangle_width,
     _decrease_triangle_width,
     _update_triangle_active_state,
+    _update_triangle_general,
 };

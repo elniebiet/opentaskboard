@@ -5,6 +5,7 @@ import { Taskboard_Activity } from "./components/taskboard_activity";
 import { Taskboard_Activity_Tracker } from "./components/taskboard_activity_tracker";
 import { ACTIONS } from "../common/globals";
 import { Taskboard_Comp_DS } from "./taskboard_components_data_structure";
+import { _add_activity_to_tracker } from "./components/taskboard_activity_tracker_mgt";
 
 const _calculate_rectangle_length = (rectangle_start_pos_x, rectangle_start_pos_y, rectangle_end_pos_x, rectangle_end_pos_y) => {
   const dx = rectangle_end_pos_x - rectangle_start_pos_x;
@@ -69,9 +70,7 @@ const _update_rectangle_end_pos = (id, new_x2_pos, new_y2_pos, b_drawing_over) =
         if(b_drawing_over)
         {
           // add action to activity tracker
-          const activity = new Taskboard_Activity(rectangles[i].taskboard_id, ACTIONS.ADD, rectangles[i]);
-          const activity_tracker = new Taskboard_Activity_Tracker(rectangles[i].taskboard_id);
-          let b_result = activity_tracker._add_activity(rectangles[i].taskboard_id, activity);
+          let b_result = _add_activity_to_tracker({taskboard_id: rectangles[i].taskboard_id, action_type: ACTIONS.ADD, component_data: rectangles[i]});
         }
 
         break;
@@ -124,6 +123,11 @@ const _update_rectangle_colour = (id, colour) => {
     if(rectangles[i].id === id)
     {
       rectangles[i].colour = colour;
+
+      let rectangle = rectangles[i];
+
+      let b_result = _add_activity_to_tracker({taskboard_id: rectangle.taskboard_id, action_type: ACTIONS.UPDATE, component_data: rectangle});
+
       break;
     }
   }
@@ -182,9 +186,7 @@ const _delete_rectangle = (id, meta_action = META_ACTIONS.NONE) => {
       if(meta_action === META_ACTIONS.NONE)
       {
         // add action to activity tracker
-        const delete_activity = new Taskboard_Activity(rectangle.taskboard_id, ACTIONS.DELETE, rectangle);
-        const activity_tracker = new Taskboard_Activity_Tracker(rectangle.taskboard_id);
-        b_result = activity_tracker._add_activity(rectangle.taskboard_id, delete_activity);
+        b_result = _add_activity_to_tracker({taskboard_id: rectangle.taskboard_id, action_type: ACTIONS.DELETE, component_data: rectangle});
       }
   }
 
@@ -257,6 +259,44 @@ const _update_rectangle_active_state = (id, b_is_active) => {
   }
 };
 
+/**
+ * general update rectangle function
+ * @param {int} id - rectangle id
+ * @param {Taskboard_Comp_DS} updated_rectangle - update rectangle data   
+ */
+const _update_rectangle_general = (updated_rectangle, meta_action) => {
+        
+    if(meta_action === META_ACTIONS.REDO || meta_action === META_ACTIONS.UNDO)
+    {
+        for(let i=0; i<rectangles.length; i++)
+        {
+            if(rectangles[i].id === updated_rectangle.id)
+            {
+                rectangles[i].x1_pos = updated_rectangle.x1_pos;
+                rectangles[i].y1_pos = updated_rectangle.y1_pos;
+                rectangles[i].x2_pos = updated_rectangle.x2_pos;
+                rectangles[i].y2_pos = updated_rectangle.y2_pos;
+                rectangles[i].colour = updated_rectangle.colour;
+                rectangles[i].stroke_width = updated_rectangle.stroke_width; 
+                rectangles[i].win_width_perc = updated_rectangle.win_width_perc;
+                rectangles[i].text = updated_rectangle.text;
+                rectangles[i].highlighted = false;
+                rectangles[i].active = false;
+                rectangles[i].toolbar_show = updated_rectangle.toolbar_show;
+                rectangles[i].toolbar_display_loc = updated_rectangle.toolbar_display_loc;
+                rectangles[i].join_arrow_ids = updated_rectangle.join_arrow_ids;
+                rectangles[i].filleted = updated_rectangle.filleted;
+                rectangles[i].taskboard_type = updated_rectangle.taskboard_type;
+                rectangles[i].taskboard_id = updated_rectangle.taskboard_id;
+                
+                return true;
+            }
+        }
+    }
+
+    return false;
+};
+
 export {
     _add_rectangle,
     _update_rectangle_end_pos,
@@ -269,4 +309,5 @@ export {
     _increase_rectangle_width,
     _decrease_rectangle_width,
     _update_rectangle_active_state,
+    _update_rectangle_general,
 };
