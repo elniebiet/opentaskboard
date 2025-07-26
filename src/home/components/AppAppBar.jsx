@@ -24,6 +24,8 @@ import _logo from '../../common/components/logo';
 import _login from '../components/Login';
 import _sign_up from '../components/Signup';
 
+// AppBar component
+
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
