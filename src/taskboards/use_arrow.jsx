@@ -179,7 +179,7 @@ const _delete_arrow = (id, meta_action = META_ACTIONS.NONE) => {
     if(meta_action === META_ACTIONS.NONE)
     {
       // add action to activity tracker
-      b_result = _add_activity_to_tracker({taskboard_id: arrows.taskboard_id, action_type: ACTIONS.DELETE, component_data: arrow});
+      b_result = _add_activity_to_tracker({taskboard_id: arrow.taskboard_id, action_type: ACTIONS.DELETE, component_data: arrow});
     }
   }
 

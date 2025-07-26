@@ -11,6 +11,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Drawer from '@mui/material/Drawer';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import Dialog from '@mui/material/Dialog';
 import ColorModeIconDropdown from '../../shared-theme/ColorModeIconDropdown';
 import _template_menu from './MenuTemplate';
 import _taskboard_menu from './MenuTaskBoard';
@@ -20,7 +21,8 @@ import _about_menu from './MenuAbout';
 import { _get_window_size } from '../../common/components/window_size';
 import otb_logo from '../../../res/imgs/otb_logo/otb_logo_200x72.png';
 import _logo from '../../common/components/logo';
-import { Icon } from 'lucide-react';
+import _sign_up from './Signup';
+import _login from './Login';
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: 'flex',
@@ -40,6 +42,8 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
 
 export default function AppAppBar(props) {
   const [open, setOpen] = React.useState(false);
+  const [signup_open, _set_signup_open] = React.useState(false);
+  const [login_open, _set_login_open] = React.useState(false);
 
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
@@ -51,7 +55,6 @@ export default function AppAppBar(props) {
   const window_size = _get_window_size();
   const logo_width = window_size.width * LOGO_WIDTH_PERC;
   const logo_height = window_size.width * LOGO_HEIGHT_PERC;
-
 
   return (
     <AppBar
@@ -85,25 +88,24 @@ export default function AppAppBar(props) {
                 style={{ width: logo_width, height: logo_height, borderRadius: 20, }}
                 onClick={() => props._on_update_route('/')}
               />
-
             </IconButton>
 
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <Box sx={{ minWidth: 120 }}>
-              <_taskboard_menu _on_update_route={props._on_update_route} />
-            </Box>
-            <Box sx={{ minWidth: 120 }}>
-              <_template_menu _on_update_route={props._on_update_route} />
-            </Box>
-            <Box sx={{ minWidth: 120 }}>
-              <_pricing_menu _on_update_route={props._on_update_route} />
-            </Box>
-            <Box sx={{ minWidth: 120 }}>
-              <_FAQ_menu _on_update_route={props._on_update_route} />
-            </Box>
-            <Box sx={{ minWidth: 120 }}>
-              <_about_menu _on_update_route={props._on_update_route} />
-            </Box>
+              <Box sx={{ minWidth: 120 }}>
+                <_taskboard_menu _on_update_route={props._on_update_route} />
+              </Box>
+              <Box sx={{ minWidth: 120 }}>
+                <_template_menu _on_update_route={props._on_update_route} />
+              </Box>
+              <Box sx={{ minWidth: 120 }}>
+                <_pricing_menu _on_update_route={props._on_update_route} />
+              </Box>
+              <Box sx={{ minWidth: 120 }}>
+                <_FAQ_menu _on_update_route={props._on_update_route} />
+              </Box>
+              <Box sx={{ minWidth: 120 }}>
+                <_about_menu _on_update_route={props._on_update_route} />
+              </Box>
             </Box>
           </Box>
           <Box
@@ -113,10 +115,22 @@ export default function AppAppBar(props) {
               alignItems: 'center',
             }}
           >
-            <Button color="primary" style={{ fontWeight: 'bold' }} variant="text" size="small">
+            <Button 
+              color="primary" 
+              style={{ fontWeight: 'bold' }} 
+              variant="text" 
+              size="small"
+              onClick={() => _set_login_open(true)}
+            >
               Sign in
             </Button>
-            <Button color="primary" style={{ fontWeight: 'bold' }} variant="contained" size="small">
+            <Button
+              color="primary"
+              style={{ fontWeight: 'bold' }}
+              variant="contained"
+              size="small"
+              onClick={() => _set_signup_open(true)}
+            >
               Sign up
             </Button>
             <ColorModeIconDropdown />
@@ -156,12 +170,22 @@ export default function AppAppBar(props) {
                 <MenuItem>Blog</MenuItem>
                 <Divider sx={{ my: 3 }} />
                 <MenuItem>
-                  <Button color="primary" variant="contained" fullWidth>
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    fullWidth
+                    onClick={() => _set_signup_open(true)}
+                  >
                     Sign up
                   </Button>
                 </MenuItem>
                 <MenuItem>
-                  <Button color="primary" variant="outlined" fullWidth>
+                  <Button 
+                    color="primary" 
+                    variant="outlined" 
+                    fullWidth
+                    onClick={() => _set_login_open(true)}
+                  >
                     Sign in
                   </Button>
                 </MenuItem>
@@ -169,6 +193,12 @@ export default function AppAppBar(props) {
             </Drawer>
           </Box>
         </StyledToolbar>
+        <Dialog open={signup_open} onClose={() => _set_signup_open(false)} maxWidth="xs" fullWidth>
+          <_sign_up />
+        </Dialog>
+        <Dialog open={login_open} onClose={() => _set_login_open(false)} maxWidth="xs" fullWidth>
+          <_login />
+        </Dialog>
       </Container>
     </AppBar>
   );
