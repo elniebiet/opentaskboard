@@ -58,6 +58,16 @@ export default function AppAppBar(props) {
   const logo_width = window_size.width * LOGO_WIDTH_PERC;
   const logo_height = window_size.width * LOGO_HEIGHT_PERC;
 
+  const _signup_page_login_link_clicked = () => {
+    _set_signup_open(false);
+    _set_login_open(true);
+  };
+
+  const _login_page_signup_link_clicked = () => {
+    _set_login_open(false);
+    _set_signup_open(true);
+  };
+
   return (
     <AppBar
       position="fixed"
@@ -74,7 +84,7 @@ export default function AppAppBar(props) {
           <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0 }}>
             <IconButton
               variant="plain"
-              onClick={() => {/* go home*/}}
+              onClick={() => props._on_update_route('/')}
               sx={{
                 borderRadius: 20,
                 width: logo_width,
@@ -88,7 +98,6 @@ export default function AppAppBar(props) {
                 alt={"OpenTaskBoard"}
                 title={"OpenTaskBoard"}
                 style={{ width: logo_width, height: logo_height, borderRadius: 20, }}
-                onClick={() => props._on_update_route('/')}
               />
             </IconButton>
 
@@ -196,10 +205,10 @@ export default function AppAppBar(props) {
           </Box>
         </StyledToolbar>
         <Dialog open={signup_open} onClose={() => _set_signup_open(false)} maxWidth="xs" fullWidth>
-          <_sign_up />
+          <_sign_up login_link_clicked_handler_func={_signup_page_login_link_clicked}/>
         </Dialog>
         <Dialog open={login_open} onClose={() => _set_login_open(false)} maxWidth="xs" fullWidth>
-          <_login />
+          <_login signup_link_clicked_handler_func={_login_page_signup_link_clicked}/>
         </Dialog>
       </Container>
     </AppBar>
