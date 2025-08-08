@@ -1,32 +1,91 @@
 import React, { useState } from "react";
+import { URL_MAIN_BACKEND, OTB_LOGGING } from "../../common/globals";
 
-const _login = ({signup_link_clicked_handler_func}) => {
-  const [username, _set_username] = useState("");
+const _login = ({signup_link_clicked_handler_func, login_success_func}) => {
+  const [email, _set_email] = useState("");
   const [password, _set_password] = useState("");
   const [error, _set_error] = useState("");
   const [success, _set_success] = useState("");
 
-  const _handle_submit = (e) => {
+  const _handle_submit = async (e) => {
     e.preventDefault();
     _set_error("");
     _set_success("");
 
     // Basic validation
-    if (!username || !password) {
+    if (!email || !password) {
       _set_error("Both fields are required.");
       return;
     }
-    if (password.length < 6) {
-      _set_error("Password must be at least 6 characters.");
+
+    if (email.length < 4 || email.length > 50) {
+      _set_error("Email must be between 4 to 50 characters.");
       return;
     }
 
-    // TODO: Replace with actual login API call
-    setTimeout(() => {
-      _set_success("Login successful! Welcome back.");
-      _set_username("");
-      _set_password("");
-    }, 1000);
+    if (password.length < 8 || password.length > 32) {
+      _set_error("invalid password, please review your login credentials.");
+      return;
+    }
+
+    let valid = false; 
+
+    // send signin request
+    try {
+      let request = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+        })
+      };
+
+      if(OTB_LOGGING)
+      {
+        // console.log("request: ");
+        // console.log(request);
+      }
+
+      const response = await fetch(`${URL_MAIN_BACKEND}auth/signin`, request);
+
+      const data = await response.json();
+      
+      if(OTB_LOGGING)
+      {
+        // console.log("response: "); 
+        // console.log(response);
+      }
+      
+      if(response.status === 409)
+      {
+        _set_error("Incorrect login credentials.");
+        return;
+      }
+
+      if(response.ok && response.status === 201) {
+        valid = true;
+      } 
+
+      if(!valid){
+        _set_error("Error signing in. Please try again.");
+        return;
+      }
+    
+      setTimeout(() => {
+        _set_success("Login Successful!");
+        _set_email("");
+        _set_password("");
+
+        // call the success handler
+        login_success_func();
+      }, 1000);
+    } catch (err) {
+      _set_error("Network error. Please try again.");
+      return;
+    }
   };
 
   const _signup_link_clicked = (e) => {
@@ -54,12 +113,12 @@ const _login = ({signup_link_clicked_handler_func}) => {
       </p>
       <form onSubmit={_handle_submit}>
         <div style={{ marginBottom: 20 }}>
-          <label style={{ fontWeight: 500, color: "#333" }}>Username</label>
+          <label style={{ fontWeight: 500, color: "#333" }}>Email</label>
           <input
-            type="text"
-            value={username}
+            type="email"
+            value={email}
             required
-            onChange={e => _set_username(e.target.value)}
+            onChange={e => _set_email(e.target.value)}
             style={{
               width: "100%",
               padding: "10px 12px",
@@ -69,7 +128,7 @@ const _login = ({signup_link_clicked_handler_func}) => {
               fontSize: 16,
               background: "#fff",
             }}
-            autoComplete="username"
+            autoComplete="email"
           />
         </div>
         <div style={{ marginBottom: 20 }}>

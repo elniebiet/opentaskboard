@@ -1,4 +1,7 @@
 const URL_MAIN = "http://localhost:5173/";
+const URL_MAIN_BACKEND = "http://localhost:3000/";
+
+const OTB_LOGGING = true; // set to false in production
 
 /* TaskBoard Types begin */
 const TASKBOARD_TYPES =
@@ -233,6 +236,7 @@ const META_ACTIONS = {
 /************************************************************/
 export {
     URL_MAIN, 
+    URL_MAIN_BACKEND,
 
     /* TaskBoard types export */
     TASKBOARD_TYPES,
@@ -293,5 +297,6 @@ export {
     UNUSED,
     ACTIONS,
     META_ACTIONS,
+    OTB_LOGGING,
 };
 

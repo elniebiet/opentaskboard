@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { URL_MAIN_BACKEND } from "../../common/globals";
+import { OTB_LOGGING } from "../../common/globals";
 
 const _sign_up = ({login_link_clicked_handler_func}) => {
   const [email, _set_email] = useState("");
@@ -6,35 +8,96 @@ const _sign_up = ({login_link_clicked_handler_func}) => {
   const [password, _set_password] = useState("");
   const [confirm, _set_confirm] = useState("");
   const [error, _set_error] = useState("");
-  const [success, _set_success] = useState("");
+  const [success_msg, _set_success_msg] = useState("");
 
-  const _handle_submit = (e) => {
+  const _handle_submit = async (e) => {
     e.preventDefault();
     _set_error("");
-    _set_success("");
+    _set_success_msg("");
 
     // Basic validation
     if (!email || !username || !password || !confirm) {
       _set_error("All fields are required.");
       return;
     }
-    if (password.length < 6) {
-      _set_error("Password must be at least 6 characters.");
+
+    if (email.length < 4 || email.length > 50) {
+      _set_error("Email must be between 4 to 50 characters.");
       return;
     }
+    
+    if (username.length < 4 || username.length > 20) {
+      _set_error("Username must be between 4 to 20 characters.");
+      return;
+    }
+
+    if (password.length < 8 || password.length > 32) {
+      _set_error("Password must be between 8 to 32 characters, Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.");
+      return;
+    }
+
     if (password !== confirm) {
       _set_error("Passwords do not match.");
       return;
     }
 
-    // TODO: Replace with actual signup API call
-    setTimeout(() => {
-      _set_success("Verification needed!");
-      _set_email("");
-      _set_username("");
-      _set_password("");
-      _set_confirm("");
-    }, 1000);
+    let valid = false; 
+
+    // send signup request
+    try {
+      let request = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          username: username,
+          password: password,
+          email: email
+        })
+      };
+
+      if(OTB_LOGGING)
+      {
+        // console.log("request: ");
+        // console.log(request);
+      }
+      const response = await fetch(`${URL_MAIN_BACKEND}auth/signup`, request);
+
+      const data = await response.json();
+      
+      if(OTB_LOGGING)
+      {
+        // console.log("response: "); 
+        // console.log(response);
+      }
+      
+      if(response.status === 409)
+      {
+        _set_error("Username or Email is already registered.");
+        return;
+      }
+
+      if(response.ok && response.status === 201) {
+        valid = true;
+      } 
+
+      if(!valid){
+        _set_error("Error creating account. Please try again.");
+        return;
+      }
+    
+      setTimeout(() => {
+        _set_success_msg("Verification needed!");
+        _set_email("");
+        _set_username("");
+        _set_password("");
+        _set_confirm("");
+      }, 1000);
+    } catch (err) {
+      _set_error("Network error. Please try again.");
+      return;
+    }
   };
 
   const _login_clicked = (e) => {
@@ -57,7 +120,7 @@ const _sign_up = ({login_link_clicked_handler_func}) => {
       <h2 style={{ textAlign: "center", marginBottom: 8, color: "#1976d2", fontWeight: 700 }}>
         OpenTaskBoard
       </h2>
-      {!success && (
+      {!success_msg && (
         <>
           <div id="#signup-form">
             <p style={{ textAlign: "center", marginBottom: 24, color: "#555" }}>
@@ -145,9 +208,9 @@ const _sign_up = ({login_link_clicked_handler_func}) => {
                   {error}
                 </div>
               )}
-              {success && (
+              {success_msg && (
                 <div style={{ color: "#d32f2f", marginBottom: 16, textAlign: "center", fontWeight: 500 }}>
-                  {success}
+                  {success_msg}
                 </div>
               )}
               <button
@@ -172,10 +235,10 @@ const _sign_up = ({login_link_clicked_handler_func}) => {
           </div>
         </>
       )}
-      {success && (
+      {success_msg && (
         <>
           <div style={{ color: "#d32f2f", marginBottom: 16, textAlign: "center", fontWeight: 500 }}>
-            {success}
+            {success_msg}
           </div>
           <div style={{ color: "#1976d2", marginBottom: 16, textAlign: "center", fontWeight: 500 }}>
             Please check your email for a verification link.

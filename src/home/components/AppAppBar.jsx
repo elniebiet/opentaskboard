@@ -68,6 +68,10 @@ export default function AppAppBar(props) {
     _set_signup_open(true);
   };
 
+  const _login_success = () => {
+    _set_login_open(false);
+  };
+
   return (
     <AppBar
       position="fixed"
@@ -208,7 +212,7 @@ export default function AppAppBar(props) {
           <_sign_up login_link_clicked_handler_func={_signup_page_login_link_clicked}/>
         </Dialog>
         <Dialog open={login_open} onClose={() => _set_login_open(false)} maxWidth="xs" fullWidth>
-          <_login signup_link_clicked_handler_func={_login_page_signup_link_clicked}/>
+          <_login signup_link_clicked_handler_func={_login_page_signup_link_clicked} login_success_func={_login_success}/>
         </Dialog>
       </Container>
     </AppBar>
