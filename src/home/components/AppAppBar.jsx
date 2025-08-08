@@ -23,6 +23,7 @@ import otb_logo from '../../../res/imgs/otb_logo/otb_logo_200x72.png';
 import _logo from '../../common/components/logo';
 import _login from '../components/Login';
 import _sign_up from '../components/Signup';
+import blank_profile_img from '../../../res/imgs/blank_profile_100x100.png';
 
 // AppBar component
 
@@ -46,6 +47,7 @@ export default function AppAppBar(props) {
   const [open, setOpen] = React.useState(false);
   const [signup_open, _set_signup_open] = React.useState(false);
   const [login_open, _set_login_open] = React.useState(false);
+  const [logged_in, _set_logged_in] = React.useState(false);
 
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
@@ -70,6 +72,7 @@ export default function AppAppBar(props) {
 
   const _login_success = () => {
     _set_login_open(false);
+    _set_logged_in(true);
   };
 
   return (
@@ -130,28 +133,57 @@ export default function AppAppBar(props) {
               alignItems: 'center',
             }}
           >
-            <Button 
-              color="primary" 
-              style={{ fontWeight: 'bold' }} 
-              variant="text" 
-              size="small"
-              onClick={() => _set_login_open(true)}
-            >
-              Sign in
-            </Button>
-            <Button
-              color="primary"
-              style={{ fontWeight: 'bold' }}
-              variant="contained"
-              size="small"
-              onClick={() => _set_signup_open(true)}
-            >
-              Sign up
-            </Button>
+            {!logged_in && (
+                <Button 
+                color="primary" 
+                style={{ fontWeight: 'bold' }} 
+                variant="text" 
+                size="small"
+                onClick={() => _set_login_open(true)}
+              >
+                Sign in
+              </Button>
+            )}
+
+            {!logged_in && (
+              <Button
+                color="primary"
+                style={{ fontWeight: 'bold' }}
+                variant="contained"
+                size="small"
+                onClick={() => _set_signup_open(true)}
+              >
+                Sign up
+              </Button>
+            )}
+
             <ColorModeIconDropdown />
+
+            {/* User Profile Button */}
+            {logged_in && (
+              <IconButton
+                sx={{
+                  ml: 1,
+                  p: 0,
+                  width: 36,
+                  height: 36,
+                  borderRadius: '50%',
+                  backgroundColor: 'background.paper',
+                  boxShadow: 1,
+                }}
+                aria-label="User profile"
+              >
+                <img
+                  src={blank_profile_img}
+                  alt="Profile"
+                  style={{ width: 36, height: 36, borderRadius: '50%' }}
+                />
+              </IconButton>
+            )}
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' }, gap: 1 }}>
             <ColorModeIconDropdown size="medium" />
+
             <IconButton aria-label="Menu button" onClick={toggleDrawer(true)}>
               <MenuIcon />
             </IconButton>
@@ -184,26 +216,59 @@ export default function AppAppBar(props) {
                 <MenuItem>FAQ</MenuItem>
                 <MenuItem>Blog</MenuItem>
                 <Divider sx={{ my: 3 }} />
-                <MenuItem>
-                  <Button
-                    color="primary"
-                    variant="contained"
-                    fullWidth
-                    onClick={() => _set_signup_open(true)}
-                  >
-                    Sign up
-                  </Button>
-                </MenuItem>
-                <MenuItem>
-                  <Button 
-                    color="primary" 
-                    variant="outlined" 
-                    fullWidth
-                    onClick={() => _set_login_open(true)}
-                  >
-                    Sign in
-                  </Button>
-                </MenuItem>
+                
+                {!logged_in && (
+                  <MenuItem>
+                    <Button
+                      color="primary"
+                      variant="contained"
+                      fullWidth
+                      onClick={() => _set_signup_open(true)}
+                    >
+                      Sign up
+                    </Button>
+                  </MenuItem>
+                )}
+
+                {!logged_in && (
+                  <MenuItem>
+                    <Button 
+                      color="primary" 
+                      variant="outlined" 
+                      fullWidth
+                      onClick={() => _set_login_open(true)}
+                    >
+                      Sign in
+                    </Button>
+                  </MenuItem>
+                )}
+
+                <Divider sx={{ my: 3 }} />
+                {logged_in && (
+                  <MenuItem>
+                    {/* User Profile Button for mobile/drawer */}
+                    <IconButton
+                      sx={{
+                        p: 0,
+                        width: 36,
+                        height: 36,
+                        borderRadius: '50%',
+                        backgroundColor: 'background.paper',
+                        boxShadow: 1,
+                      }}
+                      aria-label="User profile"
+                      onClick={() => {
+                        toggleDrawer(false)();
+                      }}
+                    >
+                      <img
+                        src={blank_profile_img}
+                        alt="Profile"
+                        style={{ width: 36, height: 36, borderRadius: '50%' }}
+                      />
+                    </IconButton>
+                  </MenuItem>
+                )}
               </Box>
             </Drawer>
           </Box>
