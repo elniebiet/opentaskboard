@@ -28,6 +28,10 @@ const _login = ({signup_link_clicked_handler_func, login_success_func}) => {
       return;
     }
 
+    let otb_access_token = localStorage.getItem("otb_access_token");
+    otb_access_token = otb_access_token ? otb_access_token : "";
+    
+
     let valid = false; 
 
     // send signin request
@@ -40,6 +44,7 @@ const _login = ({signup_link_clicked_handler_func, login_success_func}) => {
         body: JSON.stringify({
           email: email,
           password: password,
+          accessToken: otb_access_token
         })
       };
 
@@ -75,6 +80,10 @@ const _login = ({signup_link_clicked_handler_func, login_success_func}) => {
       }
     
       setTimeout(() => {
+        // save accessToken to localStorage
+        if (data.accessToken) {
+          localStorage.setItem("otb_access_token", data.accessToken);
+        } 
         _set_success("Login Successful!");
         _set_email("");
         _set_password("");
