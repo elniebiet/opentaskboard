@@ -1,5 +1,6 @@
 import { _otb_generate_uuid } from "../src/common/otb_id_generator";
 import { COMPONENT_CLSID_PREFIXES } from "../src/common/otb_component_class_id_prefixes";
+import { _auth_is_valid_access_token } from "../src/common/auth";
 
 describe("otb id uuid generation function tests", () => {
     test('test otb id uuid generation', () => {
@@ -28,5 +29,13 @@ describe("otb id uuid generation function tests", () => {
     });
 
     
+});
+
+describe("authentication tests", () => {
+    test('test access token verification', () => {
+        let result = _auth_is_valid_access_token("thisisarandomaccesstoken", "thisisarandomemail").then(result => {
+            expect(result).toBe(false);
+        });
+    });
 });
 

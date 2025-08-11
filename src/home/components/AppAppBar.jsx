@@ -24,6 +24,9 @@ import _logo from '../../common/components/logo';
 import _login from '../components/Login';
 import _sign_up from '../components/Signup';
 import blank_profile_img from '../../../res/imgs/blank_profile_100x100.png';
+import { _global_state_context } from '../../common/global_state_context';
+import { useContext } from 'react';
+import { _auth_is_valid_access_token } from '../../common/auth';
 
 // AppBar component
 
@@ -48,6 +51,22 @@ export default function AppAppBar(props) {
   const [signup_open, _set_signup_open] = React.useState(false);
   const [login_open, _set_login_open] = React.useState(false);
   const [logged_in, _set_logged_in] = React.useState(false);
+  const { global_email, _set_global_email } = useContext(_global_state_context);
+
+  // check if user has valid access token 
+  React.useEffect(() => {
+    const access_token = localStorage.getItem("otb_access_token");
+    _auth_is_valid_access_token(access_token, global_email).then(res => {
+
+    if (res === true) {
+      _set_logged_in(true);
+    }
+    else
+    {
+      _set_logged_in(false);
+    }
+    });
+  }, []);
 
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);

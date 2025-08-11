@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { URL_MAIN_BACKEND, OTB_LOGGING } from "../../common/globals";
+import { _global_state_context } from "../../common/global_state_context";
 
 const _login = ({signup_link_clicked_handler_func, login_success_func}) => {
   const [email, _set_email] = useState("");
   const [password, _set_password] = useState("");
   const [error, _set_error] = useState("");
   const [success, _set_success] = useState("");
-
+  const { global_email, _set_global_email } = useContext(_global_state_context);
+  
   const _handle_submit = async (e) => {
     e.preventDefault();
     _set_error("");
@@ -84,6 +86,7 @@ const _login = ({signup_link_clicked_handler_func, login_success_func}) => {
         if (data.accessToken) {
           localStorage.setItem("otb_access_token", data.accessToken);
         } 
+        _set_global_email(email);
         _set_success("Login Successful!");
         _set_email("");
         _set_password("");
