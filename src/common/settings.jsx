@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Dialog, DialogTitle, DialogContent, IconButton, Typography, 
     Box, Divider, Select, MenuItem } from '@mui/material';
-import { _get_all_themes, SELECTED_COLOR_THEME, _set_selected_color_theme } from '../../common/components/use_colour_themes';
-import { _get_toolbar_z_index } from '../../common/globals';
+import { _get_all_themes, SELECTED_COLOR_THEME, _set_selected_color_theme } from './components/use_colour_themes';
+import { _get_toolbar_z_index } from './globals';
 
 const _settings = ({ trigger_width, trigger_height, img_src, re_render_func }) => {
   const [open, set_open] = useState(false);

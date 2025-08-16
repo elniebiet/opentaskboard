@@ -27,7 +27,7 @@ import { _global_state_context } from '../../common/global_state_context';
 import { useContext } from 'react';
 import { _auth_is_valid_access_token } from '../../common/auth';
 import _user_profile from '../../common/user_profile';
-import _settings from '../../common/components/settings';
+import _settings from '../../common/settings';
 import settings_img from '../../../res/imgs/settings_100x100.png';
 import { SELECTED_COLOR_THEME } from '../../common/components/use_colour_themes';
 

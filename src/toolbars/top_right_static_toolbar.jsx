@@ -12,8 +12,7 @@ import { TOP_RIGHT_STATIC_TOOLBAR_ITEMS } from './toolbar_globals';
 import { _colour_picker_no_button } from '../common/components/colour_picker';
 import { SELECTED_COLOR_THEME } from '../common/components/use_colour_themes';
 import _user_profile from '../common/user_profile';
-import _settings from '../common/components/settings';
-
+import _settings from '../common/settings';
 import _taskboard_history from '../taskboards/components/taskboard_history';
 import _taskboard_apps from '../taskboards/components/taskboard_apps';
 
