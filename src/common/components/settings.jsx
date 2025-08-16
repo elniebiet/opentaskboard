@@ -16,7 +16,7 @@ const _settings = ({ trigger_width, trigger_height, img_src, re_render_func }) =
   const _load_themes = () => {
     const themes = _get_all_themes();
     return Object.keys(themes).map((theme) => (
-      <MenuItem key={themes[theme].name} value={themes[theme].name} zIndex={_get_toolbar_z_index() + 1}>
+      <MenuItem key={themes[theme].name} value={themes[theme].name}>
         {themes[theme].name}
       </MenuItem>
     ));

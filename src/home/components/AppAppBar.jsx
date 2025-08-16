@@ -29,6 +29,7 @@ import { _auth_is_valid_access_token } from '../../common/auth';
 import _user_profile from '../../common/user_profile';
 import _settings from '../../common/components/settings';
 import settings_img from '../../../res/imgs/settings_100x100.png';
+import { SELECTED_COLOR_THEME } from '../../common/components/use_colour_themes';
 
 
 // AppBar component
@@ -55,15 +56,6 @@ export default function AppAppBar(props) {
   const [login_open, _set_login_open] = React.useState(false);
   const [logged_in, _set_logged_in] = React.useState(false);
   const { global_email, _set_global_email } = useContext(_global_state_context);
-
-  const [, _re_render_page] = React.useState(0);
-  
-  // manually trigger re-render
-  const _rerender = () => {
-    _re_render_page((prev) => {
-      return ((prev >= 1000000) ? 0 : (prev + 1));
-    });
-  };
 
   // check if user has valid access token 
   React.useEffect(() => {
@@ -119,6 +111,7 @@ export default function AppAppBar(props) {
     >
       <Container maxWidth="lg">
         <StyledToolbar variant="dense" disableGutters>
+          {/* Desktop view AppBar Components begins */}
           <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0 }}>
             <IconButton
               variant="plain"
@@ -139,26 +132,25 @@ export default function AppAppBar(props) {
               />
             </IconButton>
 
-            <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-              <Box sx={{ minWidth: 120 }}>
+            <Box sx={{ display: { xs: 'none', md: 'flex', gap: 5 } }}>
+              <Box sx={{ minWidth: 0, marginLeft: 2 }}>
                 <_taskboard_menu _on_update_route={props._on_update_route} />
               </Box>
-              <Box sx={{ minWidth: 120 }}>
+              <Box sx={{ minWidth: 0 }}>
                 <_template_menu _on_update_route={props._on_update_route} />
               </Box>
-              <Box sx={{ minWidth: 120 }}>
+              <Box sx={{ minWidth: 0 }}>
                 <_pricing_menu _on_update_route={props._on_update_route} />
               </Box>
-              <Box sx={{ minWidth: 120 }}>
+              <Box sx={{ minWidth: 0 }}>
                 <_FAQ_menu _on_update_route={props._on_update_route} />
               </Box>
-              <Box sx={{ minWidth: 120 }}>
+              <Box sx={{ minWidth: 0 }}>
                 <_about_menu _on_update_route={props._on_update_route} />
               </Box>
             </Box>
           </Box>
 
-          {/* Desktop view AppBar Components */}
           <Box
             sx={{
               display: { xs: 'none', md: 'flex' },
@@ -169,7 +161,7 @@ export default function AppAppBar(props) {
             {!logged_in && (
                 <Button 
                 color="primary" 
-                style={{ fontWeight: 'bold' }} 
+                style={{ fontWeight: 'bold', color: SELECTED_COLOR_THEME.text_colour }} 
                 variant="text" 
                 size="small"
                 onClick={() => _set_login_open(true)}
@@ -205,13 +197,14 @@ export default function AppAppBar(props) {
             {logged_in && (
               <div>
                 <_settings trigger_width={top_right_toolbar_item_width} trigger_height={top_right_toolbar_item_height} img_src={settings_img} 
-                  img_alt_txt={"Settings"} re_render_func={_rerender}     
+                  img_alt_txt={"Settings"} re_render_func={props.rerender_func}     
                 />
               </div>
             )} 
           </Box>
+          {/* Desktop view AppBar Components ends*/}
 
-          {/* Mobile view AppBar Components */}
+          {/* Mobile view AppBar Components begins */}
           <Box sx={{ display: { xs: 'flex', md: 'none' }, gap: 1 }}>
             <IconButton aria-label="Menu button" onClick={toggleDrawer(true)}>
               <MenuIcon />
@@ -300,7 +293,7 @@ export default function AppAppBar(props) {
                     {logged_in && (
                       <div>
                         <_settings trigger_width={top_right_toolbar_item_width} trigger_height={top_right_toolbar_item_height} img_src={settings_img} 
-                          img_alt_txt={"Settings"} re_render_func={_rerender}     
+                          img_alt_txt={"Settings"} re_render_func={props.rerender_func}     
                         />
                       </div>
                     )} 
@@ -309,6 +302,7 @@ export default function AppAppBar(props) {
               </Box>
             </Drawer>
           </Box>
+          {/* Mobile view AppBar Components ends */}
         </StyledToolbar>
         <Dialog open={signup_open} onClose={() => _set_signup_open(false)} maxWidth="xs" fullWidth>
           <_sign_up login_link_clicked_handler_func={_signup_page_login_link_clicked}/>

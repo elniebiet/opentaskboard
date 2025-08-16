@@ -15,6 +15,15 @@ import AppTheme from '../shared-theme/AppTheme';
 import { SELECTED_COLOR_THEME } from '../common/components/use_colour_themes';
 
 export default function _homepage(props) {
+  const [, _re_render_homepage] = React.useState(0);
+    
+  // manually trigger re-render
+  const _home_rerender = () => {
+    _re_render_homepage((prev) => {
+      return ((prev >= 1000000) ? 0 : (prev + 1));
+    });
+  };
+  
   return (
     <AppTheme {...props}>
       <div 
@@ -25,7 +34,7 @@ export default function _homepage(props) {
         }}
       >
         <CssBaseline enableColorScheme />
-        <AppAppBar _on_update_route={props._on_update_route}/>
+        <AppAppBar _on_update_route={props._on_update_route} rerender_func={_home_rerender}/>
         <Hero />
         <div>
           {/* <LogoCollection /> */}

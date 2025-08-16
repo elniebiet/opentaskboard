@@ -15,7 +15,7 @@ let COLOR_THEMES = {
     Dark: {
         name: 'Dark',
         bg_colour: '#121212',
-        surface_colour: '#1E1E1E',
+        surface_colour: '#808080',
         text_colour: '#FFFFFF',
         secondary_text: '#B0B0B0',
         disabled_text: '#666666',

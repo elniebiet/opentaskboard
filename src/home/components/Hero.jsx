@@ -11,6 +11,7 @@ import Typography from '@mui/material/Typography';
 import { visuallyHidden } from '@mui/utils';
 import { styled } from '@mui/material/styles';
 import process from 'process'
+import { SELECTED_COLOR_THEME } from '../../common/components/use_colour_themes';
 
 const StyledBox = styled('div')(({ theme }) => ({
   alignSelf: 'center',
@@ -73,6 +74,7 @@ export default function Hero() {
               flexDirection: { xs: 'column', sm: 'row' },
               alignItems: 'center',
               fontSize: 'clamp(3rem, 10vw, 3.5rem)',
+              color: SELECTED_COLOR_THEME.text_colour,
             }}
           >
             Open
