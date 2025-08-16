@@ -59,7 +59,11 @@ import leftangles from '../db/taskboards/leftangles_db_temp';    // temporary le
     // - _update_component(component type, component id);
 
  */
-const _taskboard_default = ({taskboard_id = 0, /* taskboard id should be supplied by caller*/ taskboard_type = TASKBOARD_TYPES.TASKBOARD_DEFAULT}) => {
+const _taskboard_default = ({
+  taskboard_id = 0, /* taskboard id should be supplied by caller*/
+  taskboard_type = TASKBOARD_TYPES.TASKBOARD_DEFAULT,
+  taskboard_name = "New Taskboard1"
+}) => {
   
   /***************** Misc block begins *************************/
   let { width, height } = _get_window_size();
@@ -330,14 +334,6 @@ const _taskboard_default = ({taskboard_id = 0, /* taskboard id should be supplie
                 </div>
               ))}
             </div>
-
-            {/* <div>
-              {comments.map((comment) => (
-                <_comment key={comment.id} id={comment.id} text={comment.text} win_width_perc={comment.win_width_perc} tb_item_loc_update_func={_set_tb_item_loc_func} 
-                x1_pos={comment.x1_pos} y1_pos={comment.y1_pos} win_width={width} win_height={height} colour={comment.colour} taskboard_rerender_func={_trigger_taskboard_rerender}
-                request_taskboard_state_func={_request_taskboard_state} overall_taskboard_state={taskboard_state} />
-              ))}
-            </div> */}
           </div>
           
           {/* display shapes */}
@@ -568,8 +564,10 @@ const _taskboard_default = ({taskboard_id = 0, /* taskboard id should be supplie
           <_gridlines_normal grid_size={30} />
 
           <_top_right_static_toolbar id={1} win_width={width} win_height={height} taskboard_rerender_func={_trigger_taskboard_rerender} />
-          
-          <_top_left_bar id={1} win_width={width} win_height={height} taskboard_rerender_func={_trigger_taskboard_rerender} />
+
+          <_top_left_bar id={1} win_width={width} win_height={height} taskboard_rerender_func={_trigger_taskboard_rerender} 
+            taskboard_name={taskboard_name}
+          />
 
           <_taskboard_toolbar pos={"top"} win_width={width} win_height={height} add_note_func={_add_note} set_tb_item_loc_func={_set_tb_item_loc_func} 
             select_cursor_func={_select_pointer} marker_draw_func={_draw_with_marker} add_fill_func={_add_fill} add_comment_func={_add_comment} 

@@ -54,8 +54,9 @@ export default function AppAppBar(props) {
   const [open, setOpen] = React.useState(false);
   const [signup_open, _set_signup_open] = React.useState(false);
   const [login_open, _set_login_open] = React.useState(false);
-  const [logged_in, _set_logged_in] = React.useState(false);
+  
   const { global_email, _set_global_email } = useContext(_global_state_context);
+  const { global_login_status, _set_global_login_status } = useContext(_global_state_context);
 
   // check if user has valid access token 
   React.useEffect(() => {
@@ -63,11 +64,11 @@ export default function AppAppBar(props) {
     _auth_is_valid_access_token(access_token, global_email).then(res => {
 
     if (res === true) {
-      _set_logged_in(true);
+      _set_global_login_status(true);
     }
     else
     {
-      _set_logged_in(false);
+      _set_global_login_status(false);
     }
     });
   }, []);
@@ -95,7 +96,7 @@ export default function AppAppBar(props) {
 
   const _login_success = () => {
     _set_login_open(false);
-    _set_logged_in(true);
+    _set_global_login_status(true);
   };
 
   return (
@@ -158,7 +159,7 @@ export default function AppAppBar(props) {
               alignItems: 'center',
             }}
           >
-            {!logged_in && (
+            {!global_login_status && (
                 <Button 
                 color="primary" 
                 style={{ fontWeight: 'bold', color: SELECTED_COLOR_THEME.text_colour }} 
@@ -170,7 +171,7 @@ export default function AppAppBar(props) {
               </Button>
             )}
 
-            {!logged_in && (
+            {!global_login_status && (
               <Button
                 color="primary"
                 style={{ fontWeight: 'bold' }}
@@ -183,7 +184,7 @@ export default function AppAppBar(props) {
             )}
 
             {/* User Profile Button */}
-            {logged_in && (
+            {global_login_status && (
               <div>
                 <_user_profile
                 trigger_width={top_right_toolbar_item_width}
@@ -194,7 +195,7 @@ export default function AppAppBar(props) {
             )} 
 
             {/* Settings Button */}
-            {logged_in && (
+            {global_login_status && (
               <div>
                 <_settings trigger_width={top_right_toolbar_item_width} trigger_height={top_right_toolbar_item_height} img_src={settings_img} 
                   img_alt_txt={"Settings"} re_render_func={props.rerender_func}     
@@ -247,7 +248,7 @@ export default function AppAppBar(props) {
                   <_about_menu _on_update_route={props._on_update_route} />
                 </Box>
                 
-                {!logged_in && (
+                {!global_login_status && (
                   <MenuItem>
                     <Button
                       color="primary"
@@ -260,7 +261,7 @@ export default function AppAppBar(props) {
                   </MenuItem>
                 )}
 
-                {!logged_in && (
+                {!global_login_status && (
                   <MenuItem>
                     <Button 
                       color="primary" 
@@ -274,10 +275,10 @@ export default function AppAppBar(props) {
                 )}
 
                 <Divider sx={{ my: 3 }} />
-                {logged_in && (
+                {global_login_status && (
                   <MenuItem>
                     {/* User Profile Button for mobile/drawer */}
-                    {logged_in && (
+                    {global_login_status && (
                       <div>
                         <_user_profile trigger_width={top_right_toolbar_item_width} trigger_height={top_right_toolbar_item_height}
                           img_src={blank_profile_img}
@@ -287,10 +288,10 @@ export default function AppAppBar(props) {
                   </MenuItem>
                 )}
 
-                {logged_in && (
+                {global_login_status && (
                   <MenuItem>
                     {/* Settings Button for mobile/drawer */}
-                    {logged_in && (
+                    {global_login_status && (
                       <div>
                         <_settings trigger_width={top_right_toolbar_item_width} trigger_height={top_right_toolbar_item_height} img_src={settings_img} 
                           img_alt_txt={"Settings"} re_render_func={props.rerender_func}     

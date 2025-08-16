@@ -36,6 +36,12 @@ const _sign_up = ({login_link_clicked_handler_func}) => {
       return;
     }
 
+    // Check for alphanumeric, at least one lowercase and one uppercase character
+    if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]+$/.test(password)) {
+      _set_error("Password must be alphanumeric and contain at least one lowercase, one uppercase letter, and one number.");
+      return;
+    }
+
     if (password !== confirm) {
       _set_error("Passwords do not match.");
       return;
