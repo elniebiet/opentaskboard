@@ -11,9 +11,9 @@ import { _get_toolbar_z_index } from '../common/globals';
 import { TOP_RIGHT_STATIC_TOOLBAR_ITEMS } from './toolbar_globals';
 import { _colour_picker_no_button } from '../common/components/colour_picker';
 import { SELECTED_COLOR_THEME } from '../common/components/use_colour_themes';
+import _user_profile from '../common/user_profile';
 
 import _taskboard_history from '../taskboards/components/taskboard_history';
-import _taskboard_profile from '../taskboards/components/taskboard_profile';
 import _taskboard_settings from '../taskboards/components/taskboard_settings';
 import _taskboard_apps from '../taskboards/components/taskboard_apps';
 
@@ -23,16 +23,12 @@ import _taskboard_apps from '../taskboards/components/taskboard_apps';
  *  
  */
 const _top_right_static_toolbar = (props) => {
-    const ITEM_PERCENTAGE = 0.02;       // toolbar item res percentage rtive to window size (2 percent of orig win)
-    const ROOT_PERCENTAGE = 0.02;       // toolbar container res percentage rtive to window size (3 percent of orig win)
-    const ITEM_BR_PERCENTAGE = 0.05;    // toolbar item img border radius percentage
 
-    let item_width = (ITEM_PERCENTAGE * props.win_width);
-    let item_height = item_width;
-    let item_br = (ITEM_BR_PERCENTAGE * props.win_width);
-
-    let root_width = (ROOT_PERCENTAGE * props.win_width);
-    let root_height = root_width;
+    const item_width    = "2.25rem"; // toolbar item res
+    const item_height   = "2.25rem"; 
+    const item_br       = "5.625rem";
+    const root_width    = "2.25rem";
+    const root_height   = "2.25rem";
 
     let profile_image = blank_profile_img; // default profile image
         
@@ -70,10 +66,7 @@ const _top_right_static_toolbar = (props) => {
                         request_taskboard_state_func={props.request_taskboard_state_func}
                     />
 
-                    <_taskboard_profile trigger_width={item_width} trigger_height={item_height} img_src={profile_image} 
-                        win_width={props.win_width} img_alt_txt={"Profile"} taskboard_rerender_func={props.taskboard_rerender_func} 
-                        request_taskboard_state_func={props.request_taskboard_state_func}    
-                    />
+                    <_user_profile trigger_width={item_width} trigger_height={item_height} img_src={profile_image} />
 
                     {/* Settings dropdown */}
                     <_taskboard_settings trigger_width={item_width} trigger_height={item_height} img_src={settings_img} 

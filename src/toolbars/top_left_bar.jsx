@@ -10,7 +10,6 @@ import { _colour_picker_no_button } from '../common/components/colour_picker';
 import { SELECTED_COLOR_THEME } from '../common/components/use_colour_themes';
 
 import _logo from '../common/components/logo';
-import _taskboard_profile from '../taskboards/components/taskboard_profile';
 import _taskboard_settings from '../taskboards/components/taskboard_settings';
 import _taskboard_apps from '../taskboards/components/taskboard_apps';
 
@@ -20,20 +19,17 @@ import _taskboard_apps from '../taskboards/components/taskboard_apps';
  *  
  */
 const _top_left_bar = (props) => {
-    const ITEM_PERCENTAGE = 0.02;       // toolbar item res percentage rtive to window size (2 percent of orig win)
-    const ROOT_PERCENTAGE = 0.02;       // toolbar container res percentage rtive to window size (3 percent of orig win)
-    const ITEM_BR_PERCENTAGE = 0.05;    // toolbar item img border radius percentage
-    const LOGO_WIDTH = 0.06;            // logo width percentage of window size (6 percent of orig win)
+
+    const item_width    = "2.25rem"; // toolbar item res
+    const item_height   = "2.25rem"; 
+    const item_br       = "5.625rem";
+    const root_width    = "2.25rem";
+    const root_height   = "2.25rem";
+
     
-    let item_width = (ITEM_PERCENTAGE * props.win_width);
-    let item_height = item_width;
-    let item_br = (ITEM_BR_PERCENTAGE * props.win_width);
-
-    let root_width = (ROOT_PERCENTAGE * props.win_width);
-    let root_height = root_width;
-
-    let logo_width = (LOGO_WIDTH * props.win_width);
-    let logo_height = ITEM_PERCENTAGE * props.win_width;
+    const LOGO_WIDTH = 6.75; // rem
+    const logo_width = `${LOGO_WIDTH}rem`;
+    const logo_height = `${LOGO_WIDTH/3}rem`;
 
     let profile_image = blank_profile_img; // default profile image
         
@@ -69,11 +65,6 @@ const _top_left_bar = (props) => {
                     <_logo logo_width={logo_width} logo_height={logo_height} img_src={otb_logo_img} 
                         win_width={props.win_width} img_alt_txt={"OpenTaskBoard"}
                     />
-
-                    {/* <_taskboard_profile trigger_width={item_width} trigger_height={item_height} img_src={profile_image} 
-                        win_width={props.win_width} img_alt_txt={"Profile"} taskboard_rerender_func={props.taskboard_rerender_func} 
-                        request_taskboard_state_func={props.request_taskboard_state_func}    
-                    /> */}
 
                     {/* Settings dropdown */}
                     {/* <_taskboard_settings trigger_width={item_width} trigger_height={item_height} img_src={settings_img} 

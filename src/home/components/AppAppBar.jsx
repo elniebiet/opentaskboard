@@ -27,6 +27,7 @@ import blank_profile_img from '../../../res/imgs/blank_profile_100x100.png';
 import { _global_state_context } from '../../common/global_state_context';
 import { useContext } from 'react';
 import { _auth_is_valid_access_token } from '../../common/auth';
+import _user_profile from '../../common/user_profile';
 
 // AppBar component
 
@@ -72,12 +73,12 @@ export default function AppAppBar(props) {
     setOpen(newOpen);
   };
 
-  const LOGO_WIDTH_PERC = 0.06;
-  const LOGO_HEIGHT_PERC = LOGO_WIDTH_PERC / 3;
+  const LOGO_WIDTH = 6.75; // rem
+  const logo_width = `${LOGO_WIDTH}rem`;
+  const logo_height = `${LOGO_WIDTH/3}rem`;;
 
-  const window_size = _get_window_size();
-  const logo_width = window_size.width * LOGO_WIDTH_PERC;
-  const logo_height = window_size.width * LOGO_HEIGHT_PERC;
+  const top_right_toolbar_item_width = "2.25rem";   // Appbar right toolbar item res
+  const top_right_toolbar_item_height = "2.25rem";  // Appbar right toolbar item res
 
   const _signup_page_login_link_clicked = () => {
     _set_signup_open(false);
@@ -145,6 +146,8 @@ export default function AppAppBar(props) {
               </Box>
             </Box>
           </Box>
+
+          {/* Desktop view AppBar Components */}
           <Box
             sx={{
               display: { xs: 'none', md: 'flex' },
@@ -180,26 +183,17 @@ export default function AppAppBar(props) {
 
             {/* User Profile Button */}
             {logged_in && (
-              <IconButton
-                sx={{
-                  ml: 1,
-                  p: 0,
-                  width: 36,
-                  height: 36,
-                  borderRadius: '50%',
-                  backgroundColor: 'background.paper',
-                  boxShadow: 1,
-                }}
-                aria-label="User profile"
-              >
-                <img
-                  src={blank_profile_img}
-                  alt="Profile"
-                  style={{ width: 36, height: 36, borderRadius: '50%' }}
+              <div>
+                <_user_profile
+                trigger_width={top_right_toolbar_item_width}
+                trigger_height={top_right_toolbar_item_height}
+                img_src={blank_profile_img}
                 />
-              </IconButton>
-            )}
+              </div>
+            )} 
           </Box>
+
+          {/* Mobile view AppBar Components */}
           <Box sx={{ display: { xs: 'flex', md: 'none' }, gap: 1 }}>
             <ColorModeIconDropdown size="medium" />
 
@@ -228,13 +222,21 @@ export default function AppAppBar(props) {
                   </IconButton>
                 </Box>
 
-                <MenuItem>Features</MenuItem>
-                <MenuItem>Testimonials</MenuItem>
-                <MenuItem>Highlights</MenuItem>
-                <MenuItem>Pricing</MenuItem>
-                <MenuItem>FAQ</MenuItem>
-                <MenuItem>Blog</MenuItem>
-                <Divider sx={{ my: 3 }} />
+                <Box sx={{ minWidth: 120 }}>
+                  <_taskboard_menu _on_update_route={props._on_update_route} />
+                </Box>
+                <Box sx={{ minWidth: 120 }}>
+                  <_template_menu _on_update_route={props._on_update_route} />
+                </Box>
+                <Box sx={{ minWidth: 120 }}>
+                  <_pricing_menu _on_update_route={props._on_update_route} />
+                </Box>
+                <Box sx={{ minWidth: 120 }}>
+                  <_FAQ_menu _on_update_route={props._on_update_route} />
+                </Box>
+                <Box sx={{ minWidth: 120 }}>
+                  <_about_menu _on_update_route={props._on_update_route} />
+                </Box>
                 
                 {!logged_in && (
                   <MenuItem>
@@ -266,26 +268,15 @@ export default function AppAppBar(props) {
                 {logged_in && (
                   <MenuItem>
                     {/* User Profile Button for mobile/drawer */}
-                    <IconButton
-                      sx={{
-                        p: 0,
-                        width: 36,
-                        height: 36,
-                        borderRadius: '50%',
-                        backgroundColor: 'background.paper',
-                        boxShadow: 1,
-                      }}
-                      aria-label="User profile"
-                      onClick={() => {
-                        toggleDrawer(false)();
-                      }}
-                    >
-                      <img
-                        src={blank_profile_img}
-                        alt="Profile"
-                        style={{ width: 36, height: 36, borderRadius: '50%' }}
-                      />
-                    </IconButton>
+                     {logged_in && (
+                      <div>
+                        <_user_profile
+                          trigger_width={top_right_toolbar_item_width}
+                          trigger_height={top_right_toolbar_item_height}
+                          img_src={blank_profile_img}
+                        />
+                      </div>
+                    )} 
                   </MenuItem>
                 )}
               </Box>
