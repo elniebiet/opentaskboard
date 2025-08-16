@@ -12,9 +12,9 @@ import { TOP_RIGHT_STATIC_TOOLBAR_ITEMS } from './toolbar_globals';
 import { _colour_picker_no_button } from '../common/components/colour_picker';
 import { SELECTED_COLOR_THEME } from '../common/components/use_colour_themes';
 import _user_profile from '../common/user_profile';
+import _settings from '../common/components/settings';
 
 import _taskboard_history from '../taskboards/components/taskboard_history';
-import _taskboard_settings from '../taskboards/components/taskboard_settings';
 import _taskboard_apps from '../taskboards/components/taskboard_apps';
 
 
@@ -53,7 +53,7 @@ const _top_right_static_toolbar = (props) => {
         return;
     }
 
-    const _theme_changed = (new_theme) => {
+    const _re_render_func = (new_theme) => {
         props.taskboard_rerender_func();
     }
 
@@ -68,11 +68,11 @@ const _top_right_static_toolbar = (props) => {
 
                     <_user_profile trigger_width={item_width} trigger_height={item_height} img_src={profile_image} />
 
-                    {/* Settings dropdown */}
-                    <_taskboard_settings trigger_width={item_width} trigger_height={item_height} img_src={settings_img} 
+                    {/* Settings modal */}
+                    <_settings trigger_width={item_width} trigger_height={item_height} img_src={settings_img} 
                         win_width={props.win_width} img_alt_txt={"Settings"} taskboard_rerender_func={props.taskboard_rerender_func} 
                         request_taskboard_state_func={props.request_taskboard_state_func}
-                        on_theme_change={_theme_changed}    
+                        re_render_func={_re_render_func}    
                     />
 
                     {/* Apps dropdown */}

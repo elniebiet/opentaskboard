@@ -10,7 +10,6 @@ import { _colour_picker_no_button } from '../common/components/colour_picker';
 import { SELECTED_COLOR_THEME } from '../common/components/use_colour_themes';
 
 import _logo from '../common/components/logo';
-import _taskboard_settings from '../taskboards/components/taskboard_settings';
 import _taskboard_apps from '../taskboards/components/taskboard_apps';
 
 
@@ -65,13 +64,6 @@ const _top_left_bar = (props) => {
                     <_logo logo_width={logo_width} logo_height={logo_height} img_src={otb_logo_img} 
                         win_width={props.win_width} img_alt_txt={"OpenTaskBoard"}
                     />
-
-                    {/* Settings dropdown */}
-                    {/* <_taskboard_settings trigger_width={item_width} trigger_height={item_height} img_src={settings_img} 
-                        win_width={props.win_width} img_alt_txt={"Settings"} taskboard_rerender_func={props.taskboard_rerender_func} 
-                        request_taskboard_state_func={props.request_taskboard_state_func}
-                        on_theme_change={_theme_changed}    
-                    /> */}
 
                     {/* Apps dropdown */}
                     {/* <_taskboard_apps /> */}

@@ -12,7 +12,6 @@ import Drawer from '@mui/material/Drawer';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import Dialog from '@mui/material/Dialog';
-import ColorModeIconDropdown from '../../shared-theme/ColorModeIconDropdown';
 import _template_menu from './MenuTemplate';
 import _taskboard_menu from './MenuTaskBoard';
 import _pricing_menu from './MenuPricing';
@@ -28,6 +27,9 @@ import { _global_state_context } from '../../common/global_state_context';
 import { useContext } from 'react';
 import { _auth_is_valid_access_token } from '../../common/auth';
 import _user_profile from '../../common/user_profile';
+import _settings from '../../common/components/settings';
+import settings_img from '../../../res/imgs/settings_100x100.png';
+
 
 // AppBar component
 
@@ -53,6 +55,15 @@ export default function AppAppBar(props) {
   const [login_open, _set_login_open] = React.useState(false);
   const [logged_in, _set_logged_in] = React.useState(false);
   const { global_email, _set_global_email } = useContext(_global_state_context);
+
+  const [, _re_render_page] = React.useState(0);
+  
+  // manually trigger re-render
+  const _rerender = () => {
+    _re_render_page((prev) => {
+      return ((prev >= 1000000) ? 0 : (prev + 1));
+    });
+  };
 
   // check if user has valid access token 
   React.useEffect(() => {
@@ -179,8 +190,6 @@ export default function AppAppBar(props) {
               </Button>
             )}
 
-            <ColorModeIconDropdown />
-
             {/* User Profile Button */}
             {logged_in && (
               <div>
@@ -191,12 +200,19 @@ export default function AppAppBar(props) {
                 />
               </div>
             )} 
+
+            {/* Settings Button */}
+            {logged_in && (
+              <div>
+                <_settings trigger_width={top_right_toolbar_item_width} trigger_height={top_right_toolbar_item_height} img_src={settings_img} 
+                  img_alt_txt={"Settings"} re_render_func={_rerender}     
+                />
+              </div>
+            )} 
           </Box>
 
           {/* Mobile view AppBar Components */}
           <Box sx={{ display: { xs: 'flex', md: 'none' }, gap: 1 }}>
-            <ColorModeIconDropdown size="medium" />
-
             <IconButton aria-label="Menu button" onClick={toggleDrawer(true)}>
               <MenuIcon />
             </IconButton>
@@ -268,12 +284,23 @@ export default function AppAppBar(props) {
                 {logged_in && (
                   <MenuItem>
                     {/* User Profile Button for mobile/drawer */}
-                     {logged_in && (
+                    {logged_in && (
                       <div>
-                        <_user_profile
-                          trigger_width={top_right_toolbar_item_width}
-                          trigger_height={top_right_toolbar_item_height}
+                        <_user_profile trigger_width={top_right_toolbar_item_width} trigger_height={top_right_toolbar_item_height}
                           img_src={blank_profile_img}
+                        />
+                      </div>
+                    )} 
+                  </MenuItem>
+                )}
+
+                {logged_in && (
+                  <MenuItem>
+                    {/* Settings Button for mobile/drawer */}
+                    {logged_in && (
+                      <div>
+                        <_settings trigger_width={top_right_toolbar_item_width} trigger_height={top_right_toolbar_item_height} img_src={settings_img} 
+                          img_alt_txt={"Settings"} re_render_func={_rerender}     
                         />
                       </div>
                     )} 
