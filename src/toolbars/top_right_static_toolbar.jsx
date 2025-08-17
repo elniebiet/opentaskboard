@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Fab from '@mui/material/Fab';
-import { styled } from '@mui/system';
+import { height, styled } from '@mui/system';
 import settings_img from '../../res/imgs/settings_100x100.png';
 import history_img from '../../res/imgs/history_100x100.png';
 import blank_profile_img from '../../res/imgs/blank_profile_100x100.png';
@@ -23,19 +23,24 @@ import _taskboard_apps from '../taskboards/components/taskboard_apps';
  */
 const _top_right_static_toolbar = (props) => {
 
-    const item_width    = "2.25rem"; // toolbar item res
-    const item_height   = "2.25rem"; 
-    const item_br       = "5.625rem";
-    const root_width    = "2.25rem";
-    const root_height   = "2.25rem";
-
     let profile_image = blank_profile_img; // default profile image
+
+    const OVERALL_TOOLBAR_WIDTH_PERC = 0.10;     // % of the window width
+    const OVERALL_TOOLBAR_HEIGHT_PERC = 0.05;  // % of the window height
+
+    const overall_toolbar_width = OVERALL_TOOLBAR_WIDTH_PERC * props.win_width;     // width of the toolbar px
+    const overall_toolbar_height = OVERALL_TOOLBAR_HEIGHT_PERC * props.win_height;  // Height of the toolbar px
+
+    const item_width = 0.20 * overall_toolbar_width;        // px
+    const item_height = 0.8 * overall_toolbar_height;       // px
         
     /**************************** Toolbar Stylings begin ***************************/
     let toolbar_styling_top = {
         position: 'fixed', 
         top: 0,
         right: 0,
+        width: overall_toolbar_width + 'px',
+        height: overall_toolbar_height + 'px',
         backgroundColor: SELECTED_COLOR_THEME,
         color: 'white',
         padding: '5px 10px',
@@ -58,8 +63,11 @@ const _top_right_static_toolbar = (props) => {
 
     return (
         <div>
-            <div id="top_right_static_toolbar_root" style={toolbar_styling_top}>
-                <Box sx={{ '& > :not(style)': { m: 0.5 } }} display="flex" flexDirection={"row"}>
+            <div 
+                id="top_right_static_toolbar_root" 
+                style={toolbar_styling_top}
+            >
+                <Box sx={{ '& > :not(style)': { m: 0.5 } }} display="flex" flexDirection={"row"} justifyContent="flex-end" alignItems="center">
                     <_taskboard_history trigger_width={item_width} trigger_height={item_height} img_src={history_img} 
                         win_width={props.win_width} img_alt_txt={"History"} taskboard_rerender_func={props.taskboard_rerender_func} 
                         request_taskboard_state_func={props.request_taskboard_state_func}
@@ -69,13 +77,12 @@ const _top_right_static_toolbar = (props) => {
 
                     {/* Settings modal */}
                     <_settings trigger_width={item_width} trigger_height={item_height} img_src={settings_img} 
-                        win_width={props.win_width} img_alt_txt={"Settings"} taskboard_rerender_func={props.taskboard_rerender_func} 
-                        request_taskboard_state_func={props.request_taskboard_state_func}
+                        win_width={props.win_width} img_alt_txt={"Settings"} request_taskboard_state_func={props.request_taskboard_state_func}
                         re_render_func={_re_render_func}    
                     />
 
                     {/* Apps dropdown */}
-                    <_taskboard_apps />
+                    <_taskboard_apps trigger_width={item_width} trigger_height={item_height} re_render_func={_re_render_func} />
                     
                 </Box>
             </div>            

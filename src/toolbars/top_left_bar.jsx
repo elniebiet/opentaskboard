@@ -25,7 +25,7 @@ import _taskboard_apps from '../taskboards/components/taskboard_apps';
  */
 const _top_left_bar = (props) => {
 
-    const OVERALL_TOOLBAR_WIDTH_PERC = 0.3;     // % of the window width
+    const OVERALL_TOOLBAR_WIDTH_PERC = 0.2;     // % of the window width
     const OVERALL_TOOLBAR_HEIGHT_PERC = 0.055;  // % of the window height
 
     const overall_toolbar_width = OVERALL_TOOLBAR_WIDTH_PERC * props.win_width;     // width of the toolbar px
@@ -34,7 +34,7 @@ const _top_left_bar = (props) => {
     const logo_width = 0.25 * overall_toolbar_width;    // px
     const logo_height = 0.8 * overall_toolbar_height;   // px
 
-    const taskboard_dropdown_width = 0.6 * overall_toolbar_width;       // px
+    const taskboard_dropdown_width = 0.7 * overall_toolbar_width;       // px
     const taskboard_dropdown_height = 0.8 * overall_toolbar_height;     // px
     const taskboard_dropdown_font_size = 0.03 * overall_toolbar_width;  // px
 
@@ -109,6 +109,8 @@ const _top_left_bar = (props) => {
                             whiteSpace: "nowrap",
                             overflow: "hidden",
                             textOverflow: "ellipsis",
+                            justifyContent: "flex-start",
+                            pl: 2, 
                             '&:hover': { backgroundColor: SELECTED_COLOR_THEME.bg_colour, borderColor: 'white' },
                         }}
                     >

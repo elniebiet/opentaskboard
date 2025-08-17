@@ -33,8 +33,10 @@ const _taskboard_history = ({
         onClick={() => _set_open(true)}
         sx={{
           borderRadius: 40,
-          width: trigger_width,
-          height: trigger_height,
+          width: `${trigger_width}px`,
+          minWidth: `${trigger_width}px`,
+          height: `${trigger_height}px`,
+          minHeight: `${trigger_height}px`,
           p: 0,
           backgroundColor: '#f0f0f0',
         }}
@@ -43,7 +45,7 @@ const _taskboard_history = ({
           src={img_src}
           alt={img_alt_txt}
           title={img_alt_txt}
-          style={{ width: trigger_width, height: trigger_height }}
+          style={{ width: `${trigger_width}px`, height: `${trigger_height}px` }}
         />
       </IconButton>
 

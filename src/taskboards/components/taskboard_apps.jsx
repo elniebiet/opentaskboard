@@ -10,7 +10,7 @@ import Dropdown from '@mui/joy/Dropdown';
 import { _get_toolbar_z_index } from '../../common/globals';
 import { SELECTED_COLOR_THEME } from '../../common/components/use_colour_themes';
 
-const _taskboard_apps = ({ }) => {
+const _taskboard_apps = ({trigger_width, trigger_height, re_render_func}) => {
   
   return (
     <Dropdown>
@@ -20,9 +20,14 @@ const _taskboard_apps = ({ }) => {
             sx={{
                 borderRadius: 40,
                 backgroundColor: '#f0f0f0', 
+                width: `${trigger_width}px`,
+                height: `${trigger_height}px`,
+                minWidth: `${trigger_width}px`,
+                minHeight: `${trigger_height}px`,
+                p: 0,
             }}
         >
-            <Apps />
+            <Apps sx={{ width: `${trigger_width * 0.6}px`, height: `${trigger_height * 0.6}px` }} />
         </MenuButton>
         <Menu
             variant="solid"

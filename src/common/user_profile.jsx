@@ -45,7 +45,7 @@ const _user_profile = ({ trigger_width, trigger_height, img_src }) => {
         <DialogContent sx={{ textAlign: 'center', p: 3 }}>
           <Avatar
             src="/static/images/avatar/2.jpg"
-            sx={{ width: 80, height: 80, mb: 2, mx: 'auto' }}
+            sx={{ width: trigger_width, height: trigger_height, mb: 2, mx: 'auto' }}
           />
           <Typography variant="h6">Jane Doe</Typography>
           <Typography variant="body2" color="text.secondary">
