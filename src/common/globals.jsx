@@ -3,6 +3,8 @@ const URL_MAIN_BACKEND = "http://localhost:3000/";
 
 const OTB_LOGGING = true; // set to false in production
 
+const OTB_LS_ROUTE_NAME = "otb_route";
+
 /* TaskBoard Types begin */
 const TASKBOARD_TYPES =
 {
@@ -12,7 +14,10 @@ const TASKBOARD_TYPES =
 /* TaskBoard codes end */
 
 /* Template codes begin */
-const SPRINT_PLANNING = 1;
+const TEMPLATE_CODES = {
+     SPRINT_PLANNING: 1,
+};
+
 /* Template codes end */
 
 /* Toolbar item types begin */
@@ -242,7 +247,7 @@ export {
     TASKBOARD_TYPES,
 
     /* Template code exports  */
-    SPRINT_PLANNING,
+    TEMPLATE_CODES,
 
     /* Toolbar item exports */
     TOOLBAR_ITEM_TYPE, 
@@ -298,5 +303,6 @@ export {
     ACTIONS,
     META_ACTIONS,
     OTB_LOGGING,
+    OTB_LS_ROUTE_NAME,
 };
 

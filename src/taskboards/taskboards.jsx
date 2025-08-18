@@ -6,17 +6,17 @@ import { TASKBOARD_TYPES } from '../common/globals';
  * Taskboard base component
  *  
  */
-const _get_taskboard = (taskboard_code) => 
+const _get_taskboard = (taskboard_id) => 
 {
-    switch(taskboard_code)
+    switch(taskboard_id)
     {
         case TASKBOARD_TYPES.TASKBOARD_DEFAULT:
         {
-            return <_taskboard_default taskboard_type={TASKBOARD_TYPES.TASKBOARD_DEFAULT} taskboard_id={0} taskboard_name="New Taskboard1" />;
+            return <_taskboard_default taskboard_type={TASKBOARD_TYPES.TASKBOARD_DEFAULT} taskboard_id={taskboard_id} taskboard_name="New Taskboard1" />;
         }
         default:
         {
-            return <_taskboard_default taskboard_type={TASKBOARD_TYPES.TASKBOARD_DEFAULT} taskboard_id={0} taskboard_name="New Taskboard1" />;    
+            return <_taskboard_default taskboard_type={TASKBOARD_TYPES.TASKBOARD_DEFAULT} taskboard_id={taskboard_id} taskboard_name="New Taskboard1" />;    
         }
     }
 }
@@ -30,7 +30,7 @@ const _taskboard = (props) => {
 
     return (
         <div>
-            { _get_taskboard(props.taskboard_code) }
+            { _get_taskboard(props.taskboard_id) }
         </div>
     );
 };

@@ -1,12 +1,12 @@
 import * as React from 'react';
 import _sprint_planning_template from './sprint_planning';
-import { SPRINT_PLANNING } from '../common/globals';
+import { TEMPLATE_CODES } from '../common/globals';
 
 const _get_template = (template_code) => 
 {
     switch(template_code)
     {
-        case SPRINT_PLANNING:
+        case TEMPLATE_CODES.SPRINT_PLANNING:
         {
             return <_sprint_planning_template />;
         }

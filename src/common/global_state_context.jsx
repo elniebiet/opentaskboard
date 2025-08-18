@@ -1,9 +1,19 @@
 import React, { createContext, useState } from "react";
+import { OTB_LS_ROUTE_NAME } from "./globals";
 
 export const _global_state_context = createContext();
 
 export const _global_state_provider = ({ children }) => {
-  const [global_route, _set_global_route] = useState("/");
+  const _get_initial_route = () => {
+    if (typeof window !== "undefined") {
+      const saved_route = window.localStorage.getItem(OTB_LS_ROUTE_NAME);
+      if (saved_route) return saved_route;
+    }
+
+    return "/";
+  };
+
+  const [global_route, _set_global_route] = useState(_get_initial_route());
 
   const [global_email, _set_global_email] = useState("");
 

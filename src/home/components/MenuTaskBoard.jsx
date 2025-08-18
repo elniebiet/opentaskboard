@@ -5,24 +5,27 @@ import MenuItem from '@mui/material/MenuItem';
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
 import { TASKBOARD_TYPES, URL_MAIN } from '../../common/globals';
 import { SELECTED_COLOR_THEME } from '../../common/components/use_colour_themes';
+import { useContext } from 'react';
+import { _global_state_context } from '../../common/global_state_context';
 
 const _taskboard_menu = (props) => 
 {
     /* Task boards */
-    const [template_type, _set_taskboard_type] = React.useState('');
+    const { global_route, _set_global_route } = useContext(_global_state_context);
 
     const _taskboard_type_selected = (event) => {
-        _set_taskboard_type(event.target.value);
-    
-        switch (event.target.value) {
-            case TASKBOARD_TYPES.TASKBOARD_DEFAULT:
-                props._on_update_route("taskboard/default");
-                break;
-            
-            default:
-                props._on_update_route("/");
-                break;
+        
+        let taskboard_id = event.currentTarget.dataset.taskboardId;
+        if(taskboard_id !== "")
+        {
+            console.log("taskboard selected with id: " + taskboard_id );
+            _set_global_route("taskboard/" + taskboard_id);
         }
+        else
+        {
+            _set_global_route("/");
+        }
+        
     };
 
     return (
@@ -33,8 +36,8 @@ const _taskboard_menu = (props) =>
                 TaskBoards
                 </Button>
                 <Menu {...bindMenu(popupState)}>
-                    <MenuItem onClick={_taskboard_type_selected} value={TASKBOARD_TYPES.TASKBOARD_DEFAULT}>Create New Taskboard*</MenuItem>
-                    <MenuItem onClick={_taskboard_type_selected} value={0}>Taskboard 1</MenuItem>
+                    <MenuItem onClick={_taskboard_type_selected} data-taskboard-id="abcde-defgh">Create New Taskboard*</MenuItem>
+                    <MenuItem onClick={_taskboard_type_selected} sx={{ display: 'flex', justifyContent: 'space-between', fontWeight: 'bold' }} data-taskboard-id="">View All Taskboards</MenuItem>
                 </Menu>
             </React.Fragment>
             )}

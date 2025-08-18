@@ -57,6 +57,8 @@ export default function AppAppBar(props) {
   
   const { global_email, _set_global_email } = useContext(_global_state_context);
   const { global_login_status, _set_global_login_status } = useContext(_global_state_context);
+  const { global_route, _set_global_route } = useContext(_global_state_context);
+  
 
   // check if user has valid access token 
   React.useEffect(() => {
@@ -116,7 +118,7 @@ export default function AppAppBar(props) {
           <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0 }}>
             <IconButton
               variant="plain"
-              onClick={() => props._on_update_route('/')}
+              onClick={() => _set_global_route('/')}
               sx={{
                 borderRadius: 20,
                 width: logo_width,
@@ -135,19 +137,19 @@ export default function AppAppBar(props) {
 
             <Box sx={{ display: { xs: 'none', md: 'flex', gap: 5 } }}>
               <Box sx={{ minWidth: 0, marginLeft: 2 }}>
-                <_taskboard_menu _on_update_route={props._on_update_route} />
+                <_taskboard_menu />
               </Box>
               <Box sx={{ minWidth: 0 }}>
-                <_template_menu _on_update_route={props._on_update_route} />
+                <_template_menu />
               </Box>
               <Box sx={{ minWidth: 0 }}>
-                <_pricing_menu _on_update_route={props._on_update_route} />
+                <_pricing_menu />
               </Box>
               <Box sx={{ minWidth: 0 }}>
-                <_FAQ_menu _on_update_route={props._on_update_route} />
+                <_FAQ_menu />
               </Box>
               <Box sx={{ minWidth: 0 }}>
-                <_about_menu _on_update_route={props._on_update_route} />
+                <_about_menu />
               </Box>
             </Box>
           </Box>
@@ -233,19 +235,19 @@ export default function AppAppBar(props) {
                 </Box>
 
                 <Box sx={{ minWidth: 120 }}>
-                  <_taskboard_menu _on_update_route={props._on_update_route} />
+                  <_taskboard_menu />
                 </Box>
                 <Box sx={{ minWidth: 120 }}>
-                  <_template_menu _on_update_route={props._on_update_route} />
+                  <_template_menu />
                 </Box>
                 <Box sx={{ minWidth: 120 }}>
-                  <_pricing_menu _on_update_route={props._on_update_route} />
+                  <_pricing_menu />
                 </Box>
                 <Box sx={{ minWidth: 120 }}>
-                  <_FAQ_menu _on_update_route={props._on_update_route} />
+                  <_FAQ_menu />
                 </Box>
                 <Box sx={{ minWidth: 120 }}>
-                  <_about_menu _on_update_route={props._on_update_route} />
+                  <_about_menu />
                 </Box>
                 
                 {!global_login_status && (

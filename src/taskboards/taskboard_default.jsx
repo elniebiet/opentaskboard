@@ -2,7 +2,7 @@ import * as React from 'react';
 import {_get_window_size, _get_screen_size} from '../common/components/window_size';
 import _taskboard_toolbar from '../toolbars/taskboard_toolbar';
 import _shapes_sub_toolbar from '../toolbars/shapes_sub_toolbar';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import _gridlines_normal from '../gridlines/normal';
 import _sticky_note from './components/sticky_note';
 import _comment from './components/comment';
@@ -37,6 +37,7 @@ import _keypress_listener from '../common/components/keypress_listener';
 import { KEYPRESSES } from '../common/components/keypress_list';
 import { Taskboard_Activity_Tracker } from './components/taskboard_activity_tracker';
 import { _undo_action, _redo_action } from './components/taskboard_undo_redo';
+import { _global_state_context } from '../common/global_state_context';
 
 import notes from '../db/taskboards/notes_db_temp';              // temporary notes storage
 import comments from '../db/taskboards/comments_db_temp';        // temporary comments storage
@@ -60,14 +61,16 @@ import leftangles from '../db/taskboards/leftangles_db_temp';    // temporary le
 
  */
 const _taskboard_default = ({
-  taskboard_id = 0, /* taskboard id should be supplied by caller*/
   taskboard_type = TASKBOARD_TYPES.TASKBOARD_DEFAULT,
+  taskboard_id = 0, /* taskboard id should be supplied by caller*/
   taskboard_name = "New Taskboard1"
 }) => {
   
   /***************** Misc block begins *************************/
   let { width, height } = _get_window_size();
   let screen_size = _get_screen_size(); 
+  const { global_route, _set_global_route } = useContext(_global_state_context);
+  
   
   // ensure the window width and height are less than the screen size
   if(width >= screen_size.width)

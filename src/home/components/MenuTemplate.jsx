@@ -3,24 +3,28 @@ import Button from '@mui/material/Button';
 import { Menu } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
-import { SPRINT_PLANNING, URL_MAIN } from '../../common/globals';
+import { TEMPLATE_CODES, URL_MAIN } from '../../common/globals';
 import { SELECTED_COLOR_THEME } from '../../common/components/use_colour_themes';
+import { useContext } from 'react';
+import { _global_state_context } from '../../common/global_state_context';
 
 const _template_menu = (props) => 
 {
     /* Task boards */
     const [template_type, _set_template_type] = React.useState('');
+    const { global_route, _set_global_route } = useContext(_global_state_context);
+
 
     const _template_type_selected = (event) => {
         _set_template_type(event.target.value);
     
         switch (event.target.value) {
-            case SPRINT_PLANNING:
-                props._on_update_route("templates/sprint_planning");
+            case TEMPLATE_CODES.SPRINT_PLANNING:
+                _set_global_route("templates/sprint_planning");
                 break;
             
             default:
-                props._on_update_route("/");
+                _set_global_route("/");
                 break;
         }
     };
@@ -33,7 +37,7 @@ const _template_menu = (props) =>
                 Project Templates
                 </Button>
                 <Menu {...bindMenu(popupState)}>
-                    <MenuItem onClick={_template_type_selected} value={SPRINT_PLANNING}>Sprint Planning</MenuItem>
+                    <MenuItem onClick={_template_type_selected} value={TEMPLATE_CODES.SPRINT_PLANNING}>Sprint Planning</MenuItem>
                     <MenuItem onClick={_template_type_selected} value={0}>Sample Template</MenuItem>
                 </Menu>
             </React.Fragment>

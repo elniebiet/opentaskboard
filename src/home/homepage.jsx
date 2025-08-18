@@ -34,7 +34,7 @@ export default function _homepage(props) {
         }}
       >
         <CssBaseline enableColorScheme />
-        <AppAppBar _on_update_route={props._on_update_route} rerender_func={_home_rerender}/>
+        <AppAppBar rerender_func={_home_rerender}/>
         <Hero />
         <div>
           {/* <LogoCollection /> */}
