@@ -4,6 +4,8 @@ import { OTB_LOGGING } from "../../common/globals";
 
 const _sign_up = ({login_link_clicked_handler_func}) => {
   const [email, _set_email] = useState("");
+  const [firstname, _set_firstname] = useState("");
+  const [lastname, _set_lastname] = useState("");  
   const [username, _set_username] = useState("");
   const [password, _set_password] = useState("");
   const [confirm, _set_confirm] = useState("");
@@ -16,13 +18,23 @@ const _sign_up = ({login_link_clicked_handler_func}) => {
     _set_success_msg("");
 
     // Basic validation
-    if (!email || !username || !password || !confirm) {
+    if (!email || !firstname || !lastname || !username || !password || !confirm) {
       _set_error("All fields are required.");
       return;
     }
 
     if (email.length < 4 || email.length > 50) {
       _set_error("Email must be between 4 to 50 characters.");
+      return;
+    }
+
+    if (firstname.length < 1 || firstname.length > 30) {
+      _set_error("First name must be between 1 and 30 characters.");
+      return;
+    }
+
+    if (lastname.length < 1 || lastname.length > 30) {
+      _set_error("Last name must be between 1 and 30 characters.");
       return;
     }
     
@@ -37,7 +49,7 @@ const _sign_up = ({login_link_clicked_handler_func}) => {
     }
 
     // Check for alphanumeric, at least one lowercase and one uppercase character
-    if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]+$/.test(password)) {
+    if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,32}$/.test(password)) {
       _set_error("Password must be alphanumeric and contain at least one lowercase, one uppercase letter, and one number.");
       return;
     }
@@ -57,6 +69,8 @@ const _sign_up = ({login_link_clicked_handler_func}) => {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
+          firstname: firstname,
+          lastname: lastname,
           username: username,
           password: password,
           email: email
@@ -96,6 +110,8 @@ const _sign_up = ({login_link_clicked_handler_func}) => {
       setTimeout(() => {
         _set_success_msg("Verification needed!");
         _set_email("");
+        _set_firstname("");
+        _set_lastname(""); 
         _set_username("");
         _set_password("");
         _set_confirm("");
@@ -150,6 +166,44 @@ const _sign_up = ({login_link_clicked_handler_func}) => {
                     background: "#fff",
                   }}
                   autoComplete="email"
+                />
+              </div>
+              <div style={{ marginBottom: 20 }}>
+                <label style={{ fontWeight: 500, color: "#333" }}>First Name</label>
+                <input
+                  type="text"
+                  value={firstname}
+                  required
+                  onChange={e => _set_firstname(e.target.value)}
+                  style={{
+                    width: "100%",
+                    padding: "10px 12px",
+                    marginTop: 6,
+                    border: "1px solid #ccc",
+                    borderRadius: 6,
+                    fontSize: 16,
+                    background: "#fff",
+                  }}
+                  autoComplete="given-name"
+                />
+              </div>
+              <div style={{ marginBottom: 20 }}>
+                <label style={{ fontWeight: 500, color: "#333" }}>Last Name</label>
+                <input
+                  type="text"
+                  value={lastname}
+                  required
+                  onChange={e => _set_lastname(e.target.value)}
+                  style={{
+                    width: "100%",
+                    padding: "10px 12px",
+                    marginTop: 6,
+                    border: "1px solid #ccc",
+                    borderRadius: 6,
+                    fontSize: 16,
+                    background: "#fff",
+                  }}
+                  autoComplete="family-name"
                 />
               </div>
               <div style={{ marginBottom: 20 }}>
