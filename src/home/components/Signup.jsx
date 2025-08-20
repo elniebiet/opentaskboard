@@ -184,9 +184,10 @@ const _sign_up = ({login_link_clicked_handler_func}) => {
           password: password,
           email: email,
           role: role,
-          job_title: jobTitle === "other" ? customJobTitle : OTB_JOB_TITLES[jobTitle],
+          jobtitle: jobTitle === "other" ? customJobTitle : OTB_JOB_TITLES[jobTitle],
           company: company,
           country: OTB_COUNTRIES[country],
+          joined: Date.now(),
         })
       };
 
