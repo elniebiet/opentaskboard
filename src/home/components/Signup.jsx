@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { URL_MAIN_BACKEND } from "../../common/globals";
 import { OTB_LOGGING } from "../../common/globals";
+import { OTB_ROLES, OTB_JOB_TITLES, OTB_COUNTRIES } from "../../common/otb_common_definitions";
 
 const _sign_up = ({login_link_clicked_handler_func}) => {
   const [email, _set_email] = useState("");
@@ -11,6 +12,12 @@ const _sign_up = ({login_link_clicked_handler_func}) => {
   const [confirm, _set_confirm] = useState("");
   const [error, _set_error] = useState("");
   const [success_msg, _set_success_msg] = useState("");
+  const [role, _set_role] = useState(Object.keys(OTB_ROLES)[0] || "");
+  const [jobTitle, setJobTitle] = useState(Object.keys(OTB_JOB_TITLES)[0] || "");
+  const [customJobTitle, setCustomJobTitle] = useState("");
+  const [company, setCompany] = useState("");
+  const [country, setCountry] = useState(Object.keys(OTB_COUNTRIES)[0] || "");
+
 
   const _handle_submit = async (e) => {
     e.preventDefault();
@@ -18,7 +25,9 @@ const _sign_up = ({login_link_clicked_handler_func}) => {
     _set_success_msg("");
 
     // Basic validation
-    if (!email || !firstname || !lastname || !username || !password || !confirm) {
+    if (!email || !firstname || !lastname || !username || !password || !confirm || !role
+      || !jobTitle || (jobTitle === "other" && !customJobTitle) || !company || !country
+    ) {
       _set_error("All fields are required.");
       return;
     }
@@ -73,7 +82,11 @@ const _sign_up = ({login_link_clicked_handler_func}) => {
           lastname: lastname,
           username: username,
           password: password,
-          email: email
+          email: email,
+          role: role,
+          job_title: jobTitle === "other" ? customJobTitle : OTB_JOB_TITLES[jobTitle],
+          company: company,
+          country: OTB_COUNTRIES[country],
         })
       };
 
@@ -115,6 +128,10 @@ const _sign_up = ({login_link_clicked_handler_func}) => {
         _set_username("");
         _set_password("");
         _set_confirm("");
+        setJobTitle(Object.keys(OTB_JOB_TITLES)[0] || "");
+        setCustomJobTitle("");
+        setCompany("");
+        setCountry(Object.keys(OTB_COUNTRIES)[0] || "");
       }, 1000);
     } catch (err) {
       _set_error("Network error. Please try again.");
@@ -224,6 +241,109 @@ const _sign_up = ({login_link_clicked_handler_func}) => {
                   }}
                   autoComplete="username"
                 />
+              </div>
+              <div style={{ marginBottom: 20 }}>
+                <label style={{ fontWeight: 500, color: "#333" }}>Role</label>
+                <select
+                  value={role}
+                  required
+                  onChange={e => _set_role(e.target.value)}
+                  style={{
+                    width: "100%",
+                    padding: "10px 12px",
+                    marginTop: 6,
+                    border: "1px solid #ccc",
+                    borderRadius: 6,
+                    fontSize: 16,
+                    background: "#fff",
+                  }}
+                >
+                  {Object.entries(OTB_ROLES).map(([key, value]) => (
+                    <option key={key} value={key}>{value}</option>
+                  ))}
+                </select>
+              </div>
+              {/* Job Title Section */}
+              <div style={{ marginBottom: 20 }}>
+                <label style={{ fontWeight: 500, color: "#333" }}>Job Title</label>
+                <select
+                  value={jobTitle}
+                  required
+                  onChange={e => setJobTitle(e.target.value)}
+                  style={{
+                    width: "100%",
+                    padding: "10px 12px",
+                    marginTop: 6,
+                    border: "1px solid #ccc",
+                    borderRadius: 6,
+                    fontSize: 16,
+                    background: "#fff",
+                  }}
+                >
+                  {Object.entries(OTB_JOB_TITLES).map(([key, value]) => (
+                    <option key={key} value={key}>{value}</option>
+                  ))}
+                </select>
+                {jobTitle === "other" && (
+                  <input
+                    type="text"
+                    value={customJobTitle}
+                    required
+                    placeholder="Please specify your job title"
+                    onChange={e => setCustomJobTitle(e.target.value)}
+                    style={{
+                      width: "100%",
+                      padding: "10px 12px",
+                      marginTop: 10,
+                      border: "1px solid #ccc",
+                      borderRadius: 6,
+                      fontSize: 16,
+                      background: "#fff",
+                    }}
+                  />
+                )}
+              </div>
+              {/* Company Section */}
+              <div style={{ marginBottom: 20 }}>
+                <label style={{ fontWeight: 500, color: "#333" }}>Company</label>
+                <input
+                  type="text"
+                  value={company}
+                  required
+                  onChange={e => setCompany(e.target.value)}
+                  style={{
+                    width: "100%",
+                    padding: "10px 12px",
+                    marginTop: 6,
+                    border: "1px solid #ccc",
+                    borderRadius: 6,
+                    fontSize: 16,
+                    background: "#fff",
+                  }}
+                  autoComplete="organization"
+                />
+              </div>
+              {/* Country Section */}
+              <div style={{ marginBottom: 20 }}>
+                <label style={{ fontWeight: 500, color: "#333" }}>Country</label>
+                <select
+                  value={country}
+                  required
+                  onChange={e => setCountry(e.target.value)}
+                  style={{
+                    width: "100%",
+                    padding: "10px 12px",
+                    marginTop: 6,
+                    border: "1px solid #ccc",
+                    borderRadius: 6,
+                    fontSize: 16,
+                    background: "#fff",
+                  }}
+                >
+                  {Object.entries(OTB_COUNTRIES).map(([key, value]) => (
+                    <option key={key} value={key}>{value}</option>
+                  ))}
+                </select>
               </div>
               <div style={{ marginBottom: 20 }}>
                 <label style={{ fontWeight: 500, color: "#333" }}>Password</label>

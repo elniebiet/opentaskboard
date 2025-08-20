@@ -15,14 +15,14 @@ import { _global_state_context } from './global_state_context';
 const _user_profile = ({ trigger_width, trigger_height, img_src }) => {
   const [open, _set_open] = useState(false);
   const { global_email, _set_global_email } = useContext(_global_state_context);
+  const { global_access_token, _set_global_access_token } = useContext(_global_state_context);
   const [first_name, _set_first_name] = useState("");
   const [last_name, _set_last_name] = useState("");
 
   // fetch personal details 
   React.useEffect(() => {
     const _fetch_personal_details = async () => {
-      const access_token = localStorage.getItem("otb_access_token");
-      if (access_token) {
+      if (global_access_token) {
         let request = {
           method: "POST",
           headers: {
@@ -30,7 +30,7 @@ const _user_profile = ({ trigger_width, trigger_height, img_src }) => {
           },
           body: JSON.stringify({
             email: global_email,
-            accessToken: access_token
+            accessToken: global_access_token
           })
         };
 

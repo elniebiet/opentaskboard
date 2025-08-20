@@ -58,12 +58,12 @@ export default function AppAppBar(props) {
   const { global_email, _set_global_email } = useContext(_global_state_context);
   const { global_login_status, _set_global_login_status } = useContext(_global_state_context);
   const { global_route, _set_global_route } = useContext(_global_state_context);
+  const { global_access_token, _set_global_access_token } = useContext(_global_state_context);
   
 
   // check if user has valid access token 
   React.useEffect(() => {
-    const access_token = localStorage.getItem("otb_access_token");
-    _auth_is_valid_access_token(access_token, global_email).then(res => {
+    _auth_is_valid_access_token(global_access_token, global_email).then(res => {
 
     if (res === true) {
       _set_global_login_status(true);

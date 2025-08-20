@@ -19,12 +19,15 @@ export const _global_state_provider = ({ children }) => {
 
   const [global_login_status, _set_global_login_status] = useState(false);
 
+  const [global_access_token, _set_global_access_token] = useState("");
+
   return (
     <_global_state_context.Provider 
       value={{ 
         global_route, _set_global_route, 
         global_email, _set_global_email, 
-        global_login_status, _set_global_login_status 
+        global_login_status, _set_global_login_status,
+        global_access_token, _set_global_access_token,
       }}>
       {children}
     </_global_state_context.Provider>

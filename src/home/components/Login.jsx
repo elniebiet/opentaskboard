@@ -8,6 +8,7 @@ const _login = ({signup_link_clicked_handler_func, login_success_func}) => {
   const [error, _set_error] = useState("");
   const [success, _set_success] = useState("");
   const { global_email, _set_global_email } = useContext(_global_state_context);
+  const { global_access_token, _set_global_access_token } = useContext(_global_state_context);
   
   const _handle_submit = async (e) => {
     e.preventDefault();
@@ -30,10 +31,7 @@ const _login = ({signup_link_clicked_handler_func, login_success_func}) => {
       return;
     }
 
-    let otb_access_token = localStorage.getItem("otb_access_token");
-    otb_access_token = otb_access_token ? otb_access_token : "";
-    
-
+    let otb_access_token = global_access_token;    
     let valid = false; 
 
     // send signin request
@@ -82,9 +80,8 @@ const _login = ({signup_link_clicked_handler_func, login_success_func}) => {
       }
     
       setTimeout(() => {
-        // save accessToken to localStorage
         if (data.accessToken) {
-          localStorage.setItem("otb_access_token", data.accessToken);
+          _set_global_access_token(data.accessToken);
         } 
         _set_global_email(email);
         _set_success("Login Successful!");
