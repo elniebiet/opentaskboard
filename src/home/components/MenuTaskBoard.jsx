@@ -12,9 +12,18 @@ const _taskboard_menu = (props) =>
 {
     /* Task boards */
     const { global_route, _set_global_route } = useContext(_global_state_context);
+    const { global_login_status } = useContext(_global_state_context);
 
     const _taskboard_type_selected = (event) => {
-        
+        if(!global_login_status)
+        {
+            if(props.request_login_handler)
+            {
+                props.request_login_handler();
+            }
+            return;
+        }
+
         let taskboard_id = event.currentTarget.dataset.taskboardId;
         let taskboard_name = event.currentTarget.dataset.taskboardName;
         if(taskboard_id !== "")

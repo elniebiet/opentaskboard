@@ -101,6 +101,10 @@ export default function AppAppBar(props) {
     _set_global_login_status(true);
   };
 
+  const _request_login_handler = () => {
+    _set_login_open(true);
+  };
+
   return (
     <AppBar
       position="fixed"
@@ -137,7 +141,7 @@ export default function AppAppBar(props) {
 
             <Box sx={{ display: { xs: 'none', md: 'flex', gap: 5 } }}>
               <Box sx={{ minWidth: 0, marginLeft: 2 }}>
-                <_taskboard_menu />
+                <_taskboard_menu  request_login_handler={_request_login_handler} />
               </Box>
               <Box sx={{ minWidth: 0 }}>
                 <_template_menu />

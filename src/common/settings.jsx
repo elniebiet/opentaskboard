@@ -10,6 +10,7 @@ const _settings = ({ trigger_width, trigger_height, img_src, re_render_func }) =
   const [open, set_open] = useState(false);
   const { global_email, _set_global_email } = useContext(_global_state_context);
   const { global_login_status, _set_global_login_status } = useContext(_global_state_context);
+  const { global_route, _set_global_route } = useContext(_global_state_context);
 
   const _handle_theme_change = (event) => {
     const new_value = event.target.value;
@@ -29,6 +30,7 @@ const _settings = ({ trigger_width, trigger_height, img_src, re_render_func }) =
   const _sign_out = () => {
     _set_global_email("");
     _set_global_login_status(false);
+    _set_global_route("/");
   };
 
   return (

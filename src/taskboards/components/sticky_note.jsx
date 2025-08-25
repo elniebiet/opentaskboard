@@ -474,7 +474,7 @@ const _sticky_note = ({
                                             textAlign: "center",
                                             fontWeight: "bold",
                                             backgroundColor: colour,
-                                            color: complement_colour,
+                                            color: _get_complement_colour(colour),
                                             display: "flex",
                                             alignItems: "center",
                                             justifyContent: "center", 

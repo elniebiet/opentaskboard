@@ -14,7 +14,6 @@ const _template_menu = (props) =>
     const [template_type, _set_template_type] = React.useState('');
     const { global_route, _set_global_route } = useContext(_global_state_context);
 
-
     const _template_type_selected = (event) => {
         _set_template_type(event.target.value);
     
