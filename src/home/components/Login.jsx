@@ -2,6 +2,107 @@ import React, { useContext, useState } from "react";
 import { URL_MAIN_BACKEND, OTB_LOGGING } from "../../common/globals";
 import { _global_state_context } from "../../common/global_state_context";
 
+// Modern style helpers (match Signup)
+const inputStyle = {
+  width: "100%",
+  padding: "8px 12px",
+  marginTop: 8,
+  border: "1px solid #e0e0e0",
+  borderRadius: 8,
+  fontSize: 15,
+  background: "#f7f9fa",
+  transition: "border 0.2s",
+  outline: "none",
+  boxSizing: "border-box",
+};
+
+const labelStyle = {
+  fontWeight: 600,
+  color: "#222",
+  marginBottom: 6,
+  display: "block",
+  letterSpacing: 0.2,
+};
+
+const fieldContainer = {
+  marginBottom: 22,
+};
+
+const buttonStyle = {
+  width: "100%",
+  padding: "14px",
+  background: "linear-gradient(90deg, #1976d2 0%, #21a1ff 100%)",
+  color: "#fff",
+  border: "none",
+  borderRadius: 8,
+  fontWeight: 700,
+  fontSize: 17,
+  cursor: "pointer",
+  boxShadow: "0 2px 12px rgba(25, 118, 210, 0.10)",
+  transition: "background 0.2s",
+  marginTop: 10,
+  letterSpacing: 0.5,
+};
+
+const cardStyle = {
+  maxWidth: 420,
+  margin: "48px auto",
+  padding: 36,
+  border: "none",
+  borderRadius: 18,
+  background: "#fff",
+  boxShadow: "0 8px 32px rgba(25, 118, 210, 0.10), 0 1.5px 4px rgba(0,0,0,0.04)",
+};
+
+const headingStyle = {
+  textAlign: "center",
+  marginBottom: 10,
+  color: "#1976d2",
+  fontWeight: 800,
+  fontSize: 32,
+  letterSpacing: 1,
+};
+
+const subheadingStyle = {
+  textAlign: "center",
+  marginBottom: 28,
+  color: "#555",
+  fontSize: 17,
+  fontWeight: 500,
+  letterSpacing: 0.2,
+};
+
+const errorStyle = {
+  color: "#d32f2f",
+  marginBottom: 18,
+  textAlign: "center",
+  fontWeight: 600,
+  background: "#fff0f0",
+  borderRadius: 6,
+  padding: "10px 0",
+  fontSize: 15,
+};
+
+const successStyle = {
+  color: "#388e3c",
+  marginBottom: 18,
+  textAlign: "center",
+  fontWeight: 600,
+  background: "#e8f5e9",
+  borderRadius: 6,
+  padding: "10px 0",
+  fontSize: 15,
+};
+
+const linkStyle = {
+  color: "#1976d2",
+  textDecoration: "none",
+  fontWeight: 600,
+  marginLeft: 4,
+  cursor: "pointer",
+  transition: "color 0.2s",
+};
+
 const _login = ({signup_link_clicked_handler_func, login_success_func}) => {
   const [email, _set_email] = useState("");
   const [password, _set_password] = useState("");
@@ -27,7 +128,7 @@ const _login = ({signup_link_clicked_handler_func, login_success_func}) => {
     }
 
     if (password.length < 8 || password.length > 32) {
-      _set_error("invalid password, please review your login credentials.");
+      _set_error("Invalid password, please review your login credentials.");
       return;
     }
 
@@ -103,103 +204,59 @@ const _login = ({signup_link_clicked_handler_func, login_success_func}) => {
   };
 
   return (
-    <div
-      style={{
-        maxWidth: 400,
-        margin: "40px auto",
-        padding: 32,
-        border: "1px solid #e0e0e0",
-        borderRadius: 16,
-        background: "#fafbfc",
-        boxShadow: "0 4px 24px rgba(0,0,0,0.08)",
-      }}
-    >
-      <h2 style={{ textAlign: "center", marginBottom: 8, color: "#1976d2", fontWeight: 700 }}>
-        OpenTaskBoard
-      </h2>
-      <p style={{ textAlign: "center", marginBottom: 24, color: "#555" }}>
+    <div style={cardStyle}>
+      <h2 style={headingStyle}>OpenTaskBoard</h2>
+      <p style={subheadingStyle}>
         Log in to your account
       </p>
-      <form onSubmit={_handle_submit}>
-        <div style={{ marginBottom: 20 }}>
-          <label style={{ fontWeight: 500, color: "#333" }}>Email</label>
+      <form onSubmit={_handle_submit} autoComplete="off">
+        <div style={fieldContainer}>
+          <label style={labelStyle}>Email</label>
           <input
             type="email"
             value={email}
             required
             onChange={e => _set_email(e.target.value)}
-            style={{
-              width: "100%",
-              padding: "10px 12px",
-              marginTop: 6,
-              border: "1px solid #ccc",
-              borderRadius: 6,
-              fontSize: 16,
-              background: "#fff",
-            }}
+            style={inputStyle}
             autoComplete="email"
+            placeholder="you@email.com"
           />
         </div>
-        <div style={{ marginBottom: 20 }}>
-          <label style={{ fontWeight: 500, color: "#333" }}>Password</label>
+        <div style={fieldContainer}>
+          <label style={labelStyle}>Password</label>
           <input
             type="password"
             value={password}
             required
             onChange={e => _set_password(e.target.value)}
-            style={{
-              width: "100%",
-              padding: "10px 12px",
-              marginTop: 6,
-              border: "1px solid #ccc",
-              borderRadius: 6,
-              fontSize: 16,
-              background: "#fff",
-            }}
+            style={inputStyle}
             autoComplete="current-password"
+            placeholder="Password"
           />
         </div>
         {error && (
-          <div style={{ color: "#d32f2f", marginBottom: 16, textAlign: "center", fontWeight: 500 }}>
+          <div style={errorStyle}>
             {error}
           </div>
         )}
         {success && (
-          <div style={{ color: "#388e3c", marginBottom: 16, textAlign: "center", fontWeight: 500 }}>
+          <div style={successStyle}>
             {success}
           </div>
         )}
         <button
           type="submit"
-          style={{
-            width: "100%",
-            padding: "12px",
-            background: "#1976d2",
-            color: "#fff",
-            border: "none",
-            borderRadius: 6,
-            fontWeight: "bold",
-            fontSize: 16,
-            cursor: "pointer",
-            boxShadow: "0 2px 8px rgba(25, 118, 210, 0.08)",
-            transition: "background 0.2s",
-          }}
+          style={buttonStyle}
         >
           Log In
         </button>
       </form>
-      <div style={{ marginTop: 24, textAlign: "center", fontSize: 15, color: "#555" }}>
+      <div style={{ marginTop: 28, textAlign: "center", fontSize: 15, color: "#555" }}>
         Don't have an account?{" "}
         <a
           href=""
           onClick={e => _signup_link_clicked(e)}
-          style={{
-            color: "#1976d2",
-            textDecoration: "none",
-            fontWeight: 500,
-            marginLeft: 4,
-            cursor: "pointer",
-          }}
+          style={linkStyle}
         >
           Sign up
         </a>
