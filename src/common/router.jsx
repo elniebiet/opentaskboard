@@ -24,7 +24,7 @@ const _store_in_local_storage = (_route) => {
  * and save the route in local storage 
  * @param {*} _route 
  */
-const _route_updated = (_route) => {
+const _route_updated = ({props, _route}) => {
     if (typeof _route === "string") {
         // Call the route update function
         props._on_update_route(_route);
@@ -42,11 +42,11 @@ const _router = (props) => {
         if ( typeof props._route === "string" && props._route.startsWith("taskboard/") 
             && props._route.split("/").length === 2
         ) {
-            _route_updated(props._route);
+            _route_updated({props, _route: props._route});
         } else if (props._route === "templates/sprint_planning") {
-            _route_updated(props._route);
+            _route_updated({props, _route: props._route});
         } else {
-            _route_updated("/"); // default to homepage
+            _route_updated({props, _route: "/"});
         }
     }, [props._route, props._on_update_route]);
 
@@ -57,7 +57,7 @@ const _router = (props) => {
     ) {
         taskboard_id = props._route.split("/")[1];
         console.log("current route is taskboard with id:", taskboard_id);
-        return <_taskboard taskboard_id={taskboard_id} />;
+        return <_taskboard taskboard_id={taskboard_id} />;6
     }
 
     // other routes
