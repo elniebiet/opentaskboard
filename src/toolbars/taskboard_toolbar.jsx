@@ -7,7 +7,6 @@ import sticky_notes_img from '../../res/imgs/img_stk_100x100.png';
 import comment_img from '../../res/imgs/img_comment_100x100.png'; 
 import board_marker_img from '../../res/imgs/img_board_marker_100x100.png'; 
 import eraser_img from '../../res/imgs/img_eraser_100x100.png'; 
-import eraser_img_32 from '../../res/imgs/img_eraser_32x32.png'; 
 import shapes_img from '../../res/imgs/img_shapes_100x100.png'; 
 import fill_img from '../../res/imgs/img_fill2_100x100.png'; 
 import { useState, useEffect } from 'react';
@@ -152,6 +151,7 @@ const _add_toolbar_item = (props) =>
             }
             case TASKBOARD_TOOLBAR_ITEM.TTI_MARKER:
             {
+                props.request_taskboard_state_func(TASKBOARD_STATES.TBS_WAITING_WRITING);
                 props.on_marker_click();
                 break;    
             }
@@ -163,13 +163,14 @@ const _add_toolbar_item = (props) =>
             }          
             case TASKBOARD_TOOLBAR_ITEM.TTI_FILL:  
             {
+                props.request_taskboard_state_func(TASKBOARD_STATES.TBS_WAITING_PAINT_FILL);
                 props.on_fill_click();
                 break;
             }
             case TASKBOARD_TOOLBAR_ITEM.TTI_ERASER:             
             {
-                let cursor_type = `url(${eraser_img_32}) 10 10, auto`;
-                props.on_eraser_click(cursor_type);
+                props.request_taskboard_state_func(TASKBOARD_STATES.TBS_WAITING_ERASE);
+                props.on_eraser_click();
                 break;    
             }            
             case TASKBOARD_TOOLBAR_ITEM.TTI_SHAPE:    
@@ -368,7 +369,7 @@ const _taskboard_toolbar = (props) => {
                     taskboard_type={props.taskboard_type} taskboard_id={props.taskboard_id}
                     />
                     <_add_toolbar_item item_index={TASKBOARD_TOOLBAR_ITEM.TTI_ERASER} tbi_type={TOOLBAR_ITEM_TYPE.CLICKABLE} img_src={eraser_img} img_alt_txt={"Eraser"} 
-                    on_eraser_click={props.select_cursor_func} tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
+                    on_eraser_click={props.erase_func} tb_item_width={item_width} tb_item_height={item_height} tb_root_width={root_width} tb_root_height={root_height} tb_item_br={item_br} 
                     drag_update_func={_do_nothing} taskboard_rerender_func={props.taskboard_rerender_func} request_taskboard_state_func={props.request_taskboard_state_func}
                     taskboard_type={props.taskboard_type} taskboard_id={props.taskboard_id}
                     />

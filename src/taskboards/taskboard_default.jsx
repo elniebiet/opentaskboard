@@ -7,6 +7,7 @@ import _gridlines_normal from '../gridlines/normal';
 import _sticky_note from './components/sticky_note';
 import _comment from './components/comment';
 import board_marker_img_32 from '../../res/imgs/img_board_marker_32x32.png'; 
+import eraser_img_32 from '../../res/imgs/img_eraser_32x32.png'; 
 import fill_img_32 from '../../res/imgs/img_fill2_32x32.png'; 
 import { TASKBOARD_STATES } from './taskboard_globals';
 import _draggable_arrow from '../common/components/arrow';
@@ -180,26 +181,31 @@ const _taskboard_default = ({
   /************** Pointer selection ends ****************************/
 
   /************** Marker drawing begins ************************/
-  const _draw_with_marker = () => 
+  const _draw_with_marker_clicked = () => 
   {
     let cursor_type = `url(${board_marker_img_32}) 10 10, auto`;
     _set_global_cursor_type(cursor_type);
     _trigger_taskboard_rerender();
-
-    // TODO: draw, move block to separate module
   };
   /************** Marker drawing ends ************************/
 
   /************** Add fill begins **********************************/
-  const _add_fill = () => 
+  const _add_fill_clicked = () => 
   {
     let cursor_type = `url(${fill_img_32}) 10 10, auto`;
     _set_global_cursor_type(cursor_type);
     _trigger_taskboard_rerender();
-
-    // TODO: fill, move block to separate module
   };
   /************** Add fill ends **********************************/
+
+  /************** Erase begins ***********************************/
+  const _erase_clicked = () => 
+  {
+    let cursor_type = `url(${eraser_img_32}) 10 10, auto`;
+    _set_global_cursor_type(cursor_type);
+    _trigger_taskboard_rerender();
+  };
+  /************** Erase ends ***********************************/
 
   /************** Page listener begins **********************/
   /**
@@ -271,7 +277,24 @@ const _taskboard_default = ({
             // joining started, clicked at: e.clientX, e.clientY)
             break; 
           }
-          
+          case (TASKBOARD_STATES.TBS_WAITING_WRITING):
+          {
+            let cursor_type = `url(${board_marker_img_32}) 10 10, auto`;
+            _set_global_cursor_type(cursor_type);
+            break;
+          }
+          case (TASKBOARD_STATES.TBS_WAITING_PAINT_FILL):
+          {
+            let cursor_type = `url(${fill_img_32}) 10 10, auto`;
+            _set_global_cursor_type(cursor_type);
+            break;
+          }
+          case (TASKBOARD_STATES.TBS_WAITING_ERASE):
+          {
+            let cursor_type = `url(${eraser_img_32}) 10 10, auto`;
+            _set_global_cursor_type(cursor_type);
+            break;
+          };
           default:
           {
             break;
@@ -616,14 +639,14 @@ const _taskboard_default = ({
           />
 
           <_taskboard_toolbar pos={"top"} win_width={width} win_height={height} add_note_func={_add_note} set_tb_item_loc_func={_set_tb_item_loc_func} 
-            select_cursor_func={_select_pointer} marker_draw_func={_draw_with_marker} add_fill_func={_add_fill} add_comment_func={_add_comment} 
-            taskboard_rerender_func={_trigger_taskboard_rerender} request_taskboard_state_func={_request_taskboard_state}
+            select_cursor_func={_select_pointer} marker_draw_func={_draw_with_marker_clicked} add_fill_func={_add_fill_clicked} add_comment_func={_add_comment}
+            erase_func={_erase_clicked} taskboard_rerender_func={_trigger_taskboard_rerender} request_taskboard_state_func={_request_taskboard_state}
             taskboard_type={taskboard_type} taskboard_id={taskboard_id}
           />
           
           <_taskboard_toolbar pos={"left"} win_width={width} win_height={height} add_note_func={_add_note} set_tb_item_loc_func={_set_tb_item_loc_func} 
-            select_cursor_func={_select_pointer} marker_draw_func={_draw_with_marker} add_fill_func={_add_fill} add_comment_func={_add_comment} 
-            taskboard_rerender_func={_trigger_taskboard_rerender} request_taskboard_state_func={_request_taskboard_state}
+            select_cursor_func={_select_pointer} marker_draw_func={_draw_with_marker_clicked} add_fill_func={_add_fill_clicked} add_comment_func={_add_comment} 
+            erase_func={_erase_clicked} taskboard_rerender_func={_trigger_taskboard_rerender} request_taskboard_state_func={_request_taskboard_state}
             taskboard_type={taskboard_type} taskboard_id={taskboard_id}
           />
           

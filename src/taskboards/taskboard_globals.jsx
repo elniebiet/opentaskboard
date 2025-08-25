@@ -17,9 +17,16 @@ const TASKBOARD_STATES = {
     TBS_WAITING_DRAW_SHAPE:     3,  // waiting to draw a shape
     TBS_BEGIN_DRAWING_SHAPE:    4,  // began drawing shape
     TBS_DRAWING_SHAPE:          5,  // drawing shape
-    TBS_WRITING:                7,
-    TBS_JOINING_STARTED:        8,  // joining started
-
+    TBS_WAITING_WRITING:        6,  // waiting to write with the pen
+    TBS_BEGIN_WRITING:          7,  // began writing with the pen
+    TBS_WRITING:                8,  // writing with the pen
+    TBS_JOINING_STARTED:        9,  // joining started
+    TBS_WAITING_PAINT_FILL:     10, // waiting to paint fill
+    TBS_BEGIN_PAINT_FILL:       11, // began paint fill
+    TBS_PAINT_FILL:             12, // painting fill
+    TBS_WAITING_ERASE:          13, // waiting to erase
+    TBS_BEGIN_ERASE:            14, // began erase
+    TBS_ERASING:                15, // erasing
 
     TBS_LAST:                   1000, // please add any new state before this item
 };
