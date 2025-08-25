@@ -299,6 +299,7 @@ const _taskboard_default = ({
   // - _undo
   // - _redo
   // - _copy
+  // - _cut
   // - _paste
   // - _save
   const _undo = () => {
@@ -341,6 +342,10 @@ const _taskboard_default = ({
 
   const _copy = () => {
     console.log("copy");
+  };
+
+  const _cut = () => {
+    console.log("cut");
   };
 
   const _paste = () => {
@@ -470,6 +475,7 @@ const _taskboard_default = ({
         <_keypress_listener keypress_handler_func={_copy} key1={KEYPRESSES.ctrl} key2={KEYPRESSES.c} />
         <_keypress_listener keypress_handler_func={_paste} key1={KEYPRESSES.ctrl} key2={KEYPRESSES.v} />
         <_keypress_listener keypress_handler_func={_save} key1={KEYPRESSES.ctrl} key2={KEYPRESSES.s} />
+        <_keypress_listener keypress_handler_func={_cut} key1={KEYPRESSES.ctrl} key2={KEYPRESSES.x} />
       </>
     );
   };
