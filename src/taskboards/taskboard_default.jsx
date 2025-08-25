@@ -63,14 +63,37 @@ import leftangles from '../db/taskboards/leftangles_db_temp';    // temporary le
 const _taskboard_default = ({
   taskboard_type = TASKBOARD_TYPES.TASKBOARD_DEFAULT,
   taskboard_id = 0, /* taskboard id should be supplied by caller*/
-  taskboard_name = "New Taskboard1"
 }) => {
   
   /***************** Misc block begins *************************/
   let { width, height } = _get_window_size();
   let screen_size = _get_screen_size(); 
   const { global_route, _set_global_route } = useContext(_global_state_context);
+  const { global_login_status } = useContext(_global_state_context);
+  const [taskboard_name, _set_taskboard_name] = useState("New Taskboard1");
   
+  // Special use effect block for checking valid login and validating the taskboard, 
+  // other use effects are found in the useEffect section below this one
+  useEffect(() => {
+    if(global_login_status)
+    {
+      if (taskboard_id != 0) {
+        // verify taskboard here
+        console.log("verifying taskboard id " + taskboard_id);
+        // fetch taskboard details from db
+        
+      } else {
+        console.warn("invalid taskboard requested.");
+        _set_global_route("/");
+      }
+    }
+    else
+    {
+      _set_global_route("/");
+    }
+    // Only run on mount (or if taskboard_id, name, or type changes)
+  }, [taskboard_id]);
+
   
   // ensure the window width and height are less than the screen size
   if(width >= screen_size.width)

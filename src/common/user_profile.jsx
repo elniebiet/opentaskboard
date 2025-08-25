@@ -18,6 +18,11 @@ const _user_profile = ({ trigger_width, trigger_height, img_src }) => {
   const { global_access_token, _set_global_access_token } = useContext(_global_state_context);
   const [first_name, _set_first_name] = useState("");
   const [last_name, _set_last_name] = useState("");
+  const [role, _set_role] = useState("");
+  const [company, _set_company] = useState("");
+  const [country, _set_country] = useState("");
+  const [jobtitle, _set_job_title] = useState("");
+  const [joined, _set_joined] = useState("");
 
   // fetch personal details 
   React.useEffect(() => {
@@ -42,6 +47,11 @@ const _user_profile = ({ trigger_width, trigger_height, img_src }) => {
           if (response.ok && data.statusCode === 200) {
             _set_first_name(data.personalDetails.firstname);
             _set_last_name(data.personalDetails.lastname);
+            _set_role(data.personalDetails.role);
+            _set_company(data.personalDetails.company);
+            _set_country(data.personalDetails.country);
+            _set_job_title(data.personalDetails.jobtitle);
+            _set_joined(new Date(data.personalDetails.joined).toLocaleDateString());
           }
           else {
             _set_first_name("");
@@ -98,9 +108,11 @@ const _user_profile = ({ trigger_width, trigger_height, img_src }) => {
             {global_email}
           </Typography>
           <Divider sx={{ my: 2 }} />
-          <Typography variant="body1">Role: Administrator</Typography>
-          <Typography variant="body1">Joined: January 2023</Typography>
-          <Typography variant="body1">Location: New York, USA</Typography>
+          <Typography variant="body1">Role: {role}</Typography>
+          <Typography variant="body1">Company: {company}</Typography>
+          <Typography variant="body1">Job Title: {jobtitle}</Typography>
+          <Typography variant="body1">Location: {country}</Typography>
+          <Typography variant="body1">Joined: {joined}</Typography>
         </DialogContent>
       </Dialog>
     </>

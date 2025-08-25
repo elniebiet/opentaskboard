@@ -16,9 +16,10 @@ const _taskboard_menu = (props) =>
     const _taskboard_type_selected = (event) => {
         
         let taskboard_id = event.currentTarget.dataset.taskboardId;
+        let taskboard_name = event.currentTarget.dataset.taskboardName;
         if(taskboard_id !== "")
         {
-            console.log("taskboard selected with id: " + taskboard_id );
+            console.log("taskboard selected with id: " + taskboard_id + " name: " + taskboard_name);
             _set_global_route("taskboard/" + taskboard_id);
         }
         else
@@ -36,8 +37,8 @@ const _taskboard_menu = (props) =>
                 TaskBoards
                 </Button>
                 <Menu {...bindMenu(popupState)}>
-                    <MenuItem onClick={_taskboard_type_selected} data-taskboard-id="abcde-defgh">Create New Taskboard*</MenuItem>
-                    <MenuItem onClick={_taskboard_type_selected} sx={{ display: 'flex', justifyContent: 'space-between', fontWeight: 'bold' }} data-taskboard-id="">View All Taskboards</MenuItem>
+                    <MenuItem onClick={_taskboard_type_selected} data-taskboard-id="abcde-defgh" data-taskboard-name="New Taskboard1">Create New Taskboard*</MenuItem>
+                    <MenuItem onClick={_taskboard_type_selected} sx={{ display: 'flex', justifyContent: 'space-between', fontWeight: 'bold' }} data-taskboard-id="" data-taskboard-name="">View All Taskboards</MenuItem>
                 </Menu>
             </React.Fragment>
             )}
