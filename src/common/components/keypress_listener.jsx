@@ -24,6 +24,7 @@ const _keypress_listener = ({keypress_handler_func, key1=null, key2=null, key3=n
       {
         if (new_set.has(key1)) 
         {
+            event.preventDefault();
             keypress_handler_func();
             _set_pressed_keys(new Set()); // Clear the set after trigger
             return;
@@ -34,6 +35,7 @@ const _keypress_listener = ({keypress_handler_func, key1=null, key2=null, key3=n
       {
         if (new_set.has(key1) && new_set.has(key2)) 
         {
+            event.preventDefault();
             keypress_handler_func();
             _set_pressed_keys(new Set()); // Clear the set after trigger
             return;
@@ -44,6 +46,7 @@ const _keypress_listener = ({keypress_handler_func, key1=null, key2=null, key3=n
       {
         if (new_set.has(key1) && new_set.has(key2) && new_set.has(key3)) 
         {
+            event.preventDefault();
             keypress_handler_func();
             _set_pressed_keys(new Set()); // Clear the set after trigger
             return;
@@ -54,6 +57,7 @@ const _keypress_listener = ({keypress_handler_func, key1=null, key2=null, key3=n
       {
         if (new_set.has(key1) && new_set.has(key2) && new_set.has(key3) && new_set.has(key4)) 
         {
+            event.preventDefault();
             keypress_handler_func();
             _set_pressed_keys(new Set()); // Clear the set after trigger
             return;

@@ -55,9 +55,6 @@ import leftangles from '../db/taskboards/leftangles_db_temp';    // temporary le
     // - _load_all_components
     // - _undo
     // - _redo
-    // - _add_component(component type, component data))
-    // - _delete_component(component type, component id)
-    // - _update_component(component type, component id);
 
  */
 const _taskboard_default = ({
@@ -298,11 +295,12 @@ const _taskboard_default = ({
 
   /************ Generic Taskboard functions begins **************/
   // TODO: Implement the following functions
+  // - _load_all_components
   // - _undo
   // - _redo
-  // - _add_component(component type, component data))
-  // - _delete_component(component type, component id)
-  // - _update_component(component type, component id);
+  // - _copy
+  // - _paste
+  // - _save
   const _undo = () => {
     const activity_tracker = new Taskboard_Activity_Tracker(taskboard_id);
     let undone_activity = activity_tracker._undo(taskboard_id);
@@ -340,6 +338,19 @@ const _taskboard_default = ({
       }
     }
   };
+
+  const _copy = () => {
+    console.log("copy");
+  };
+
+  const _paste = () => {
+    console.log("paste");
+  };
+
+  const _save = () => {
+    console.log("save");
+  };  
+
 
   const  _load_all_components = () => {
     return (
@@ -456,6 +467,9 @@ const _taskboard_default = ({
       <>
         <_keypress_listener keypress_handler_func={_undo} key1={KEYPRESSES.ctrl} key2={KEYPRESSES.z} />
         <_keypress_listener keypress_handler_func={_redo} key1={KEYPRESSES.ctrl} key2={KEYPRESSES.y} />
+        <_keypress_listener keypress_handler_func={_copy} key1={KEYPRESSES.ctrl} key2={KEYPRESSES.c} />
+        <_keypress_listener keypress_handler_func={_paste} key1={KEYPRESSES.ctrl} key2={KEYPRESSES.v} />
+        <_keypress_listener keypress_handler_func={_save} key1={KEYPRESSES.ctrl} key2={KEYPRESSES.s} />
       </>
     );
   };
