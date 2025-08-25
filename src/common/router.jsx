@@ -37,39 +37,63 @@ const _route_updated = ({props, _route}) => {
 const _router = (props) => {
     let taskboard_id = "";
 
-    // Only call _on_update_route in useEffect
+    // Only call _on_update_route in useEffect, call _on_update_route when props._route changes
     useEffect(() => {
-        if ( typeof props._route === "string" && props._route.startsWith("taskboard/") 
-            && props._route.split("/").length === 2
-        ) {
-            _route_updated({props, _route: props._route});
-        } else if (props._route === "templates/sprint_planning") {
-            _route_updated({props, _route: props._route});
-        } else {
-            _route_updated({props, _route: "/"});
+        switch(props._route){
+            case "/":
+            {
+                _route_updated({props, _route: "/"});
+                break;
+            }
+            case "templates/sprint_planning":
+            {
+                _route_updated({props, _route: props._route});
+                break;
+            }
+            default:
+            {
+                // taskboard route update
+                if ( typeof props._route === "string" && props._route.startsWith("taskboard/") 
+                    && props._route.split("/").length === 2
+                ) {
+                    _route_updated({props, _route: props._route});
+                }
+                else 
+                {
+                    _route_updated({props, _route: "/"});
+                }
+                break;
+            }
         }
     }, [props._route, props._on_update_route]);
 
-    // taskboard route
-    if (typeof props._route === "string" &&
-        props._route.startsWith("taskboard/") &&
-        props._route.split("/").length === 2
-    ) {
-        taskboard_id = props._route.split("/")[1];
-        console.log("current route is taskboard with id:", taskboard_id);
-        return <_taskboard taskboard_id={taskboard_id} />;6
-    }
-
-    // other routes
+    
+    // Call corresponding component
     switch (props._route) {
         case "/":
+        {
             console.log("current route is homepage");
             return <_homepage />;
+        }
         case "templates/sprint_planning":
+        {
             console.log("current route is template");
             return <_template template_code={TEMPLATE_CODES.SPRINT_PLANNING} />;
+        }
         default:
-            return <_homepage />;
+        {
+            if ((typeof props._route === "string") && (props._route.startsWith("taskboard/")) 
+                && (props._route.split("/").length === 2)
+            ) {
+                taskboard_id = props._route.split("/")[1];
+                console.log("current route is taskboard with id:", taskboard_id);
+                return <_taskboard taskboard_id={taskboard_id} />;
+            }
+            else
+            {
+                return <_homepage />;
+            }
+        }
     }
 };
 
