@@ -8,7 +8,6 @@ import MenuButton from '@mui/joy/MenuButton';
 import Apps from '@mui/icons-material/Apps';
 import Dropdown from '@mui/joy/Dropdown';
 import { _get_toolbar_z_index } from '../../common/globals';
-import { SELECTED_COLOR_THEME } from '../../common/components/use_colour_themes';
 
 const _taskboard_apps = ({trigger_width, trigger_height, re_render_func}) => {
   
