@@ -2,7 +2,6 @@ import { _get_global_last_item_add_or_move_loc, _set_global_last_item_add_or_mov
 import { _set_global_cursor_type } from "./taskboard_globals";
 import { STKNOTE_WIDTH_PERC_DEFAULT } from "./taskboard_globals";
 import { ARROW_JOIN_POINT, UNUSED, META_ACTIONS } from "../common/globals";
-import { SELECTED_COLOR_THEME } from "../common/components/use_colour_themes";
 import { COMPONENT_CLSID_PREFIXES } from "../common/otb_component_class_id_prefixes";
 import { _otb_generate_uuid } from "../common/otb_id_generator";
 import { Taskboard_Activity } from "./components/taskboard_activity";
@@ -10,6 +9,7 @@ import { Taskboard_Activity_Tracker } from "./components/taskboard_activity_trac
 import { ACTIONS } from "../common/globals";
 import { Taskboard_Comp_DS } from "./taskboard_components_data_structure";
 import { _add_activity_to_tracker } from "./components/taskboard_activity_tracker_mgt";
+import { _get_selected_color_theme } from "../common/components/global_settings";
 
 // temporary note database for testing
 import notes from "../db/taskboards/notes_db_temp";
@@ -43,7 +43,7 @@ const _add_note = (new_note, meta_action, clicked = true) => {
         new_note.y1_pos = new_loc_y;
         new_note.x2_pos = UNUSED;
         new_note.y2_pos = UNUSED;
-        new_note.colour = SELECTED_COLOR_THEME.bg_colour;
+        new_note.colour = _get_selected_color_theme().bg_colour;
         new_note.stroke_width = UNUSED;
         new_note.win_width_perc = STKNOTE_WIDTH_PERC_DEFAULT;
         new_note.text = "";
@@ -75,7 +75,7 @@ const _add_note = (new_note, meta_action, clicked = true) => {
             new_note.id = note_id;
             new_note.x2_pos = UNUSED;
             new_note.y2_pos = UNUSED;
-            new_note.colour = SELECTED_COLOR_THEME.bg_colour;
+            new_note.colour = _get_selected_color_theme().bg_colour;
             new_note.stroke_width = UNUSED;
             new_note.win_width_perc = STKNOTE_WIDTH_PERC_DEFAULT;
             new_note.text = "";

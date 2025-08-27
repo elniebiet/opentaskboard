@@ -6,10 +6,10 @@ import { _update_arrow_highlighted, _update_arrow_start_pos, _update_arrow_end_p
     _update_arrow_colour, _update_arrow_toolbar_show, _update_arrow_toolbar_loc,
     _delete_arrow, _increase_arrow_width, _decrease_arrow_width } from "../../taskboards/use_arrow";
 import { ARROW_HLIGHT_DRAG_POS } from "../globals";
-import { SELECTED_COLOR_THEME } from "./use_colour_themes";
 import _line_toolbar from "../../toolbars/line_toolbar";
 import { ARROW_TOOLBAR_ITEMS } from "../../toolbars/toolbar_globals";
 import { TASKBOARD_STATES } from "../../taskboards/taskboard_globals";
+import { _get_selected_color_theme } from "./global_settings";
 
 /**
  * _draggable_arrow - Draggable arrow component
@@ -318,7 +318,7 @@ const _draggable_arrow = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, 
                             cx={line_start_pos.x} 
                             cy={line_start_pos.y} 
                             r={stroke_width * HLIGHT_CIRC_RADIUS_RATIO_TO_STROKEWIDTH} 
-                            fill={SELECTED_COLOR_THEME.highlight_colour}
+                            fill={_get_selected_color_theme().highlight_colour}
                             style={{ cursor: "ew-resize", pointerEvents: "all" }}
                             onMouseDown={(e) => { _hlight_start_mousedown(e); }}
                         />
@@ -331,7 +331,7 @@ const _draggable_arrow = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, 
                             cx={(line_start_pos.x + line_end_pos.x) / 2} 
                             cy={(line_start_pos.y + line_end_pos.y) / 2} 
                             r={stroke_width * HLIGHT_CIRC_RADIUS_RATIO_TO_STROKEWIDTH} 
-                            fill={SELECTED_COLOR_THEME.highlight_colour}
+                            fill={_get_selected_color_theme().highlight_colour}
                             style={{ cursor: "move", pointerEvents: "all" }}
                             onMouseDown={(e) => { _hlight_mid_mousedown(e); }}
                         />
@@ -344,7 +344,7 @@ const _draggable_arrow = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, 
                             cx={line_end_pos.x} 
                             cy={line_end_pos.y} 
                             r={stroke_width * HLIGHT_CIRC_RADIUS_RATIO_TO_STROKEWIDTH}
-                            fill={SELECTED_COLOR_THEME.highlight_colour} 
+                            fill={_get_selected_color_theme().highlight_colour} 
                             style={{ cursor: "ew-resize", pointerEvents: "all" }} 
                             onMouseDown={(e) => { _hlight_end_mousedown(e); }}
                         />

@@ -14,8 +14,8 @@ import { HIGHLIGHT_DRAG_DIRECTION } from "../globals";
 import { _otbf_update_item_join_arrow_id } from "../otb_finder";
 import { ARROW_JOIN_POINT } from "../globals";
 import { HIGHLIGHT_PARAMS } from "../globals";
-import { SELECTED_COLOR_THEME } from "./use_colour_themes";
 import { TASKBOARD_TYPES } from "../globals";
+import { _get_selected_color_theme } from "./global_settings";
 
 /**
  * *****************************************************************************************
@@ -438,7 +438,7 @@ const _draggable_rightangle = ({
                             cx={(rightangle_start_pos.x + rightangle_end_pos.x) / 2} 
                             cy={(rightangle_start_pos.y + rightangle_end_pos.y) / 2} 
                             r={_get_rect_diagonal_length() * HLIGHT_CIRC_RADIUS_RATIO_TO_STROKEWIDTH} 
-                            fill={SELECTED_COLOR_THEME.highlight_colour}
+                            fill={_get_selected_color_theme().highlight_colour}
                             style={{ cursor: "move", pointerEvents: "all" }}
                             onMouseDown={(e) => { _hlight_mid_mousedown(e); }}
                         />

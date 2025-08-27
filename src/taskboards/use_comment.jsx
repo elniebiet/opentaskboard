@@ -1,7 +1,7 @@
 import { _get_global_last_item_add_or_move_loc, _set_global_last_item_add_or_move_loc } from "./taskboard_globals";
 import { _set_global_cursor_type } from "./taskboard_globals";
 import { COMMENT_WIDTH_PERC_DEFAULT } from "./taskboard_globals";
-import { SELECTED_COLOR_THEME } from "../common/components/use_colour_themes";
+import { _get_selected_color_theme } from "../common/components/global_settings";
 
 import comments from "../db/taskboards/comments_db_temp";
 
@@ -35,7 +35,7 @@ const _add_comment = (clicked = true, pos_x = 100, pos_y = 100) => {
         text: "", 
         x1_pos: new_loc_x, 
         y1_pos: new_loc_y, 
-        colour: SELECTED_COLOR_THEME,
+        colour: _get_selected_color_theme().bg_colour,
         win_width_perc: COMMENT_WIDTH_PERC_DEFAULT, 
       };
       _set_global_last_item_add_or_move_loc(new_loc_x, new_loc_y); // update last added location
@@ -49,7 +49,7 @@ const _add_comment = (clicked = true, pos_x = 100, pos_y = 100) => {
         text: "", 
         x1_pos: pos_x, 
         y1_pos: pos_y, 
-        colour: SELECTED_COLOR_THEME,
+        colour: _get_selected_color_theme().bg_colour,
         win_width_perc: COMMENT_WIDTH_PERC_DEFAULT, 
       };
       comments.push(new_comment);

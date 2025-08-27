@@ -4,9 +4,9 @@ import { Menu } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
 import { TEMPLATE_CODES, URL_MAIN } from '../../common/globals';
-import { SELECTED_COLOR_THEME } from '../../common/components/use_colour_themes';
 import { useContext } from 'react';
 import { _global_state_context } from '../../common/global_state_context';
+import { _get_selected_color_theme } from '../../common/components/global_settings';
 
 const _template_menu = (props) => 
 {
@@ -32,7 +32,7 @@ const _template_menu = (props) =>
         <PopupState variant="popover" popupId="demo-popup-menu">
             {(popupState) => (
             <React.Fragment>
-                <Button variant="text" style={{ fontWeight: 'bold', color: SELECTED_COLOR_THEME.text_colour, background: SELECTED_COLOR_THEME.surface_colour }} {...bindTrigger(popupState)}>
+                <Button variant="text" style={{ fontWeight: 'bold', color: _get_selected_color_theme().text_colour, background: _get_selected_color_theme().surface_colour }} {...bindTrigger(popupState)}>
                 Project Templates
                 </Button>
                 <Menu {...bindMenu(popupState)}>

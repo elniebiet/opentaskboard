@@ -29,7 +29,7 @@ import { _auth_is_valid_access_token } from '../../common/auth';
 import _user_profile from '../../common/user_profile';
 import _settings from '../../common/settings';
 import settings_img from '../../../res/imgs/settings_100x100.png';
-import { SELECTED_COLOR_THEME } from '../../common/components/use_colour_themes';
+import { _get_selected_color_theme } from '../../common/components/global_settings';
 
 
 // AppBar component
@@ -168,7 +168,7 @@ export default function AppAppBar(props) {
             {!global_login_status && (
                 <Button 
                 color="primary" 
-                style={{ fontWeight: 'bold', color: SELECTED_COLOR_THEME.text_colour }} 
+                style={{ fontWeight: 'bold', color: _get_selected_color_theme().text_colour }} 
                 variant="text" 
                 size="small"
                 onClick={() => _set_login_open(true)}

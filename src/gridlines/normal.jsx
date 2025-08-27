@@ -1,7 +1,7 @@
 import zIndex from "@mui/material/styles/zIndex";
 import React from "react";
 import { _get_lowest_z_index } from "../common/globals";
-import { SELECTED_COLOR_THEME } from "../common/components/use_colour_themes";
+import { _get_selected_color_theme } from "../common/components/global_settings";
 
 const _gridlines_normal = (props) => {
   const container_style = {
@@ -9,7 +9,7 @@ const _gridlines_normal = (props) => {
     width: "100vw",
     height: "100vh",
     overflow: "hidden",
-    backgroundColor: SELECTED_COLOR_THEME.bg_colour,
+    backgroundColor: _get_selected_color_theme().bg_colour,
     zIndex: _get_lowest_z_index(),
   };
 
@@ -26,7 +26,7 @@ const _gridlines_normal = (props) => {
             left: x,
             width: 1,
             height: "100%",
-            backgroundColor: SELECTED_COLOR_THEME.gridline_colour,
+            backgroundColor: _get_selected_color_theme().gridline_colour,
             zIndex: _get_lowest_z_index(),
             }}
         >
@@ -45,7 +45,7 @@ const _gridlines_normal = (props) => {
             top: y,
             width: "100%",
             height: 1,
-            backgroundColor: SELECTED_COLOR_THEME.gridline_colour,
+            backgroundColor: _get_selected_color_theme().gridline_colour,
             zIndex: _get_lowest_z_index(),
             }}
         >

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { ARROW_JOIN_POINT, HIGHLIGHT_DRAG_DIRECTION, HIGHLIGHT_JOIN_POSITIONS } from "../globals";
-import { SELECTED_COLOR_THEME } from "./use_colour_themes";
 import { TASKBOARD_STATES } from "../../taskboards/taskboard_globals";
 import { _add_arrow, _update_arrow_start_pos, _update_arrow_end_pos } from "../../taskboards/use_arrow";
 import { _set_current_joining_arrow_id, _get_current_joining_arrow_id,
@@ -12,6 +11,7 @@ import { _otb_generate_uuid } from "../otb_id_generator";
 import { Taskboard_Comp_DS } from "../../taskboards/taskboard_components_data_structure";
 import { TASKBOARD_TYPES, UNUSED} from "../globals";
 import { META_ACTIONS } from "../globals";
+import { _get_selected_color_theme } from "./global_settings";
 
 /**
  * Generic highlighter component for displaying active/selected element
@@ -66,7 +66,7 @@ const _highlighter = ({
     let bottom_right_circle_style = {
         width: edge_circle_diameter + 'px',
         height: edge_circle_diameter + 'px',
-        backgroundColor: SELECTED_COLOR_THEME.highlight_colour,
+        backgroundColor: _get_selected_color_theme().highlight_colour,
         borderRadius: "50%",
         position: "absolute",
         left: ((hlight_left_pos + hlight_width) - (edge_circle_diameter / 2) + line_width) + 'px',
@@ -78,7 +78,7 @@ const _highlighter = ({
     let bottom_left_circle_style = {
         width: edge_circle_diameter + 'px',
         height: edge_circle_diameter + 'px',
-        backgroundColor: SELECTED_COLOR_THEME.highlight_colour,
+        backgroundColor: _get_selected_color_theme().highlight_colour,
         borderRadius: "50%",
         position: "absolute",
         left: (hlight_left_pos - (edge_circle_diameter / 2) + line_width) + 'px',
@@ -90,7 +90,7 @@ const _highlighter = ({
     let top_left_circle_style = {
         width: edge_circle_diameter + 'px',
         height: edge_circle_diameter + 'px',
-        backgroundColor: SELECTED_COLOR_THEME.highlight_colour,
+        backgroundColor: _get_selected_color_theme().highlight_colour,
         borderRadius: "50%",
         position: "absolute",
         left: (hlight_left_pos - (edge_circle_diameter / 2) + line_width) + 'px',
@@ -102,7 +102,7 @@ const _highlighter = ({
     let top_right_circle_style = {
         width: edge_circle_diameter + 'px',
         height: edge_circle_diameter + 'px',
-        backgroundColor: SELECTED_COLOR_THEME.highlight_colour,
+        backgroundColor: _get_selected_color_theme().highlight_colour,
         borderRadius: "50%",
         position: "absolute",
         left: ((hlight_left_pos + hlight_width) - (edge_circle_diameter / 2) + line_width) + 'px',
@@ -204,7 +204,7 @@ const _highlighter = ({
         new_arrow.y1_pos = e.clientY;
         new_arrow.x2_pos = e.clientX + 10;
         new_arrow.y2_pos = e.clientY + 10;
-        new_arrow.colour = SELECTED_COLOR_THEME.highlight_colour;
+        new_arrow.colour = _get_selected_color_theme().highlight_colour;
         new_arrow.stroke_width = 2; 
         new_arrow.win_width_perc = UNUSED;
         new_arrow.text = UNUSED;
@@ -390,7 +390,7 @@ const _highlighter = ({
                     top: hlight_top_pos + 'px',
                     width: hlight_width + 'px',
                     height: hlight_height + 'px',
-                    border: line_width + 'px ' + 'solid ' + SELECTED_COLOR_THEME.highlight_colour,
+                    border: line_width + 'px ' + 'solid ' + _get_selected_color_theme().highlight_colour,
                     zIndex: z_index,
                 }}
             >
@@ -423,7 +423,7 @@ const _highlighter = ({
                             ${hlight_left_pos + hlight_width / 2 + (edge_triangle_height / 2)},${hlight_top_pos - 2}
                             ${hlight_left_pos + hlight_width / 2},${hlight_top_pos - edge_triangle_height}
                         `}
-                        fill={SELECTED_COLOR_THEME.highlight_colour}
+                        fill={_get_selected_color_theme().highlight_colour}
                         onMouseEnter={(e) => {_on_join_position_hover(e, HIGHLIGHT_JOIN_POSITIONS.TOP)}}
                         onMouseDown={(e) => {_on_join_position_mouse_down(e, HIGHLIGHT_JOIN_POSITIONS.TOP)}}
                         onMouseLeave={(e) => {_on_join_position_hover_end(e)}}
@@ -440,7 +440,7 @@ const _highlighter = ({
                         cy={hlight_top_pos - 10} 
                         r={hlight_circle_radius} 
                         fill="none" 
-                        stroke={SELECTED_COLOR_THEME.highlight_colour}
+                        stroke={_get_selected_color_theme().highlight_colour}
                         strokeWidth={(line_width / 2 > 0) ? (line_width / 2) : line_width}
                         strokeOpacity={0.4}
                     />)}
@@ -452,7 +452,7 @@ const _highlighter = ({
                             ${hlight_left_pos + hlight_width + 7},${hlight_top_pos + hlight_height / 2 + (edge_triangle_height / 2)}
                             ${hlight_left_pos + hlight_width + 7 + edge_triangle_height },${hlight_top_pos + hlight_height / 2}
                         `}
-                        fill={SELECTED_COLOR_THEME.highlight_colour}
+                        fill={_get_selected_color_theme().highlight_colour}
                         onMouseEnter={(e) => {_on_join_position_hover(e, HIGHLIGHT_JOIN_POSITIONS.RIGHT)}}
                         onMouseDown={(e) => {_on_join_position_mouse_down(e, HIGHLIGHT_JOIN_POSITIONS.RIGHT)}}
                         onMouseLeave={(e) => {_on_join_position_hover_end(e)}}
@@ -469,7 +469,7 @@ const _highlighter = ({
                         cy={hlight_top_pos + hlight_height / 2} 
                         r={hlight_circle_radius} 
                         fill="none" 
-                        stroke={SELECTED_COLOR_THEME.highlight_colour}
+                        stroke={_get_selected_color_theme().highlight_colour}
                         strokeWidth={(line_width / 2 > 0) ? (line_width / 2) : line_width}
                         strokeOpacity={0.4}
                     />)}
@@ -481,7 +481,7 @@ const _highlighter = ({
                             ${hlight_left_pos + hlight_width / 2 + (edge_triangle_height / 2)},${hlight_top_pos + hlight_height + 7}
                             ${hlight_left_pos + hlight_width / 2},${hlight_top_pos + hlight_height + 5 + edge_triangle_height}
                         `}
-                        fill={SELECTED_COLOR_THEME.highlight_colour}
+                        fill={_get_selected_color_theme().highlight_colour}
                         onMouseEnter={(e) => {_on_join_position_hover(e, HIGHLIGHT_JOIN_POSITIONS.BOTTOM)}}
                         onMouseDown={(e) => {_on_join_position_mouse_down(e, HIGHLIGHT_JOIN_POSITIONS.BOTTOM)}}
                         onMouseLeave={(e) => {_on_join_position_hover_end(e)}}
@@ -498,7 +498,7 @@ const _highlighter = ({
                         cy={hlight_top_pos + hlight_height + 11} 
                         r={hlight_circle_radius} 
                         fill="none" 
-                        stroke={SELECTED_COLOR_THEME.highlight_colour}
+                        stroke={_get_selected_color_theme().highlight_colour}
                         strokeWidth={(line_width / 2 > 0) ? (line_width / 2) : line_width} // TODO: replace this line
                         strokeOpacity={0.4}
                     />)}
@@ -510,7 +510,7 @@ const _highlighter = ({
                             ${hlight_left_pos - 2},${hlight_top_pos + hlight_height / 2 + (edge_triangle_height / 2)}
                             ${hlight_left_pos - edge_triangle_height},${hlight_top_pos + hlight_height / 2}
                         `}
-                        fill={SELECTED_COLOR_THEME.highlight_colour}
+                        fill={_get_selected_color_theme().highlight_colour}
                         onMouseEnter={(e) => {_on_join_position_hover(e, HIGHLIGHT_JOIN_POSITIONS.LEFT)}}
                         onMouseDown={(e) => {_on_join_position_mouse_down(e, HIGHLIGHT_JOIN_POSITIONS.LEFT)}}
                         onMouseLeave={(e) => {_on_join_position_hover_end(e)}}
@@ -527,7 +527,7 @@ const _highlighter = ({
                         cy={hlight_top_pos + hlight_height / 2} 
                         r={hlight_circle_radius} 
                         fill="none" 
-                        stroke={SELECTED_COLOR_THEME.highlight_colour}
+                        stroke={_get_selected_color_theme().highlight_colour}
                         strokeWidth={(line_width / 2 > 0) ? (line_width / 2) : line_width}
                         strokeOpacity={0.4}
                     />)}

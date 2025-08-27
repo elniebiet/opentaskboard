@@ -6,7 +6,6 @@ import { _update_circle_highlighted, _update_circle_start_pos, _update_circle_en
     _update_circle_colour, _update_circle_toolbar_show, _update_circle_toolbar_loc,
     _delete_circle, _increase_circle_width, _decrease_circle_width } from "../../taskboards/use_circle";
 import { LINE_HLIGHT_DRAG_POS } from "../globals";
-import { SELECTED_COLOR_THEME } from "./use_colour_themes";
 import _line_toolbar from "../../toolbars/line_toolbar";
 import { CIRCLE_TOOLBAR_ITEMS } from "../../toolbars/toolbar_globals";
 import { TASKBOARD_STATES } from "../../taskboards/taskboard_globals";
@@ -16,6 +15,7 @@ import { _otbf_update_item_join_arrow_id } from "../otb_finder";
 import { ARROW_JOIN_POINT } from "../globals";
 import { HIGHLIGHT_PARAMS } from "../globals";
 import { TASKBOARD_TYPES } from "../globals";
+import { _get_selected_color_theme } from "./global_settings";
 
 /**
  * *****************************************************************************************
@@ -435,7 +435,7 @@ const _draggable_circle = ({
                             cx={(circle_start_pos.x + circle_end_pos.x) / 2} 
                             cy={(circle_start_pos.y + circle_end_pos.y) / 2} 
                             r={stroke_width * HLIGHT_CIRC_RADIUS_RATIO_TO_STROKEWIDTH} 
-                            fill={SELECTED_COLOR_THEME.highlight_colour}
+                            fill={_get_selected_color_theme().highlight_colour}
                             style={{ cursor: "move", pointerEvents: "all" }}
                             onMouseDown={(e) => { _hlight_mid_mousedown(e); }}
                         />

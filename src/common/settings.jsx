@@ -1,12 +1,22 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Dialog, DialogTitle, DialogContent, IconButton, Typography, 
     Box, Divider, Select, MenuItem } from '@mui/material';
-import { _get_all_themes, SELECTED_COLOR_THEME, _set_selected_color_theme } from './components/use_colour_themes';
 import { _get_toolbar_z_index } from './globals';
 import { _global_state_context } from './global_state_context';
+import { ORIENTATION } from './globals';
+import { _set_selected_color_theme, _get_all_themes, _get_selected_color_theme } from './components/global_settings';
 
 
 const _settings = ({ trigger_width, trigger_height, img_src, re_render_func }) => {
+
+  const [toolbar_orientation, _set_toolbar_orientation] = useState(ORIENTATION.HORIZONTAL);
+
+  // load taskboard settings from database
+  useEffect(() => {
+    // TODO: Load taskboard settings from DB here
+    _set_toolbar_orientation(toolbar_orientation);
+  }, []);
+
   const [open, set_open] = useState(false);
   const { global_email, _set_global_email } = useContext(_global_state_context);
   const { global_login_status, _set_global_login_status } = useContext(_global_state_context);
@@ -32,6 +42,7 @@ const _settings = ({ trigger_width, trigger_height, img_src, re_render_func }) =
     _set_global_login_status(false);
     _set_global_route("/");
   };
+
 
   return (
     <>
@@ -66,7 +77,7 @@ const _settings = ({ trigger_width, trigger_height, img_src, re_render_func }) =
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             <Typography variant="body1">Theme</Typography>
             <Select
-                value={SELECTED_COLOR_THEME.name}
+                value={_get_selected_color_theme().name}
                 onChange={_handle_theme_change}
                 fullWidth
                 sx={{ mt: 1 }}

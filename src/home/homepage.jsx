@@ -12,7 +12,7 @@ import FAQ from './components/FAQ';
 import Demo  from './components/Demo';
 import Footer from './components/Footer';
 import AppTheme from '../shared-theme/AppTheme';
-import { SELECTED_COLOR_THEME } from '../common/components/use_colour_themes';
+import { _get_selected_color_theme } from '../common/components/global_settings';
 
 export default function _homepage(props) {
   const [, _re_render_homepage] = React.useState(0);
@@ -30,7 +30,7 @@ export default function _homepage(props) {
         style={{ 
           height: "100vh",
           width: "100vw",
-          backgroundColor: SELECTED_COLOR_THEME.bg_colour,
+          backgroundColor: _get_selected_color_theme().bg_colour,
         }}
       >
         <CssBaseline enableColorScheme />

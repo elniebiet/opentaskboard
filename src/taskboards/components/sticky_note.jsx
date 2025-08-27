@@ -4,7 +4,6 @@ import { _get_max_z_index, _use_max_z_index } from "../../common/globals";
 import { _get_complement_colour } from "../../common/utils";
 import { _set_global_toolbar_items_active_state } from "../taskboard_globals";
 import { TASKBOARD_TOOLBAR_ITEM } from "../../toolbars/toolbar_globals";
-import { SELECTED_COLOR_THEME } from "../../common/components/use_colour_themes";
 import { _delete_note, _update_note_loc, _update_note_text, _update_note_colour, _update_note_win_width_perc,
             _get_note_win_width_perc, _update_note_active_state, _update_note_toolbar_show, _update_note_toolbar_loc,
             _update_note_highlighted } from "../use_note";
@@ -16,6 +15,7 @@ import { HIGHLIGHT_DRAG_DIRECTION, HIGHLIGHT_JOIN_POSITIONS, ARROW_JOIN_POINT,
 import { TASKBOARD_STATES } from "../taskboard_globals";
 import { _set_last_hovered_joining_item_id } from "../../common/globals";
 import { _otbf_update_item_join_arrow_id } from "../../common/otb_finder";
+import { _get_selected_color_theme } from "../../common/components/global_settings";
 
 /**
  * Sticky note component

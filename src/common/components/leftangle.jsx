@@ -6,7 +6,6 @@ import { _update_leftangle_highlighted, _update_leftangle_start_pos, _update_lef
     _update_leftangle_colour, _update_leftangle_toolbar_show, _update_leftangle_toolbar_loc,
     _delete_leftangle, _increase_leftangle_width, _decrease_leftangle_width } from "../../taskboards/use_leftangle";
 import { LINE_HLIGHT_DRAG_POS } from "../globals";
-import { SELECTED_COLOR_THEME } from "./use_colour_themes";
 import _line_toolbar from "../../toolbars/line_toolbar";
 import { RECTANGLE_TOOLBAR_ITEMS } from "../../toolbars/toolbar_globals";
 import { TASKBOARD_STATES } from "../../taskboards/taskboard_globals";
@@ -16,6 +15,7 @@ import { _otbf_update_item_join_arrow_id } from "../otb_finder";
 import { ARROW_JOIN_POINT } from "../globals";
 import { HIGHLIGHT_PARAMS } from "../globals";
 import { TASKBOARD_TYPES } from "../globals";
+import { _get_selected_color_theme } from "./global_settings";
 
 /**
  * *****************************************************************************************
@@ -440,7 +440,7 @@ const _draggable_leftangle = ({
                             cx={(leftangle_start_pos.x + leftangle_end_pos.x) / 2} 
                             cy={(leftangle_start_pos.y + leftangle_end_pos.y) / 2} 
                             r={_get_rect_diagonal_length() * HLIGHT_CIRC_RADIUS_RATIO_TO_STROKEWIDTH} 
-                            fill={SELECTED_COLOR_THEME.highlight_colour}
+                            fill={_get_selected_color_theme().highlight_colour}
                             style={{ cursor: "move", pointerEvents: "all" }}
                             onMouseDown={(e) => { _hlight_mid_mousedown(e); }}
                         />

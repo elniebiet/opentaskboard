@@ -9,8 +9,7 @@ import board_marker_img_32 from '../../res/imgs/img_board_marker_32x32.png';
 import fill_img_32 from '../../res/imgs/img_fill2_32x32.png'; 
 import { STKNOTE_WIDTH_PERC_DEFAULT } from '../taskboards/taskboard_globals';
 import { COMMENT_WIDTH_PERC_DEFAULT } from '../taskboards/taskboard_globals';
-import { SELECTED_COLOR_THEME } from '../common/components/use_colour_themes';
-
+import { _get_selected_color_theme } from '../common/components/global_settings';
 
 /*********************** TEMPORARY SPRINT PLANNING COMPONENNT *************************************/
 /************************ REMOVE THIS COMMENT WHEN UPDATED ****************************************/

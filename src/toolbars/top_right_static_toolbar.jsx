@@ -10,11 +10,11 @@ import { _set_global_cursor_type } from '../taskboards/taskboard_globals';
 import { _get_toolbar_z_index } from '../common/globals';
 import { TOP_RIGHT_STATIC_TOOLBAR_ITEMS } from './toolbar_globals';
 import { _colour_picker_no_button } from '../common/components/colour_picker';
-import { SELECTED_COLOR_THEME } from '../common/components/use_colour_themes';
 import _user_profile from '../common/user_profile';
 import _settings from '../common/settings';
 import _taskboard_history from '../taskboards/components/taskboard_history';
 import _taskboard_apps from '../taskboards/components/taskboard_apps';
+import { _get_selected_color_theme } from '../common/components/global_settings';
 
 
 /**
@@ -41,7 +41,7 @@ const _top_right_static_toolbar = (props) => {
         right: 0,
         width: overall_toolbar_width + 'px',
         height: overall_toolbar_height + 'px',
-        backgroundColor: SELECTED_COLOR_THEME,
+        backgroundColor: _get_selected_color_theme().bg_colour,
         color: 'white',
         padding: '5px 10px',
         borderRadius: '0 0 8px 8px',

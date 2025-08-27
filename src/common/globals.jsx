@@ -233,6 +233,11 @@ const META_ACTIONS = {
     UNDO:          1,
     REDO:          2,
 };
+
+const ORIENTATION = {
+    HORIZONTAL: 0,
+    VERTICAL:   1,
+};
 /********** Misc block ends ****************/
 
 
@@ -304,5 +309,6 @@ export {
     META_ACTIONS,
     OTB_LOGGING,
     OTB_LS_ROUTE_NAME,
+    ORIENTATION,
 };
 

@@ -20,7 +20,7 @@ import { _set_global_cursor_type } from '../taskboards/taskboard_globals';
 import { _get_toolbar_z_index } from '../common/globals';
 import { NOTE_TOOLBAR_ITEMS } from './toolbar_globals';
 import { _colour_picker_no_button } from '../common/components/colour_picker';
-import { SELECTED_COLOR_THEME } from '../common/components/use_colour_themes';
+import { _get_selected_color_theme } from '../common/components/global_settings';
 
 const _add_toolbar_item = (props) => 
 {
@@ -168,7 +168,7 @@ const _note_toolbar = (props) => {
         position: 'fixed', 
         top: props.y1_pos + 'px',
         left: props.x1_pos + 'px',
-        backgroundColor: SELECTED_COLOR_THEME,
+        backgroundColor: _get_selected_color_theme().bg_colour,
         color: 'white',
         padding: '5px 10px',
         borderRadius: '0 0 8px 8px',

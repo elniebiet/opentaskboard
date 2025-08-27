@@ -7,7 +7,7 @@ import { _get_max_z_index, _use_max_z_index } from '../common/globals';
 import { _set_global_cursor_type } from '../taskboards/taskboard_globals';
 import { _get_toolbar_z_index } from '../common/globals';
 import { _colour_picker_no_button } from '../common/components/colour_picker';
-import { SELECTED_COLOR_THEME } from '../common/components/use_colour_themes';
+import { _get_selected_color_theme } from '../common/components/global_settings';
 
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -55,7 +55,7 @@ const _top_left_bar = (props) => {
         position: 'fixed', 
         top: 0,
         left: 0,
-        backgroundColor: SELECTED_COLOR_THEME,
+        backgroundColor: _get_selected_color_theme().bg_colour,
         color: 'white',
         padding: '5px 10px',
         borderRadius: '0 0 8px 8px',
@@ -99,9 +99,9 @@ const _top_left_bar = (props) => {
                         onClick={_handle_click}
                         sx={{
                             ml: 2,
-                            color: SELECTED_COLOR_THEME.text_colour,
+                            color: _get_selected_color_theme().text_colour,
                             borderColor: 'white',
-                            background: SELECTED_COLOR_THEME.bg_colour,
+                            background: _get_selected_color_theme().bg_colour,
                             width: taskboard_dropdown_width + "px",
                             height: taskboard_dropdown_height + "px",
                             fontWeight: 'bold',
@@ -111,7 +111,7 @@ const _top_left_bar = (props) => {
                             textOverflow: "ellipsis",
                             justifyContent: "flex-start",
                             pl: 2, 
-                            '&:hover': { backgroundColor: SELECTED_COLOR_THEME.bg_colour, borderColor: 'white' },
+                            '&:hover': { backgroundColor: _get_selected_color_theme().bg_colour, borderColor: 'white' },
                         }}
                     >
                         {props.taskboard_name}
@@ -124,8 +124,8 @@ const _top_left_bar = (props) => {
                             zIndex: _get_toolbar_z_index() + 10,
                             '& .MuiPaper-root': {
                                 
-                                backgroundColor: SELECTED_COLOR_THEME.bg_colour,
-                                color: SELECTED_COLOR_THEME.text_colour,
+                                backgroundColor: _get_selected_color_theme().bg_colour,
+                                color: _get_selected_color_theme().text_colour,
                             },
                         }}
                         MenuListProps={{
@@ -133,8 +133,8 @@ const _top_left_bar = (props) => {
                         }}
                     >
                         <MenuItem sx={{ 
-                            color: SELECTED_COLOR_THEME.text_colour,
-                            background: SELECTED_COLOR_THEME.bg_colour,
+                            color: _get_selected_color_theme().text_colour,
+                            background: _get_selected_color_theme().bg_colour,
                             width: taskboard_dropdown_width + "px",
                             height: taskboard_dropdown_height + "px",
                             fontSize: taskboard_dropdown_font_size + "px",
@@ -143,8 +143,8 @@ const _top_left_bar = (props) => {
                         </MenuItem>
                         <MenuItem
                             sx={{
-                                color: SELECTED_COLOR_THEME.text_colour,
-                                background: SELECTED_COLOR_THEME.bg_colour,
+                                color: _get_selected_color_theme().text_colour,
+                                background: _get_selected_color_theme().bg_colour,
                                 width: taskboard_dropdown_width + "px",
                                 height: taskboard_dropdown_height + "px",
                                 fontWeight: 'bold',

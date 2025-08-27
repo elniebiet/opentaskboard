@@ -20,9 +20,9 @@ import { _get_max_z_index, _use_max_z_index, _get_click_or_drag,
 import { _set_global_cursor_type } from '../taskboards/taskboard_globals';
 import { _get_toolbar_z_index} from '../common/globals';
 import { _wait_until } from '../common/utils';
-import { SELECTED_COLOR_THEME } from '../common/components/use_colour_themes';
 import { Taskboard_Comp_DS } from '../taskboards/taskboard_components_data_structure';
 import { META_ACTIONS } from '../common/globals';
+import { _get_selected_color_theme } from '../common/components/global_settings';
 
 const _add_toolbar_item = (props) => 
 {
@@ -240,7 +240,7 @@ let toolbar_styling_top = {
     top: TASKBOARD_DEFAULT_TB_LOC.top + '%', 
     left: TASKBOARD_DEFAULT_TB_LOC.left + '%', 
     transform: 'translateX(-50%)', // Offset the div by half its width
-    backgroundColor: SELECTED_COLOR_THEME.bg_colour,
+    backgroundColor: _get_selected_color_theme().bg_colour,
     color: 'white',
     padding: '5px 10px',
     borderRadius: '0 0 8px 8px',
@@ -254,7 +254,7 @@ let toolbar_styling_left = {
     top: TASKBOARD_DEFAULT_TB_LOC.left + '%', 
     left: TASKBOARD_DEFAULT_TB_LOC.top + '%', 
     transform: 'translateY(-50%)',
-    backgroundColor: SELECTED_COLOR_THEME.bg_colour, 
+    backgroundColor: _get_selected_color_theme().bg_colour, 
     color: 'white',
     padding: '5px 10px',
     borderRadius: '0 8px 8px 0',
