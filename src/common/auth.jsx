@@ -1,5 +1,5 @@
 import { _global_state_context } from "./global_state_context";
-import { URL_MAIN_BACKEND } from "./globals";
+import { api_verify_token } from "./otb_apis";
 
 /**
  * check if the access token is valid
@@ -24,7 +24,7 @@ const _auth_is_valid_access_token = async (access_token, email) => {
             })
         };
 
-        const response = await fetch(`${URL_MAIN_BACKEND}auth/atverify`, request);
+        const response = await fetch(api_verify_token, request);
 
         const data = await response.json();
     

@@ -1,7 +1,7 @@
 import { ORIENTATION } from "../globals";
 import COLOR_THEMES from "../../db/colour_themes_db_temp";
 
-const GLOBAL_SETTINGS = {
+let GLOBAL_SETTINGS = {
     toolbar_orientation: ORIENTATION.HORIZONTAL,
     color_theme: COLOR_THEMES.Light,
     show_tips: true,
@@ -32,7 +32,9 @@ const _get_selected_color_theme = () => {
  *  structure for new_settings must match GLOBAL_SETTINGS 
  */
 const _set_global_settings = (new_settings) => {
-    Object.assign(GLOBAL_SETTINGS, new_settings);
+    GLOBAL_SETTINGS.color_theme = COLOR_THEMES[new_settings.color_theme];
+    GLOBAL_SETTINGS.toolbar_orientation = new_settings.toolbar_orientation;
+    GLOBAL_SETTINGS.show_tips = new_settings.show_tips;
 };
 
 const _get_global_settings = () => {

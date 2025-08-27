@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
-import { URL_MAIN_BACKEND, OTB_LOGGING } from "../../common/globals";
+import { OTB_LOGGING } from "../../common/globals";
 import { _global_state_context } from "../../common/global_state_context";
+import { api_signin } from "../../common/otb_apis";
 
 // Modern style helpers (match Signup)
 const inputStyle = {
@@ -155,7 +156,7 @@ const _login = ({signup_link_clicked_handler_func, login_success_func}) => {
         // console.log(request);
       }
 
-      const response = await fetch(`${URL_MAIN_BACKEND}auth/signin`, request);
+      const response = await fetch(api_signin, request);
 
       const data = await response.json();
       

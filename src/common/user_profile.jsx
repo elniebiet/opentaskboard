@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
-import { URL_MAIN_BACKEND } from './globals';
+import { api_personal_details } from './otb_apis';
+
 import {
   Dialog,
   DialogContent,
@@ -15,7 +16,7 @@ import { _global_state_context } from './global_state_context';
 const _user_profile = ({ trigger_width, trigger_height, img_src }) => {
   const [open, _set_open] = useState(false);
   const { global_email, _set_global_email } = useContext(_global_state_context);
-  const { global_access_token, _set_global_access_token } = useContext(_global_state_context);
+  const { global_access_token } = useContext(_global_state_context);
   const [first_name, _set_first_name] = useState("");
   const [last_name, _set_last_name] = useState("");
   const [role, _set_role] = useState("");
@@ -40,7 +41,7 @@ const _user_profile = ({ trigger_width, trigger_height, img_src }) => {
         };
 
         try {
-          const response = await fetch(`${URL_MAIN_BACKEND}auth/personal_details`, request);
+          const response = await fetch(api_personal_details, request);
 
           const data = await response.json();
 

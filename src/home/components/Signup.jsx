@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { URL_MAIN_BACKEND } from "../../common/globals";
+import { api_signup } from "../../common/otb_apis";
 import { OTB_LOGGING } from "../../common/globals";
 import { OTB_ROLES, OTB_JOB_TITLES, OTB_COUNTRIES } from "../../common/otb_common_definitions";
 
@@ -196,7 +196,7 @@ const _sign_up = ({login_link_clicked_handler_func}) => {
         // console.log("request: ");
         // console.log(request);
       }
-      const response = await fetch(`${URL_MAIN_BACKEND}auth/signup`, request);
+      const response = await fetch(api_signup, request);
 
       const data = await response.json();
       
