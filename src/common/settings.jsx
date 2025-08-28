@@ -40,7 +40,7 @@ const _settings = ({ trigger_width, trigger_height, img_src, re_render_func }) =
                 color_theme: data.settings.color_theme,
                 show_tips: (data.settings.show_tips == 0) ? "false" : "true",
             });
-
+            
             _set_toolbar_orientation(data.settings.toolbar_orientation);
 
             re_render_func(data.settings.color_theme); // notify parent
@@ -120,6 +120,30 @@ const _settings = ({ trigger_width, trigger_height, img_src, re_render_func }) =
     re_render_func(new_value); // notify parent
   };
 
+  const _handle_toolbar_orientation_change = (event) => {
+    const new_value = event.target.value;
+    _set_toolbar_orientation(new_value);
+    
+    // get current settings
+    let current_settings = _get_global_settings();
+
+    // save global settings first before uploading
+    _set_global_settings({
+      toolbar_orientation: new_value,
+      color_theme: current_settings.color_theme.name,
+      show_tips: (current_settings.show_tips == 0) ? "false" : "true",
+    });
+
+    // upload theme change 
+    _save_new_settings({
+      new_orientation: new_value, 
+      new_color_theme: current_settings.color_theme.name, 
+      new_show_tips: current_settings.show_tips
+    }).then(() => {});
+
+    re_render_func(current_settings.color_theme.name); // notify parent
+  };
+
   const _load_themes = () => {
     const themes = _get_all_themes();
     return Object.keys(themes).map((theme) => (
@@ -186,6 +210,29 @@ const _settings = ({ trigger_width, trigger_height, img_src, re_render_func }) =
                 { _load_themes() }
             </Select>
 
+            <Typography variant="body1">Taskboard Toolbar Orientation</Typography>
+            <Select
+                value={toolbar_orientation}
+                onChange={_handle_toolbar_orientation_change}
+                fullWidth
+                sx={{ mt: 1 }}
+                MenuProps={{
+                    PaperProps: {
+                    sx: { zIndex: _get_toolbar_z_index() + 1 },
+                    },
+                    slotProps: {
+                    paper: { sx: { zIndex: _get_toolbar_z_index() + 1 } },
+                    },
+                    sx: { zIndex: _get_toolbar_z_index() + 1 },
+                }}
+            >
+                <MenuItem key={ORIENTATION.HORIZONTAL} value={ORIENTATION.HORIZONTAL}>
+                  Horizontal
+                </MenuItem>
+                <MenuItem key={ORIENTATION.VERTICAL} value={ORIENTATION.VERTICAL}>
+                  Vertical
+                </MenuItem>
+            </Select>
 
             <Typography variant="body1" sx={{ mt: 2, cursor: 'pointer' }}>
               Preferences

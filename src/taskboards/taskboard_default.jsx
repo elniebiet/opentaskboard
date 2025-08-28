@@ -30,7 +30,7 @@ import _note_toolbar from '../toolbars/note_toolbar';
 import { _update_arrow_end_pos } from './use_arrow';
 import { _get_current_joining_arrow_id, _get_last_hovered_joining_item_id, _set_last_hovered_joining_item_id, 
         _get_last_hovered_joining_position, _set_last_hovered_joining_position,
-        ARROW_JOIN_POINT, TASKBOARD_TYPES } from '../common/globals';
+        ARROW_JOIN_POINT, TASKBOARD_TYPES, ORIENTATION } from '../common/globals';
 import { _otbf_update_item_join_arrow_id, _otbf_deactivate_item } from '../common/otb_finder';
 import _top_right_static_toolbar from '../toolbars/top_right_static_toolbar';
 import _top_left_bar from '../toolbars/top_left_bar';
@@ -39,6 +39,7 @@ import { KEYPRESSES } from '../common/components/keypress_list';
 import { Taskboard_Activity_Tracker } from './components/taskboard_activity_tracker';
 import { _undo_action, _redo_action } from './components/taskboard_undo_redo';
 import { _global_state_context } from '../common/global_state_context';
+import { _get_global_settings } from '../common/components/global_settings';
 
 import notes from '../db/taskboards/notes_db_temp';              // temporary notes storage
 import comments from '../db/taskboards/comments_db_temp';        // temporary comments storage
@@ -69,8 +70,9 @@ const _taskboard_default = ({
   const { global_route, _set_global_route } = useContext(_global_state_context);
   const { global_login_status } = useContext(_global_state_context);
   const [taskboard_name, _set_taskboard_name] = useState("New Taskboard1");
+  const [toolbar_orientation, _set_toolbar_orientation] = useState(_get_global_settings().toolbar_orientation);
   
-  // Special use effect block for checking valid login and validating the taskboard, 
+  // Special use effect block mainly for checking valid login and validating the taskboard, 
   // other use effects are found in the useEffect section below this one
   useEffect(() => {
     if(global_login_status)
@@ -84,13 +86,16 @@ const _taskboard_default = ({
         console.warn("invalid taskboard requested.");
         _set_global_route("/");
       }
+      
+      // load settings here
+      _set_toolbar_orientation(_get_global_settings().toolbar_orientation);
     }
     else
     {
       _set_global_route("/");
     }
-    // Only run on mount (or if taskboard_id, name, or type changes)
-  }, [taskboard_id]);
+    // Only run on mount (or if taskboard_id, toolbar orientation)
+  }, [taskboard_id, _get_global_settings().toolbar_orientation]);
 
   
   // ensure the window width and height are less than the screen size
@@ -638,17 +643,21 @@ const _taskboard_default = ({
             taskboard_name={taskboard_name}
           />
 
-          <_taskboard_toolbar pos={"top"} win_width={width} win_height={height} add_note_func={_add_note} set_tb_item_loc_func={_set_tb_item_loc_func} 
-            select_cursor_func={_select_pointer} marker_draw_func={_draw_with_marker_clicked} add_fill_func={_add_fill_clicked} add_comment_func={_add_comment}
-            erase_func={_erase_clicked} taskboard_rerender_func={_trigger_taskboard_rerender} request_taskboard_state_func={_request_taskboard_state}
-            taskboard_type={taskboard_type} taskboard_id={taskboard_id}
-          />
-          
-          <_taskboard_toolbar pos={"left"} win_width={width} win_height={height} add_note_func={_add_note} set_tb_item_loc_func={_set_tb_item_loc_func} 
-            select_cursor_func={_select_pointer} marker_draw_func={_draw_with_marker_clicked} add_fill_func={_add_fill_clicked} add_comment_func={_add_comment} 
-            erase_func={_erase_clicked} taskboard_rerender_func={_trigger_taskboard_rerender} request_taskboard_state_func={_request_taskboard_state}
-            taskboard_type={taskboard_type} taskboard_id={taskboard_id}
-          />
+          {toolbar_orientation === ORIENTATION.HORIZONTAL && (
+            <_taskboard_toolbar pos={"top"} win_width={width} win_height={height} add_note_func={_add_note} set_tb_item_loc_func={_set_tb_item_loc_func} 
+              select_cursor_func={_select_pointer} marker_draw_func={_draw_with_marker_clicked} add_fill_func={_add_fill_clicked} add_comment_func={_add_comment}
+              erase_func={_erase_clicked} taskboard_rerender_func={_trigger_taskboard_rerender} request_taskboard_state_func={_request_taskboard_state}
+              taskboard_type={taskboard_type} taskboard_id={taskboard_id}
+            />
+          )}
+
+          {toolbar_orientation === ORIENTATION.VERTICAL && (
+            <_taskboard_toolbar pos={"left"} win_width={width} win_height={height} add_note_func={_add_note} set_tb_item_loc_func={_set_tb_item_loc_func} 
+              select_cursor_func={_select_pointer} marker_draw_func={_draw_with_marker_clicked} add_fill_func={_add_fill_clicked} add_comment_func={_add_comment} 
+              erase_func={_erase_clicked} taskboard_rerender_func={_trigger_taskboard_rerender} request_taskboard_state_func={_request_taskboard_state}
+              taskboard_type={taskboard_type} taskboard_id={taskboard_id}
+            />
+          )}
           
           {(taskboard_state === TASKBOARD_STATES.TBS_SUB_TOOLBAR_ACTIVE) && (
             <_shapes_sub_toolbar shapes_tb_item_clicked_func={_shape_selected_handler} pos={"top"} win_width={width} win_height={height} 
