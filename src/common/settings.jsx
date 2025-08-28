@@ -147,7 +147,11 @@ const _settings = ({ trigger_width, trigger_height, img_src, re_render_func }) =
   const _load_themes = () => {
     const themes = _get_all_themes();
     return Object.keys(themes).map((theme) => (
-      <MenuItem key={themes[theme].name} value={themes[theme].name}>
+      <MenuItem
+        key={themes[theme].name}
+        value={themes[theme].name}
+        // sx={{ color: themes[theme].text_colour, backgroundColor: themes[theme].bg_colour }}
+        >
         {themes[theme].name}
       </MenuItem>
     ));
@@ -183,7 +187,13 @@ const _settings = ({ trigger_width, trigger_height, img_src, re_render_func }) =
       <Dialog
         open={open}
         onClose={() => set_open(false)}
-        sx={{ zIndex: _get_toolbar_z_index() }}
+        sx={{ 
+          zIndex: _get_toolbar_z_index(),
+          '& .MuiDialog-paper': { 
+            backgroundColor: _get_selected_color_theme().bg_colour, 
+            color: _get_selected_color_theme().text_colour 
+          }
+         }}
         maxWidth="xs"
         fullWidth
       >
@@ -196,13 +206,28 @@ const _settings = ({ trigger_width, trigger_height, img_src, re_render_func }) =
                 value={_get_selected_color_theme().name}
                 onChange={_handle_theme_change}
                 fullWidth
-                sx={{ mt: 1 }}
+                sx={{ 
+                  mt: 1,
+                  color: _get_selected_color_theme().text_colour,
+                  backgroundColor: _get_selected_color_theme().bg_colour,
+                  '& .MuiSelect-icon': { color: _get_selected_color_theme().text_colour },
+                }}
                 MenuProps={{
                     PaperProps: {
-                    sx: { zIndex: _get_toolbar_z_index() + 1 },
+                      sx: { 
+                        zIndex: _get_toolbar_z_index() + 1,
+                        color: _get_selected_color_theme().text_colour,
+                        backgroundColor: _get_selected_color_theme().bg_colour,
+                      },
                     },
                     slotProps: {
-                    paper: { sx: { zIndex: _get_toolbar_z_index() + 1 } },
+                      paper: { 
+                        sx: { 
+                          zIndex: _get_toolbar_z_index() + 1,
+                          color: _get_selected_color_theme().text_colour,
+                          backgroundColor: _get_selected_color_theme().bg_colour,
+                        } 
+                      },
                     },
                     sx: { zIndex: _get_toolbar_z_index() + 1 },
                 }}
@@ -215,13 +240,28 @@ const _settings = ({ trigger_width, trigger_height, img_src, re_render_func }) =
                 value={toolbar_orientation}
                 onChange={_handle_toolbar_orientation_change}
                 fullWidth
-                sx={{ mt: 1 }}
+                sx={{ 
+                  mt: 1,
+                  color: _get_selected_color_theme().text_colour,
+                  backgroundColor: _get_selected_color_theme().bg_colour,
+                  '& .MuiSelect-icon': { color: _get_selected_color_theme().text_colour },
+                }}
                 MenuProps={{
                     PaperProps: {
-                    sx: { zIndex: _get_toolbar_z_index() + 1 },
+                      sx: { 
+                        zIndex: _get_toolbar_z_index() + 1,
+                        color: _get_selected_color_theme().text_colour,
+                        backgroundColor: _get_selected_color_theme().bg_colour,
+                      },
                     },
                     slotProps: {
-                    paper: { sx: { zIndex: _get_toolbar_z_index() + 1 } },
+                      paper: { 
+                        sx: { 
+                          zIndex: _get_toolbar_z_index() + 1,
+                          color: _get_selected_color_theme().text_colour,
+                          backgroundColor: _get_selected_color_theme().bg_colour,
+                        } 
+                      },
                     },
                     sx: { zIndex: _get_toolbar_z_index() + 1 },
                 }}
