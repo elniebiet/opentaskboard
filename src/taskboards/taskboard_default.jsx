@@ -659,13 +659,13 @@ const _taskboard_default = ({
             />
           )}
           
-          {(taskboard_state === TASKBOARD_STATES.TBS_SUB_TOOLBAR_ACTIVE) && (
+          {(taskboard_state === TASKBOARD_STATES.TBS_SUB_TOOLBAR_ACTIVE && toolbar_orientation === ORIENTATION.HORIZONTAL) && (
             <_shapes_sub_toolbar shapes_tb_item_clicked_func={_shape_selected_handler} pos={"top"} win_width={width} win_height={height} 
             taskboard_rerender_func={_trigger_taskboard_rerender} request_taskboard_state_func={_request_taskboard_state}
             />
           )}
 
-          {(taskboard_state === TASKBOARD_STATES.TBS_SUB_TOOLBAR_ACTIVE) && (
+          {(taskboard_state === TASKBOARD_STATES.TBS_SUB_TOOLBAR_ACTIVE && toolbar_orientation === ORIENTATION.VERTICAL) && (
             <_shapes_sub_toolbar shapes_tb_item_clicked_func={_shape_selected_handler} pos={"left"} win_width={width} win_height={height} 
             taskboard_rerender_func={_trigger_taskboard_rerender} request_taskboard_state_func={_request_taskboard_state} 
             />

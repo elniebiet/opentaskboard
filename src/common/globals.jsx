@@ -75,7 +75,7 @@ const _get_subtoolbar_z_index = () => {
 
 /*********** Generic Highlighter block begins ***************/
 let HIGHLIGHT_PARAMS = {
-    highlight_gap: '15', // pixels
+    highlight_gap: '5', // pixels
     highlight_line_width: '3'   // pixels
 };
 
