@@ -176,34 +176,24 @@ const _update_note_colour = (id, colour) => {
  * update note width pixels
  * @param {int} id - note id
  * @param {float} width - note width in pixels
+ * @param {float} height - note height in pixels
  */
-const _update_note_width_px = (id, width) => {
+const _update_note_width_n_height_px = (id, width, height) => {
     for(let i=0; i<notes.length; i++)
     {
         if(notes[i].id === id)
         {
             notes[i].width = width;
-            break;
-        }
-    }
-};
-
-/**
- * update note height pixels
- * @param {int} id - note id
- * @param {float} height - note height in pixels
- */
-const _update_note_height_px = (id, height) => {
-    for(let i=0; i<notes.length; i++)
-    {
-        if(notes[i].id === id)
-        {
             notes[i].height = height;
+
+            let note = notes[i];
+
+            let b_result = _add_activity_to_tracker({taskboard_id: note.taskboard_id, action_type: ACTIONS.UPDATE, component_data: note});
+            
             break;
         }
     }
 };
-
 
 /**
    * update note location
@@ -218,6 +208,11 @@ const _update_note_loc = (int_id, int_x_cord, int_y_cord) => {
         {
             notes[i].x1_pos = int_x_cord;
             notes[i].y1_pos = int_y_cord;
+
+            let note = notes[i];
+
+            let b_result = _add_activity_to_tracker({taskboard_id: note.taskboard_id, action_type: ACTIONS.UPDATE, component_data: note});
+
             break;
         }
     }
@@ -232,7 +227,7 @@ const _update_note_active_state = (id, b_is_active) => {
     for(let i=0; i<notes.length; i++)
     {
         if(notes[i].id === id)
-        {
+        {            
             notes[i].active = b_is_active;
             break;
         }
@@ -340,6 +335,5 @@ export {
     _update_note_toolbar_loc,
     _update_note_highlighted,
     _update_note_general,
-    _update_note_width_px,
-    _update_note_height_px,
+    _update_note_width_n_height_px,
 };

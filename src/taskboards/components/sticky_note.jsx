@@ -6,7 +6,7 @@ import { _set_global_toolbar_items_active_state } from "../taskboard_globals";
 import { TASKBOARD_TOOLBAR_ITEM } from "../../toolbars/toolbar_globals";
 import { _delete_note, _update_note_loc, _update_note_text, _update_note_colour,
             _update_note_active_state, _update_note_toolbar_show, _update_note_toolbar_loc,
-            _update_note_highlighted, _update_note_width_px, _update_note_height_px } from "../use_note";
+            _update_note_highlighted, _update_note_width_n_height_px } from "../use_note";
 import _note_toolbar from "../../toolbars/note_toolbar";
 import { _colour_picker_no_button } from "../../common/components/colour_picker";
 import _highlighter from "../../common/components/highlighter";
@@ -259,9 +259,10 @@ const _sticky_note = ({
             {
                 // calculate new width and height
                 let new_width = stknote_width + width_increase_pixels;
+                new_width = (new_width < STKNOTE_MIN_WIDTH_PX) ? STKNOTE_MIN_WIDTH_PX : new_width;
                 let new_height = stknote_height + height_increase_pixels;
-                _update_note_width_px(id, (new_width < STKNOTE_MIN_WIDTH_PX) ? STKNOTE_MIN_WIDTH_PX : new_width);
-                _update_note_height_px(id, (new_height < STKNOTE_MIN_HEIGHT_PX) ? STKNOTE_MIN_HEIGHT_PX : new_height);
+                new_height = (new_height < STKNOTE_MIN_HEIGHT_PX) ? STKNOTE_MIN_HEIGHT_PX : new_height;
+                _update_note_width_n_height_px(id, new_width, new_height);
                           
                 taskboard_rerender_func();
 
@@ -271,9 +272,10 @@ const _sticky_note = ({
             {
                 // calculate new width and height
                 let new_width = stknote_width + width_increase_pixels;
+                new_width = (new_width < STKNOTE_MIN_WIDTH_PX) ? STKNOTE_MIN_WIDTH_PX : new_width;
                 let new_height = stknote_height + height_increase_pixels;
-                _update_note_width_px(id, (new_width < STKNOTE_MIN_WIDTH_PX) ? STKNOTE_MIN_WIDTH_PX : new_width);
-                _update_note_height_px(id, (new_height < STKNOTE_MIN_HEIGHT_PX) ? STKNOTE_MIN_HEIGHT_PX : new_height);
+                new_height = (new_height < STKNOTE_MIN_HEIGHT_PX) ? STKNOTE_MIN_HEIGHT_PX : new_height;
+                _update_note_width_n_height_px(id, new_width, new_height);
 
                 // calculate new top left position
                 let current_root_div_pos = root_div_position;
@@ -293,9 +295,10 @@ const _sticky_note = ({
             {
                 // calculate new width and height
                 let new_width = stknote_width + width_increase_pixels;
+                new_width = (new_width < STKNOTE_MIN_WIDTH_PX) ? STKNOTE_MIN_WIDTH_PX : new_width;
                 let new_height = stknote_height + height_increase_pixels;
-                _update_note_width_px(id, (new_width < STKNOTE_MIN_WIDTH_PX) ? STKNOTE_MIN_WIDTH_PX : new_width);
-                _update_note_height_px(id, (new_height < STKNOTE_MIN_HEIGHT_PX) ? STKNOTE_MIN_HEIGHT_PX : new_height);
+                new_height = (new_height < STKNOTE_MIN_HEIGHT_PX) ? STKNOTE_MIN_HEIGHT_PX : new_height;
+                _update_note_width_n_height_px(id, new_width, new_height);
 
                 // calculate new top left position
                 let current_root_div_pos = root_div_position;
@@ -314,9 +317,10 @@ const _sticky_note = ({
             {
                 // calculate new width and height
                 let new_width = stknote_width + width_increase_pixels;
+                new_width = (new_width < STKNOTE_MIN_WIDTH_PX) ? STKNOTE_MIN_WIDTH_PX : new_width;
                 let new_height = stknote_height + height_increase_pixels;
-                _update_note_width_px(id, (new_width < STKNOTE_MIN_WIDTH_PX) ? STKNOTE_MIN_WIDTH_PX : new_width);
-                _update_note_height_px(id, (new_height < STKNOTE_MIN_HEIGHT_PX) ? STKNOTE_MIN_HEIGHT_PX : new_height);
+                new_height = (new_height < STKNOTE_MIN_HEIGHT_PX) ? STKNOTE_MIN_HEIGHT_PX : new_height;
+                _update_note_width_n_height_px(id, new_width, new_height);
 
                 // calculate new top left position
                 let current_root_div_pos = root_div_position;
