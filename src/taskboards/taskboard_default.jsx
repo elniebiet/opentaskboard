@@ -394,7 +394,7 @@ const _taskboard_default = ({
               {notes.map((note) => (
                 <div>
                   <div>
-                    <_sticky_note key={note.id} id={note.id} text={note.text} win_width_perc={note.win_width_perc} tb_item_loc_update_func={_set_tb_item_loc_func} 
+                    <_sticky_note key={note.id} id={note.id} text={note.text} win_width_perc={note.win_width_perc} width={note.width} height={note.height} tb_item_loc_update_func={_set_tb_item_loc_func} 
                       x1_pos={note.x1_pos} y1_pos={note.y1_pos} win_width={width} win_height={height} colour={note.colour} taskboard_rerender_func={_trigger_taskboard_rerender}
                       show_toolbar={note.toolbar_show} highlighted={note.highlighted} join_arrow_ids={note.join_arrow_ids} request_taskboard_state_func={_request_taskboard_state} 
                       overall_taskboard_state={taskboard_state} main_page_click_counter={click_counter} main_page_last_click_event_target={click_event_target}

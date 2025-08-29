@@ -1,6 +1,6 @@
 import { _get_global_last_item_add_or_move_loc, _set_global_last_item_add_or_move_loc } from "./taskboard_globals";
 import { _set_global_cursor_type } from "./taskboard_globals";
-import { STKNOTE_WIDTH_PERC_DEFAULT } from "./taskboard_globals";
+import { STKNOTE_WIDTH_PERC_DEFAULT, STKNOTE_MIN_WIDTH_PX, STKNOTE_MIN_HEIGHT_PX } from "./taskboard_globals";
 import { ARROW_JOIN_POINT, UNUSED, META_ACTIONS } from "../common/globals";
 import { COMPONENT_CLSID_PREFIXES } from "../common/otb_component_class_id_prefixes";
 import { _otb_generate_uuid } from "../common/otb_id_generator";
@@ -46,6 +46,8 @@ const _add_note = (new_note, meta_action, clicked = true) => {
         new_note.colour = _get_selected_color_theme().bg_colour;
         new_note.stroke_width = UNUSED;
         new_note.win_width_perc = STKNOTE_WIDTH_PERC_DEFAULT;
+        new_note.height = STKNOTE_MIN_HEIGHT_PX;
+        new_note.width = STKNOTE_MIN_WIDTH_PX;
         new_note.text = "";
         new_note.highlighted = true;
         new_note.active = false;
@@ -78,6 +80,8 @@ const _add_note = (new_note, meta_action, clicked = true) => {
             new_note.colour = _get_selected_color_theme().bg_colour;
             new_note.stroke_width = UNUSED;
             new_note.win_width_perc = STKNOTE_WIDTH_PERC_DEFAULT;
+            new_note.height = STKNOTE_MIN_HEIGHT_PX;
+            new_note.width = STKNOTE_MIN_WIDTH_PX;
             new_note.text = "";
             new_note.highlighted = true;
             new_note.active = false;
@@ -169,36 +173,35 @@ const _update_note_colour = (id, colour) => {
 };
 
 /**
- * update note width percentage
+ * update note width pixels
  * @param {int} id - note id
- * @param {float} win_width_perc - note width in percentage wrt window size
+ * @param {float} width - note width in pixels
  */
-const _update_note_win_width_perc = (id, win_width_perc) => {
+const _update_note_width_px = (id, width) => {
     for(let i=0; i<notes.length; i++)
     {
         if(notes[i].id === id)
         {
-            notes[i].win_width_perc = win_width_perc;
+            notes[i].width = width;
             break;
         }
     }
 };
 
 /**
- * get note width percentage
+ * update note height pixels
  * @param {int} id - note id
- * @return {float} win_width_perc - note width in percentage wrt window size
+ * @param {float} height - note height in pixels
  */
-const _get_note_win_width_perc = (id) => {
+const _update_note_height_px = (id, height) => {
     for(let i=0; i<notes.length; i++)
     {
         if(notes[i].id === id)
         {
-            return notes[i].win_width_perc;
+            notes[i].height = height;
+            break;
         }
     }
-
-    return 0;
 };
 
 
@@ -305,6 +308,8 @@ const _update_note_general = (updated_note, meta_action) => {
                 notes[i].colour = updated_note.colour;
                 notes[i].stroke_width = updated_note.stroke_width; 
                 notes[i].win_width_perc = updated_note.win_width_perc;
+                notes[i].height = updated_note.height;
+                notes[i].width = updated_note.width;
                 notes[i].text = updated_note.text;
                 notes[i].highlighted = false;
                 notes[i].active = false;
@@ -329,12 +334,12 @@ export {
     _delete_note,
     _update_note_text,
     _update_note_colour,
-    _update_note_win_width_perc,
-    _get_note_win_width_perc,
     _update_note_loc,
     _update_note_active_state,
     _update_note_toolbar_show,
     _update_note_toolbar_loc,
     _update_note_highlighted,
-    _update_note_general
+    _update_note_general,
+    _update_note_width_px,
+    _update_note_height_px,
 };

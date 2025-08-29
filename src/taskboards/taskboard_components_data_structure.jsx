@@ -11,6 +11,8 @@
     - colour: (hex string)
     - stroke_width: (float) 
     - win_width_perc: (float)
+    - height: (float)
+    - width: (float)
     - text: (string)
     - highlighted: (boolean)
     - active: (boolean)
@@ -37,6 +39,8 @@ export class Taskboard_Comp_DS {
         this.colour = "#000000";
         this.stroke_width = 0;
         this.win_width_perc = 0;
+        this.height = 0;
+        this.width = 0;
         this.text = "";
         this.highlighted = false;
         this.active = false;

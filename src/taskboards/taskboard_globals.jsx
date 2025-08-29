@@ -5,7 +5,11 @@ import { TASKBOARD_TOOLBAR_ITEM } from '../toolbars/toolbar_globals';
 
 /************************************ TASKBOARD CONST DEFINITIONS *************************************************/
 // Default sticky note width percentage ratio
-const STKNOTE_WIDTH_PERC_DEFAULT                      = 0.15; 
+const STKNOTE_WIDTH_PERC_DEFAULT                = 0.15; 
+// Sticky note minimum width and height in pixels
+const STKNOTE_MIN_WIDTH_PX                      = 150;  //pixels
+const STKNOTE_MIN_HEIGHT_PX                     = 150;  //pixels
+
 // Default comment width percentage ratio
 const COMMENT_WIDTH_PERC_DEFAULT                      = 0.15; 
 
@@ -114,6 +118,8 @@ const _set_global_toolbar_items_active_state = (toolbar_item, is_active, b_clear
 export {
     // CONSTANTS
     STKNOTE_WIDTH_PERC_DEFAULT,
+    STKNOTE_MIN_WIDTH_PX,
+    STKNOTE_MIN_HEIGHT_PX,
     COMMENT_WIDTH_PERC_DEFAULT,
     TASKBOARD_STATES,
     CURSOR_TYPES,

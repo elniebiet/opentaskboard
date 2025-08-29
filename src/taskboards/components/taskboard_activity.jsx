@@ -31,6 +31,8 @@ export class Taskboard_Activity {
           colour: activity_taskboard_component_structure.colour,
           stroke_width: activity_taskboard_component_structure.stroke_width, 
           win_width_perc: activity_taskboard_component_structure.win_width_perc,
+          height: activity_taskboard_component_structure.height,
+          width: activity_taskboard_component_structure.width,
           text: activity_taskboard_component_structure.text,
           highlighted: false,
           active: false,

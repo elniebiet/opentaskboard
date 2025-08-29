@@ -4,9 +4,9 @@ import { _get_max_z_index, _use_max_z_index } from "../../common/globals";
 import { _get_complement_colour } from "../../common/utils";
 import { _set_global_toolbar_items_active_state } from "../taskboard_globals";
 import { TASKBOARD_TOOLBAR_ITEM } from "../../toolbars/toolbar_globals";
-import { _delete_note, _update_note_loc, _update_note_text, _update_note_colour, _update_note_win_width_perc,
-            _get_note_win_width_perc, _update_note_active_state, _update_note_toolbar_show, _update_note_toolbar_loc,
-            _update_note_highlighted } from "../use_note";
+import { _delete_note, _update_note_loc, _update_note_text, _update_note_colour,
+            _update_note_active_state, _update_note_toolbar_show, _update_note_toolbar_loc,
+            _update_note_highlighted, _update_note_width_px, _update_note_height_px } from "../use_note";
 import _note_toolbar from "../../toolbars/note_toolbar";
 import { _colour_picker_no_button } from "../../common/components/colour_picker";
 import _highlighter from "../../common/components/highlighter";
@@ -16,6 +16,7 @@ import { TASKBOARD_STATES } from "../taskboard_globals";
 import { _set_last_hovered_joining_item_id } from "../../common/globals";
 import { _otbf_update_item_join_arrow_id } from "../../common/otb_finder";
 import { _get_selected_color_theme } from "../../common/components/global_settings";
+import { STKNOTE_MIN_WIDTH_PX, STKNOTE_MIN_HEIGHT_PX } from "../taskboard_globals";
 
 /**
  * Sticky note component
@@ -28,6 +29,8 @@ const _sticky_note = ({
     win_width, 
     win_height, 
     win_width_perc, 
+    width,
+    height,
     text, 
     overall_taskboard_state,
     main_page_last_click_event_target, 
@@ -64,7 +67,6 @@ const _sticky_note = ({
 
     const [local_param_note_active, _set_local_param_note_active] = useState(true); // local param to track note active state
 
-    const STKNOTE_MIN_WIDTH                             = 150;  //pixels
     const MENUBAR_HGT_PERC                              = 0.10; // 10% of stknote height 
     const FLEXBOX_GAP_PERC                              = 0.02; // 2% of stknote height
     const FLEXBOX_TXTAREA_HGT_PERC                      = 0.90; // 90% of stknote height
@@ -102,8 +104,10 @@ const _sticky_note = ({
         return toolbar_perc;
     };
 
-    let stknote_width = win_width_perc * win_width;
-    stknote_width = ( stknote_width < STKNOTE_MIN_WIDTH ) ? STKNOTE_MIN_WIDTH : stknote_width;
+    let stknote_width = width;
+    let stknote_height = height;
+    stknote_width = ( stknote_width < STKNOTE_MIN_WIDTH_PX ) ? STKNOTE_MIN_WIDTH_PX : stknote_width;
+    stknote_height = ( stknote_height < STKNOTE_MIN_HEIGHT_PX ) ? STKNOTE_MIN_HEIGHT_PX : stknote_height;
     const font_size = FONT_SIZE_PERC * stknote_width;
     let menubar_item_width   = MENUBAR_ITEM_WIDTH_PERC * stknote_width;
     let toolbar_note_gap_perc = _get_note_toolbar_top_gap_perc(stknote_width);    
@@ -255,8 +259,10 @@ const _sticky_note = ({
             {
                 // calculate new width and height
                 let new_width = stknote_width + width_increase_pixels;
-                let new_win_width_perc = new_width / win_width;
-                _update_note_win_width_perc(id, new_win_width_perc);                
+                let new_height = stknote_height + height_increase_pixels;
+                _update_note_width_px(id, (new_width < STKNOTE_MIN_WIDTH_PX) ? STKNOTE_MIN_WIDTH_PX : new_width);
+                _update_note_height_px(id, (new_height < STKNOTE_MIN_HEIGHT_PX) ? STKNOTE_MIN_HEIGHT_PX : new_height);
+                          
                 taskboard_rerender_func();
 
                 break;
@@ -265,8 +271,9 @@ const _sticky_note = ({
             {
                 // calculate new width and height
                 let new_width = stknote_width + width_increase_pixels;
-                let new_win_width_perc = new_width / win_width;
-                _update_note_win_width_perc(id, new_win_width_perc);         
+                let new_height = stknote_height + height_increase_pixels;
+                _update_note_width_px(id, (new_width < STKNOTE_MIN_WIDTH_PX) ? STKNOTE_MIN_WIDTH_PX : new_width);
+                _update_note_height_px(id, (new_height < STKNOTE_MIN_HEIGHT_PX) ? STKNOTE_MIN_HEIGHT_PX : new_height);
 
                 // calculate new top left position
                 let current_root_div_pos = root_div_position;
@@ -286,8 +293,9 @@ const _sticky_note = ({
             {
                 // calculate new width and height
                 let new_width = stknote_width + width_increase_pixels;
-                let new_win_width_perc = new_width / win_width;
-                _update_note_win_width_perc(id, new_win_width_perc);
+                let new_height = stknote_height + height_increase_pixels;
+                _update_note_width_px(id, (new_width < STKNOTE_MIN_WIDTH_PX) ? STKNOTE_MIN_WIDTH_PX : new_width);
+                _update_note_height_px(id, (new_height < STKNOTE_MIN_HEIGHT_PX) ? STKNOTE_MIN_HEIGHT_PX : new_height);
 
                 // calculate new top left position
                 let current_root_div_pos = root_div_position;
@@ -306,8 +314,9 @@ const _sticky_note = ({
             {
                 // calculate new width and height
                 let new_width = stknote_width + width_increase_pixels;
-                let new_win_width_perc = new_width / win_width;
-                _update_note_win_width_perc(id, new_win_width_perc);
+                let new_height = stknote_height + height_increase_pixels;
+                _update_note_width_px(id, (new_width < STKNOTE_MIN_WIDTH_PX) ? STKNOTE_MIN_WIDTH_PX : new_width);
+                _update_note_height_px(id, (new_height < STKNOTE_MIN_HEIGHT_PX) ? STKNOTE_MIN_HEIGHT_PX : new_height);
 
                 // calculate new top left position
                 let current_root_div_pos = root_div_position;
