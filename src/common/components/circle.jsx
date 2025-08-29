@@ -203,14 +203,14 @@ const _draggable_circle = ({
             case HIGHLIGHT_DRAG_DIRECTION.BOTTOM_RIGHT:
             {
                 // calculate new width and height
-                _update_circle_end_pos(id, circle_end_pos.x + width_increase_pixels, circle_end_pos.y + width_increase_pixels);          
+                _update_circle_end_pos(id, circle_end_pos.x + width_increase_pixels, circle_end_pos.y + width_increase_pixels, true);          
                 taskboard_rerender_func();
                 break;
             }
             case HIGHLIGHT_DRAG_DIRECTION.TOP_LEFT:
             {
                 // calculate new width and height
-                _update_circle_start_pos(id, circle_start_pos.x - width_increase_pixels, circle_start_pos.y - width_increase_pixels);
+                _update_circle_start_pos(id, circle_start_pos.x - width_increase_pixels, circle_start_pos.y - width_increase_pixels, true);
                 taskboard_rerender_func();
                 break;
             }
@@ -302,8 +302,8 @@ const _draggable_circle = ({
                     _set_circle_start_pos({x: circle_start_pos.x + dx, y: circle_start_pos.y + dy});
                     _set_circle_end_pos({x: circle_end_pos.x + dx, y: circle_end_pos.y + dy});
                     _set_is_dragging_hlighter(false);
-                    _update_circle_start_pos(id, circle_start_pos.x + dx, circle_start_pos.y + dy);
-                    _update_circle_end_pos(id, circle_end_pos.x + dx, circle_end_pos.y + dy);
+                    _update_circle_start_pos(id, circle_start_pos.x + dx, circle_start_pos.y + dy, true);
+                    _update_circle_end_pos(id, circle_end_pos.x + dx, circle_end_pos.y + dy, true);
                 }
                 
                 taskboard_rerender_func();
@@ -331,8 +331,8 @@ const _draggable_circle = ({
 
                     _set_circle_start_pos({x: circle_start_pos.x + dx, y: circle_start_pos.y + dy});
                     _set_circle_end_pos({x: circle_end_pos.x + dx, y: circle_end_pos.y + dy});
-                    _update_circle_start_pos(id, circle_start_pos.x + dx, circle_start_pos.y + dy);
-                    _update_circle_end_pos(id, circle_end_pos.x + dx, circle_end_pos.y + dy);
+                    _update_circle_start_pos(id, circle_start_pos.x + dx, circle_start_pos.y + dy, false);
+                    _update_circle_end_pos(id, circle_end_pos.x + dx, circle_end_pos.y + dy, false);
                 }
                 
                 taskboard_rerender_func();

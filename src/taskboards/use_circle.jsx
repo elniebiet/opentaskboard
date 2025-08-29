@@ -43,6 +43,11 @@ const _add_circle = (new_circle, meta_action = META_ACTIONS.NONE) => {
 
   circles.push(new_circle);
 
+  if(meta_action === META_ACTIONS.NONE)
+  {
+    let b_result = _add_activity_to_tracker({taskboard_id: new_circle.taskboard_id, action_type: ACTIONS.ADD, component_data: new_circle});
+  }
+
   return true;
 };
 
@@ -72,8 +77,9 @@ const _update_circle_end_pos = (id, new_x2_pos, new_y2_pos, b_drawing_over) => {
         if(b_drawing_over)
         {
           // add action to activity tracker
-          let b_result = _add_activity_to_tracker({taskboard_id: circles[i].taskboard_id, action_type: ACTIONS.ADD, component_data: circles[i]});
+          let b_result = _add_activity_to_tracker({taskboard_id: circles[i].taskboard_id, action_type: ACTIONS.UPDATE, component_data: circles[i]});
         }
+        
 
         break;
       }
@@ -86,13 +92,19 @@ const _update_circle_end_pos = (id, new_x2_pos, new_y2_pos, b_drawing_over) => {
  * @param {int} new_x2_pos - new x cordinate
  * @param {int} new_y2_pos - new y cordinate
  */
-const _update_circle_start_pos = (id, new_x1_pos, new_y1_pos) => {    
+const _update_circle_start_pos = (id, new_x1_pos, new_y1_pos, b_drawing_over = false) => {
   for(let i=0; i<circles.length; i++)
   {
     if(circles[i].id === id)
     {
       circles[i].x1_pos = new_x1_pos;
       circles[i].y1_pos = new_y1_pos;
+
+      let circle = circles[i];
+      if(b_drawing_over)
+      {
+        let b_result = _add_activity_to_tracker({taskboard_id: circle.taskboard_id, action_type: ACTIONS.UPDATE, component_data: circle});
+      }
       break;
     }
   }

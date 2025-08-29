@@ -43,6 +43,11 @@ const _add_leftangle = (new_leftangle, meta_action = META_ACTIONS.NONE) => {
 
     leftangles.push(new_leftangle);
 
+    if(meta_action === META_ACTIONS.NONE)
+    {
+      let b_result = _add_activity_to_tracker({taskboard_id: new_leftangle.taskboard_id, action_type: ACTIONS.ADD, component_data: new_leftangle});
+    }
+
 return true;
 };
 
@@ -72,7 +77,7 @@ const _update_leftangle_end_pos = (id, new_x2_pos, new_y2_pos, b_drawing_over) =
     if(b_drawing_over)
     {
       // add action to activity tracker
-      let b_result = _add_activity_to_tracker({taskboard_id: leftangles[i].taskboard_id, action_type: ACTIONS.ADD, component_data: leftangles[i]});
+      let b_result = _add_activity_to_tracker({taskboard_id: leftangles[i].taskboard_id, action_type: ACTIONS.UPDATE, component_data: leftangles[i]});
     }
 
     break;
@@ -86,13 +91,20 @@ const _update_leftangle_end_pos = (id, new_x2_pos, new_y2_pos, b_drawing_over) =
  * @param {int} new_x2_pos - new x cordinate
  * @param {int} new_y2_pos - new y cordinate
  */
-const _update_leftangle_start_pos = (id, new_x1_pos, new_y1_pos) => {    
+const _update_leftangle_start_pos = (id, new_x1_pos, new_y1_pos, b_drawing_over = false) => {
   for(let i=0; i<leftangles.length; i++)
   {
     if(leftangles[i].id === id)
     {
       leftangles[i].x1_pos = new_x1_pos;
       leftangles[i].y1_pos = new_y1_pos;
+
+      let leftangle = leftangles[i];
+
+      if(b_drawing_over)
+      {
+        let b_result = _add_activity_to_tracker({taskboard_id: leftangle.taskboard_id, action_type: ACTIONS.UPDATE, component_data: leftangle});
+      }
       break;
     }
   }

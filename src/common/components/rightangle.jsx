@@ -204,14 +204,14 @@ const _draggable_rightangle = ({
             case HIGHLIGHT_DRAG_DIRECTION.BOTTOM_RIGHT:
             {
                 // calculate new width and height
-                _update_rightangle_end_pos(id, rightangle_end_pos.x + width_increase_pixels, rightangle_end_pos.y + height_increase_pixels);          
+                _update_rightangle_end_pos(id, rightangle_end_pos.x + width_increase_pixels, rightangle_end_pos.y + height_increase_pixels, true);          
                 taskboard_rerender_func();
                 break;
             }
             case HIGHLIGHT_DRAG_DIRECTION.TOP_LEFT:
             {
                 // calculate new width and height
-                _update_rightangle_start_pos(id, rightangle_start_pos.x - width_increase_pixels, rightangle_start_pos.y - height_increase_pixels);
+                _update_rightangle_start_pos(id, rightangle_start_pos.x - width_increase_pixels, rightangle_start_pos.y - height_increase_pixels, true);
                 taskboard_rerender_func();
                 break;
             }
@@ -303,8 +303,8 @@ const _draggable_rightangle = ({
                     _set_rightangle_start_pos({x: rightangle_start_pos.x + dx, y: rightangle_start_pos.y + dy});
                     _set_rightangle_end_pos({x: rightangle_end_pos.x + dx, y: rightangle_end_pos.y + dy});
                     _set_is_dragging_hlighter(false);
-                    _update_rightangle_start_pos(id, rightangle_start_pos.x + dx, rightangle_start_pos.y + dy);
-                    _update_rightangle_end_pos(id, rightangle_end_pos.x + dx, rightangle_end_pos.y + dy);
+                    _update_rightangle_start_pos(id, rightangle_start_pos.x + dx, rightangle_start_pos.y + dy, true);
+                    _update_rightangle_end_pos(id, rightangle_end_pos.x + dx, rightangle_end_pos.y + dy, true);
                 }
                 
                 taskboard_rerender_func();
@@ -332,8 +332,8 @@ const _draggable_rightangle = ({
 
                     _set_rightangle_start_pos({x: rightangle_start_pos.x + dx, y: rightangle_start_pos.y + dy});
                     _set_rightangle_end_pos({x: rightangle_end_pos.x + dx, y: rightangle_end_pos.y + dy});
-                    _update_rightangle_start_pos(id, rightangle_start_pos.x + dx, rightangle_start_pos.y + dy);
-                    _update_rightangle_end_pos(id, rightangle_end_pos.x + dx, rightangle_end_pos.y + dy);
+                    _update_rightangle_start_pos(id, rightangle_start_pos.x + dx, rightangle_start_pos.y + dy, false);
+                    _update_rightangle_end_pos(id, rightangle_end_pos.x + dx, rightangle_end_pos.y + dy, false);
                 }
                 
                 taskboard_rerender_func();

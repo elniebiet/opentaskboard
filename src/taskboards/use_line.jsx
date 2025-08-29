@@ -36,6 +36,11 @@ const _add_line = (new_line, meta_action = META_ACTIONS.NONE) => {
 
   lines.push(new_line);
 
+  if(meta_action === META_ACTIONS.NONE)
+  {
+    let b_result = _add_activity_to_tracker({taskboard_id: new_line.taskboard_id, action_type: ACTIONS.ADD, component_data: new_line});
+  }
+
   return true;
 };
 
@@ -65,7 +70,7 @@ const _update_line_end_pos = (id, new_x2_pos, new_y2_pos, b_drawing_over) => {
         if(b_drawing_over)
         {
           // add action to activity tracker
-          let b_result = _add_activity_to_tracker({taskboard_id: lines[i].taskboard_id, action_type: ACTIONS.ADD, component_data: lines[i]});
+          let b_result = _add_activity_to_tracker({taskboard_id: lines[i].taskboard_id, action_type: ACTIONS.UPDATE, component_data: lines[i]});
         }
 
         break;
@@ -79,13 +84,20 @@ const _update_line_end_pos = (id, new_x2_pos, new_y2_pos, b_drawing_over) => {
  * @param {int} new_x2_pos - new x cordinate
  * @param {int} new_y2_pos - new y cordinate
  */
-const _update_line_start_pos = (id, new_x1_pos, new_y1_pos) => {    
+const _update_line_start_pos = (id, new_x1_pos, new_y1_pos, b_drawing_over = false) => {
   for(let i=0; i<lines.length; i++)
   {
     if(lines[i].id === id)
     {
       lines[i].x1_pos = new_x1_pos;
       lines[i].y1_pos = new_y1_pos;
+
+      let line = lines[i];
+
+      if(b_drawing_over)
+      {
+        let b_result = _add_activity_to_tracker({taskboard_id: line.taskboard_id, action_type: ACTIONS.UPDATE, component_data: line});
+      }
       break;
     }
   }

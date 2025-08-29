@@ -186,7 +186,7 @@ const _draggable_line = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, c
                     const {clientX, clientY} = event;
                     _set_line_start_pos({x: clientX, y: clientY});
                     _set_is_dragging_hlighter(false);
-                    _update_line_start_pos(id, clientX, clientY);                    
+                    _update_line_start_pos(id, clientX, clientY, true);                    
                 }
                 else if(selected_hlight_pos === LINE_HLIGHT_DRAG_POS.MID)
                 {
@@ -199,15 +199,15 @@ const _draggable_line = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, c
                     _set_line_start_pos({x: line_start_pos.x + dx, y: line_start_pos.y + dy});
                     _set_line_end_pos({x: line_end_pos.x + dx, y: line_end_pos.y + dy});
                     _set_is_dragging_hlighter(false);
-                    _update_line_start_pos(id, line_start_pos.x + dx, line_start_pos.y + dy);
-                    _update_line_end_pos(id, line_end_pos.x + dx, line_end_pos.y + dy);
+                    _update_line_start_pos(id, line_start_pos.x + dx, line_start_pos.y + dy, true);
+                    _update_line_end_pos(id, line_end_pos.x + dx, line_end_pos.y + dy, true);
                 }
                 else if(selected_hlight_pos === LINE_HLIGHT_DRAG_POS.END)
                 {
                     const {clientX, clientY} = event;
                     _set_line_end_pos({x: clientX, y: clientY});
                     _set_is_dragging_hlighter(false);
-                    _update_line_end_pos(id, clientX, clientY);
+                    _update_line_end_pos(id, clientX, clientY, true);
                 }
 
                 taskboard_rerender_func();
@@ -229,7 +229,7 @@ const _draggable_line = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, c
                 {
                     const {clientX, clientY} = event;
                     _set_line_start_pos({x: clientX, y: clientY});
-                    _update_line_start_pos(id, clientX, clientY);                    
+                    _update_line_start_pos(id, clientX, clientY, false);                    
                 }
                 else if(selected_hlight_pos === LINE_HLIGHT_DRAG_POS.MID)
                 {
@@ -241,14 +241,14 @@ const _draggable_line = ({ id, start_pos_x, start_pos_y, end_pos_x, end_pos_y, c
 
                     _set_line_start_pos({x: line_start_pos.x + dx, y: line_start_pos.y + dy});
                     _set_line_end_pos({x: line_end_pos.x + dx, y: line_end_pos.y + dy});
-                    _update_line_start_pos(id, line_start_pos.x + dx, line_start_pos.y + dy);
-                    _update_line_end_pos(id, line_end_pos.x + dx, line_end_pos.y + dy);
+                    _update_line_start_pos(id, line_start_pos.x + dx, line_start_pos.y + dy, false);
+                    _update_line_end_pos(id, line_end_pos.x + dx, line_end_pos.y + dy, false);
                 }
                 else if(selected_hlight_pos === LINE_HLIGHT_DRAG_POS.END)
                 {
                     const {clientX, clientY} = event;
                     _set_line_end_pos({x: clientX, y: clientY});
-                    _update_line_end_pos(id, clientX, clientY);
+                    _update_line_end_pos(id, clientX, clientY, false);
                 }
 
                 taskboard_rerender_func();

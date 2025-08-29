@@ -41,6 +41,11 @@ const _add_rectangle = (new_rectangle, meta_action = META_ACTIONS.NONE) => {
 
     rectangles.push(new_rectangle);
 
+    if(meta_action === META_ACTIONS.NONE)
+    {
+      let b_result = _add_activity_to_tracker({taskboard_id: new_rectangle.taskboard_id, action_type: ACTIONS.ADD, component_data: new_rectangle});
+    }
+
     return true;
 };
 
@@ -70,7 +75,7 @@ const _update_rectangle_end_pos = (id, new_x2_pos, new_y2_pos, b_drawing_over) =
         if(b_drawing_over)
         {
           // add action to activity tracker
-          let b_result = _add_activity_to_tracker({taskboard_id: rectangles[i].taskboard_id, action_type: ACTIONS.ADD, component_data: rectangles[i]});
+          let b_result = _add_activity_to_tracker({taskboard_id: rectangles[i].taskboard_id, action_type: ACTIONS.UPDATE, component_data: rectangles[i]});
         }
 
         break;
@@ -84,13 +89,20 @@ const _update_rectangle_end_pos = (id, new_x2_pos, new_y2_pos, b_drawing_over) =
  * @param {int} new_x2_pos - new x cordinate
  * @param {int} new_y2_pos - new y cordinate
  */
-const _update_rectangle_start_pos = (id, new_x1_pos, new_y1_pos) => {    
+const _update_rectangle_start_pos = (id, new_x1_pos, new_y1_pos, b_drawing_over = false) => {    
   for(let i=0; i<rectangles.length; i++)
   {
     if(rectangles[i].id === id)
     {
       rectangles[i].x1_pos = new_x1_pos;
       rectangles[i].y1_pos = new_y1_pos;
+
+      let rectangle = rectangles[i];
+
+      if(b_drawing_over)
+      {
+        let b_result = _add_activity_to_tracker({taskboard_id: rectangle.taskboard_id, action_type: ACTIONS.UPDATE, component_data: rectangle});
+      }
       break;
     }
   }
@@ -213,6 +225,9 @@ const _increase_rectangle_width = (id) => {
         rectangles[i].stroke_width += increment;
       }
 
+      let rectangle = rectangles[i];
+      let b_result = _add_activity_to_tracker({taskboard_id: rectangle.taskboard_id, action_type: ACTIONS.UPDATE, component_data: rectangle});
+
       break;
     }
   }
@@ -237,6 +252,9 @@ const _decrease_rectangle_width = (id) => {
       {
         rectangles[i].stroke_width -= decrement;
       }
+
+      let rectangle = rectangles[i];
+      let b_result = _add_activity_to_tracker({taskboard_id: rectangle.taskboard_id, action_type: ACTIONS.UPDATE, component_data: rectangle});
 
       break;
     }

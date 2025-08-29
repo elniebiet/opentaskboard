@@ -42,6 +42,11 @@ const _add_triangle = (new_triangle, meta_action = META_ACTIONS.NONE) => {
 
   triangles.push(new_triangle);
 
+  if(meta_action === META_ACTIONS.NONE)
+  {
+        let b_result = _add_activity_to_tracker({taskboard_id: new_triangle.taskboard_id, action_type: ACTIONS.ADD, component_data: new_triangle});
+  }
+
   return true;
 };
 
@@ -71,7 +76,7 @@ const _update_triangle_end_pos = (id, new_x2_pos, new_y2_pos, b_drawing_over) =>
       if(b_drawing_over)
       {
         // add action to activity tracker
-        let b_result = _add_activity_to_tracker({taskboard_id: triangles[i].taskboard_id, action_type: ACTIONS.ADD, component_data: triangles[i]});
+        let b_result = _add_activity_to_tracker({taskboard_id: triangles[i].taskboard_id, action_type: ACTIONS.UPDATE, component_data: triangles[i]});
       }
 
       break;
@@ -85,13 +90,21 @@ const _update_triangle_end_pos = (id, new_x2_pos, new_y2_pos, b_drawing_over) =>
  * @param {int} new_x2_pos - new x cordinate
  * @param {int} new_y2_pos - new y cordinate
  */
-const _update_triangle_start_pos = (id, new_x1_pos, new_y1_pos) => {    
+const _update_triangle_start_pos = (id, new_x1_pos, new_y1_pos, b_drawing_over = false) => {    
   for(let i=0; i<triangles.length; i++)
   {
     if(triangles[i].id === id)
     {
       triangles[i].x1_pos = new_x1_pos;
       triangles[i].y1_pos = new_y1_pos;
+
+      let triangle = triangles[i];
+
+      if(b_drawing_over)
+      {
+        let b_result = _add_activity_to_tracker({taskboard_id: triangle.taskboard_id, action_type: ACTIONS.UPDATE, component_data: triangle});
+      }
+      
       break;
     }
   }

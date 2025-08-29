@@ -571,7 +571,7 @@ const _taskboard_default = ({
         if(taskboard_state === TASKBOARD_STATES.TBS_JOINING_STARTED)
         {
           let current_joining_arrow_id = _get_current_joining_arrow_id();
-          _update_arrow_end_pos(current_joining_arrow_id, e.clientX, e.clientY);
+          _update_arrow_end_pos(current_joining_arrow_id, e.clientX, e.clientY, true);
 
           // update the last hovered item with new arrow properties
           let last_hovered_joining_item_id = _get_last_hovered_joining_item_id();
@@ -607,7 +607,7 @@ const _taskboard_default = ({
         if(taskboard_state === TASKBOARD_STATES.TBS_JOINING_STARTED)
         {
           let current_joining_arrow_id = _get_current_joining_arrow_id();
-          _update_arrow_end_pos(current_joining_arrow_id, e.clientX, e.clientY);
+          _update_arrow_end_pos(current_joining_arrow_id, e.clientX, e.clientY, false);
           _trigger_taskboard_rerender();
         }
     };

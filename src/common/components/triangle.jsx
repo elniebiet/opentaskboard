@@ -204,14 +204,14 @@ const _draggable_triangle = ({
             case HIGHLIGHT_DRAG_DIRECTION.BOTTOM_RIGHT:
             {
                 // calculate new width and height
-                _update_triangle_end_pos(id, triangle_end_pos.x + width_increase_pixels, triangle_end_pos.y + height_increase_pixels);          
+                _update_triangle_end_pos(id, triangle_end_pos.x + width_increase_pixels, triangle_end_pos.y + height_increase_pixels, true);          
                 taskboard_rerender_func();
                 break;
             }
             case HIGHLIGHT_DRAG_DIRECTION.TOP_LEFT:
             {
                 // calculate new width and height
-                _update_triangle_start_pos(id, triangle_start_pos.x - width_increase_pixels, triangle_start_pos.y - height_increase_pixels);
+                _update_triangle_start_pos(id, triangle_start_pos.x - width_increase_pixels, triangle_start_pos.y - height_increase_pixels, true);
                 taskboard_rerender_func();
                 break;
             }
@@ -303,8 +303,8 @@ const _draggable_triangle = ({
                     _set_triangle_start_pos({x: triangle_start_pos.x + dx, y: triangle_start_pos.y + dy});
                     _set_triangle_end_pos({x: triangle_end_pos.x + dx, y: triangle_end_pos.y + dy});
                     _set_is_dragging_hlighter(false);
-                    _update_triangle_start_pos(id, triangle_start_pos.x + dx, triangle_start_pos.y + dy);
-                    _update_triangle_end_pos(id, triangle_end_pos.x + dx, triangle_end_pos.y + dy);
+                    _update_triangle_start_pos(id, triangle_start_pos.x + dx, triangle_start_pos.y + dy, true);
+                    _update_triangle_end_pos(id, triangle_end_pos.x + dx, triangle_end_pos.y + dy, true);
                 }
                 
                 taskboard_rerender_func();
@@ -332,8 +332,8 @@ const _draggable_triangle = ({
 
                     _set_triangle_start_pos({x: triangle_start_pos.x + dx, y: triangle_start_pos.y + dy});
                     _set_triangle_end_pos({x: triangle_end_pos.x + dx, y: triangle_end_pos.y + dy});
-                    _update_triangle_start_pos(id, triangle_start_pos.x + dx, triangle_start_pos.y + dy);
-                    _update_triangle_end_pos(id, triangle_end_pos.x + dx, triangle_end_pos.y + dy);
+                    _update_triangle_start_pos(id, triangle_start_pos.x + dx, triangle_start_pos.y + dy, false);
+                    _update_triangle_end_pos(id, triangle_end_pos.x + dx, triangle_end_pos.y + dy, false);
                 }
                 
                 taskboard_rerender_func();

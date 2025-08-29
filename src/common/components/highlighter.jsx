@@ -245,11 +245,11 @@ const _highlighter = ({
 
             if(arrow_join_point === ARROW_JOIN_POINT.START_POINT)
             {
-                _update_arrow_start_pos(arrow_id, x1_pos, y1_pos);
+                _update_arrow_start_pos(arrow_id, x1_pos, y1_pos, false);
             }
             else if(arrow_join_point === ARROW_JOIN_POINT.END_POINT)
             {
-                _update_arrow_end_pos(arrow_id, x1_pos, y1_pos);
+                _update_arrow_end_pos(arrow_id, x1_pos, y1_pos, false);
             }
         }
 
@@ -263,11 +263,11 @@ const _highlighter = ({
 
             if(arrow_join_point === ARROW_JOIN_POINT.START_POINT)
             {
-                _update_arrow_start_pos(arrow_id, x1_pos, y1_pos);
+                _update_arrow_start_pos(arrow_id, x1_pos, y1_pos, false);
             }
             else if(arrow_join_point === ARROW_JOIN_POINT.END_POINT)
             {
-                _update_arrow_end_pos(arrow_id, x1_pos, y1_pos);
+                _update_arrow_end_pos(arrow_id, x1_pos, y1_pos, false);
             }
         }
 
@@ -281,11 +281,11 @@ const _highlighter = ({
 
             if(arrow_join_point === ARROW_JOIN_POINT.START_POINT)
             {
-                _update_arrow_start_pos(arrow_id, x1_pos, y1_pos);
+                _update_arrow_start_pos(arrow_id, x1_pos, y1_pos, false);
             }
             else if(arrow_join_point === ARROW_JOIN_POINT.END_POINT)
             {
-                _update_arrow_end_pos(arrow_id, x1_pos, y1_pos);
+                _update_arrow_end_pos(arrow_id, x1_pos, y1_pos, false);
             }
         }
 
@@ -299,11 +299,11 @@ const _highlighter = ({
 
             if(arrow_join_point === ARROW_JOIN_POINT.START_POINT)
             {
-                _update_arrow_start_pos(arrow_id, x1_pos, y1_pos);
+                _update_arrow_start_pos(arrow_id, x1_pos, y1_pos, false);
             }
             else if(arrow_join_point === ARROW_JOIN_POINT.END_POINT)
             {
-                _update_arrow_end_pos(arrow_id, x1_pos, y1_pos);
+                _update_arrow_end_pos(arrow_id, x1_pos, y1_pos, false);
             }
         }
 

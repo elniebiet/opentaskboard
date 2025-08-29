@@ -206,14 +206,14 @@ const _draggable_rectangle = ({
             case HIGHLIGHT_DRAG_DIRECTION.BOTTOM_RIGHT:
             {
                 // calculate new width and height
-                _update_rectangle_end_pos(id, rectangle_end_pos.x + width_increase_pixels, rectangle_end_pos.y + height_increase_pixels);          
+                _update_rectangle_end_pos(id, rectangle_end_pos.x + width_increase_pixels, rectangle_end_pos.y + height_increase_pixels, true);          
                 taskboard_rerender_func();
                 break;
             }
             case HIGHLIGHT_DRAG_DIRECTION.TOP_LEFT:
             {
                 // calculate new width and height
-                _update_rectangle_start_pos(id, rectangle_start_pos.x - width_increase_pixels, rectangle_start_pos.y - height_increase_pixels);
+                _update_rectangle_start_pos(id, rectangle_start_pos.x - width_increase_pixels, rectangle_start_pos.y - height_increase_pixels, true);
                 taskboard_rerender_func();
                 break;
             }
@@ -305,8 +305,8 @@ const _draggable_rectangle = ({
                     _set_rectangle_start_pos({x: rectangle_start_pos.x + dx, y: rectangle_start_pos.y + dy});
                     _set_rectangle_end_pos({x: rectangle_end_pos.x + dx, y: rectangle_end_pos.y + dy});
                     _set_is_dragging_hlighter(false);
-                    _update_rectangle_start_pos(id, rectangle_start_pos.x + dx, rectangle_start_pos.y + dy);
-                    _update_rectangle_end_pos(id, rectangle_end_pos.x + dx, rectangle_end_pos.y + dy);
+                    _update_rectangle_start_pos(id, rectangle_start_pos.x + dx, rectangle_start_pos.y + dy, true);
+                    _update_rectangle_end_pos(id, rectangle_end_pos.x + dx, rectangle_end_pos.y + dy, true);
                 }
                 
                 taskboard_rerender_func();
@@ -334,8 +334,8 @@ const _draggable_rectangle = ({
 
                     _set_rectangle_start_pos({x: rectangle_start_pos.x + dx, y: rectangle_start_pos.y + dy});
                     _set_rectangle_end_pos({x: rectangle_end_pos.x + dx, y: rectangle_end_pos.y + dy});
-                    _update_rectangle_start_pos(id, rectangle_start_pos.x + dx, rectangle_start_pos.y + dy);
-                    _update_rectangle_end_pos(id, rectangle_end_pos.x + dx, rectangle_end_pos.y + dy);
+                    _update_rectangle_start_pos(id, rectangle_start_pos.x + dx, rectangle_start_pos.y + dy, false);
+                    _update_rectangle_end_pos(id, rectangle_end_pos.x + dx, rectangle_end_pos.y + dy, false);
                 }
                 
                 taskboard_rerender_func();
